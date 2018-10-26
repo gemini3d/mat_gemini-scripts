@@ -1,0 +1,26 @@
+#!/bin/bash
+# This is comment
+#PBS -q longq
+# Not necessary to set wall time, 
+# longq: 168 hours, 10 nodes (with 36proc for each), maximum 1 longq in queue per user
+# normalq: 24 hours, 10 nodes, maximum 4 normalq in queue per user
+#PBS -l walltime=168:00:00
+#PBS -l nodes=5:ppn=36
+#PBS -N GEMINI3D_MZ
+# In you want to send job status to e-mail:
+#PBS -M zettergm@erau.edu
+#PBS -m aeb
+cd $PBS_O_WORKDIR
+
+# PBS -l mem=160000mb
+#PBS -e /scratch/zettergm/GEMINI3D/pbs_errors.out
+#PBS -o /scratch/zettergm/GEMINI3D/pbs_output.out
+
+# cd $PBS_O_WORKDIR
+# echo $PBS_O_WORKDIR
+
+# Load modules during job submission!
+module load openmpi/gcc/64/1.10.3
+
+# Run the program
+mpirun -np $PBS_NP ./gemini_mumps ./initialize/tohoku20113D_highres_var/config.ini ../simulations/tohoku20113D_highres_varx2x3/  
