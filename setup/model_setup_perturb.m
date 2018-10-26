@@ -1,6 +1,7 @@
-addpath ../script_utils/;
-addpath ../vis/;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'vis'])
 
 %READ IN THE SIMULATION INFORMATION
 ID='~/simulations/input/KHI_periodic_highres/';
@@ -92,7 +93,3 @@ dmy=[simdate(3),simdate(2),simdate(1)];
 UTsec=simdate(4)*3600;
 writedata(dmy,UTsec,nsperturb,vs1,Ts,[filebase,'_perturb']);
 
-
-%RESET PATH
-rmpath ../script_utils/;
-rmpath ../vis/

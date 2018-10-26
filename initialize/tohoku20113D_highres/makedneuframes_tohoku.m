@@ -1,18 +1,18 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
 indir='~/zettergmdata/simulations.MAGIC/tohoku/'
 loc='';
 simlab='strong'
 outdir='~/zettergmdata/simulations/input/tohoku_neutrals/'
-system(['mkdir ',outdir]);
+mkdir(outdir);
 
 
 %TOHOKU EXAMPLE
 ymd0=[2011,3,11];
 UTsec0=20783;
 dtneu=4;
-
-%PATHS
-addpath ../../script_utils;
-
 
 %LOAD THE DATA FROM AN INPUT SIMULATION
 if ~exist('velx')
@@ -69,9 +69,4 @@ for it=1:lt
 
     [ymd,UTsec]=dateinc(dtneu,ymd,UTsec);
 end
-
-
-%RESET PATH
-rmpath ../../script_utils;
-
 

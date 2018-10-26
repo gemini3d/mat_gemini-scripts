@@ -1,3 +1,11 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'setup'])
+addpath([gemini_root, filesep, 'vis'])
+
+
 %RISR PERIODIC GDI RUN (HIGHRES)
 xdist=200e3;
 ydist=200e3;
@@ -9,11 +17,6 @@ gridflag=0;
 I=90;
 
 
-%ADD PATHS FOR FUNCTIONS
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../setup;
-addpath ../../vis;
 
 
 %RUN THE GRID GENERATION CODE
@@ -35,7 +38,6 @@ ID='~/zettergmdata/simulations/RISR_eq/'
 %READ IN THE SIMULATION INFORMATION
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([ID,'/inputs/config.ini']);
 xgin=readgrid([ID,'/inputs/']);
-addpath ../vis/
 direc=ID;
 
 
@@ -46,7 +48,6 @@ direc=ID;
 %LOAD THE FRAME
 [ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend, UTsec0,ymd0, mloc,xgin);
 lsp=size(ns,4);
-rmpath ../vis/
 
 
 %DO THE INTERPOLATION
@@ -91,9 +92,3 @@ writegrid(xg,outdir);    %just put it in pwd for now
 dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);
 
-
-%RESET PATHS
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../setup;
-rmpath ../../vis;

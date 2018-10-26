@@ -1,3 +1,10 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'vis'])
+
+
 %A MEDIUM RES TOHOKU
 dtheta=7.5;
 dphi=12;
@@ -10,11 +17,6 @@ glon=143.4;
 gridflag=1;
 flagsource=1;
 
-
-%ADD PATHS FOR FUNCTIONS
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../vis;
 
 
 %RUN THE GRID GENERATION CODE
@@ -106,7 +108,3 @@ dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);
 
 
-%RESET PATHS
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../vis;

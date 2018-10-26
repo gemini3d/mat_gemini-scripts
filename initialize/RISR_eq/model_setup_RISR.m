@@ -1,3 +1,11 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'setup'])
+
+outdir=[gemini_root, filesep, '../simulations/input/RISR_eq/'];
+
 %RISR LOWRES GRID (CARTESIAN)
 xdist=1.5e6;
 ydist=1.5e6;
@@ -7,12 +15,6 @@ glat=75.6975;
 glon=360.0-94.8322;
 gridflag=0;
 I=90;
-
-
-%ADD PATHS TO SCRIPT UTILS (hopefully this catches the fact that the makegrids need access to geomag conversion functions
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../setup;
 
 %MATLAB GRID GENERATION
 xg=makegrid_cart_3D_lowresx1(xdist,lxp,ydist,lyp,I,glat,glon);
@@ -32,14 +34,9 @@ nme=2e11;
 
 
 %WRITE THE GRID AND INITIAL CONDITIONS
-outdir='~/zettergmdata/simulations/input/RISR_eq/'
+
 simlabel='RISR_eq'
 writegrid(xg,outdir);
 time=UT*3600;   %doesn't matter for input files
 writedata(dmy,time,ns,vsx1,Ts,outdir,simlabel);
 
-
-%RESET PATH
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../setup;

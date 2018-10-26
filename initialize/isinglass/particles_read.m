@@ -5,13 +5,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 idlpath='~/ISINGLASS/AGU2017/'
 addpath([idlpath,'./restore_idl']);
-addpath ../../script_utils;
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 
 %CREATE SOME SPACE FOR OUTPUT FILES
 outdir='~/zettergmdata/simulations/input/isinglass_particles_highres/';
-system(['mkdir ',outdir]);
-system(['rm ',outdir,'/*']);   %clean out existing files
+mkdir(outdir);
+delete([outdir,'/*']);   %clean out existing files
 
 
 %READ IN THE IDL SAVE FILE - THIS IS THE FORMAT NORMALLY GIVEN TO ME BY GUY GRUBBS
@@ -247,7 +249,3 @@ end
 %ALSO SAVE TO A  MATLAB FILE
 save('-v7.3',[outdir,'particles.mat'],'glon','glat','mlon','mlat','Qit','E0it','outputdate');
 
-
-%RESTORE PATH
-rmpath([idlpath,'./restore_idl']);
-rmpath ../../script_utils;

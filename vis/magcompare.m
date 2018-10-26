@@ -1,6 +1,11 @@
-%LOAD THE DATA
-direc='./';
-load([direc,'magfields.mat']);
+function magcompare(direc)
+  
+if nargin <1, direc='.'; end
+
+validateattributes(direc, {'char'}, {'vector'}, mfilename, 'directory to compare data', 1)
+
+%% LOAD THE DATA
+load([direc,filesep,'magfields.mat']);
 
 [X,Y,Z]=ndgrid(x,y,z);
 mu0=4*pi*1e-7;
@@ -194,3 +199,5 @@ imagesc(yp,zp,squeeze(Jphit(irp,:,:,it))');
 axis xy;
 axis(ax);
 colorbar;
+
+end % function

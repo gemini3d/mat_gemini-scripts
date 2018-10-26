@@ -1,3 +1,10 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'vis'])
+
+
 %A MEDIUM RES TOHOKU
 dtheta=7.5;
 dphi=12;
@@ -9,12 +16,6 @@ glat=42.45;
 glon=143.4;
 gridflag=1;
 flagsource=1;
-
-
-%ADD PATHS FOR FUNCTIONS
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../vis;
 
 
 %RUN THE GRID GENERATION CODE
@@ -32,7 +33,7 @@ simid='tohoku20113D_medres'
 
 %ALTERNATIVELY WE MAY WANT TO READ IN AN EXISTING OUTPUT FILE AND DO SOME INTERPOLATION ONTO A NEW GRID
 fprintf('Reading in source file...\n');
-ID='~/zettergmdata/simulations/tohoku20113D_eq/'
+ID=[gemini_root, '/../simulations/tohoku20113D_eq/'];
 
 
 %READ IN THE SIMULATION INFORMATION
@@ -49,7 +50,6 @@ direc=ID;
 %LOAD THE FRAME
 [ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend,UTsec0,ymd0,mloc,xgin);
 lsp=size(ns,4);
-rmpath ../vis/
 
 
 %DO THE INTERPOLATION
@@ -94,8 +94,3 @@ writegrid(xg,outdir);    %just put it in pwd for now
 dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);
 
-
-%RESET PATHS
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../vis;

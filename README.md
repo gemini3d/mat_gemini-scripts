@@ -1,18 +1,46 @@
 # GEMINI-scripts
-Auxiliary scripts for the GEMINI ionospheric model.
+Auxiliary scripts for the [GEMINI ionospheric model](https://github.com/mattzett/gemini-scripts).
 
 
-## Requirements
+## Install
+
+These scripts should be at the same directory "level" as `gemini`.
+E.g.:
+
+```
+/home/username/
+   gemini/
+   gemini-scripts/
+```
+direc='./';
+Simply `git clone https://github.com/mattzett/gemini-scripts`
+
+### Requirements
 
 either of:
 
 * Matlab &ge; R2007b
-* GNU Octave &ge; 4.0
+* [GNU Octave](https://www.gnu.org/software/octave/) &ge; 4.0
+
 
 ## Usage
 
 The scripts are meant to "just work" without fiddling for a particular computer.
 In terms of plot formatting, we prioritize recent versions of Matlab, particularly for generating publication quality plots.
+
+### Top-level scripts
+
+These functions are intended to be run by the end-user or automatically for various purposes.
+
+
+under `vis/`:
+
+* `magcalc`
+* `magcalc_single`
+* `magcompare`
+* `virtual_spacecraft`
+
+## Notes
 
 ### GNU Octave 
 

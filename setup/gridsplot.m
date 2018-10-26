@@ -1,3 +1,7 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
 % %TOHOKU-LIKE GRID
 % dtheta=7.5;
 % dphi=8.5;    %to make sure we encapsulate the neutral grid long. extent
@@ -92,10 +96,6 @@ gridflag=1;
 % gridflag=0;
 % I=90;
 
-
-%ADD PATHS TO THE GRID GENERATION SCRIPTS
-addpath ./gridgen;
-addpath ../script_utils;
 
 
 %RUN THE GRID GENERATION CODE
@@ -353,8 +353,4 @@ if (license('test','Map_Toolbox'))
 %  axis(ax);    %reset axis
 end
 
-
-%RETURN PATH VARIABLES TO NORMAL
-rmpath ./gridgen;
-rmpath ../script_utils;
 

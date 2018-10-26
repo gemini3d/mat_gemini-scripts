@@ -1,19 +1,19 @@
-addpath ../script_utils;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../gemini'];
 
 %REFERENCE GRID TO USE
 direcconfig='../initialize/2Dtest/'
-direcgrid='~/zettergmdata/simulations/input/2Dtest/'
+direcgrid=[gemini_root,'/../simulations/input/2Dtest/'];
 
 
 %OUTPUT FILE LOCATION
-outdir='~/zettergmdata/simulations/test_fields/';
-system(['mkdir ',outdir]);
+outdir=[gemini_root, '../simulations/test_fields/'];
+mkdir(outdir)
 
 
 %READ IN THE SIMULATION INFORMATION (MEANS WE NEED TO CREATE THIS FOR THE SIMULATION WE WANT TO DO)
 if (~exist('ymd0','var'))
-  [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direcconfig,'/config.dat']);
+  [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direcconfig,'/config.ini']);
   fprintf('Input config.dat file loaded.\n');
 end
 
@@ -143,5 +143,3 @@ end
 %ALSO CREATE A MATLAB OUTPUT FILE FOR GOOD MEASURE
 save([outdir,'fields.mat'],'mlon','mlat','MLAT','MLON','Exit','Eyit','Vminx*','Vmax*','expdate');
 
-
-rmpath ../script_utils;

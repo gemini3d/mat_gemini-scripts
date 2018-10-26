@@ -1,3 +1,7 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
 indir='~/zettergmdata/simulations.MAGIC/nepal/'
 %indir='~/neutral_sims/chile06052017/'
 %indir='~/neutral_sims/2016mooreOK/'
@@ -11,7 +15,7 @@ simlab='nepal'
 %outdir=['~/simulations/chile2015_0.5_neutrals/'];
 outdir='~/zettergmdata/simulations/input/nepal2015_neutrals/'
 %outdir='~/zettergmdata/simulations/tohoku_neutrals/'
-system(['mkdir ',outdir]);
+mkdir([outdir]);
 
 %ymd0=[2015,09,16];
 %UTsec0=82473;
@@ -30,8 +34,6 @@ dtneu=4;
 %UTsec0=20783;
 %dtneu=2;
 
-%PATHS
-addpath ../../script_utils;
 
 
 %LOAD THE DATA FROM AN INPUT SIMULATION
@@ -50,7 +52,7 @@ end
 
 
 %CREATE A SEQUENCE OF BINBARY OUTPUT FILES THAT CONTAIN A FRAME OF DATA EACH
-system(['rm -rf ',outdir,'/*.dat'])
+delete([outdir,'/*.dat'])
 filename=[outdir,'simsize.dat']
 fid=fopen(filename,'w');
 fwrite(fid,lrho,'integer*4');
@@ -92,9 +94,5 @@ for it=1:lt
 
     [ymd,UTsec]=dateinc(dtneu,ymd,UTsec);
 end
-
-
-%RESET PATH
-rmpath ../../script_utils;
 
 

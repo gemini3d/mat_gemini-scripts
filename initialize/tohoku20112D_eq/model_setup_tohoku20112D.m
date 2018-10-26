@@ -1,3 +1,10 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'setup'])
+
+
 %EQ TOHOKU GRID 2D
 dtheta=10;
 dphi=12;
@@ -8,12 +15,6 @@ lq=750;
 lphi=1;
 altmin=80e3;
 gridflag=1;
-
-
-%ADD PATHS TO SCRIPT UTILS (hopefully this catches the fact that the makegrids need access to geomag conversion functions
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../setup;
 
 %MATLAB GRID GENERATION
 xg=makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
@@ -33,14 +34,9 @@ nme=2e11;
 
 
 %WRITE THE GRID AND INITIAL CONDITIONS
-outdir='~/zettergmdata/simulations/input/tohoku20112D_eq/'
-simlabel='tohoku20112D_eq'
+outdir = [gemini_root, filesep, '../simulations/input/tohoku20112D_eq/'];
+simlabel='tohoku20112D_eq';
 writegrid(xg,outdir);
 time=UT*3600;   %doesn't matter for input files
 writedata(dmy,time,ns,vsx1,Ts,outdir,simlabel);
 
-
-%RESET PATH
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../setup;

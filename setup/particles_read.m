@@ -1,10 +1,7 @@
-addpath ./restore_idl;
-addpath ./script_utils;
-
 
 %CREATE SOME SPACE FOR OUTPUT FILES
-outdir='./particles/';
-system(['mkdir ',outdir]);
+outdir='particles/';
+mkdir(outdir)
 
 
 %READ IN THE IDL SAVE FILE - THIS IS THE FORMAT NORMALLY GIVEN TO ME BY GUY GRUBBS
@@ -72,11 +69,10 @@ t=datenum(expdate);
 
 
 %APPLY SOME SMOOTHING
-fprintf('Smoothing longitude...\n');
+disp('Smoothing longitude...')
 Qsmooth=zeros(lt,llon,llat);
 E0smooth=zeros(lt,llon,llat);
 for it=1:lt
-    %it
     for ilat=1:llat
         Qtmp=squeeze(Q(it,:,ilat));
         inds=find(isnan(Qtmp));
@@ -233,7 +229,3 @@ end
 %ALSO SAVE TO A  MATLAB FILE
 save([outdir,'particles.mat'],'glon','glat','mlon','mlat','Qit','E0it','outputdate');
 
-
-%RESTORE PATH
-rmpath ./restore_idl;
-rmpath ./script_utils;

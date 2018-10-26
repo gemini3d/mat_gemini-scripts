@@ -1,3 +1,10 @@
+ cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'setup'])
+addpath([gemini_root, filesep, 'vis'])
+ 
  %PFISR LOWRES GRID (CARTESIAN)
  xdist=500e3;    %eastward distance
  ydist=100e3;    %northward distance
@@ -7,13 +14,6 @@
  glon=212.95;
  gridflag=0;
  I=90;
-
-
-%ADD PATHS FOR FUNCTIONS
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../setup;
-addpath ../../vis;
 
 
 %RUN THE GRID GENERATION CODE
@@ -92,8 +92,3 @@ dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);
 
 
-%RESET PATHS
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../setup;
-rmpath ../../vis;

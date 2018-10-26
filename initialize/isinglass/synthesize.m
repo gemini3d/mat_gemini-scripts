@@ -1,5 +1,6 @@
-addpath ./script_utils;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %ELECTRIC FIELD DATA
 load ./fields_highres/fields.mat;
@@ -33,7 +34,7 @@ end
 
 %SIDE BY SIDE PLOTS OF FIELDS AND PARTICLES
 plotdir='./plots_synth/';
-system(['mkdir ',plotdir]);
+mkdir(plotdir);
 figure;
 set(gcf,'PaperPosition',[0 0 8.5 3.5]);
 % for it=1:ltpart
@@ -127,5 +128,3 @@ for it=1:ltpart
     print('-dpng',filename,'-r300')
 end    
     
-
-rmpath ./script_utils;

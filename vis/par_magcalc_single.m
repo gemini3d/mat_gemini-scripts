@@ -1,8 +1,12 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
 %SIMULATIONS LOCAITONS
 simname='chile20153D/';
 basedir='/Volumes/TravelDisk2/simulations/'
 direc=[basedir,simname];
-system(['mkdir ',direc,'/magplots']);    %store output plots with the simulation data
+mkdir([direc,'/magplots']);    %store output plots with the simulation data
 
 
 %UTseconds of the frame of interest
@@ -10,12 +14,8 @@ ymd_TOI=[2015,09,16];
 UTsec_TOI=82923;
 
 
-%ADD PATHS
-addpath ../script_utils;
-
-
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.dat']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
 
 
 %TABULATE THE SOURCE LOCATION
@@ -532,5 +532,3 @@ t=datenum(simdate_series);
 save([direc,'/magfields.mat'],'mlat','mlon','t','simdate_series','Brt','Bthetat','Bphit','-v7');
 
 
-%RESET PATHS
-rmpath ../script_utils;

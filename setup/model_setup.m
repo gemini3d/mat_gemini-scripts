@@ -1,3 +1,7 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
 % %HIGH-LATITUDE GRID (FOR TESTING ELECTRODYNAMICS)
 % dtheta=2;
 % dphi=5;
@@ -244,10 +248,6 @@ gridflag=1;
 flagsource=1;
 
 
-%ADD PATHS TO SCRIPT UTILS (hopefully this catches the fact that the makegrids need access to geomag conversion functions
-addpath ../script_utils;
-addpath ./gridgen;
-
 
 %MATLAB GRID GENERATION
 xg=makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
@@ -297,8 +297,4 @@ writegrid(xg,outdir,simlabel);
 time=UT*3600;   %doesn't matter for input files
 writedata(dmy,time,ns,vsx1,Ts,outdir,simlabel);
 
-
-%RESET PATH
-rmpath ../script_utils;
-rmpath ./gridgen;
 

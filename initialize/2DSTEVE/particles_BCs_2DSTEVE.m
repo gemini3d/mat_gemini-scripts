@@ -1,6 +1,6 @@
-%addpath ./restore_idl;
-addpath ../../script_utils;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
 direcconfig='./'
@@ -8,8 +8,8 @@ direcgrid='~/zettergmdata/simulations/input/2DSTEVE/'
 
 %CREATE SOME SPACE FOR OUTPUT FILES
 outdir='~/zettergmdata/simulations/input/2DSTEVE_particles/';
-system(['mkdir ',outdir]);
-system(['rm ',outdir,'/*']);
+mkdir([outdir]);
+delete([outdir,'/*']);
 
 
 %{
@@ -178,6 +178,3 @@ end
 save([outdir,'particles.mat'],'mlon','mlat','Qit','E0it','expdate');
 
 
-%RESTORE PATH
-%rmpath ./restore_idl;
-rmpath ../../script_utils;

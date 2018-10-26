@@ -1,3 +1,11 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'setup'])
+addpath([gemini_root, filesep, 'vis'])
+
+
 %RISR PERIODIC KHI RUN
 xdist=40e3;
 ydist=22e3;
@@ -9,15 +17,8 @@ gridflag=0;
 I=90;
 
 
-%ADD PATHS FOR FUNCTIONS
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../setup;
-addpath ../../vis;
-
-
 %RUN THE GRID GENERATION CODE
-if (~exist('xg'))
+if ~exist('xg', 'var')
   xg=makegrid_cart_3D_lowresx1(xdist,lxp,ydist,lyp,I,glat,glon);
 end
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
@@ -46,7 +47,6 @@ direc=ID;
 %LOAD THE FRAME
 [ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend,UTsec0,ymd0,mloc,xgin);
 lsp=size(ns,4);
-rmpath ../vis/
 
 
 %DO THE INTERPOLATION
@@ -91,10 +91,4 @@ writegrid(xg,outdir);
 dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);
 
-
-%RESET PATHS
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../setup;
-rmpath ../../vis;
 

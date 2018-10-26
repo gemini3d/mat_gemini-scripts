@@ -12,20 +12,15 @@ function newdata=interpolate(data,grid,newgrid,exmode,imode)
 %     imode='lin'
 
        switch exmode
-         case 'hold',
-		exflag=0;
-         case 'loglin',
-		exflag=1;
-         case 'lin',
-		exflag=2;
+         case 'hold',	exflag=0;
+         case 'loglin',	exflag=1;
+         case 'lin',	exflag=2;
          otherwise,
            fprintf('\n INTERPOLATE --> exmode not valid!')
        end
        switch imode
-         case 'loglin',
-		inflag=1;      
-         case 'lin',
-		inflag=2;
+         case 'loglin',	inflag=1;      
+         case 'lin',	inflag=2;
          otherwise,
            fprintf('\n INTERPOLATE --> imode not valid!')  
        end

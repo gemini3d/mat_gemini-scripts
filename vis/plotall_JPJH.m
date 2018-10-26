@@ -1,3 +1,8 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'plotfunctions'])
+
 %SIMULATIONS LOCAITONS
 %simname='curvtest_tohoku_medres_2D_electro/';
 %simname='curvtest_tohoku_highres_weak/';
@@ -21,28 +26,23 @@ simname='ARCS_current2/'
 
 %MAKE DIRECTORIES FOR OUTPUT FILES
 %basedir='/Volumes/TravelDisk2/simulations/'
-basedir='~/zettergmdata/simulations/'
+basedir=[gemini_root,'/../simulations/'];
 direc=[basedir,simname];
-system(['mkdir ',direc,'/nplots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/v1plots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/v2plots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/v3plots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/J1plots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/Tiplots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/Teplots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/J2plots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/J3plots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/JPplots']);
-system(['mkdir ',direc,'/JHplots']);
-
-
-%PATH TO PLOTTIN FUNCTIONS AND SHARED SCRIPT UTILITIES
-addpath ./plotfunctions;
-addpath ../script_utils;
+mkdir([direc,'/nplots']);    %store output plots with the simulation data
+mkdir([direc,'/v1plots']);    %store output plots with the simulation data
+mkdir([direc,'/v2plots']);    %store output plots with the simulation data
+mkdir([direc,'/v3plots']);    %store output plots with the simulation data
+mkdir([direc,'/J1plots']);    %store output plots with the simulation data
+mkdir([direc,'/Tiplots']);    %store output plots with the simulation data
+mkdir([direc,'/Teplots']);    %store output plots with the simulation data
+mkdir([direc,'/J2plots']);    %store output plots with the simulation data
+mkdir([direc,'/J3plots']);    %store output plots with the simulation data
+mkdir([direc,'/JPplots']);
+mkdir([direc,'/JHplots']);
 
 
 %%READ IN THE SIMULATION INFORMATION
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.dat']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
 
 
 
@@ -233,9 +233,4 @@ fwrite(fid,JPvec,'real*8');
 fwrite(fid,JHvec,'real*8');
 fwrite(fid,Jfac,'real*8');
 fclose(fid);
-
-
-%CLEAR THE PATHS ADDED
-rmpath ./plotfunctions;
-rmpath ../script_utils;
 

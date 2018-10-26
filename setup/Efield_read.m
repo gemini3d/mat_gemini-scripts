@@ -1,9 +1,11 @@
-addpath ./script_utils;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %OUTPUT FILE LOCATION
-outdir='./fields/';
-system(['mkdir ',outdir]);
+outdir='/fields/';
+mkdir(outdir)
+
 
 
 %READ IN FIELD AND POSITION DATA FROM AMISR HDF5 FILE
@@ -213,6 +215,3 @@ end
 
 %ALSO CREATE A MATLAB OUTPUT FILE FOR GOOD MEASURE
 save([outdir,'fields.mat'],'glon','glat','mlon','mlat','GLAT','GLON','MLAT','MLON','Exit','Eyit','Exgeog','Eygeog','outputdate');
-
-
-rmpath ./script_utils;

@@ -1,3 +1,7 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
 indir='~/zettergmdata/simulations.MAGIC/tohoku/'
 %indir='~/neutral_sims/chile06052017/'
 %indir='~/neutral_sims/2016mooreOK/'
@@ -12,7 +16,7 @@ simlab='strong'
 %outdir=['~/simulations/chile2015_0.5_neutrals/'];
 %outdir='~/simulations/nepal2015_neutrals/'
 outdir='~/zettergmdata/simulations/tohoku_neutrals/'
-system(['mkdir ',outdir]);
+mkdir([outdir]);
 
 %ymd0=[2015,09,16];
 %UTsec0=82473;
@@ -30,9 +34,6 @@ system(['mkdir ',outdir]);
 ymd0=[2011,3,11];
 UTsec0=20783;
 dtneu=2;
-
-%PATHS
-addpath ../script_utils;
 
 
 %LOAD THE DATA FROM AN INPUT SIMULATION
@@ -93,9 +94,4 @@ for it=1:lt
 
     [ymd,UTsec]=dateinc(dtneu,ymd,UTsec);
 end
-
-
-%RESET PATH
-rmpath ../script_utils;
-
 

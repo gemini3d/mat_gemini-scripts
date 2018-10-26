@@ -1,8 +1,14 @@
-%SIMULATIONS LOCAITONS
+function magcalc(simname)
+  
+validateattributes(simname, {'char'}, {'vector'}, mfilename, 'simulation top-level path', 1)
+
+gemini_root = '../../gemini';
+addpath([gemini_root, filesep, 'script_utils'])
+
+%% SIMULATIONS LOCATIONS
 simname='chile20153D/';
-%direc=['~/simulations/',simname];
-direc=['/Volumes/TravelDisk2/simulations/',simname];
-system(['mkdir ',direc,'/magplots']);    %store output plots with the simulation data
+direc=['../../simulations/',simname];
+mkdir([direc,'/magplots'])   %store output plots with the simulation data
 
 
 %UTseconds of the frame of interest
@@ -10,12 +16,8 @@ ymd_TOI=[2015,09,16];
 UTsec_TOI=82923;
 
 
-%ADD PATHS
-addpath ../script_utils;
-
-
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.dat']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
 
 
 %TABULATE THE SOURCE LOCATION
@@ -47,7 +49,6 @@ fprintf('Grid loaded...\n');
 %TIMES OF INTEREST (MEASURED IN SECONDS FROM BEGINNING SIMJULATION DAY START
 times=UTsec_TOI;
 lt=numel(times);
-
 
 
 %NEW SOURCE GRID SIZE
@@ -257,7 +258,7 @@ for it=1:lt
 
 
     %LOOP OVER ***FIELD POINTS*** AND COMPUTE THE MAGNETIC FIELD FOR EACH ONE
-    fprintf('Beginning magnetic field integrations for time step:  %d...\n',it);
+    disp(['Beginning magnetic field integrations for time step:  ',int2str(it)]);
     mu0=4*pi*1e-7;    
     Bx=zeros(lx,ly,lz);
     By=zeros(lx,ly,lz);
@@ -527,6 +528,4 @@ end
 t=datenum(simdate_series);
 save([direc,'/magfields.mat'],'mlat','mlon','t','simdate_series','Brt','Bthetat','Bphit','-v7');
 
-
-%RESET PATHS
-rmpath ../script_utils;
+end % function

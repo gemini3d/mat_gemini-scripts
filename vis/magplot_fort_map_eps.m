@@ -1,18 +1,21 @@
-addpath ../script_utils;
+
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %SIMULATIONS LOCAITONS
 simname='tohoku20113D_highres_var/';
-basedir='~/zettergmdata/simulations/'
+basedir=[gemini_root,'/../simulations/'];
 direc=[basedir,simname];
-system(['mkdir ',direc,'/Brplots']);
-system(['mkdir ',direc,'/Brplots_eps']);
-system(['mkdir ',direc,'/Bthplots']);    
-system(['mkdir ',direc,'/Bthplots_eps']);
-system(['mkdir ',direc,'/Bphiplots']);    
-system(['mkdir ',direc,'/Bphiplots_eps']);
+mkdir([direc,'/Brplots'])
+mkdir([direc,'/Brplots_eps'])
+mkdir([direc,'/Bthplots'])  
+mkdir([direc,'/Bthplots_eps'])
+mkdir([direc,'/Bphiplots'])  
+mkdir([direc,'/Bphiplots_eps'])
 
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.dat']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
 times=UTsec0:dtout:UTsec0+tdur;
 lt=numel(times);
 
@@ -84,7 +87,7 @@ for it=1:lt-1
   simdate_series=cat(1,simdate_series,[ymd(1:3),UTsec/3600,0,0]);
   [ymd,UTsec]=dateinc(dtout,ymd,UTsec);
 end
-fprintf('...Done reading data...\n');
+disp('...Done reading data...')
 
 
 %STORE THE DATA IN A MATLAB FILE FOR LATER USE
@@ -105,7 +108,8 @@ save([direc,'/magfields_fort.mat'],'simdate_series','mlat','mlon','Brt','Bthetat
      param=interp2(mlon,mlat,squeeze(Bphit(:,:,:,it)),MLONP,MLATP);
      Bphitp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
  end
- fprintf('...Done interpolating...\n');
+
+disp('...Done interpolating...')
 
 
 %%PLOT AT NATIVE RESOLUTION
@@ -129,7 +133,7 @@ phidist=mlonsrc*pi/180;
 
 %MAKE THE PLOTS AND SAVE TO A FILE
 for it=1:lt-1
-    fprintf('Printing magnetic field plots...\n');
+    disp('Printing magnetic field plots...')
     figure(1);
     FS=8;
     
@@ -281,5 +285,3 @@ for it=1:lt-1
       print('-depsc2',[direc,'/Bphiplots_eps/','map.eps']);
     end
 end
-
-rmpath ../script_utils;

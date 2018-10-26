@@ -1,9 +1,10 @@
-addpath ../../script_utils;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %OUTPUT FILE LOCATION
-outdir='~/zettergmdata/simulations/input/isinglass_fields_highres/';
-system(['mkdir ',outdir]);
+outdir=[gemini_root, '../simulations/input/isinglass_fields_highres/'];
+mkdir(outdir)
 
 
 %READ IN FIELD AND POSITION DATA FROM AMISR HDF5 FILEA
@@ -224,5 +225,3 @@ end
 %ALSO CREATE A MATLAB OUTPUT FILE FOR GOOD MEASURE
 save([outdir,'fields.mat'],'glon','glat','mlon','mlat','GLAT','GLON','MLAT','MLON','Exit','Eyit','Exgeog','Eygeog','Vm*','outputdate');
 
-
-rmpath ../../script_utils;

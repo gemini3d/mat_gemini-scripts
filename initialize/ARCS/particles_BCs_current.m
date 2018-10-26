@@ -1,6 +1,6 @@
-%addpath ./restore_idl;
-addpath ../../script_utils;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
 direcconfig='./'
@@ -8,8 +8,8 @@ direcgrid='~/zettergmdata/simulations/input/ARCS/'
 
 %CREATE SOME SPACE FOR OUTPUT FILES
 outdir='~/zettergmdata/simulations/input/ARCS_particles/';
-system(['mkdir ',outdir]);
-system(['rm ',outdir,'/*']);
+mkdir(outdir);
+delete([outdir,'/*']);
 
 
 %READ IN THE SIMULATION INFORMATION (MEANS WE NEED TO CREATE THIS FOR THE SIMULATION WE WANT TO DO)
@@ -139,6 +139,3 @@ end
 save([outdir,'particles.mat'],'mlon','mlat','Qit','E0it','expdate');
 
 
-%RESTORE PATH
-%rmpath ./restore_idl;
-rmpath ../../script_utils;

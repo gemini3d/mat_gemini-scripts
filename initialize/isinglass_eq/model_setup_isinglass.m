@@ -1,3 +1,9 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'setup'])
+
 %PFISR LOWRES GRID (CARTESIAN)
 xdist=1200e3;    %eastward distance
 ydist=600e3;    %northward distance
@@ -8,12 +14,6 @@ glon=212.95;
 gridflag=0;
 I=90;
 
-
-
-%ADD PATHS TO SCRIPT UTILS (hopefully this catches the fact that the makegrids need access to geomag conversion functions
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../setup;
 
 
 %MATLAB GRID GENERATION
@@ -41,7 +41,3 @@ time=UT*3600;   %doesn't matter for input files
 writedata(dmy,time,ns,vsx1,Ts,outdir,simlabel);
 
 
-%RESET PATH
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../setup;

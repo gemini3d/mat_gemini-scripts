@@ -2,7 +2,7 @@ indir='~/zettergmdata/simulations.MAGIC/tohoku/'
 loc='';
 simlab='strong'
 outdir='~/zettergmdata/simulations/input/tohoku_neutrals/'
-system(['mkdir ',outdir]);
+mkdir(outdir)
 
 
 %TOHOKU EXAMPLE
@@ -10,8 +10,6 @@ ymd0=[2011,3,11];
 UTsec0=20783;
 dtneu=4;
 
-%PATHS
-addpath ../../script_utils;
 
 
 %LOAD THE DATA FROM AN INPUT SIMULATION
@@ -27,7 +25,7 @@ end
 
 
 %CREATE A SEQUENCE OF BINBARY OUTPUT FILES THAT CONTAIN A FRAME OF DATA EACH
-system(['rm -rf ',outdir,'/*.dat'])
+delete([outdir,'/*.dat'])
 filename=[outdir,'simsize.dat']
 fid=fopen(filename,'w');
 fwrite(fid,lrho,'integer*4');
@@ -69,9 +67,5 @@ for it=1:lt
 
     [ymd,UTsec]=dateinc(dtneu,ymd,UTsec);
 end
-
-
-%RESET PATH
-rmpath ../../script_utils;
 
 

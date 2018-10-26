@@ -1,3 +1,8 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
+
 %SUPER LOWRES
 %{
 dtheta=7.5;
@@ -302,10 +307,6 @@ gridflag=1;
 flagsource=1;
 %}
 
-%ADD PATHS FOR FUNCTIONS
-addpath ../script_utils;
-addpath ./gridgen;
-
 
 %RUN THE GRID GENERATION CODE
 if (~exist('xg'))
@@ -336,7 +337,6 @@ ID='~/zettergmdata/simulations/tohoku_eq/'
 %READ IN THE SIMULATION INFORMATION
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([ID,'/inputs/config.dat']);
 xgin=readgrid(ID);
-addpath ../vis/
 direc=ID;
 
 
@@ -350,7 +350,6 @@ filename=[filename,'.dat']
 
 %LOAD THE FRAME
 loadframe3Dcurv;
-rmpath ../vis/
 
 
 %DO THE INTERPOLATION
@@ -401,10 +400,5 @@ writedata(dmy,UTsecend,nsi,vs1i,Tsi,simid);
 %print -dpng ne.png
 %plotslice3D_curv(UTsec/3600,[3,11,2011],xg,log10(nsi(:,:,:,7)),'log_{10} n_e',[8 13])
 %print -dpng nei.png
-%rmpath ./vis;
 
-
-%RESET PATHS
-rmpath ../script_utils;
-rmpath ./gridgen;
 

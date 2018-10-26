@@ -1,12 +1,14 @@
-%FLIES A VIRTUAL SPACECRAFT THROUGH THE MODEL
+%% FLIES A VIRTUAL SPACECRAFT THROUGH THE MODEL
 % only works with a cartesian grid for now, and I've found that the code will only work in a reasonable amount of time with plaid interpolations...
+%
+% not a function, for now.
 
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %INPUT DATA
-direc='~/zettergmdata/simulations/Aether_discrete'
-
-addpath ../script_utils;
-
+direc=[gemini_root, '/../simulations/Aether_discrete'];
 
 %%READ IN THE SIMULATION INFORMATION
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,filesep,'inputs', filesep, 'config.ini']);
@@ -15,7 +17,7 @@ ymd=ymd0; UTsec=UTsec0;
 
 %CHECK WHETHER WE NEED TO RELOAD THE GRID (WHICH CAN BE TIME CONSUMING)
 if ~exist('xg','var')
-  fprintf('Loading grid...\n');
+  disp('Loading grid...')
   xg = readgrid([direc,filesep,'inputs',filesep]);
   lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
   x1=xg.x1(3:end-2); x2=xg.x2(3:end-2); x3=xg.x3(3:end-2);
@@ -69,8 +71,9 @@ zsp=500e3*ones(lorb,ltoffset);
 
 
 %ATTEMPT TO COMPUTE FOR VARIOUS SPACECRAFT IN PARALLEL
-parpool(floor(lsat/2));
-
+try
+  parpool(floor(lsat/2));
+end
 %THIS IS A BASIC TWO SATELLITE TEST
 %{
 %Individual orbit alt,lon,lat
@@ -210,6 +213,3 @@ for iorb=1:lorb
     v2sat(iorb,:)=v2sattmp(:)';
     v3sat(iorb,:)=v3sattmp(:)';
 end
-
-rmpath ../script_utils;
-

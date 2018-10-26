@@ -1,15 +1,22 @@
-%SIMULATIONS LOCAITONS
+function magcalc(simname)
+  
+validateattributes(simname, {'char'}, {'vector'}, mfilename, 'simulation top-level path', 1)
+
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+
+%% SIMULATIONS LOCATIONS
 %simname='curvtest_tohoku_highres_weak/';
 %simname='curvtest_tohoku_highres_2D/';
-simname='chile20153D/';
+%simname='chile20153D/';
 %simname='mooreOK/';
 %direc=['~/simulations/',simname];
-direc=['/media/data/zettergm/simulations/gemini3D/',simname];
-system(['mkdir ',direc,'/magplots']);    %store output plots with the simulation data
+direc=[gemini_root, filesep,'simulations/',simname];
+mkdir([direc,'/magplots'])   %store output plots with the simulation data
 
 
-%DEFINE A PREAMBLE FILE STRING BASED ON THE DATE OF THE SIMULATION
-%DATE AND FILE STRINGS
+%% DEFINE A PREAMBLE FILE STRING BASED ON THE DATE OF THE SIMULATION DATE AND FILE STRINGS
 %ymd0=[2011,03,11];
 %UTsec0=20783;
 %ymd0=[2015,09,16];
@@ -19,12 +26,8 @@ system(['mkdir ',direc,'/magplots']);    %store output plots with the simulation
 %filedatestr=[num2str(ymd0(1)),num2str(ymd0(2)),num2str(ymd0(3))];
 
 
-%ADD PATHS
-addpath ../script_utils;
-
-
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.dat']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
 
 
 %TABULATE THE SOURCE LOCATION
@@ -229,7 +232,7 @@ for it=1:lt
 
 
     %ROTATE MODEL DATA INTO SPHERICAL COORDINATES
-    fprintf('2D/3D rotations...\n')
+    disp('2D/3D rotations...')
     Jr=J1.*dot(xg.er,xg.e1,4)+J2.*dot(xg.er,xg.e2,4)+J3.*dot(xg.er,xg.e3,4);
     Jtheta=J1.*dot(xg.etheta,xg.e1,4)+J2.*dot(xg.etheta,xg.e2,4)+J3.*dot(xg.etheta,xg.e3,4);
     Jphi=J1.*dot(xg.ephi,xg.e1,4)+J2.*dot(xg.ephi,xg.e2,4)+J3.*dot(xg.ephi,xg.e3,4);
@@ -237,12 +240,12 @@ for it=1:lt
 
     %INTEROPLATE ONTO SOURCE COORDINATES AS PREP FOR INTEGRATIONS
     if (~flag2D)
-      fprintf('3D interpolation onto source coords....\n')
+      disp('3D interpolation onto source coords...')
       JrI=interp3(X2,X1,X3,Jr,PP(:),QP(:),PHIP(:));
       JthetaI=interp3(X2,X1,X3,Jtheta,PP(:),QP(:),PHIP(:));
       JphiI=interp3(X2,X1,X3,Jphi,PP(:),QP(:),PHIP(:));
     else
-      fprintf('2D interpolation onto source coords....\n')
+      disp('2D interpolation onto source coords...')
       JrI=interp2(X2,X1,Jr,PP(:),QP(:));
       JthetaI=interp2(X2,X1,Jtheta,PP(:),QP(:));
       JphiI=interp2(X2,X1,Jphi,PP(:),QP(:));
@@ -287,7 +290,7 @@ for it=1:lt
 
 
     %LOOP OVER ***FIELD POINTS*** AND COMPUTE THE MAGNETIC FIELD FOR EACH ONE
-    fprintf('Beginning magnetic field integrations for time step:  %d...\n',it);
+    disp(['Beginning magnetic field integrations for time step:  ',int2str(it)]);
     mu0=4*pi*1e-7;    
     Bx=zeros(lx,ly,lz);
     By=zeros(lx,ly,lz);
@@ -557,6 +560,4 @@ end
 t=datenum(simdate_series);
 save([direc,'/magfields.mat'],'mlat','mlon','t','simdate_series','Brt','Bthetat','Bphit','-v7');
 
-
-%RESET PATHS
-rmpath ../script_utils;
+end % function

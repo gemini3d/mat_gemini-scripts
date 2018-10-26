@@ -174,10 +174,3 @@ ylabel('\bf y [km]');
 h = title(['\bf z = ',num2str(exam_alt(1),'%d'),' km'],'position',[250 1050]);
 hold off;
 
-
-
-
-
-
-
-

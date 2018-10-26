@@ -1,11 +1,13 @@
-addpath ../script_utils;
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %SIMULATIONS LOCAITONS
 simname='tohoku20113D_highres_long/';
-basedir='~/zettergmdata/simulations/'
+basedir=[gemini_root,'/../simulations/'];
 direc=[basedir,simname];
-system(['mkdir ',direc,'/TECplots']);    %store output plots with the simulation data
-system(['mkdir ',direc,'/TECplots_eps']);    %store output plots with the simulation data
+mkdir([direc,'/TECplots']);    %store output plots with the simulation data
+mkdir([direc,'/TECplots_eps']);    %store output plots with the simulation data
 
 
 %LOAD THE COMPUTED MAGNETIC FIELD DATA
@@ -16,7 +18,7 @@ mlon=mlong;
 
 
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.dat']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
 
 
 %TABULATE THE SOURCE LOCATION
@@ -98,5 +100,3 @@ for it=1:lt
       print('-depsc2',[direc,'/TECplots_eps/','map.eps']);
     end
 end
-
-rmpath ../script_utils;

@@ -1,3 +1,10 @@
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'setup/gridgen'])
+addpath([gemini_root, filesep, 'setup'])
+addpath([gemini_root, filesep, 'vis'])
+
 %PFISR LOWRES GRID (CARTESIAN)
 xdist=500e3;    %eastward distance
 ydist=250e3;    %northward distance
@@ -7,14 +14,6 @@ glat=67.11;
 glon=212.95;
 gridflag=0;
 I=90;
-
-
-%ADD PATHS FOR FUNCTIONS
-addpath ../../script_utils;
-addpath ../../setup/gridgen;
-addpath ../../setup;
-addpath ../../vis;
-
 
 %RUN THE GRID GENERATION CODE
 if (~exist('xg'))
@@ -46,8 +45,6 @@ direc=ID;
 %LOAD THE FRAME
 [ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend, UTsec0,ymd0, mloc,xgin);
 lsp=size(ns,4);
-rmpath ../vis/
-
 
 %DO THE INTERPOLATION
 if (lx3~=1)
@@ -100,10 +97,4 @@ writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);
 %print -dpng nei.png
 %rmpath ./vis;
 
-
-%RESET PATHS
-rmpath ../../script_utils;
-rmpath ../../setup/gridgen;
-rmpath ../../setup;
-rmpath ../../vis;
 

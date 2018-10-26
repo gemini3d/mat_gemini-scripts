@@ -1,5 +1,6 @@
-addpath ../../script_utils;
-
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../gemini'];
+addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
 direcconfig='./'
@@ -8,7 +9,7 @@ direcgrid='~/zettergmdata/simulations/input/GDI_periodic_highres_fileinput/'
 
 %OUTPUT FILE LOCATION
 outdir='~/zettergmdata/simulations/input/GDI_fields/';
-system(['mkdir ',outdir]);
+mkdir(outdir);
 
 
 %READ IN THE SIMULATION INFORMATION (MEANS WE NEED TO CREATE THIS FOR THE SIMULATION WE WANT TO DO)
@@ -144,5 +145,3 @@ end
 %ALSO CREATE A MATLAB OUTPUT FILE FOR GOOD MEASURE
 save([outdir,'fields.mat'],'mlon','mlat','MLAT','MLON','Exit','Eyit','Vminx*','Vmax*','expdate');
 
-
-rmpath ../../script_utils;
