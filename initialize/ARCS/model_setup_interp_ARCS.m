@@ -1,19 +1,19 @@
  cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
+gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'setup/gridgen'])
 addpath([gemini_root, filesep, 'setup'])
 addpath([gemini_root, filesep, 'vis'])
- 
- %PFISR LOWRES GRID (CARTESIAN)
- xdist=500e3;    %eastward distance
- ydist=100e3;    %northward distance
- lxp=384/2;
- lyp=512/2;
- glat=67.11;
- glon=212.95;
- gridflag=0;
- I=90;
+
+%PFISR-CENTERED GRID (CARTESIAN)
+xdist=2000e3;    %eastward distance
+ydist=500e3;    %northward distance
+lxp=256;
+lyp=576;
+glat=67.11;
+glon=212.95;
+gridflag=0;
+I=90;
 
 
 %RUN THE GRID GENERATION CODE
@@ -29,11 +29,11 @@ simid='ARCS'
 
 %ALTERNATIVELY WE MAY WANT TO READ IN AN EXISTING OUTPUT FILE AND DO SOME INTERPOLATION ONTO A NEW GRID
 fprintf('Reading in source file...\n');
-ID='~/zettergmdata/simulations/ARCS_eq/'
+ID='~/zettergmdata/simulations/ARCS_large_eq/'
 
 
 %READ IN THE SIMULATION INFORMATION
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([ID,'/inputs/config.dat']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([ID,'/inputs/config.ini']);
 xgin=readgrid([ID,'/inputs/']);
 addpath ../vis/
 direc=ID;

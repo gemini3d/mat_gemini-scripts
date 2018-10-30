@@ -1,5 +1,5 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
+gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 direcconfig='./'
@@ -101,7 +101,7 @@ Vmaxx3ist=zeros(llon,lt);
 %Etarg=50e-3;            % target E value in V/m
 %pk=Etarg*sigx2.*xg.h2(lx1,floor(lx2/2),1).*sqrt(pi)./2;
 %x2ctr=1/2*(xg.x2(lx2)+xg.x2(1));
-Jpk=20e-6;
+Jpk=10e-6;
 mlonsig=4;
 mlatsig=0.05;
 for it=1:lt

@@ -1,5 +1,5 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
+gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 direcconfig='./'
@@ -101,14 +101,18 @@ Vmaxx3ist=zeros(llon,lt);
 %Etarg=50e-3;            % target E value in V/m
 %pk=Etarg*sigx2.*xg.h2(lx1,floor(lx2/2),1).*sqrt(pi)./2;
 %x2ctr=1/2*(xg.x2(lx2)+xg.x2(1));
-Jpk=10e-6;
-mlonsig=4;
-mlatsig=0.05;
+Jpk=2e-6;
+mlonsig=2.5;
+mlatsig=0.15;
 for it=1:lt
     %ZEROS TOP CURRENT AND X3 BOUNDARIES DON'T MATTER SINCE PERIODIC
     Vminx1it(:,:,it)=zeros(llon,llat);
-    Vmaxx1it(:,:,it)=Jpk.*exp(-(MLON-mlonmean).^8/2/mlonsig^8).*exp(-(MLAT-mlatmean-1.5*mlatsig).^2/2/mlatsig^2);
-    Vmaxx1it(:,:,it)=Vmaxx1it(:,:,it)-Jpk.*exp(-(MLON-mlonmean).^8/2/mlonsig^8).*exp(-(MLAT-mlatmean+1.5*mlatsig).^2/2/mlatsig^2);
+    if (it>2)
+      Vmaxx1it(:,:,it)=Jpk.*exp(-(MLON-mlonmean).^8/2/mlonsig^8).*exp(-(MLAT-mlatmean-1.5*mlatsig).^2/2/mlatsig^2);
+      Vmaxx1it(:,:,it)=Vmaxx1it(:,:,it)-Jpk.*exp(-(MLON-mlonmean).^8/2/mlonsig^8).*exp(-(MLAT-mlatmean+1.5*mlatsig).^2/2/mlatsig^2);
+    else
+      Vmaxx1it(:,:,it)=zeros(llon,llat);
+    end
     Vminx2ist(:,it)=zeros(llat,1);     %these are just slices
     Vmaxx2ist(:,it)=zeros(llat,1);
     Vminx3ist(:,it)=zeros(llon,1);

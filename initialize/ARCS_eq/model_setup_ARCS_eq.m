@@ -1,13 +1,15 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
+gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'setup/gridgen'])
 addpath([gemini_root, filesep, 'setup'])
 
 
 %EXAMPLE FOR KRISTINA MIDEX MISSION
-xdist=750e3;    %eastward distance
-ydist=200e3;    %northward distance
+%xdist=750e3;    %eastward distance
+%ydist=200e3;    %northward distance
+xdist=3000e3;
+ydist=1000e3;
 lxp=20;
 lyp=20;
 glat=67.11;
@@ -36,6 +38,7 @@ nme=2e11;
 %WRITE THE GRID AND INITIAL CONDITIONS
 outdir='~/zettergmdata/simulations/input/'
 simlabel='ARCS_eq'
+outdir=[outdir,simlabel,filesep];
 writegrid(xg,outdir);
 time=UT*3600;   %doesn't matter for input files
 writedata(dmy,time,ns,vsx1,Ts,outdir,simlabel);

@@ -1,5 +1,5 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
+gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
@@ -98,7 +98,7 @@ E0it=zeros(llon,llat,lt);
 mlonsig=4;
 mlatsig=0.05;
 
-Qpk=25;
+Qpk=50;
 E0pk=10e3;
 for it=1:lt
   shapefn=exp(-(MLON-mlonmean).^8/2/mlonsig^8).*exp(-(MLAT-mlatmean-1.5*mlatsig).^2/2/mlatsig^2);

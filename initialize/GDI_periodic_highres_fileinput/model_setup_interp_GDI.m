@@ -1,9 +1,9 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
-addpath([gemini_root, filesep, 'setup/gridgen'])
-addpath([gemini_root, filesep, 'setup'])
-addpath([gemini_root, filesep, 'vis'])
+GEMINI_root = [cwd, filesep, '../../../GEMINI'];
+addpath([GEMINI_root, filesep, 'script_utils'])
+addpath([GEMINI_root, filesep, 'setup/gridgen'])
+addpath([GEMINI_root, filesep, 'setup'])
+addpath([GEMINI_root, filesep, 'vis'])
 
 %RISR PERIODIC GDI RUN (HIGHRES)
 xdist=200e3;

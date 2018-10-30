@@ -1,5 +1,5 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
+gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
@@ -95,8 +95,8 @@ t=datenum(expdate);
 Qit=zeros(llon,llat,lt);
 E0it=zeros(llon,llat,lt);
 
-mlonsig=4;
-mlatsig=0.05;
+mlonsig=2.5;
+mlatsig=0.15;
 
 Qpk=3;
 E0pk=5e3;

@@ -4,11 +4,12 @@
 % not a function, for now.
 
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
+gemini_root = [cwd,filesep,'../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'vis'])
 
 %INPUT DATA
-direc=[gemini_root, '/../simulations/Aether_discrete'];
+direc=[gemini_root, '/../simulations/Aether_discrete_50mWm2/'];
 
 %%READ IN THE SIMULATION INFORMATION
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,filesep,'inputs', filesep, 'config.ini']);
@@ -66,7 +67,7 @@ for itoffset=1:ltoffset
   ysp(:,itoffset)=ysp0+vsp*((datesat-datesat(1))*86400-toffset(itoffset));
 end
 xsp=zeros(lorb,ltoffset);
-zsp=500e3*ones(lorb,ltoffset);
+zsp=400e3*ones(lorb,ltoffset);
 [altsat,glonsat,glatsat]=UEN2geog(zsp,xsp,ysp,thetactr,phictr);
 
 
