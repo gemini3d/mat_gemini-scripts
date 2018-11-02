@@ -95,13 +95,13 @@ t=datenum(expdate);
 Qit=zeros(llon,llat,lt);
 E0it=zeros(llon,llat,lt);
 
-mlonsig=2.5;
+mlonsig=20;
 mlatsig=0.15;
 
 Qpk=3;
 E0pk=5e3;
 for it=1:lt
-  shapefn=exp(-(MLON-mlonmean).^8/2/mlonsig^8).*exp(-(MLAT-mlatmean-1.5*mlatsig).^2/2/mlatsig^2);
+  shapefn=exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean-1.5*mlatsig).^2/2/mlatsig^2);
   Qittmp=Qpk.*shapefn;
   E0it(:,:,it)=5e3;%*ones(llon,llat);     %eV
   inds=find(Qittmp<1);    %define a background flux (enforces a floor for production rates)

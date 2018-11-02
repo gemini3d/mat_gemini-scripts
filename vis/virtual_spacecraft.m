@@ -9,7 +9,9 @@ addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'vis'])
 
 %INPUT DATA
-direc=[gemini_root, '/../simulations/Aether_discrete_50mWm2/'];
+%direc=[gemini_root, '/../simulations/Aether_discrete_50mWm2/'];
+direc=[gemini_root, '/../simulations/ARCS_large/'];
+
 
 %%READ IN THE SIMULATION INFORMATION
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,filesep,'inputs', filesep, 'config.ini']);
@@ -47,7 +49,7 @@ lt=numel(times);
 datemod0=datenum([ymd0,UTsec0/3600,0,0]);
 datemod=datemod0:dtout/86400:datemod0+tdur/86400;
 
-
+%{
 %DEFINE SOME SORT OF SATELLITE ORB.
 %Use a common time bases for all satellites (facilitates processes without having to reread files too much)
 lorb=3000;    %number of times series for satellite orbit
@@ -55,7 +57,9 @@ UTsat=linspace(min(times),max(times),lorb);
 ymdsat=repmat(ymd0,[lorb,1]);
 datevecsat=[ymdsat,UTsat(:)/3600,zeros(lorb,1),zeros(lorb,1)];
 datesat=datenum(datevecsat);
+%}
 
+%{
 %THIS IS A TEST FOR AETHER
 vsp=7e3;                %spacecraft velocity
 toffset=linspace(0,180,12);      %spacecraft separations in seconds
@@ -69,6 +73,14 @@ end
 xsp=zeros(lorb,ltoffset);
 zsp=400e3*ones(lorb,ltoffset);
 [altsat,glonsat,glatsat]=UEN2geog(zsp,xsp,ysp,thetactr,phictr);
+%}
+
+load ~/articles/ARCS/orbits_v1.mat;
+[lorb,lsat]=size(altsat);
+UTsat=UTsec0+tsat;
+ymdsat=repmat(ymd0,[lorb,1]);
+datevecsat=[ymdsat,UTsat(:)/3600,zeros(lorb,1),zeros(lorb,1)];
+datesat=datenum(datevecsat);
 
 
 %ATTEMPT TO COMPUTE FOR VARIOUS SPACECRAFT IN PARALLEL
