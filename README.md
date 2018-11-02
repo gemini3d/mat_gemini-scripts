@@ -62,20 +62,29 @@ Several different examples are included with the source code; although initial c
 
 The examples are labeled:
 
+* 2DSTEVE - an attempt to model STEVE aurora in 2D using inputs that vaguely resemble data from the nature paper.  
+* ARCS - a test case that included a 3D discrete arc
 * ARCS_eq - an equilibrium (eq) simulation that generates initial conditions (ICs) for the ARCS simulation described below.
-* ISINGLASS_eq - an equilibrium simulation generating ICs for the ISINGLASS simulation
-* tohoku20113D_eq - eq simulation for 3D Tohoku earthquake simulations
-* tohoku20112D_eq - eq simulation for 2D Tohoku earthquake simulations
+* Aether - a set of example simulations of a cusp and discrete aurora.  There are two sets of files for setting the boundary conditions for the cusp and discrete arc cases, respectively.  
+* isinglass - example from Guy's 2017 AGU talk showing our attempt to model the ionosphere during the isinglass launch using 2D PFISR vvels and Guy's inversions as input.  
 * RISR_eq - eq simulation for the GDI and KHI examples described below (location:  Resolute Bay ISR)
+* isinglass_clayton - pre isinglass event used in Rob Clayton's paper
+* isinlgass_clayton_flight - Rob's isinglass example
+* isinglass_eq - an equilibrium simulation generating ICs for the ISINGLASS simulation
+* nepal20152D_highres - A high resolution simulation in 2D for the 2015 Nepal earthquake; use by Paul Inchin in his paper
 * nepal20152D_eq - eq simulation for the 2D nepal earthquake simulation
-* 2Dtest_eq - eq simulation for 2D test case that can be run quickly to verify the code is working correctly.
+* tohoku20113D_eq - eq simulation for 2D Tohoku earthquake simulations
+* tohoku20112D_highres - simulation of 2011 Tohoku earthquake ionospheric effects (require MAGIC input data)
+* tohoku20113D_eq - eq simulation for 3D Tohoku earthquake simulation
 * tohoku20113D_medres - A medium resolution simulation in 3D of the 2011 Tohoku earthquake.
-* nepal20152D_highres - A high resolution simulation in 2D for the 2015 Nepal earthquake.
-* tohoku20112D_highres - A 2D, high resolution simulation for the 2011 Tohoku earthquake.
-* ARCS -
-* ISINGLASS - an example using model input derived from observations from the ISINGLASS sounding rocket campaign.  This example illustrates how to drive the model with data inputs.
+* tohoku20113D_medres_control - a background (control) simulation for the medium resolution tohoku example.  
+* tohoku20113D_highres - High resolution tohoku simulation
+* tohoku20113D_highres_control - A control (no perturbation) run for tohoku (needed to detrend TEC)
+* tohoku20113D_highres_restart - an exmaple showing how a simulation can be restarted (under construction)
+* tohoku20113D_highres_var - the tohoku simulation on a variable spacing grid
 * GDI_periodic_medres_fileinput - a simulation of gradient-drift instability illustrating the use of a periodic mesh
+* GDI_periodic_highres_fileinput - a highres GDI example
+* GDI_periodic_highres_fileinput_large - a highres GDI example on a larger domain.  This one takes about a week to run on 256 cores.
 * KHI_periodic_highres_fileinput - a simulation of Kelvin-Helmholtz instability illustration periodic meshes and use of polarization current solver
-* 2Dtest - a quick to run (3 minutes on quadcore) example for testing whether the code compiled and runs properly.
 
 A fair bit of testing has been done on these, but there could still be problems so contact a developer if you are having issues with the examples.
