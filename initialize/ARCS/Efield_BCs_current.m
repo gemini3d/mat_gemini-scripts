@@ -102,7 +102,7 @@ Vmaxx3ist=zeros(llon,lt);
 %pk=Etarg*sigx2.*xg.h2(lx1,floor(lx2/2),1).*sqrt(pi)./2;
 %x2ctr=1/2*(xg.x2(lx2)+xg.x2(1));
 Jpk=8e-6;
-mlonsig=20;
+mlonsig=10;
 mlatsig=0.15;
 for it=1:lt
     %ZEROS TOP CURRENT AND X3 BOUNDARIES DON'T MATTER SINCE PERIODIC
