@@ -10,7 +10,7 @@ addpath([gemini_root, filesep, 'vis'])
 
 %INPUT DATA
 %direc=[gemini_root, '/../simulations/Aether_discrete_50mWm2/'];
-direc=[gemini_root, '/../simulations/ARCS_large/'];
+direc=[gemini_root, '/../simulations/ARCS_large_intense/'];
 
 
 %%READ IN THE SIMULATION INFORMATION
@@ -75,7 +75,8 @@ zsp=400e3*ones(lorb,ltoffset);
 [altsat,glonsat,glatsat]=UEN2geog(zsp,xsp,ysp,thetactr,phictr);
 %}
 
-load ~/articles/ARCS/orbits_v1.mat;
+%load ~/articles/ARCS/orbits_v1.mat;
+load ~/articles/ARCS/orbits.mat;
 [lorb,lsat]=size(altsat);
 UTsat=UTsec0+tsat;
 ymdsat=repmat(ymd0,[lorb,1]);
@@ -161,7 +162,7 @@ for iorb=1:lorb
       ymd=datevecmodprev(1:3);
       UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
       UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
-      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsec,ymd,UTsec0,ymd0,mloc,xg);
+      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xg);
       neprev=ne; viprev=v1; Tiprev=Ti; Teprev=Te;
       J1prev=J1; J2prev=J2; J3prev=J3; v2prev=v2; v3prev=v3;
       clear ne v1 Ti Te J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
@@ -173,7 +174,7 @@ for iorb=1:lorb
       ymd=datevecmodnext(1:3);
       UTsec=datevecmodnext(4)*3600+datevecmodnext(5)*60+datevecmodnext(6);
       UTsec=round(UTsec);
-      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsec,ymd,UTsec0,ymd0,mloc,xg);
+      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xg);
       nenext=ne; vinext=v1; Tinext=Ti; Tenext=Te;
       J1next=J1; J2next=J2; J3next=J3; v2next=v2; v3next=v3;
       clear ne v1 Ti T3 J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
