@@ -3,6 +3,8 @@ gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'setup/gridgen'])
 addpath([gemini_root, filesep, 'setup'])
+addpath([gemini_root, filesep, 'vis'])
+
 
 %LOWRES 2D EXAMPLE FOR TESTING
 xdist=200e3;    %eastward distance
@@ -33,7 +35,7 @@ simid='2DSTEVE'
 
 %ALTERNATIVELY WE MAY WANT TO READ IN AN EXISTING OUTPUT FILE AND DO SOME INTERPOLATION ONTO A NEW GRID
 fprintf('Reading in source file...\n');
-ID='~/zettergmdata/simulations/2Dtest_eq/'
+ID='../../../simulations/2Dtest_eq/'
 
 
 %READ IN THE SIMULATION INFORMATION
@@ -47,7 +49,8 @@ direc=ID;
 
 
 %LOAD THE FRAME
-[ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend,UTsec0,ymd0, mloc,xgin);
+%[ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend,UTsec0,ymd0,mloc,xgin);
+[ne,mlatsrc,mlonsrc,xgin,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymdend,UTsecend,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xgin);
 lsp=size(ns,4);
 
 
@@ -88,7 +91,10 @@ end
 
 
 %WRITE OUT THE GRID
-outdir='~/zettergmdata/simulations/input/2DSTEVE/';
+outdir='../../../simulations/input/2DSTEVE/';
+if (~(exist(outdir,'dir')==7))
+  mkdir(outdir);
+end
 writegrid(xg,outdir);    %just put it in pwd for now
 dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);
