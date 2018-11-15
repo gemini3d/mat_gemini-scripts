@@ -8,8 +8,8 @@ addpath([gemini_root, filesep, 'setup'])
 %MOORE, OK GRID (FULL)
 dtheta=25;
 dphi=35;
-lp=250;
-lq=425;
+lp=125;
+lq=200;
 lphi=40;
 altmin=80e3;
 glat=39;
