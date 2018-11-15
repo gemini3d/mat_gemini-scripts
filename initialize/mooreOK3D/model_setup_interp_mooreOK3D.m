@@ -9,9 +9,9 @@ addpath([gemini_root, filesep, 'vis'])
 %MOORE, OK GRID (FULL)
 dtheta=25;
 dphi=35;
-lp=125;
-lq=200;
-lphi=40;
+lp=275;
+lq=400;
+lphi=256;
 altmin=80e3;
 glat=39;
 glon=262.51;
@@ -25,6 +25,5 @@ end
 
 
 eqdir='../../../simulations/mooreOK3D_eq/';
-distdir='../../../simulations/mooreOK3D/';
 simID='mooreOK3D';
-[nsi,vs1i,Tsi,xgin,ns,vs1,Ts]=eq2dist(eqdir,distdir,simID,xg);
+[nsi,vs1i,Tsi,xgin,ns,vs1,Ts]=eq2dist(eqdir,simID,xg);
