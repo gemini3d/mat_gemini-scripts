@@ -3,12 +3,12 @@ gemini_root = [cwd,filesep,'../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 %OUTPUT FILE LOCATION
-outdir=[gemini_root, '../simulations/input/isinglass_fields_highres/'];
+outdir=[gemini_root,filesep,'../simulations/input/isinglass_fields_grubbs/'];
 mkdir(outdir)
 
 
 %READ IN FIELD AND POSITION DATA FROM AMISR HDF5 FILEA
-datapath='~/ISINGLASS/AGU2017/'
+datapath='~/articles/ISINGLASS/AGU2017/'
 Exgeog=cast(hdf5read([datapath,'20170302.002_lp_1min-cal_2dVEF_001001_NoLonely-geo.h5'],'Fit2D/Ex_geo'),'double');
 Eygeog=cast(hdf5read([datapath,'20170302.002_lp_1min-cal_2dVEF_001001_NoLonely-geo.h5'],'Fit2D/Ey_geo'),'double');
 Exgeomagdat=cast(hdf5read([datapath,'20170302.002_lp_1min-cal_2dVEF_001001_NoLonely-geo.h5'],'Fit2D/Ex'),'double');

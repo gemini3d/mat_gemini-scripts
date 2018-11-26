@@ -8,8 +8,10 @@ addpath([gemini_root, filesep, 'vis'])
 %PFISR LOWRES GRID (CARTESIAN)
 xdist=500e3;    %eastward distance
 ydist=250e3;    %northward distance
-lxp=256;
-lyp=256;
+%lxp=256;
+%lyp=256;
+lxp=128;
+lyp=128;
 glat=67.11;
 glon=212.95;
 gridflag=0;
@@ -43,8 +45,9 @@ direc=ID;
 
 
 %LOAD THE FRAME
-[ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend, UTsec0,ymd0, mloc,xgin);
+[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymdend,UTsecend,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xg);
 lsp=size(ns,4);
+
 
 %DO THE INTERPOLATION
 if (lx3~=1)
