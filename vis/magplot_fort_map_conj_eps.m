@@ -23,7 +23,7 @@ lt=numel(times);
 
 
 %LOAD/CONSTRUCT THE FIELD POINT GRID
-basemagdir=[direc,'/magfields.10x10.corrected/']
+basemagdir=[direc,'/magfields.hemis.corrected/']
 fid=fopen([basemagdir,'/input/magfieldpoints.dat'],'r');    %needs some way to know what the input file is, maybe force fortran code to use this filename...
 lpoints=fread(fid,1,'integer*4');
 r=fread(fid,lpoints,'real*8');
@@ -33,7 +33,7 @@ fclose(fid);
 
 
 %REORGANIZE THE FIELD POINTS (PROBLEM-SPECIFIC)
-ltheta=40;
+ltheta=80;
 lphi=40;
 r=reshape(r(:),[ltheta,lphi]);
 theta=reshape(theta(:),[ltheta,lphi]);
@@ -94,11 +94,20 @@ disp('...Done reading data...')
 save([direc,'/magfields_fort.mat'],'simdate_series','mlat','mlon','Brt','Bthetat','Bphit');
 
 
+%TABULATE THE SOURCE LOCATION
+mlatsrc=mloc(1);
+mlonsrc=mloc(2);
+thdist=pi/2-mlatsrc*pi/180;    %zenith angle of source location
+phidist=mlonsrc*pi/180;
+
+
 %INTERPOLATE TO HIGHER SPATIAL RESOLUTION FOR PLOTTING
 llonp=200;
 llatp=200;
-mlonp=linspace(min(mlon(:)),max(mlon(:)),llonp);
-mlatp=linspace(min(mlat(:)),max(mlat(:)),llatp);
+%mlonp=linspace(min(mlon(:)),max(mlon(:)),llonp);
+%mlatp=linspace(min(mlat(:)),max(mlat(:)),llatp);
+mlonp=linspace(mlonsrc-5,mlonsrc+5,llonp);
+mlatp=linspace(-1*(mlatsrc+5),-1*mlatsrc+5,llatp);
 [MLONP,MLATP]=meshgrid(mlonp,mlatp);
 for it=1:lt
     param=interp2(mlon,mlat,squeeze(Brt(:,:,:,it)),MLONP,MLATP);
@@ -109,13 +118,6 @@ for it=1:lt
     Bphitp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
 end
 disp('...Done interpolating...')
-
-
-%TABULATE THE SOURCE LOCATION
-mlatsrc=mloc(1);
-mlonsrc=mloc(2);
-thdist=pi/2-mlatsrc*pi/180;    %zenith angle of source location
-phidist=mlonsrc*pi/180;
 
 
 %MAKE THE PLOTS AND SAVE TO A FILE
@@ -133,8 +135,10 @@ for it=1:lt-1
     
     figure(1);
     clf;
-    mlatlimplot=[min(mlat)-0.5,max(mlat)+0.5];
-    mlonlimplot=[min(mlon)-0.5,max(mlon)+0.5];
+%    mlatlimplot=[min(mlat)-0.5,max(mlat)+0.5];
+%    mlonlimplot=[min(mlon)-0.5,max(mlon)+0.5];
+    mlatlimplot=[min(mlatp)-0.5,max(mlatp)+0.5];
+    mlonlimplot=[min(mlonp)-0.5,max(mlonp)+0.5];
 %    axesm('MapProjection','Mercator','MapLatLimit',mlatlimplot,'MapLonLimit',mlonlimplot);
     param=squeeze(Brtp(:,:,:,it))*1e9;
     mlatlim=[min(mlatp),max(mlatp)];
