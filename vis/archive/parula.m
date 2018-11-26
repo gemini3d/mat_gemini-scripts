@@ -3,7 +3,7 @@ function cm_data=parula(m)
 % parula(M) returns an M-by-3 matrix containing a colormap. 
 
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,'/../../gemini'];
+gemini_root = [cwd,'/../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 if ~isoctave

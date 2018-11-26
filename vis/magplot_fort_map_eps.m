@@ -1,7 +1,8 @@
-
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
+gemini_root = [cwd,filesep,'..',filesep,'..',filesep,'GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'vis'])
+
 
 %SIMULATIONS LOCAITONS
 simname='tohoku20113D_highres_var/';
@@ -14,6 +15,7 @@ mkdir([direc,'/Bthplots_eps'])
 mkdir([direc,'/Bphiplots'])  
 mkdir([direc,'/Bphiplots_eps'])
 
+
 %SIMULATION META-DATA
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
 times=UTsec0:dtout:UTsec0+tdur;
@@ -21,7 +23,7 @@ lt=numel(times);
 
 
 %LOAD/CONSTRUCT THE FIELD POINT GRID
-basemagdir=[direc,'/magfields.hemis/']
+basemagdir=[direc,'/magfields.10x10.corrected/']
 fid=fopen([basemagdir,'/input/magfieldpoints.dat'],'r');    %needs some way to know what the input file is, maybe force fortran code to use this filename...
 lpoints=fread(fid,1,'integer*4');
 r=fread(fid,lpoints,'real*8');
@@ -31,17 +33,15 @@ fclose(fid);
 
 
 %REORGANIZE THE FIELD POINTS (PROBLEM-SPECIFIC)
-ltheta=80;
+ltheta=40;
 lphi=40;
 r=reshape(r(:),[ltheta,lphi]);
 theta=reshape(theta(:),[ltheta,lphi]);
 phi=reshape(phi(:),[ltheta,lphi]);
 mlat=90-theta*180/pi;
-%mlat=permute(mlat,[2,1]);    %can't figure out why this is necessary...
 [tmp,ilatsort]=sort(mlat(:,1));    %mlat runs against theta...
 mlat=mlat(ilatsort,1);
 mlon=phi*180/pi;
-%mlon=permute(mlon,[2,1]);
 [tmp,ilonsort]=sort(mlon(1,:));
 mlon=mlon(1,ilonsort);
 
@@ -94,31 +94,23 @@ disp('...Done reading data...')
 save([direc,'/magfields_fort.mat'],'simdate_series','mlat','mlon','Brt','Bthetat','Bphit');
 
 
- %INTERPOLATE TO HIGHER SPATIAL RESOLUTION FOR PLOTTING
- llonp=200;
- llatp=200;
- mlonp=linspace(min(mlon(:)),max(mlon(:)),llonp);
- mlatp=linspace(min(mlat(:)),max(mlat(:)),llatp);
- [MLONP,MLATP]=meshgrid(mlonp,mlatp);
- for it=1:lt
-     param=interp2(mlon,mlat,squeeze(Brt(:,:,:,it)),MLONP,MLATP);
-     Brtp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
-     param=interp2(mlon,mlat,squeeze(Bthetat(:,:,:,it)),MLONP,MLATP);
-     Bthetatp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
-     param=interp2(mlon,mlat,squeeze(Bphit(:,:,:,it)),MLONP,MLATP);
-     Bphitp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
- end
+%INTERPOLATE TO HIGHER SPATIAL RESOLUTION FOR PLOTTING
+llonp=200;
+llatp=200;
+mlonp=linspace(min(mlon(:)),max(mlon(:)),llonp);
+mlatp=linspace(min(mlat(:)),max(mlat(:)),llatp);
+[MLONP,MLATP]=meshgrid(mlonp,mlatp);
+for it=1:lt
+    param=interp2(mlon,mlat,squeeze(Brt(:,:,:,it)),MLONP,MLATP);
+    Brtp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
+    param=interp2(mlon,mlat,squeeze(Bthetat(:,:,:,it)),MLONP,MLATP);
+    Bthetatp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
+    param=interp2(mlon,mlat,squeeze(Bphit(:,:,:,it)),MLONP,MLATP);
+    Bphitp(:,:,:,it)=reshape(param,[1, llonp, llatp]);
+end
 
 disp('...Done interpolating...')
 
-
-%%PLOT AT NATIVE RESOLUTION
-%Brtp=Brt;
-%Bthetatp=Bthetat;
-%Bphitp=Bphit;
-%mlonp=mlon;
-%mlatp=mlat;
-%
 
 %SIMULATION META-DATA
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.dat']);
