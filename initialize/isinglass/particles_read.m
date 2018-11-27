@@ -67,10 +67,10 @@ if (~exist('Qdat','var'))
 %    glat=lat;
 %    glon=lon;
 %    gloncorrected=glon+360;    %for interpolations which won't understand periodic coordinate
-%GEOGRAPHIC AND MAGNETIC POSITIONS OF DATA
-glat=lat;
-glon=lon;
-gloncorrected=glon+360;    %for interpolations which won't understand periodic coordinate
+    %GEOGRAPHIC AND MAGNETIC POSITIONS OF DATA
+    glat=lat;
+    glon=lon;
+    gloncorrected=glon+360;    %for interpolations which won't understand periodic coordinate
 
     [gloncorrected,isort]=sort(gloncorrected);    %to insure that the longitude coordinate runs in the right direction
     Qdat=Qdat(:,isort,:);
@@ -87,6 +87,11 @@ gloncorrected=glon+360;    %for interpolations which won't understand periodic c
             phidat(ilon,ilat)=phitmp;
         end
     end
+
+
+    %COMPUTE MAGNETIC LATITUDE AND LONGITUDE OF DATA
+    mlat=90-thetadat*180/pi;
+    mlon=phidat*180/pi;
 end
 
 
