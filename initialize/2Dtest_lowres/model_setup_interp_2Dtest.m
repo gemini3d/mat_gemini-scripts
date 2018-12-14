@@ -25,5 +25,5 @@ end
 eqdir='../../../simulations/2Dtest_lowres_eq/';
 distdir='../../../simulations/input/2Dtest_lowres/';
 simID='2Dtest_lowres';
-[nsi,vs1i,Tsi,xgin,ns,vs1,Ts]=eq2dist(eqdir,distdir,simID,xg);
+[nsi,vs1i,Tsi,xgin,ns,vs1,Ts]=eq2dist(eqdir,simID,xg);
 
