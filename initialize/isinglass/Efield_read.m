@@ -8,7 +8,7 @@ mkdir(outdir)
 
 
 %READ IN FIELD AND POSITION DATA FROM AMISR HDF5 FILEA
-datapath='~/articles/ISINGLASS/AGU2017/'
+datapath='~/Dropbox/common/mypapers/ISINGLASS/Grubbs/'
 Exgeog=cast(hdf5read([datapath,'20170302.002_lp_1min-cal_2dVEF_001001_NoLonely-geo.h5'],'Fit2D/Ex_geo'),'double');
 Eygeog=cast(hdf5read([datapath,'20170302.002_lp_1min-cal_2dVEF_001001_NoLonely-geo.h5'],'Fit2D/Ey_geo'),'double');
 Exgeomagdat=cast(hdf5read([datapath,'20170302.002_lp_1min-cal_2dVEF_001001_NoLonely-geo.h5'],'Fit2D/Ex'),'double');
@@ -127,7 +127,8 @@ samplerate=sampleratesec/86400;
 %outputt=min(t):samplerate:max(t);    %spans data set
 %TOIstartdate=[2017,03,02,28200/3600,0,0];    %pick start and end times for the field data times of interest
 %TOIenddate=[2017,03,02,28797/3600,0,0];
-TOIstartdate=[2017,03,02,7+35/60,0,0];    %pick start and end times for the field data times of interest
+%TOIstartdate=[2017,03,02,7+35/60,0,0];    %pick start and end times for the field data times of interest
+TOIstartdate=[2017,03,02,7,0,0];    %pick start and end times for the field data times of interest
 TOIenddate=[2017,03,02,8,0,0];
 TOIstartt=datenum(TOIstartdate);
 TOIendt=datenum(TOIenddate);

@@ -3,7 +3,7 @@ gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 %ELECTRIC FIELD DATA
-load ./fields_highres/fields.mat;
+load ~/Dropbox/common/mypapers/ISINGLASS/Grubbs/fields.mat;
 mlatfields=MLAT;
 mlonfields=MLON;
 datefields=outputdate;
@@ -11,7 +11,7 @@ tfields=datenum(datefields);
 
 
 %PARTICLE DATA
-load ./particles_highres/particles.mat;
+load ~/Dropbox/common/mypapers/ISINGLASS/Grubbs/particles.mat;
 mlatparticles=mlat;
 mlonparticles=mlon;
 dateparticles=outputdate;

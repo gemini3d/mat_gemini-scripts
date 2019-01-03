@@ -37,8 +37,8 @@ nme=2e11;
 %WRITE THE GRID AND INITIAL CONDITIONS
 %ADD PATHS FOR FUNCTIONS
 simlabel='2Dtest_lowres_eq'
-outdir='../../../simulations/input/2Dtest_lowres_eq/';
-writegrid(xg,outdir);
+outdir='../../../simulations/input/2Dtest_lowres_junk/';
+writegridraw(xg,outdir);
 time=UT*3600;   %doesn't matter for input files
-writedata(dmy,time,ns,vsx1,Ts,outdir,simlabel);
+writeICraw(dmy,time,ns,vsx1,Ts,outdir,simlabel);
 
