@@ -1,28 +1,28 @@
 %% FIX THE PATHS
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
+gemini_root = [cwd,filesep,'../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
-addpath([gemini_root, filesep, 'plotfunctions'])
+addpath([gemini_root, filesep, 'vis/plotfunctions'])
 
 
 %% SIMULATIONS LOCAITONS
-simname='ARCS_current2/'
+simname='isinglass_clayton1/'
 flagplot=1;
 basedir=[gemini_root,'/../simulations/'];
 direc=[basedir,simname];
 
 
 %% NEED TO READ INPUT FILE TO GET DURATION OF SIMULATION AND START TIME
-[ymd0,UTsec0,tdur,dtout]=readconfig([direc,filesep,'inputs/config.ini']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,filesep,'inputs/config.ini']);
 
 
 %% TIME OF INTEREST
-ymd=[];
-UTsec=;
+UTsec=25496;
+ymd=[2017,3,2];
 
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xg);
+[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc);
 
 
 %% RESOLVE CURRENTS INTO PEDERSEN AND HALL COMPONENTS
@@ -56,22 +56,24 @@ Jfac=permute(Jfac,[3,1,2,4]);
 
 
 %% CREATE PLOTS, IF WANTED
+if ~exist([direc,'/JPplots'],'dir')
+   mkdir([direc,'/JPplots']);
+   mkdir([direc,'/JHplots']);
+end
+
+plotfun=[];
 if (flagplot)
     %choose an appropriate function handle for plotting
-    plotfun = grid2plotfun(plotfun, xg);
+    plotfun = grid2plotfun(plotfun,xg);
 
     %make plots
-    figure(1);
-    clf;
     JPplot=sqrt(sum(JPvec.^2,4));
     JPplot=ipermute(JPplot,[2,3,1]);
-    h2=plotfun(ymd,UTsec,xg,log10(JPplot(:,:,:)),'log_{10} |J_P| (A/m^2)',[-7 -5],[mlatsrc,mlonsrc]);
+    plotfun(ymd,UTsec,xg,log10(JPplot(:,:,:)),'log_{10} |J_P| (A/m^2)',[-7 -4],[mlatsrc,mlonsrc]);
     print('-dpng',[direc,'/JPplots/',filename,'.png'],'-r300');
 
-    figure(2);
-    clf;
     JHplot=sqrt(sum(JHvec.^2,4));
     JHplot=ipermute(JHplot,[2,3,1]);
-    h2=plotfun(ymd,UTsec,xg,log10(JHplot(:,:,:)),'|J_H| (log_{10} A/m^2)',[-7 -5],[mlatsrc,mlonsrc]);
+    plotfun(ymd,UTsec,xg,log10(JHplot(:,:,:)),'|J_H| (log_{10} A/m^2)',[-7 -4],[mlatsrc,mlonsrc]);
     print('-dpng',[direc,'/JHplots/',filename,'.png'],'-r300');
 end %if
