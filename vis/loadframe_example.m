@@ -1,3 +1,8 @@
+addpath ~/Projects/GEMINI/vis/
+addpath ~/Projects/GEMINI/script_utils/
+addpath ~/Projects/GEMINI/setup
+
+
 %% LOAD (ONLY) PRE-FLIGHT EVENT
 UTsec=25496;
 ymd=[2017,3,2];
