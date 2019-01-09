@@ -30,7 +30,6 @@ ymd=[2017,3,2];
 [JP,JH,Jfac]=current_decompose(xg,v2,v3,J1,J2,J3);
 
 
-
 %% CREATE PLOTS, IF WANTED
 if ~exist([direc,'/JPplots'],'dir')
    mkdir([direc,'/JPplots']);
