@@ -1,58 +1,58 @@
-%% FIX THE PATHS
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../GEMINI'];
-addpath([gemini_root, filesep, 'script_utils'])
-addpath([gemini_root, filesep, 'vis/plotfunctions'])
-addpath([gemini_root, filesep, 'vis'])
-addpath([gemini_root, filesep, 'setup'])
-
-
-%% SIMULATIONS LOCAITONS
-simname='isinglass_clayton1/'
-flagplot=1;
-basedir=[gemini_root,'/../simulations/'];
-direc=[basedir,simname];
-
-
-%% READ IN DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,filesep,'inputs/config.ini']);
-
-
-%% TIME OF INTEREST
-UTsec=25496;
-ymd=[2017,3,2];
-
-
-%% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc);
+function [sigP,sigH,sig0,SIGP,SIGH]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1)
 
 
 %% GET THE NEUTRAL ATMOSPHERE NEEDED FOR COLLISIONS, ETC.
-natm=msis_matlab3D(xg,UT,dmy,activ);
+UThrs=UTsec/3600;
+dmy=[ymd(3),ymd(2),ymd(1)];
+natm=msis_matlab3D(xg,UThrs,dmy,activ);
 
 
-%% NEED THE F10.7 AS WELL...
-qs=[1,1,1,1,1,1,-1]*1.6e-19;
-ms=[16,30,28,32,14,1,]*1.67e-27;
+%% MASS AND CHARGE VARIABLES DESCRIBING SPECIES (needed to recompute the collision freqs.) - this is a little messy maybe have some global script that sets???
+%kb=1.3806503e-23;
+elchrg=1.60217646e-19;
+amu=1.66053886e-27;
+ms=[16,30,28,32,14,1,9.1e-31/amu]*amu;
+%gammas=[5/3,7/5,7/5,7/5,5/3,5/3,5/3];
+qs=[1,1,1,1,1,1,-1]*elchrg;
 
 
 %% DEFINE A COMPOSITION OF THE PLASMA - THIS ACTUALLY DOESN'T MUCH IMPACT THE CONDUCTIVITY
-p=tanh((xg.alt-220e3)/20e3);
+p=1/2+1/2*tanh((xg.alt-220e3)/20e3);
 ns=zeros(xg.lx(1),xg.lx(2),xg.lx(3),7);
 ns(:,:,:,1)=p.*ne;
 nmolc=(1-p).*ne;
 ns(:,:,:,2)=1/3*nmolc;
 ns(:,:,:,3)=1/3*nmolc;
 ns(:,:,:,4)=1/3*nmolc;
+ns(:,:,:,7)=ne;               %if you don't separately assign electron density the hall and parallel terms are wrong
 
-Ts(:,:,:,1:6)=Ti;
+Ts(:,:,:,1:6)=repmat(Ti,[1,1,1,6]);
 Ts(:,:,:,7)=Te;
 vs1=repmat(v1,[1 1 1 7]);
 
 
 %% NEED TO CREATE A FULL IONOSPHERIC OUT OF A PARTIAL CALCULATION
 [nusn,nus,nusj,nuss,Phisj,Psisj]=collisions3D(natm,Ts,ns,vs1,ms);
-B=abs(xg.Bmag);                     %need to check whether magnitude is okay here...
+%B=abs(xg.Bmag);                                                         %need to check whether abs is okay here...
+B=xg.Bmag;
 [muP,muH,mu0,sigP,sigH,sig0]=conductivities3D(nus,nusj,ns,ms,qs,B);
 
+
+%% COMPUTE THE INTEGRATED CONDUCTANCES
+h1=xg.h1(3:end-2,3:end-2,3:end-2);                                      %trim off ghost cells
+dx1=xg.dx1b(3:end-1);
+dx1=dx1(:);
+dl1=h1.*repmat(dx1,[1,xg.lx(2),xg.lx(3)]);                              %differential length along geomagnetic field lines
+l1=cumsum(dl1);
+
+SIGP=zeros(xg.lx(2),xg.lx(3));
+SIGH=zeros(xg.lx(2),xg.lx(3));
+for ix2=1:xg.lx(2)
+    for ix3=1:xg.lx(3)
+        SIGP(ix2,ix3)=trapz(l1(:,ix2,ix3),sigP(:,ix2,ix3),1);
+        SIGH(ix2,ix3)=trapz(l1(:,ix2,ix3),sigH(:,ix2,ix3),1);
+    end
+end
+
+end %function conductivity_reconstruct
 
