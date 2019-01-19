@@ -1,8 +1,9 @@
-direc='~/Projects/GEMINI/objects/test3d/';
+%direc='~/Projects/GEMINI/objects/test3d/';
 %direc='~/simulations/zenodo3d/';
+direc='~/simulations/junktest3d/';
 
 ymd=[2013,02,20];
-UTsec=18060;
+UTsec=18300;
 
 [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec);
 [alti,mloni,mlati,Tei]=model2magcoords(xg,Te);
