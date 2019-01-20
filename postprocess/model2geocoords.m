@@ -20,6 +20,8 @@ narginchk(2,8);
 %glon=xg.glon;
 %glat=xg.glat;
 [glat,glon]=geomag2geog(xg.theta,xg.phi);    %use alternative calculation that always works
+thetactr=mean(xg.theta(:)); phictr=mean(xg.phi(:));
+mlatctr=90-thetactr*180/pi; mlonctr=phictr*180/pi;
 
 alt=xg.alt;
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
@@ -61,7 +63,7 @@ if (flagcurv==1)
     [qi,pei,phii]=geog2dipole(alti,gloni,glati);
     x1i=qi(:); x2i=pei(:); x3i=phii(:);
 elseif (flagcurv==0)
-    [zUENi,xUENi,yUENi]=geog2UENgeog(ALTi,GLONi,GLATi);
+    [zUENi,xUENi,yUENi]=geog2UENgeomag(ALTi,GLONi,GLATi,mlonctr,mlatctr);
     x1i=zUENi(:); x2i=xUENi(:); x3i=yUENi(:);
 else
     error('Unsupported grid type...');
