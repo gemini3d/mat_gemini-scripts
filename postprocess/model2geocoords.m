@@ -1,6 +1,6 @@
-function [alti,mloni,mlati,parmi]=model2magcoords(xg,parm,lalt,llon,llat,altlims,mlonlims,mlatlims)
+function [alti,gloni,glati,parmi]=model2geocoords(xg,parm,lalt,llon,llat,altlims,glonlims,glatlims)
 
-%Grid the GEMINI output data in parm onto a regular *geomagnetic* coordinates
+%Grid the GEMINI output data in parm onto a regular *geographic* coordinates
 %grid.  By default create a linearly spaced output grid based on
 %user-provided limits (or grid limits).  Needs to be updated to deal with
 %2D grids...
@@ -8,11 +8,11 @@ function [alti,mloni,mlati,parmi]=model2magcoords(xg,parm,lalt,llon,llat,altlims
 %  [alt,mlon,mlat,parmi]=model2magcoords(xg,parm,lalt,llon,llat,altlims,mlonlims,mlatlims)
 
 
-%% Need at least two arguments, set defaults an necessary
+%% Need at least two input arguments, set defaults an necessary
 narginchk(2,8);
 
-mlon=xg.phi*180/pi;
-mlat=90-xg.theta*180/pi;
+glon=xg.glon;
+glat=xg.glat;
 alt=xg.alt;
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
 inds1=3:lx1+2; inds2=3:lx2+2; inds3=3:lx3+2;
@@ -20,8 +20,8 @@ x1=xg.x1(inds1); x2=xg.x2(inds2); x3=xg.x3(inds3);
 
 if (nargin<8)    %default to using grid limits if not given
     altlims=[min(alt(:)),max(alt(:))];
-    mlonlims=[min(mlon(:)),max(mlon(:))];
-    mlatlims=[min(mlat(:)),max(mlat(:))];    
+    glonlims=[min(glon(:)),max(glon(:))];
+    glatlims=[min(glat(:)),max(glat(:))];    
 end %if
 if (nargin<5)    %default to some number of grid points if not given
     lalt=150; llon=150; llat=150;
@@ -34,9 +34,9 @@ addpath ../script_utils;
 
 %% Define a regular mesh of a set number of points that encompasses the grid (or part of the grid)
 alti=linspace(altlims(1),altlims(2),lalt);
-mloni=linspace(mlonlims(1),mlonlims(2),llon);
-mlati=linspace(mlatlims(1),mlatlims(2),llat);
-[MLONi,ALTi,MLATi]=meshgrid(mloni,alti,mlati);
+gloni=linspace(glonlims(1),glonlims(2),llon);
+glati=linspace(glatlims(1),glatlims(2),llat);
+[GLONi,ALTi,GLATi]=meshgrid(gloni,alti,glati);
 
 
 %% Identify the type of grid that we are using
@@ -54,10 +54,10 @@ end %if
 %There needs to be a separate transformation here for each coordinate system that the model
 % may use...
 if (flagcurv==1)
-    [qi,pei,phii]=geomag2dipole(alti,mloni,mlati);
+    [qi,pei,phii]=geog2dipole(alti,gloni,glati);
     x1i=qi(:); x2i=pei(:); x3i=phii(:);
 elseif (flagcurv==0)
-    [zUENi,xUENi,yUENi]=geomag2UENgeomag(ALTi,MLONi,MLATi);
+    [zUENi,xUENi,yUENi]=geog2UENgeog(ALTi,GLONi,GLATi);
     x1i=zUENi(:); x2i=xUENi(:); x3i=yUENi(:);
 else
     error('Unsupported grid type...');
@@ -69,4 +69,4 @@ end %if
 parmi=interp3(X2,X1,X3,parm,x2i,x1i,x3i);
 parmi=reshape(parmi,[lalt,llon,llat]);
 
-end %function model2magcoords
+end %function model2geocoords

@@ -1,6 +1,11 @@
+addpath ~/Projects/GEMINI/vis;
+
 %direc1='~/Projects/GEMINI/objects/test3d/';
-direc1='~/simulations/junktest3d/';
+%direc1='~/simulations/junktest3d/';
+%direc1='~/Downloads/test3d/';
+direc1='~/Downloads/junktest3d/';
 direc2='~/simulations/zenodo3d/';
+%direc2='~/simulations/junktest3d/';
 
 ymd=[2013,02,20];
 UTsec=18300;
@@ -43,5 +48,15 @@ axis xy;
 colorbar;
 subplot(122)
 imagesc(mlati,alti,squeeze(Tei1(:,end/2,:)-Tei2(:,end/2,:)));
+axis xy;
+colorbar;
+
+figure;
+subplot(121)
+imagesc(mloni,alti,Tii1(:,:,end/2)-Tii1(:,:,end/2));
+axis xy;
+colorbar;
+subplot(122)
+imagesc(mlati,alti,squeeze(Tii1(:,end/2,:)-Tii2(:,end/2,:)));
 axis xy;
 colorbar;

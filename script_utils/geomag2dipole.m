@@ -9,4 +9,4 @@ r=alt+Re;
 q=(Re./r).^2.*cos(theta);
 p=r/Re./sin(theta).^2;
 
-end %function mcoords2dipole
+end %function geomag2diple
