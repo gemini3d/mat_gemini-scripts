@@ -5,14 +5,22 @@ function [alti,gloni,glati,parmi]=model2geocoords(xg,parm,lalt,llon,llat,altlims
 %user-provided limits (or grid limits).  Needs to be updated to deal with
 %2D grids...
 %
-%  [alt,mlon,mlat,parmi]=model2magcoords(xg,parm,lalt,llon,llat,altlims,mlonlims,mlatlims)
+%  [alt,glon,glat,parmi]=model2geocoords(xg,parm,lalt,llon,llat,altlims,glonlims,glatlims)
 
+
+%% Paths
+addpath ../script_utils;
+addpath ../../GEMINI/script_utils;
 
 %% Need at least two input arguments, set defaults an necessary
 narginchk(2,8);
 
-glon=xg.glon;
-glat=xg.glat;
+%these lines break backward compatibility due to an old error in the grid
+%generation code that was fixed as of commit:  75f359801fb237c55251277bc623f738106dd82d
+%glon=xg.glon;
+%glat=xg.glat;
+[glat,glon]=geomag2geog(xg.theta,xg.phi);    %use alternative calculation that always works
+
 alt=xg.alt;
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
 inds1=3:lx1+2; inds2=3:lx2+2; inds3=3:lx3+2;
@@ -26,10 +34,6 @@ end %if
 if (nargin<5)    %default to some number of grid points if not given
     lalt=150; llon=150; llat=150;
 end %if
-
-
-%% Paths
-addpath ../script_utils;
 
 
 %% Define a regular mesh of a set number of points that encompasses the grid (or part of the grid)
