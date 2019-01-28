@@ -4,11 +4,11 @@ addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
 direcconfig='./'
-direcgrid='~/zettergmdata/simulations/input/2DSTEVE/'
+direcgrid='../../../simulations/input/2DSTEVE/'
 
 
 %OUTPUT FILE LOCATION
-outdir='~/zettergmdata/simulations/input/2DSTEVE_fields/';
+outdir='../../../simulations/input/2DSTEVE/2DSTEVE_fields/';
 mkdir([outdir]);
 
 
