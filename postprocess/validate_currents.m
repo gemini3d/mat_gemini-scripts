@@ -117,9 +117,86 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from model');
     colorbar;
-    print('-dpng',[debugdir,filesep,'Jparcomparison'],'-r300');
+    print('-dpng',[debugdir,filesep,'Jparcomparison.png'],'-r300');
 end %if
 
 
 %% CREATE A .MAT FILE WITH THE DEBUG INFO
 save([debugdir,filesep,'currents_debug.mat'],'JP','JH','Jfac','v','E','SIGP','SIGH','x1','x2','x3');
+
+
+%% COMPUTE VARIOUS TERMS OF THE CURRENT CONTINUITY EQUATION
+divE=divergence(x2,x3,squeeze(E2(end,:,:))',squeeze(E3(end,:,:))');     %all of the transposing in what follow is just a way for me to deal with matlab's x vs. y expectations in terms of ordering of indices
+divE=divE';
+JdivE=-1*(SIGP.*divE);
+
+[gradSIGP2,gradSIGP3]=gradient(SIGP',x2,x3);
+gradSIGP2=gradSIGP2';
+gradSIGP3=gradSIGP3';
+JgradSIGP=-1*(gradSIGP2.*squeeze(E2(end,:,:))+gradSIGP3.*squeeze(E3(end,:,:)));
+
+e1=cat(4,-1*ones(lx1,lx2,lx3),zeros(lx1,lx2,lx3),zeros(lx1,lx2,lx3));    %unit vector along field in curvilinear basis - opposite of the z-direction in my simulation since northern hemisphere
+[gradSIGH2,gradSIGH3]=gradient(abs(SIGH'),x2,x3);                     %abs due to my wacky sign convention of positive x1 is up...
+gradSIGH=cat(3,gradSIGH2',gradSIGH3');       %3rd index is components, go back to index ordering used in GEMINI
+e1xE=cross(e1,E,4);                          %cross product to be taken along 4th dim of arrays
+e1xE=squeeze(e1xE(end,:,:,2:3));             %should be constant along x1, just use the final cell - also only need to x2 and x3 components since field-line integrated...
+JgradSIGH=-1*dot(gradSIGH,e1xE,3);
+
+
+%% PLOT THE DIFFERENT CONTRIBUTIONS TO FAC
+if(flagplot)
+    figure;
+    set(gcf,'PaperPosition',[0 0 11 6]);
+    
+    subplot(235);
+    imagesc(x2/1e3,x3/1e3,squeeze(Jfac(end,:,:,1))');
+    axis xy;
+    axis square;
+    xlabel('mag. east dist. (km)');
+    ylabel('mag. north dist. (km)');
+    title('J_{||} from model')
+    colorbar; 
+    cax=caxis;
+    
+    subplot(231);
+    imagesc(x2/1e3,x3/1e3,JdivE');
+    axis xy;
+    axis square;
+    xlabel('mag. east dist. (km)');
+    ylabel('mag. north dist. (km)');
+    title('J_{||} from \Sigma_P \nabla \cdot E')
+    caxis(cax);
+    colorbar;
+    
+    subplot(232);
+    imagesc(x2/1e3,x3/1e3,JgradSIGP');
+    axis xy;
+    axis square;
+    xlabel('mag. east dist. (km)');
+    ylabel('mag. north dist. (km)');
+    title('J_{||} from \nabla \Sigma_P \cdot E')
+    caxis(cax);
+    colorbar;
+    
+    subplot(233);
+    imagesc(x2/1e3,x3/1e3,JgradSIGH');
+    axis xy;
+    axis square;
+    xlabel('mag. east dist. (km)');
+    ylabel('mag. north dist. (km)');
+    title('J_{||} from \nabla \Sigma_H \cdot (e_1 \times E)')
+    caxis(cax);
+    colorbar;
+      
+    subplot(234);
+    imagesc(x2/1e3,x3/1e3,(JdivE+JgradSIGP+JgradSIGH)');
+    axis xy;
+    axis square;
+    xlabel('mag. east dist. (km)');
+    ylabel('mag. north dist. (km)');
+    title('J_{||} from sum of sources')
+    caxis(cax);
+    colorbar;    
+        
+    print('-dpng',[debugdir,filesep,'Jpardecomp.png'],'-r300');
+end %if
