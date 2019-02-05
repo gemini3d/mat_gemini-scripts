@@ -34,13 +34,13 @@ vs1=repmat(v1,[1 1 1 7]);
 %% NEED TO CREATE A FULL IONOSPHERIC OUT OF A PARTIAL CALCULATION
 [nusn,nus,nusj,nuss,Phisj,Psisj]=collisions3D(natm,Ts,ns,vs1,ms);
 %B=abs(xg.Bmag);                                                         %need to check whether abs is okay here...
-B=xg.Bmag;
+B=xg.Bmag;                                                               %carries to sign of B1...
 [muP,muH,mu0,sigP,sigH,sig0]=conductivities3D(nus,nusj,ns,ms,qs,B);
 
 
 %% COMPUTE THE INTEGRATED CONDUCTANCES
 h1=xg.h1(3:end-2,3:end-2,3:end-2);                                      %trim off ghost cells
-dx1=xg.dx1b(3:end-1);
+dx1=xg.dx1b(2:end-2);
 dx1=dx1(:);
 dl1=h1.*repmat(dx1,[1,xg.lx(2),xg.lx(3)]);                              %differential length along geomagnetic field lines
 l1=cumsum(dl1);
