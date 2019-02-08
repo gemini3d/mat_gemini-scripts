@@ -4,6 +4,7 @@ addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'setup/gridgen'])
 addpath([gemini_root, filesep, 'setup/'])
 addpath([gemini_root, filesep, 'vis'])
+addpath(['../../setup/gridgen'])
 
 
 %MOORE, OK GRID (FULL)
