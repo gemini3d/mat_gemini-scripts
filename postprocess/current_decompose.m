@@ -15,6 +15,6 @@ JH=dot(J,-1*evperp,4);                                                    %proje
 JH=-1*evperp.*repmat(JH,[1,1,1,3]);
 JP=dot(J,eE,4);                                                           %project of current in eE unit vector direction (direction of electric field)
 JP=eE.*repmat(JP,[1,1,1,3]);
-Jfac=cat(4,zeros(lx2,lx3,lx1),zeros(lx2,lx3,lx1),permute(J1,[2,3,1]));    %field aligned current vector
+Jfac=cat(4,J1,zeros(lx1,lx2,lx3),zeros(lx1,lx2,lx3));    %field aligned current vector
 
 end %function decompose
