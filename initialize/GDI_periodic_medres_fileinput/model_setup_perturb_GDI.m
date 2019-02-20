@@ -5,7 +5,7 @@ addpath([gemini_root, filesep, 'vis'])
 
 
 %READ IN THE SIMULATION INFORMATION
-ID='~/zettergmdata/simulations/input/GDI_periodic_medres_fileinput/';
+ID=[gemini_root,'/../simulations/input/GDI_periodic_medres_fileinput/']
 xg=readgrid(ID);
 
 
