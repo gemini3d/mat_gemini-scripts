@@ -1,15 +1,13 @@
 addpath ~/Projects/GEMINI/vis;
 
-%direc1='~/Projects/GEMINI/objects/test3d/';
-%direc1='~/simulations/junktest3d/';
-%direc1='~/Downloads/test3d/';
-direc1='~/Downloads/junktest3d/';
-direc2='~/simulations/zenodo3d/';
-%direc2='~/simulations/junktest3d/';
+direc1='~/Downloads/tohoku20113D_lowres_slab3_fixedTn/';
+direc2='~/Downloads/tohoku20113D_lowres_slab23_fixedTn/';
 
-ymd=[2013,02,20];
-UTsec=18300;
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc1,ymd,UTsec);
+
+
+ymd=[2011,03,11];
+UTsec=21803;
+[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop1,ns,vs1,Ts] = loadframe(direc1,ymd,UTsec);
 [alti,mloni,mlati,Tei1]=model2magcoords(xg,Te);
 [alti,mloni,mlati,J1i1]=model2magcoords(xg,J1);
 [alti,mloni,mlati,J3i1]=model2magcoords(xg,J3);
@@ -20,7 +18,7 @@ UTsec=18300;
 [alti,mloni,mlati,v1i1]=model2magcoords(xg,v1);
 [alti,mloni,mlati,Tii1]=model2magcoords(xg,Ti);
 
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc2,ymd,UTsec);
+[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop2,ns,vs1,Ts] = loadframe(direc2,ymd,UTsec);
 [alti,mloni,mlati,Tei2]=model2magcoords(xg,Te);
 [alti,mloni,mlati,J1i2]=model2magcoords(xg,J1);
 [alti,mloni,mlati,J3i2]=model2magcoords(xg,J3);
@@ -30,6 +28,8 @@ UTsec=18300;
 [alti,mloni,mlati,v2i2]=model2magcoords(xg,v2);
 [alti,mloni,mlati,v1i2]=model2magcoords(xg,v1);
 [alti,mloni,mlati,Tii2]=model2magcoords(xg,Ti);
+
+
 
 figure;
 subplot(121)
@@ -60,3 +60,6 @@ subplot(122)
 imagesc(mlati,alti,squeeze(Tii1(:,end/2,:)-Tii2(:,end/2,:)));
 axis xy;
 colorbar;
+
+figure;
+imagesc(Phitop1-Phitop2)

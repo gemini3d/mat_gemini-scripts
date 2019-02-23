@@ -54,7 +54,7 @@ end %if
 %There needs to be a separate transformation here for each coordinate system that the model
 % may use...
 if (flagcurv==1)
-    [qi,pei,phii]=geomag2dipole(alti,mloni,mlati);
+    [qi,pei,phii]=geomag2dipole(ALTi,MLONi,MLATi);
     x1i=qi(:); x2i=pei(:); x3i=phii(:);
 elseif (flagcurv==0)
     [zUENi,xUENi,yUENi]=geomag2UENgeomag(ALTi,MLONi,MLATi);
