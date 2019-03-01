@@ -42,16 +42,16 @@ addpath([gemini_root, filesep, 'script_utils'])
 % glon=143.4;
 % gridflag=1;
 
-%CHILE 2015 GRID
-dtheta=8;
-dphi=14;
-lp=50;
-lq=250;
-lphi=50;
-altmin=80e3;
-glat=17.0;
-glon=288.2;
-gridflag=1;
+% %CHILE 2015 GRID
+% dtheta=8;
+% dphi=14;
+% lp=50;
+% lq=250;
+% lphi=50;
+% altmin=80e3;
+% glat=17.0;
+% glon=288.2;
+% gridflag=1;
 
 % %NEPAL 2015 GRID
 % dtheta=8;
@@ -95,6 +95,17 @@ gridflag=1;
 % glon=360.0-94.8322;
 % gridflag=0;
 % I=90;
+
+%NEW ZEALAND EXAMPLE
+dtheta=17.5;
+dphi=8.5
+lp=256;
+lq=256;
+lphi=10;
+altmin=80e3;
+glat=-45.85;
+glon=173.077;
+gridflag=1;
 
 
 
@@ -206,9 +217,9 @@ end
 % sourcelat=38.429575;
 % sourcelong=142.734757;
 
-%CHILE 2015
-sourcelat=-31.57;
-sourcelong=360-71.654;
+% %CHILE 2015
+% sourcelat=-31.57;
+% sourcelong=360-71.654;
 
 % %NEPAL 2015
 % sourcelat=28.17;
@@ -222,6 +233,13 @@ sourcelong=360-71.654;
 % sourcelat=glat;
 % sourcelong=glon;
 
+%NEW ZEALAND
+sourcelat = -42.757;
+sourcelong = 173.077;
+zmax=500;
+rhomin=0;
+rhomax=950;
+
 [sourcetheta,sourcephi]=geog2geomag(sourcelat,sourcelong);
 sourcemlat=90-sourcetheta*180/pi;
 sourcemlon=sourcephi*180/pi;
@@ -231,12 +249,12 @@ plot3(sourcemlat,sourcemlon,0,'ro','MarkerSize',16);
 
 %NOW CREATE A NEUTRAL GRID AND OVERPLOT IT
 zmin=0;
-%zmax=750;    %most earthquakes
-zmax=660;    %Moore, OK
+%%zmax=750;    %most earthquakes
+%zmax=660;    %Moore, OK
 lz=750;
-rhomin=0;
-rhomax=750;    %most earthquakes
-%rhomax=1800;    %Moore, OK
+%rhomin=0;
+%rhomax=750;    %most earthquakes
+%%rhomax=1800;    %Moore, OK
 lrho=750;
 zn=linspace(zmin,zmax,lz);
 rhon=linspace(rhomin,rhomax,lrho);
