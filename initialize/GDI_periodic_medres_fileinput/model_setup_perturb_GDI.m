@@ -55,7 +55,7 @@ for isp=1:lsp
     amplitude=rand(xg.lx(1),1,xg.lx(3));
     amplitude=0.1*amplitude;
     nsperturb(:,ix2,:,isp)=ns(:,ix2,:,isp)+...                                           %original data
-                4d0*ns(:,ix2,:,isp).*exp(-1d0*(xg.x2(2+ix2)-meanx2).^18/2d0/sigx2.^18);    %patch, note offset in the x2 index!!!!
+                8d0*ns(:,ix2,:,isp).*exp(-1d0*(xg.x2(2+ix2)-meanx2).^18/2d0/sigx2.^18);    %patch, note offset in the x2 index!!!!
     if (ix2>10 & ix2<xg.lx(2)-10)
       nsperturb(:,ix2,:,isp)=nsperturb(:,ix2,:,isp)+amplitude.*ns(:,ix2,:,isp);
     end                                    %noise

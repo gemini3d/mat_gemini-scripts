@@ -9,8 +9,8 @@ addpath([gemini_root, filesep, 'vis'])
 %RISR PERIODIC KHI RUN
 xdist=40e3;
 ydist=22e3;
-lxp=400;
-lyp=220;
+lxp=512;
+lyp=384;
 glat=75.6975;
 glon=360.0-94.8322;
 gridflag=0;
@@ -45,7 +45,8 @@ direc=ID;
 
 
 %LOAD THE FRAME
-[ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend,UTsec0,ymd0,mloc,xgin);
+%[ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend,UTsec0,ymd0,mloc,xgin);
+[ne,mlatsrc,mlonsrc,xgin,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts]=loadframe(direc,ymdend,UTsecend,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xgin);
 lsp=size(ns,4);
 
 

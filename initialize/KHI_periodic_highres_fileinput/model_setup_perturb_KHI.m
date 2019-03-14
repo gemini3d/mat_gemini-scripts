@@ -12,7 +12,8 @@ xg=readgrid(ID);
 direc=ID;
 filebase='KHI_periodic_highres_fileinput';
 filename=[filebase,'_ICs.dat'];
-[ne,v1,Ti,Te,ns,vs1,Ts,simdate]=loadframe3Dcurvnoelec(direc,filename);
+%[ne,v1,Ti,Te,ns,vs1,Ts,simdate]=loadframe3Dcurvnoelec(direc,filename);
+[ne,v1,Ti,Te,ns,Ts,vs1,simdate]=loadframe3Dcurvnoelec(direc,filename);
 lsp=size(ns,4);
 
 

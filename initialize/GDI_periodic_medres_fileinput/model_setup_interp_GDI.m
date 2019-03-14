@@ -9,10 +9,8 @@ addpath([gemini_root, filesep, 'vis'])
 %RISR PERIODIC GDI RUN (HIGHRES)
 xdist=200e3;
 ydist=200e3;
-%lxp=256;
-%lyp=256;
-lxp=128;
-lyp=128;
+lxp=576;
+lyp=576;
 glat=75.6975;
 glon=360.0-94.8322;
 gridflag=0;

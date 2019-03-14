@@ -1,12 +1,12 @@
 addpath ~/Projects/GEMINI/vis;
 
-direc1='~/Downloads/tohoku20113D_lowres_slab23_1Dprocgrid_debug/';
-direc2='~/Downloads/tohoku20113D_lowres_slab23_2Dprocgrid_debug/';
+direc1='~/Projects/GEMINI/objects/test3d';
+direc2='~/simulations/zenodo3d/';
 
 
 
-ymd=[2011,03,11];
-UTsec=21233;
+ymd=[2013,02,20];
+UTsec=18300;
 llat=200;
 llon=100;
 lalt=200;
