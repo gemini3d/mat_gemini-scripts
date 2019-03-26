@@ -61,8 +61,12 @@ end
 
 %%KHI EXAMPLE
 
-v0=1000d0;
-vn=1000d0;
+%v0=1000d0;
+%vn=1000d0;
+%voffset=100d0;
+
+v0=500d0;
+vn=500d0;
 voffset=100d0;
 
 sigx2=1000e0;      %from Keskinen, 1988 growth rate formulas

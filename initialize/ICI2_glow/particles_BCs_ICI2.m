@@ -1,13 +1,14 @@
-%addpath ./restore_idl;
-addpath ../../script_utils;
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd, filesep, '../../../GEMINI'];
+addpath([gemini_root, filesep, 'script_utils']);
 
 
 %REFERENCE GRID TO USE
 direcconfig='./'
-direcgrid='../../../simulations/input/ICI2/'
+direcgrid=[gemini_root,'/../simulations/input/ICI2/']
 
 %CREATE SOME SPACE FOR OUTPUT FILES
-outdir='../../../simulations/input/ICI2_particles/';
+outdir=[gemini_root,'/../simulations/input/ICI2_particles/'];
 system(['mkdir ',outdir]);
 system(['rm ',outdir,'/*']);
 
@@ -138,8 +139,9 @@ E0it=zeros(llon,llat,lt);
 % frequency; 0.2Hz, probably temporal 
 period=5;
 omega=2*pi/period;
+Q0=0.2;    %mW/m2
 for it=1:lt
-   Qit(:,:,it)=(1+0.3*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);            %mW/m^2
+   Qit(:,:,it)=(Q0+0.3*Q0*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);            %mW/m^2
    E0it(:,:,it)=(150+0.3*150*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);     %150eV background + 30% variation
 end
 
@@ -182,4 +184,4 @@ save([outdir,'particles.mat'],'mlon','mlat','Qit','E0it','expdate');
 
 %RESTORE PATH
 %rmpath ./restore_idl;
-rmpath ../../script_utils;
+%rmpath ../../script_utils;
