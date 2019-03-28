@@ -1,6 +1,6 @@
 addpath ~/Projects/GEMINI/vis;
 
-direc1='~/simulations/ICI2_glow/';
+direc1='~/simulations/ICI2_glow2/';
 
 
 

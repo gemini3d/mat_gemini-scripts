@@ -5,11 +5,11 @@ addpath([gemini_root, filesep, 'script_utils'])
 %REFERENCE GRID TO USE
 %direcconfig='../initialize/KHI_periodic_highres_fileinput/'
 direcconfig='./';
-direcgrid='~/simulations/input/KHI_Andres/'
+direcgrid=[gemini_root,'/../simulations/input/KHI_Andres/']
 
 
 %OUTPUT FILE LOCATION
-outdir='~/simulations/input/KHI_Andres_fields/';
+outdir=[gemini_root,'/../simulations/input/KHI_Andres_fields/'];
 mkdir(outdir);
 delete([outdir,'*'])
 

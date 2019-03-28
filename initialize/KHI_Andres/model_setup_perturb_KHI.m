@@ -4,7 +4,7 @@ addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'vis'])
 
 %READ IN THE SIMULATION INFORMATION
-ID='~/simulations/input/KHI_Andres/';
+ID=[gemini_root,'/../simulations/input/KHI_Andres/'];
 xg=readgrid(ID);
 
 
@@ -59,17 +59,19 @@ end
 %nsperturb=max(nsperturb,1e4);
 %}
 
-%%KHI EXAMPLE
 
+
+%%KHI EXAMPLE
 %v0=1000d0;
 %vn=1000d0;
 %voffset=100d0;
 
-v0=500d0;
-vn=500d0;
-voffset=100d0;
+%Game the variables to get us a correct density value...
+v0=350;
+vn=350;
+voffset=100;
 
-sigx2=1000e0;      %from Keskinen, 1988 growth rate formulas
+sigx2=1000e0;
 meanx3=0e0;
 meanx2=0e0;
 
@@ -77,8 +79,10 @@ for isp=1:lsp
   for ix2=1:xg.lx(2)
     amplitude=rand(xg.lx(1),1,xg.lx(3));
     amplitude=0.025*amplitude;
+%    nsperturb(:,ix2,:,isp)=ns(:,ix2,:,isp).*(v0+vn+voffset)./(-v0*tanh((xg.x2(2+ix2))/sigx2)+vn+voffset)+ ...
+%                          amplitude.*10e0.*ns(:,ix2,:,isp);     %add some noise to seed instability
     nsperturb(:,ix2,:,isp)=ns(:,ix2,:,isp).*(v0+vn+voffset)./(-v0*tanh((xg.x2(2+ix2))/sigx2)+vn+voffset)+ ...
-                          amplitude.*10e0.*ns(:,ix2,:,isp);
+                          amplitude.*ns(:,ix2,:,isp);     %add some noise to seed instability
   end
 end
 

@@ -30,7 +30,7 @@ simid='KHI_Andres'
 
 %ALTERNATIVELY WE MAY WANT TO READ IN AN EXISTING OUTPUT FILE AND DO SOME INTERPOLATION ONTO A NEW GRID
 fprintf('Reading in source file...\n');
-ID='~/simulations/RISR_eq/'
+ID=[gemini_root,'/../simulations/KHI_Andres_eq/'];
 
 
 %READ IN THE SIMULATION INFORMATION
@@ -87,7 +87,7 @@ end
 
 
 %WRITE OUT THE GRID
-outdir='~/simulations/input/KHI_Andres/'
+outdir=[gemini_root,'/../simulations/input/KHI_Andres/']
 writegrid(xg,outdir);
 dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);

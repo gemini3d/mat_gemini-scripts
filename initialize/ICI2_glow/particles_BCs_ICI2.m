@@ -139,7 +139,7 @@ E0it=zeros(llon,llat,lt);
 % frequency; 0.2Hz, probably temporal 
 period=5;
 omega=2*pi/period;
-Q0=0.2;    %mW/m2
+Q0=1.5;    %mW/m2
 for it=1:lt
    Qit(:,:,it)=(Q0+0.3*Q0*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);            %mW/m^2
    E0it(:,:,it)=(150+0.3*150*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);     %150eV background + 30% variation
