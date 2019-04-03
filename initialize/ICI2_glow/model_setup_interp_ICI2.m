@@ -7,7 +7,7 @@ addpath([gemini_root, filesep, 'vis'])
 
 
 %LOWRES 2D EXAMPLE FOR TESTING
-xdist=200e3;    %eastward distance
+xdist=40e3;    %eastward distance
 ydist=600e3;    %northward distance
 lxp=80;
 lyp=1;
@@ -31,5 +31,5 @@ if (~exist('xg'))
 end
 
 eqdir='../../../simulations/2Dtest_eq/';
-simID='~/Projects/simulations/input/ICI2';
+simID='ICI2';
 [nsi,vs1i,Tsi,xgin,ns,vs1,Ts]=eq2dist(eqdir,simID,xg);

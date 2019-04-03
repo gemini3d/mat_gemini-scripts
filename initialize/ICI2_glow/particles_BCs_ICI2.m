@@ -7,25 +7,11 @@ addpath([gemini_root, filesep, 'script_utils']);
 direcconfig='./'
 direcgrid=[gemini_root,'/../simulations/input/ICI2/']
 
+
 %CREATE SOME SPACE FOR OUTPUT FILES
 outdir=[gemini_root,'/../simulations/input/ICI2_particles/'];
 system(['mkdir ',outdir]);
 system(['rm ',outdir,'/*']);
-
-
-%{
-%READ IN THE IDL SAVE FILE
-%fname='isinglass_eflux_asi.sav';
-%fname='isinglass_eflux_asi_sync.sav';
-fname='isinglass_eflux_asi_resync.sav';
-outargs=restore_idl(fname);
-time=outargs.NEW_TIME;
-lat=outargs.NEW_LAT;
-lon=outargs.NEW_LON;
-Qdat=outargs.RESAMP_Q;
-E0dat=outargs.RESAMP_EO;
-[lt,llon,llat]=size(Qdat);
-%}
 
 
 %READ IN THE SIMULATION INFORMATION (MEANS WE NEED TO CREATE THIS FOR THE SIMULATION WE WANT TO DO)
@@ -41,6 +27,12 @@ if (~exist('xg','var'))
   xg=readgrid([direcgrid,'/']);
   fprintf('Grid loaded.\n');
 end
+
+
+%REFERENCES TO GRID DISTANCES, IF NEEDED
+x1=xg.x1(3:end-2);
+x2=xg.x2(3:end-2);
+x3=xg.x3(3:end-2);
 
 
 %CREATE A 'DATASET' OF PRECIPITATION CHARACTERISTICS
@@ -66,14 +58,18 @@ mlon=linspace(mlonmin-lonbuf,mlonmax+lonbuf,llon);
 [MLON,MLAT]=ndgrid(mlon,mlat);
 mlonmean=mean(mlon);
 mlatmean=mean(mlat);
-
+x2grid=linspace(min(x2),max(x2),llon);
+x3grid=linspace(min(x3),max(x3),llat);
+[X3,X2]=meshgrid(x3grid,x2grid);
 
 
 %WIDTH OF THE DISTURBANCE
+%mlatsig=1/10*(mlatmax-mlatmin);
+%mlatsig=max(mlatsig,0.01);    %can't let this go to zero...
+%mlonsig=1/10*(mlonmax-mlonmin);
 mlatsig=1/10*(mlatmax-mlatmin);
 mlatsig=max(mlatsig,0.01);    %can't let this go to zero...
-mlonsig=1/10*(mlonmax-mlonmin);
-
+mlonsig=1/3*(mlonmax-mlonmin);
 
 
 %TIME VARIABLE (SECONDS FROM SIMULATION BEGINNING)
@@ -136,13 +132,21 @@ end
 %CREATE THE PRECIPITAITON INPUT DATA
 Qit=zeros(llon,llat,lt);
 E0it=zeros(llon,llat,lt);
-% frequency; 0.2Hz, probably temporal 
+% frequency; 0.2Hz, assume temporal
 period=5;
 omega=2*pi/period;
-Q0=1.5;    %mW/m2
+%wavelenth; 5km, assume spatial
+lambda=5e3;
+k=2*pi/lambda;
+Q0=0.5;    %mW/m2
 for it=1:lt
-   Qit(:,:,it)=(Q0+0.3*Q0*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);            %mW/m^2
-   E0it(:,:,it)=(150+0.3*150*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);     %150eV background + 30% variation
+   %Temporal
+   %Qit(:,:,it)=(Q0+0.3*Q0*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);            %mW/m^2
+   %E0it(:,:,it)=(150+0.3*150*sin(omega*(t(it)-t(1))*86400))*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);     %150eV background + 30% variation
+
+   %Spatial
+   Qit(:,:,it)=(Q0+0.3*Q0*cos(k*X2)).*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);            %mW/m^2
+   E0it(:,:,it)=(150+0.3*150*cos(k*X2)).*exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean).^2/2/mlatsig^2);     %150eV background + 30% variation
 end
 
 

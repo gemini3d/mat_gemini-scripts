@@ -95,8 +95,8 @@ Etarg=0e-3;            % target E value in V/m
 pk=Etarg*sigx2.*xg.h2(lx1,floor(lx2/2),1).*sqrt(pi)./2;
 x2ctr=1/2*(xg.x2(lx2)+xg.x2(1));
 for it=1:lt
-    Vminx1it(:,:,it)=zeros(llon,llat);
-    Vmaxx1it(:,:,it)=pk.*erf((MLON-mlonmean)/mlonsig);%.*erf((MLAT-mlatmean)/mlatsig);
+     Vminx1it(:,:,it)=zeros(llon,llat);
+     Vmaxx1it(:,:,it)=pk.*erf((MLON-mlonmean)/mlonsig);%.*erf((MLAT-mlatmean)/mlatsig);
      Vminx2ist(:,it)=zeros(llat,1);     %these are just slices
      Vmaxx2ist(:,it)=zeros(llat,1);
      Vminx3ist(:,it)=zeros(llon,1);
@@ -132,7 +132,7 @@ for it=1:lt
     fwrite(fid,Vminx1it(:,:,it),'real*8');
     fwrite(fid,Vmaxx1it(:,:,it),'real*8');  
     fwrite(fid,Vminx2ist(:,it),'real*8');
-    fwrite(fid,Vmaxx2ist(:,it),'real*8'); 
+    fwrite(fid,Vmaxx2ist(:,it),'real*8');
     fwrite(fid,Vminx3ist(:,it),'real*8');
     fwrite(fid,Vmaxx3ist(:,it),'real*8');     
    
