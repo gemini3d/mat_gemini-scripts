@@ -6,8 +6,8 @@ addpath([gemini_root, filesep, 'setup'])
 addpath([gemini_root, filesep, 'vis'])
 
 %PFISR-CENTERED GRID (CARTESIAN)
-xdist=2000e3;    %eastward distance
-ydist=500e3;    %northward distance
+xdist=2000e3;     %eastward distance
+ydist=500e3;      %northward distance
 lxp=256/2;
 lyp=576/2;
 glat=67.11;
@@ -44,7 +44,7 @@ direc=ID;
 
 
 %LOAD THE FRAME
-[ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,UTsecend,ymdend,UTsec0,ymd0, mloc,xgin);
+[ne,v1,Ti,Te,J1,v2,v3,J2,J3,mlatsrc,mlonsrc,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymdend,UTsecend,ymd0,UTsec0,mloc,xgin);
 lsp=size(ns,4);
 rmpath ../vis/
 

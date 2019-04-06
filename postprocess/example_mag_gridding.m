@@ -1,6 +1,13 @@
-direc='~/Projects/GEMINI/objects/test3d/';
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../GEMINI'];
+addpath([gemini_root, filesep, 'script_utils'])
+addpath([gemini_root, filesep, 'vis'])
+
+
+direc='~/Projects/GEMINI/objects/test3d_glow/';
 %direc='~/simulations/zenodo3d/';
 %direc='~/simulations/junktest3d/';
+
 
 ymd=[2013,02,20];
 UTsec=18060;
