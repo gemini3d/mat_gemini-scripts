@@ -9,7 +9,7 @@ addpath([gemini_root, filesep, 'vis'])
 xdist=2000e3;    %eastward distance
 ydist=500e3;    %northward distance
 lxp=128;
-lyp=128;
+lyp=288;
 glat=67.11;
 glon=212.95;
 gridflag=0;
@@ -29,7 +29,7 @@ simid='ARCS'
 
 %ALTERNATIVELY WE MAY WANT TO READ IN AN EXISTING OUTPUT FILE AND DO SOME INTERPOLATION ONTO A NEW GRID
 fprintf('Reading in source file...\n');
-ID='~/simulations/ARCS_large_eq/'
+ID=[gemini_root,'/../simulations/ARCS_large_eq/'];
 
 
 %READ IN THE SIMULATION INFORMATION
@@ -86,7 +86,7 @@ end
 
 
 %WRITE OUT THE GRID
-outdir='~/simulations/input/ARCS/'
+outdir=[gemini_root,'/../simulations/input/ARCS/'];
 writegrid(xg,outdir);
 dmy=[ymdend(3),ymdend(2),ymdend(1)];
 writedata(dmy,UTsecend,nsi,vs1i,Tsi,outdir,simid);

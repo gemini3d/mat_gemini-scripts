@@ -100,7 +100,7 @@ mlonsig=5;
 mlatsig=0.15;
 
 Qpk=25;
-E0pk=5e3;
+E0pk=2e3;
 QBG=2;
 for it=1:lt
   shapefn=exp(-(MLON-mlonmean).^2/2/mlonsig^2).*exp(-(MLAT-mlatmean-1.5*mlatsig).^2/2/mlatsig^2);
