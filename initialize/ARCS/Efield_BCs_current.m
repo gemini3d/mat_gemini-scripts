@@ -3,11 +3,11 @@ gemini_root = [cwd, filesep, '../../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 
 direcconfig='./'
-direcgrid='~/zettergmdata/simulations/input/ARCS/'
+direcgrid=[gemini_root,filesep,'../simulations/input/ARCS/'];
 
 
 %OUTPUT FILE LOCATION
-outdir='~/zettergmdata/simulations/input/ARCS_fields/';
+outdir=[gemini_root,filesep,'../simulations/input/ARCS_fields/'];
 mkdir([outdir]);
 
 
@@ -83,6 +83,7 @@ Eyit=zeros(llon,llat,lt);
 for it=1:lt
   Exit(:,:,it)=zeros(llon,llat);   %V/m
   Eyit(:,:,it)=zeros(llon,llat);
+%  Eyit(:,:,it)=25e-3*ones(llon,llat);
 end
 
 
@@ -101,8 +102,10 @@ Vmaxx3ist=zeros(llon,lt);
 %Etarg=50e-3;            % target E value in V/m
 %pk=Etarg*sigx2.*xg.h2(lx1,floor(lx2/2),1).*sqrt(pi)./2;
 %x2ctr=1/2*(xg.x2(lx2)+xg.x2(1));
-Jpk=20e-6;
-mlonsig=10;
+%Jpk=20e-6;
+Jpk=15e-6;
+%mlonsig=10;
+mlonsig=5;
 mlatsig=0.15;
 for it=1:lt
     %ZEROS TOP CURRENT AND X3 BOUNDARIES DON'T MATTER SINCE PERIODIC

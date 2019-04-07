@@ -10,7 +10,7 @@ addpath([cwd,filesep,'../../setup/gridgen']);
 dtheta=15;
 dphi=75;
 lp=128;
-lq=256;
+lq=192;
 lphi=64;
 altmin=80e3;
 glat=45;
@@ -25,7 +25,7 @@ xg=makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
 
 
 %GENERATE SOME INITIAL CONDITIONS FOR A PARTICULAR EVENT - moore OK in this case
-UT=19.75;
+UT=23;
 dmy=[18,5,2013];
 activ=[124.6,138.5,6.1];
 

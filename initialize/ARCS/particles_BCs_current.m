@@ -4,10 +4,10 @@ addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
 direcconfig='./'
-direcgrid='~/zettergmdata/simulations/input/ARCS/'
+direcgrid=[gemini_root,filesep,'../simulations/input/ARCS/'];
 
 %CREATE SOME SPACE FOR OUTPUT FILES
-outdir='~/zettergmdata/simulations/input/ARCS_particles/';
+outdir=[gemini_root,filesep,'../simulations/input/ARCS_particles/'];
 mkdir(outdir);
 delete([outdir,'/*']);
 
@@ -95,7 +95,8 @@ t=datenum(expdate);
 Qit=zeros(llon,llat,lt);
 E0it=zeros(llon,llat,lt);
 
-mlonsig=10;
+%mlonsig=10;
+mlonsig=5;
 mlatsig=0.15;
 
 Qpk=25;
