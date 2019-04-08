@@ -4,7 +4,7 @@
 %   https://www.mathworks.com/matlabcentral/fileexchange/43899-restore-idl 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 close all
-flagplots=0;
+flagplots=1;
 
 cwd = fileparts(mfilename('fullpath'));
 gemini_root = [cwd, filesep, '../../../GEMINI'];
@@ -23,15 +23,10 @@ addpath ~/articles/ISINGLASS/AGU2017/restore_idl/;
 minE0=3;    %keV
 
 
-%PATHS TO IDL READ FUNCTIONS AND OTHER ASSORTED SCRIPTS USED BY THIS PROGRAM
-addpath ./restore_idl/;
-addpath ./script_utils;
-
-
 %CREATE SOME SPACE FOR OUTPUT FILES
-outdir='~/zettergmdata/simulations/input/particles_isinglass_grubbs/';
+outdir='~/zettergmdata/simulations/input/particles_isinglass_grubbs_final/';
 system(['mkdir ',outdir]);
-system(['rm ',outdir,'/*']);   %clean out existing files
+system(['rm -rvf ',outdir,'/*']);   %clean out existing files
 
 
 %READ IN THE IDL SAVE FILE - THIS IS THE FORMAT NORMALLY GIVEN TO ME BY GUY GRUBBS
@@ -39,10 +34,11 @@ firstrun=0;
 if (~exist('Qdat','var'))
     datapath='~/articles/clayton/';
     %fname='isinglass_eflux_asi_highres.sav';
-    fname='isinglass_eflux_asi_full.sav';
+    %fname='isinglass_eflux_asi_full.sav';
+    fname='isinglass_eflux_MB.sav';
     outargs=restore_idl([datapath,fname]);
-    %time=outargs.NEW_TIME;
-    time = [0:3598.8/11922:3598.8]';    %Rob's fix for the time variable...
+    time=double(outargs.NEW_TIME);
+%    time = [0:3598.8/11922:3598.8]';    %Rob's fix for the time variable...
     lat=double(outargs.NEW_LAT);
     lon=double(outargs.NEW_LON);
     Qdat=double(outargs.RESAMP_Q);
@@ -58,7 +54,7 @@ if (~exist('Qdat','var'))
     E0dat=max(E0dat,minE0);
 
     firstrun=1; 
-    datadate=[2017*ones(lt,1),03*ones(lt,1),02*ones(lt,1),7+time(:)/3600,zeros(lt,1),zeros(lt,1)];     %define a date structure for the input data
+    datadate=[2017*ones(lt,1),03*ones(lt,1),02*ones(lt,1),time(:)/3600,zeros(lt,1),zeros(lt,1)];     %define a date structure for the input data
  
 %    load('isinglass_clayton_grid.mat')
 %    clear glon glat
@@ -98,7 +94,7 @@ end
 
 %VISUALIZE ORIGINAL DATA
 if (flagplots)
-  plotdir='./plots_orig/';
+  plotdir=[outdir,'/plots_orig/'];;
   system(['mkdir ',plotdir]);
   figure;
   %set(gcf,'PaperPosition',[0 0 8.5 3.5]);
@@ -249,7 +245,7 @@ end
 
 %VISUALIZE THE ROTATED DATA
 if (flagplots)
-  plotdir='./plots_rot/';
+  plotdir=[outdir,'/plots_rot/'];
   system(['mkdir ',plotdir]);
   figure;
   %set(gcf,'PaperPosition',[0 0 8.5 3.5]);
@@ -325,7 +321,7 @@ Q(inds)=0.025;
 
 %VISUALIZE THE UPSAMPLED DATA
 if (flagplots)
-  plotdir='./plots/';
+  plotdir=[outdir,'/plots/'];
   system(['mkdir ',plotdir]);
   figure;
   for it=1:lt
@@ -409,7 +405,7 @@ E0=E0smooth;
 
 %VISUALIZE THE DATA AFTER THE SECOND SMOOTHING PASS
 if (flagplots)
-  plotdir='./plots_2ndsmooth/';
+  plotdir=[outdir,'/plots_2ndsmooth/'];
   system(['mkdir ',plotdir]);
   figure;
   for it=1:lt
