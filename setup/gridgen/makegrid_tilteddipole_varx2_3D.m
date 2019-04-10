@@ -76,7 +76,7 @@ if gridflag==0
 %    thetamax=thetax2min+pi/75;        %open
 %     thetamax=thetamin+pi/50;        %open
 %     thetamax=thetamin+pi/30;        %open
-    thetamax=thetax2min+pi/25;        %open
+    thetamax=thetax2min+pi/15;        %open
 else
     thetamax=pi-thetax2min;           %closed
 end

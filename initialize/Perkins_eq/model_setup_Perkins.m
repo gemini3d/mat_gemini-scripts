@@ -10,8 +10,8 @@ addpath([cwd,filesep,'../../setup/gridgen']);
 dtheta=25;
 dphi=35;
 lp=125;
-lq=200;
-lphi=40;
+lq=200;    %will be ignored if using nonunifrom x2
+lphi=96;
 altmin=80e3;
 glat=39;
 glon=262.51;

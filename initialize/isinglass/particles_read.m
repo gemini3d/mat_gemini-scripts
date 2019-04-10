@@ -174,7 +174,7 @@ end
 
 %VISUALIZE SMOOTHED DATA
 if (flagplots)
-  plotdir='./plots_smooth/';
+  plotdir=[outdir,'/plots_smooth/'];
   system(['mkdir ',plotdir]);
   figure;
   %set(gcf,'PaperPosition',[0 0 8.5 3.5]);
@@ -281,10 +281,10 @@ end
 
 
 %SET UP TIME VARIABLES
-ymd=[2017,03,02];
-UTsec=7*3600+time;     %time given in file is the seconds from beginning of hour
-UThrs=UTsec/3600;
-datadate=cat(2,repmat(ymd,[lt,1]),UThrs(:),zeros(lt,1),zeros(lt,1));
+%ymd=[2017,03,02];
+%UTsec=7*3600+time;     %time given in file is the seconds from beginning of hour
+%UThrs=UTsec/3600;
+%datadate=cat(2,repmat(ymd,[lt,1]),UThrs(:),zeros(lt,1),zeros(lt,1));
 t=datenum(datadate);
 
 
