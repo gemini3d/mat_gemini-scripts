@@ -4,11 +4,11 @@ addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
 direcconfig='./'
-direcgrid=[gemini_root,'/../simulations/input/GDI_periodic_medres_fileinput/']
+direcgrid=['/Volumes/SDHCcard/input/Perkins/']
 
 
 %OUTPUT FILE LOCATION
-outdir=[gemini_root,'/../simulations/input/GDI_medres_fields/';]
+outdir=['/Volumes/SDHCcard/input/Perkins_fields/';]
 mkdir(outdir);
 
 
@@ -31,10 +31,15 @@ end
 %CREATE A 'DATASET' OF ELECTRIC FIELD INFO
 llon=100;
 llat=100;
+%if (xg.lx(2)==1)    %this is cartesian-specific code
+%    llon=1;
+%elseif (xg.lx(3)==1)
+%    llat=1;
+%end
 if (xg.lx(2)==1)    %this is cartesian-specific code
-    llon=1;
-elseif (xg.lx(3)==1)
     llat=1;
+elseif (xg.lx(3)==1)
+    llon=1;
 end
 thetamin=min(xg.theta(:));
 thetamax=max(xg.theta(:));
@@ -51,9 +56,9 @@ mlonmean=mean(mlon);
 mlatmean=mean(mlat);
 
 
-%INTERPOLATE X2 COORDINATE ONTO PROPOSED MLON GRID
-xgmlon=squeeze(xg.phi(1,:,1)*180/pi);
-x2=interp1(xgmlon,xg.x2(3:lx2+2),mlon,'linear','extrap');
+% %INTERPOLATE X2 COORDINATE ONTO PROPOSED MLON GRID
+% xgmlon=squeeze(xg.phi(1,:,1)*180/pi);
+% x2=interp1(xgmlon(:),xg.x2(3:lx2+2),mlon(:),'linear','extrap');
 
 
 % %WIDTH OF THE DISTURBANCE
@@ -79,13 +84,13 @@ t=datenum(expdate);
 
 
 %CREATE DATA FOR BACKGROUND ELECTRIC FIELDS
-Exit=zeros(llon,llat,lt);
-Eyit=zeros(llon,llat,lt);
+%This is understood to be at some reference altitude
+E2it=zeros(llon,llat,lt);
+E3it=zeros(llon,llat,lt);
 for it=1:lt
-  Exit(:,:,it)=zeros(llon,llat);   %V/m
-  Eyit(:,:,it)=-25e-3*ones(llon,llat);
+  E2it(:,:,it)=10e-3*ones(llon,llat);   %V/m, in the x2 direction
+  E3it(:,:,it)=10e-3*ones(llon,llat);   %x3 direction
 end
-
 
 
 %CREATE DATA FOR BOUNDARY CONDITIONS FOR POTENTIAL SOLUTION
@@ -129,8 +134,8 @@ for it=1:lt
     
     %FOR EACH FRAME WRITE A BC TYPE AND THEN OUTPUT BACKGROUND AND BCs
     fwrite(fid,flagdirich,'real*8');
-    fwrite(fid,Exit(:,:,it),'real*8');
-    fwrite(fid,Eyit(:,:,it),'real*8');
+    fwrite(fid,E2it(:,:,it),'real*8');
+    fwrite(fid,E3it(:,:,it),'real*8');
     fwrite(fid,Vminx1it(:,:,it),'real*8');
     fwrite(fid,Vmaxx1it(:,:,it),'real*8');  
     fwrite(fid,Vminx2ist(:,it),'real*8');
