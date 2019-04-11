@@ -106,7 +106,8 @@ Vmaxx3ist=zeros(llon,lt);
 Jpk=15e-6;
 %mlonsig=10;
 mlonsig=5;
-mlatsig=0.15;
+%mlatsig=0.15;
+mlatsig=0.15/2;
 for it=1:lt
     %ZEROS TOP CURRENT AND X3 BOUNDARIES DON'T MATTER SINCE PERIODIC
     Vminx1it(:,:,it)=zeros(llon,llat);

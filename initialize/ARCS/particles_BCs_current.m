@@ -97,7 +97,8 @@ E0it=zeros(llon,llat,lt);
 
 %mlonsig=10;
 mlonsig=5;
-mlatsig=0.15;
+%mlatsig=0.15;
+mlatsig=0.15/2;
 
 Qpk=25;
 E0pk=2e3;
