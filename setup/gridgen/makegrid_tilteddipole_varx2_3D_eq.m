@@ -49,7 +49,7 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 
 %NONUNIFORM IN X2 GRID - TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN
 %METERS IN THE X2 DIRECTION (DETERMINED EMPIRICALLY)
-coeffs=2*[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, low res
+coeffs=2*[4.65e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, low res
 %coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
 %coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
