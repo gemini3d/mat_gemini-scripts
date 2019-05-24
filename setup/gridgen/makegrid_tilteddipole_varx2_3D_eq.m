@@ -1,4 +1,4 @@
-function xgf=makegrid_tilteddipole_nonuniform_oneside_3D(dtheta,dphi,lpp,lqp,lphip,altmin,glat,glon,gridflag)
+function xgf=makegrid_tilteddipole_varx2_3D_eq(dtheta,dphi,lpp,lqp,lphip,altmin,glat,glon,gridflag)
 
 %NOTE THAT INPUTS DTHETA AND DPHI ARE INTENDED TO REPRESENT THE FULL THETA
 %AND PHI EXTENTS OF 
@@ -19,8 +19,6 @@ function xgf=makegrid_tilteddipole_nonuniform_oneside_3D(dtheta,dphi,lpp,lqp,lph
 % if you want a dimension to be size "n" adjust requested grid size so that
 % it is "n+4"
 
-addpath ../../../GEMINI/script_utils;
-addpath ../../../GEMINI/setup/gridgen;
 
 %PAD GRID WITH GHOST CELLS
 lq=lqp+4;
@@ -41,19 +39,42 @@ pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
 qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
 rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
-%pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
-%p=linspace(pmin,pmax,lp);
-p=linspace(pmin,pmax,lpp);
-%p=p(:)';    %ensure a row vector
-%pstride=p(2)-p(1);
-%p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
+% %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
+% %p=linspace(pmin,pmax,lp);
+% p=linspace(pmin,pmax,lpp);
+% %p=p(:)';    %ensure a row vector
+% %pstride=p(2)-p(1);
+% %p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
 
+
+%NONUNIFORM IN X2 GRID - TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN
+%METERS IN THE X2 DIRECTION (DETERMINED EMPIRICALLY)
+coeffs=2*[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, low res
+%coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
+%coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
+%coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
+p(1)=pmin;
+ip=1;
+while p(ip)<pmax
+  dp=polyval(coeffs,p(ip));
+  p(ip+1)=p(ip)+dp;
+  ip=ip+1;
+end
+p=p(:)';
+lpp=numel(p);
+lp=lpp+4;
+
+
+% %DEBUG
+% figure;
+% plot(p(1:end-1),diff(p))
+% hold on;
+% plot(p(1:end-1),diff(linspace(pmin,pmax,lpp)));
+% hold off;
+
+    
 if gridflag==0
-    thetamax=thetax2min+pi/180;        %open
-%    thetamax=thetax2min+pi/75;        %open
-%     thetamax=thetamin+pi/50;        %open
-%     thetamax=thetamin+pi/30;        %open
-%    thetamax=thetax2min+pi/25;        %open
+    thetamax=thetax2min+pi/15;        %open
 else
     thetamax=pi-thetax2min;           %closed
 end
@@ -61,82 +82,19 @@ rmin=p(end)*Re*sin(thetax2min)^2; %use last field line to get qmin and qmax
 rmax=p(end)*Re*sin(thetamax)^2;
 qmin=cos(thetax2min)*Re^2/rmin^2;
 qmax=cos(thetamax)*Re^2/rmax^2;
-%q=linspace(qmin,qmax,lq)';
-
-
-%UNIFORM GRID
-%{
 q=linspace(qmin,qmax,lqp)';
 q=sort(q);
-%}
 
 
-%%NONUNIFORM TOHOKU GRID
-%sigq=0.075;
-%amp=0.0064;
-%qloc=0.275;
-%mindq=0.005/25;
-
-%SOMEWHAT COARSE NONUNIFORM TOHOKU GRID
-sigq=0.075;
-amp=0.0064;
-qloc=0.275;
-mindq=0.005/10;   %results in ~2km res at the bottom...
-
-if (qmin > qmax)
-  tmp=qmin;
-  qmin=qmax;
-  qmax=tmp;
-end
-
-iq=1;
-if gridflag==0
-    q(iq)=qmin;
-    while q(iq)<qmax
-        iq=iq+1;
-        dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-qloc)/sigq));
-        %    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
-        q(iq)=q(iq-1)+dq;
-    end
-    q=sort(q);
-else
-    q(iq)=0;
-    while q(iq)<=qmax
-        iq=iq+1;
-        dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-(qmax-qloc))/sigq));
-        %    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
-        q(iq)=q(iq-1)+dq;
-    end
-    iq=1;
-    q2(iq)=q(1)-(q(2)-q(1));
-    amp=amp/1.3;
-    while q2(iq)>=-qmax
-        iq=iq+1;
-%        dq=mindq+amp*(1/2+1/2*tanh((q2(iq-1)+(qmax-qloc))/sigq));
-        dq=(q(2)-q(1))-amp*(1/2-1/2*tanh((q2(iq-1)+(qmax-qloc))/sigq));
-%    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
-        q2(iq)=q2(iq-1)-dq;
-    end
-    q2=fliplr(q2);
-    q=[q2,q];
-end
-q=q(:);
-lqp=numel(q);
-lq=lqp+4;
-
-
-%plot(q(1:end-1),diff(q))
-
-
-%REORGANIZE P,Q COORDS.  
+%REORGANIZE P,Q COORDS., ADDING IN GHOST CELLS IN THE PROCESS
 p=p(:)';    %ensure a row vector
 pstride=p(2)-p(1);
-p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
-
-q=q(:);    %ensure a colume vector
+pstride2=p(end)-p(end-1);  
+p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride2];
+q=q(:);      %ensure a colume vector
 qstride=q(2)-q(1);
 qstride2=q(end)-q(end-1);
-q=[q(1)-2*qstride;q(1)-qstride;q,;q(end)+qstride2;q(end)+2*qstride2];    %add in ghost cells
+q=[q(1)-2*qstride;q(1)-qstride;q;q(end)+qstride2;q(end)+2*qstride2];    %add in ghost cells
 
 
 %NOW THE AZIMUTHAL COORDINATE

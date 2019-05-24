@@ -17,9 +17,9 @@ dl3=repmat(reshape(dx3b(:),[1 1 lx3]),[lx1 lx2 1]).*h3;
 
 %% PLOTS
 figure;
-imagesc(dl1(:,:,1)/1e3);
+imagesc(log10(dl1(:,:,1)/1e3));
 colorbar;
-title('Resolution along field line (min x3)')
+title('log_{10} Resolution along field line (min x3)')
 datacursormode;
 
 figure;

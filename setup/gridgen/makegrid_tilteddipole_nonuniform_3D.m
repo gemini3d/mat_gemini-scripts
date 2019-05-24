@@ -73,7 +73,8 @@ q=sort(q);
 sigq=0.075;
 amp=0.0064;
 qloc=0.275;
-mindq=0.005/25;
+%mindq=0.005/25;
+mindq=0.005/65;
 
 %%SOMEWHAT COARSE NONUNIFORM TOHOKU GRID
 %sigq=0.075;
