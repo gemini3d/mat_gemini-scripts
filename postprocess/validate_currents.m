@@ -11,7 +11,8 @@ addpath([gemini_root, filesep, 'setup'])
 flagplot=1;
 %simname='isinglass_clayton1/'
 simname='ARCS/'
-basedir=[gemini_root,'/../simulations/'];
+%basedir=[gemini_root,'/media/data/'];
+basedir='/media/data/'
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
 mkdir(debugdir);
