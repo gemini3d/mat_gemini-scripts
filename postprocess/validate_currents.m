@@ -9,7 +9,8 @@ addpath([gemini_root, filesep, 'setup'])
 
 %% SIMULATIONS LOCAITONS
 flagplot=1;
-simname='isinglass_clayton1/'
+%simname='isinglass_clayton1/'
+simname='ARCS/'
 basedir=[gemini_root,'/../simulations/'];
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
@@ -21,8 +22,10 @@ mkdir(debugdir);
 
 
 %% TIME OF INTEREST
-UTsec=25496;
-ymd=[2017,3,2];
+%UTsec=25496;
+%ymd=[2017,3,2];
+UTsec=27300;
+ymd=[2017,03,02];
 
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
@@ -110,7 +113,7 @@ intdivJrecon2=squeeze(intdivJrecon2);
 intdivJrecon2=-1*intdivJrecon2;    %we are solving for Jfac at the top of the domain (z positive "up") so it's -integral of div...
 
 if(flagplot)
-    figure;
+    figure; set(gcf,'Paperposition',[0 0 16 4.5]);
     
     subplot(142);
     imagesc(x2/1e3,x3/1e3,intdivJ);
@@ -275,6 +278,8 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from \nabla \cdot (\Sigma_H E)');
     colorbar;
+
+    print('-dpng',[debugdir,filesep,'divJHcomparison.png'],'-r300');
 end %if
 
 
@@ -286,7 +291,7 @@ if(flagplot)
     figure
     
     subplot(121)
-    imagesc(x2,x3,-1*abs(SIGH).*squeeze(c1(end,:,:))')
+    imagesc(x2,x3,-1*(abs(SIGH).*squeeze(c1(end,:,:)))')
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -296,12 +301,14 @@ if(flagplot)
     colorbar;
     
     subplot(122);
-    imagesc(x2/1e3,x3/1e3,JgradSIGH'-abs(SIGH).*squeeze(c1(end,:,:))');        %transpose again to deal with MATLAB y expectation
+    imagesc(x2/1e3,x3/1e3,JgradSIGH'-(abs(SIGH).*squeeze(c1(end,:,:)))');        %transpose again to deal with MATLAB y expectation
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
-    title('J_{||} from \nabla \Sigma_H \cdot (b \times E) + \Sigma_H (e_1 \cdot \nabla \times E)')
+    title('J_{||} from \nabla \Sigma_H \cdot (b \times E) + \Sigma_H (b \cdot \nabla \times E)')
     caxis(cax)
     colorbar;    
+
+    print('-dpng',[debugdir,filesep,'curlEcontributions.png'],'-r300');
 end %if
