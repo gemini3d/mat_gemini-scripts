@@ -3,9 +3,23 @@ function [v,E]=Efield(xg,v2,v3)
 
 %COMPUTE THE ELECTRIC FIELD FROM THE PERP DRIFT OUTPUT FROM THE MODEL
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
-vperp2=squeeze(v2(floor(lx1/2),:,:));
+
+
+%DETECT WHETHER INVERTED GRID OR CLOSED
+if (xg.x1(1)-xg.x1(end)>0)
+  ix1ref=1;
+else
+  ix1ref=lx1;
+end
+if (abs(xg.x1(1)-xg.x1(end))<1.0)
+  ix1ref=floor(lx1/2);
+end
+
+
+%COMPILE A V VECTOR
+vperp2=squeeze(v2(ix1ref,:,:));
 vperp2=repmat(vperp2,[1,1,lx1]);
-vperp3=squeeze(v3(floor(lx1/2),:,:));
+vperp3=squeeze(v3(ix1ref,:,:));
 vperp3=repmat(vperp3,[1,1,lx1]);
 v=cat(4,vperp2,vperp3,zeros(lx2,lx3,lx1));           %create a vector for the ExB drift in the curvilinear basis (i.e. e1,e2,e3 basis vectors), permuted as 231 so that the parallel direction is the third dimension
 
