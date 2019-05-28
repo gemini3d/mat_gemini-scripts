@@ -1,4 +1,4 @@
-function h=plot3D_curv_frames_north_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc,h)
+function h=plot3D_curv_frames_north_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc,h,cmap)
 
 %CLEAR AND SET FIGURE HANDLES
 %clf;
@@ -8,7 +8,10 @@ if (nargin<8)
     clf;
     h=gcf;
 end
-set(h,'PaperPosition',[0 0 11 4.5]);
+%set(h,'PaperPosition',[0 0 11 4.5]);
+if nargin<9 || isempty(cmap)
+  cmap = parula(256);
+end
 
 
 %REORGANIZE INPUT
