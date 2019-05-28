@@ -48,17 +48,19 @@ datacursormode;
 
 
 %% FOR A GIVEN GRID ATTEMPT TO DEFINE A CONSTANT STRIDE IN THE X2 DIRECTION (VERY OFTEN DESIRABLE)
-dl2trial=dl2(end/2,:,end/2);
+ix1=floor(lx1/2);
+ix3=floor(lx3/2);
+dl2trial=squeeze(dl2(ix1,:,ix3));
 x2=xg.x2(3:end-2);
 dl2target=10e3;                            %define a desired grid step size in x2
-dx2target=dl2target./h2(end/2,:,end/2);   %what dx2 needs to be to hit target grid size
-coeffs=polyfit(x2,dx2target,2);
+dx2target=squeeze(dl2target./h2(ix1,:,ix3));   %what dx2 needs to be to hit target grid size
+coeffs=polyfit(x2(:),dx2target(:),2);
 dx2new=polyval(coeffs,x2);
 
 figure;
 plot(x2,dx2new,x2,dx2target);
 
-dl2new=dx2new.*h2(end/2,:,end/2);
+dl2new=dx2new(:).*squeeze(h2(ix1,:,ix3))';
 
 figure;
 plot(x2,dl2new,x2,dl2trial);

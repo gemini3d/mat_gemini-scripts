@@ -50,7 +50,9 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %NONUNIFORM IN X2 GRID - TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN
 %METERS IN THE X2 DIRECTION (DETERMINED EMPIRICALLY)
 %coeffs=[5.1635e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper
-coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
+%coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
+%coeffs=[3.8478e-4,0.0013,1.5201e-04];   %3D Moore run interhemispheric tests
+coeffs=[3.8e-4,0.0013,1.5201e-04];   %3D Moore run interhemispheric tests, evenly divisible
 %coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
 p(1)=pmin;
@@ -90,7 +92,7 @@ qmax=cos(thetamax)*Re^2/rmax^2;
 sigq=0.075;
 amp=0.0064;
 qloc=0.48;
-mindq=0.005/2.5;   %results in ~2km res at the bottom...
+mindq=0.005/5;
 
 if (qmin > qmax)
   tmp=qmin;
@@ -116,7 +118,8 @@ else
     end
     iq=1;
     q2(iq)=q(1)-(q(2)-q(1));
-    amp=amp/1.3;                      %non-source hemisphere doesn't need to be sampled as densely
+    %amp=amp/1.3;                      %non-source hemisphere doesn't need to be sampled as densely
+    amp=amp/2;
     while q2(iq)>=-qmax
         iq=iq+1;
         dq=(q(2)-q(1))-amp*(1/2-1/2*tanh((q2(iq-1)+(qmax-qloc))/sigq));
