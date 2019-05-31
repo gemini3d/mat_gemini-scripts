@@ -51,8 +51,12 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %METERS IN THE X2 DIRECTION (DETERMINED EMPIRICALLY)
 %coeffs=[5.1635e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper
 %coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
-%coeffs=[3.8478e-4,0.0013,1.5201e-04];   %3D Moore run interhemispheric tests
-coeffs=[3.8e-4,0.0013,1.5201e-04];   %3D Moore run interhemispheric tests, evenly divisible
+%coeffs=[3.8478e-4,0.0013,1.5201e-04];   %3D Moore run interhemispheric
+%coeffs=[3.8e-4,0.0013,1.5201e-04];   %3D Moore run interhemispheric tests, evenly divisible
+%coeffs=[6.9595e-06,-2.2428e-05,8.0440e-04];   %3D moore OK interhemispheric, ~5km resolution
+%coeffs=[1.3919e-05,-4.4856e-05,0.0016];  %3D moore, 10km resolution
+%coeffs=[2.3e-05,-6.7284e-05,0.0024];   %3D moore, 15 km resolution
+coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution
 %coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
 p(1)=pmin;
@@ -92,7 +96,7 @@ qmax=cos(thetamax)*Re^2/rmax^2;
 sigq=0.075;
 amp=0.0064;
 qloc=0.48;
-mindq=0.005/5;
+mindq=0.005/6.5;
 
 if (qmin > qmax)
   tmp=qmin;
