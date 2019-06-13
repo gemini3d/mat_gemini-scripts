@@ -1,13 +1,16 @@
-function h=plot3D_curv_frames_north_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc,h,cmap)
+function h=plot3D_curv_frames_north_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
 
 %CLEAR AND SET FIGURE HANDLES
 %clf;
 %h=gcf;
 %CLEAR AND SET FIGURE HANDLES
-if (nargin<8)
-    clf;
-    h=gcf;
+if nargin<8 || isempty(hf)
+  hf = figure();
 end
+%if (nargin<8)
+%    clf;
+%    h=gcf;
+%end
 %set(h,'PaperPosition',[0 0 11 4.5]);
 if nargin<9 || isempty(cmap)
   cmap = parula(256);
@@ -203,97 +206,77 @@ maxzp=max(zp(:));
 
 %NOW THAT WE'VE SORTED, WE NEED TO REGENERATE THE MESHGRID
 %[XP,YP,ZP]=meshgrid(xp,yp,zp);
+
+
 FS=8;
 
+
 %MAKE THE PLOT!
-subplot(131);
-h=imagesc(xp,zp,parmp);
-hold on;
+ha=subplot(1,3,1, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
+h=imagesc(ha,xp,zp,parmp);
 if (flagsource)
-  plot([minxp,maxxp],[altref,altref],'w--','LineWidth',1);
-  plot([sourcemlat,sourcemlat],[minzp,maxzp],'k--','LineWidth',1);
-  plot(sourcemlat,0,'r^','MarkerSize',6,'LineWidth',2);
+  plot(ha,[minxp,maxxp],[altref,altref],'w--','LineWidth',1);
+  plot(ha,[sourcemlat,sourcemlat],[minzp,maxzp],'k--','LineWidth',1);
+  plot(ha,sourcemlat,0,'r^','MarkerSize',6,'LineWidth',2);
 end
-hold off;
 set(h,'alphadata',~isnan(parmp));
-set(gca,'FontSize',FS);
-axis xy;
-colormap(parula(256));
-caxis(caxlims)
-c=colorbar;
+
+tight_axis(ha)
+colormap(ha,cmap)
+caxis(ha,caxlims);
+c=colorbar(ha);
 xlabel(c,parmlbl);
-xlabel('magnetic latitude (deg.)');
-ylabel('altitude (km)');
+xlabel(ha,'magnetic latitude (deg.)');
+ylabel(ha,'altitude (km)');
 
 
-subplot(132);
+ha=subplot(1,3,2, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
 %h=imagesc(xp,yp,parmp2(:,:,2));
-h=imagesc(yp,xp,parmp2(:,:,2)');    %so latitude is the vertical axis
-hold on;
+h=imagesc(ha,yp,xp,parmp2(:,:,2)');    %so latitude is the vertical axis
 if (flagsource)
   %plot([minxp,maxxp],[sourcemlon,sourcemlon],'w--','LineWidth',2);
   %plot(sourcemlat,sourcemlon,'r^','MarkerSize',12,'LineWidth',2);
 %  plot([sourcemlon,sourcemlon],[minxp,maxxp],'w--','LineWidth',1);
-  plot(sourcemlon,sourcemlat,'r^','MarkerSize',6,'LineWidth',2);
+  plot(ha,sourcemlon,sourcemlat,'r^','MarkerSize',6,'LineWidth',2);
 end
-hold off;
 %set(h,'alphadata',~isnan(parmp2(:,:,2)));
 set(h,'alphadata',~isnan(parmp2(:,:,2)'));
-set(gca,'FontSize',FS);
-axis xy;
-axis tight;
-colormap(parula(256));
-caxis(caxlims)
-c=colorbar;
+
+tight_axis(ha)
+colormap(ha,cmap)
+caxis(ha,caxlims);
+c=colorbar(ha);
 xlabel(c,parmlbl);
 %xlabel('magnetic latitude (deg.)');
 %ylabel('magnetic longitude (deg.)');
-xlabel('magnetic long. (deg.)');
-ylabel('magnetic lat. (deg.)');
+xlabel(ha,'magnetic long. (deg.)');
+ylabel(ha,'magnetic lat. (deg.)');
 
 
-subplot(133);
-h=imagesc(yp,zp3,squeeze(parmp3(:,2,:))');    %so latitude is the vertical axis
-hold on;
+ha=subplot(1,3,3, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
+h=imagesc(ha,yp,zp3,squeeze(parmp3(:,2,:))');    %so latitude is the vertical axis
 if (flagsource)
 %  plot([sourcemlon,sourcemlon],[minzp3,maxzp3],'k--','LineWidth',1);
-  plot(sourcemlon,0,'r^','MarkerSize',6,'LineWidth',2);
+  plot(ha,sourcemlon,0,'r^','MarkerSize',6,'LineWidth',2);
 end
-hold off;
 %set(h,'alphadata',~isnan(squeeze(parmp3(:,2,:))'));
-set(gca,'FontSize',FS);
-axis xy;
-axis tight;
-colormap(parula(256));
-caxis(caxlims)
-c=colorbar;
+
+tight_axis(ha)
+colormap(ha,cmap)
+caxis(ha,caxlims);
+c=colorbar(ha);
 xlabel(c,parmlbl);
-xlabel('magnetic long. (deg.)');
-ylabel('altitude (km)');
+xlabel(ha,'magnetic long. (deg.)');
+ylabel(ha,'altitude (km)');
 
 
 %CONSTRUCT A STRING FOR THE TIME AND DATE
-subplot(131);
-UThrs=floor(t);
-UTmin=floor((t-UThrs)*60);
-UTsec=floor((t-UThrs-UTmin/60)*3600);
-UThrsstr=num2str(UThrs);
-UTminstr=num2str(UTmin);
-if (numel(UTminstr)==1)
-  UTminstr=['0',UTminstr];
-end
-UTsecstr=num2str(UTsec);
-if (numel(UTsecstr)==1)
-  UTsecstr=['0',UTsecstr];
-end
+ha=subplot(1,3,1);
 
-timestr=[UThrsstr,':',UTminstr,':',UTsecstr];
-%strval=sprintf('%s \n %s',[num2str(dmy(1)),'/',num2str(dmy(2)),'/',num2str(dmy(3))], ...
-%    [num2str(t),' UT']);
-strval=sprintf('%s \n %s',[num2str(dmy(2)),'/',num2str(dmy(1)),'/',num2str(dmy(3))], ...
-    [timestr,' UT']);
+t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
+ttxt = {datestr(t,1), [datestr(t,13),' UT']};
+title(ha, ttxt)
 %text(xp(round(lxp/10)),zp(lzp-round(lzp/7.5)),strval,'FontSize',18,'Color',[0.66 0.66 0.66],'FontWeight','bold');
 %text(xp(round(lxp/10)),zp(lzp-round(lzp/7.5)),strval,'FontSize',16,'Color',[0.5 0.5 0.5],'FontWeight','bold');
-title(strval);
 
 end

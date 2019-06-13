@@ -1,8 +1,8 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../gemini'];
+gemini_root = [cwd, filesep, '../../GEMINI/'];
 addpath([gemini_root, filesep, 'script_utils'])
 
-indir='~/zettergmdata/simulations.MAGIC/tohoku/'
+indir='~/zettergmdata/simulations.MAGIC/okx2/old/'
 %indir='~/neutral_sims/chile06052017/'
 %indir='~/neutral_sims/2016mooreOK/'
 %indir='/media/data/chile2015_0.5MSIS/'
@@ -10,30 +10,31 @@ indir='~/zettergmdata/simulations.MAGIC/tohoku/'
 loc='';
 %simlab='chile'
 %simlab='nepal'
-simlab='strong'
+%simlab='strong'
+simlab='';
 
 %outdir=['~/simulations/mooreOK_neutrals/'];
 %outdir=['~/simulations/chile2015_0.5_neutrals/'];
 %outdir='~/simulations/nepal2015_neutrals/'
-outdir='~/zettergmdata/simulations/tohoku_neutrals/'
+outdir='~/zettergmdata/simulations/mooreOKx2_neutrals/'
 mkdir([outdir]);
 
 %ymd0=[2015,09,16];
 %UTsec0=82473;
 %dtneu=4;
 
-%ymd0=[2013,05,20];
-%UTsec0=71100;
-%dtneu=6;
+ymd0=[2013,05,20];
+UTsec0=71100;
+dtneu=6;
 
 %ymd0=[2015,4,24];
 %UTsec0=22285;
 %dtneu=4;
 
 %TOHOKU EXAMPLE
-ymd0=[2011,3,11];
-UTsec0=20783;
-dtneu=2;
+%ymd0=[2011,3,11];
+%UTsec0=20783;
+%dtneu=2;
 
 
 %LOAD THE DATA FROM AN INPUT SIMULATION
@@ -41,18 +42,18 @@ if ~exist('velx')
     load([indir,'/velx',simlab,loc,'.mat']);
     load([indir,'/velz',simlab,loc,'.mat']);
     load([indir,'/temp',simlab,loc,'.mat']);
-%    load([indir,'/dox2s',simlab,loc,'.mat']);
-%    load([indir,'/dnit2s',simlab,loc,'.mat']);
-%    load([indir,'/doxs',simlab,loc,'.mat']);
-    load([indir,'/dox2',simlab,loc,'.mat']);
-    load([indir,'/dnit2',simlab,loc,'.mat']);
-    load([indir,'/dox',simlab,loc,'.mat']);
+    load([indir,'/dox2s',simlab,loc,'.mat']);
+    load([indir,'/dnit2s',simlab,loc,'.mat']);
+    load([indir,'/doxs',simlab,loc,'.mat']);
+%    load([indir,'/dox2',simlab,loc,'.mat']);
+%    load([indir,'/dnit2',simlab,loc,'.mat']);
+%    load([indir,'/dox',simlab,loc,'.mat']);
 end
 [lt,lrho,lz]=size(velx);
 
 
 %CREATE A SEQUENCE OF BINBARY OUTPUT FILES THAT CONTAIN A FRAME OF DATA EACH
-system(['rm -rf ',outdir,'/*.dat'])
+%system(['rm -rf ',outdir,'/*.dat'])
 filename=[outdir,'simsize.dat']
 fid=fopen(filename,'w');
 fwrite(fid,lrho,'integer*4');
