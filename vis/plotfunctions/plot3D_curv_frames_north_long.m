@@ -230,16 +230,16 @@ xlabel(ha,'magnetic latitude (deg.)');
 ylabel(ha,'altitude (km)');
 
 
+t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
+ttxt = {datestr(t,1),[datestr(t,13),' UT']};
+title(ha,ttxt)
+
+
 ha=subplot(1,3,2, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
-%h=imagesc(xp,yp,parmp2(:,:,2));
 h=imagesc(ha,yp,xp,parmp2(:,:,2)');    %so latitude is the vertical axis
 if (flagsource)
-  %plot([minxp,maxxp],[sourcemlon,sourcemlon],'w--','LineWidth',2);
-  %plot(sourcemlat,sourcemlon,'r^','MarkerSize',12,'LineWidth',2);
-%  plot([sourcemlon,sourcemlon],[minxp,maxxp],'w--','LineWidth',1);
   plot(ha,sourcemlon,sourcemlat,'r^','MarkerSize',6,'LineWidth',2);
 end
-%set(h,'alphadata',~isnan(parmp2(:,:,2)));
 set(h,'alphadata',~isnan(parmp2(:,:,2)'));
 
 tight_axis(ha)
@@ -247,8 +247,6 @@ colormap(ha,cmap)
 caxis(ha,caxlims);
 c=colorbar(ha);
 xlabel(c,parmlbl);
-%xlabel('magnetic latitude (deg.)');
-%ylabel('magnetic longitude (deg.)');
 xlabel(ha,'magnetic long. (deg.)');
 ylabel(ha,'magnetic lat. (deg.)');
 
@@ -273,10 +271,10 @@ ylabel(ha,'altitude (km)');
 %CONSTRUCT A STRING FOR THE TIME AND DATE
 ha=subplot(1,3,1);
 
-t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
-ttxt = {datestr(t,1), [datestr(t,13),' UT']};
-title(ha, ttxt)
-%text(xp(round(lxp/10)),zp(lzp-round(lzp/7.5)),strval,'FontSize',18,'Color',[0.66 0.66 0.66],'FontWeight','bold');
-%text(xp(round(lxp/10)),zp(lzp-round(lzp/7.5)),strval,'FontSize',16,'Color',[0.5 0.5 0.5],'FontWeight','bold');
+%t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
+%ttxt = [datestr(t,1),' ',[datestr(t,13),' UT']];
+%title(ha,ttxt)
+%%text(xp(round(lxp/10)),zp(lzp-round(lzp/7.5)),strval,'FontSize',18,'Color',[0.66 0.66 0.66],'FontWeight','bold');
+%%text(xp(round(lxp/10)),zp(lzp-round(lzp/7.5)),strval,'FontSize',16,'Color',[0.5 0.5 0.5],'FontWeight','bold');
 
 end
