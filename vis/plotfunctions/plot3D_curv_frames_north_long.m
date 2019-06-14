@@ -43,15 +43,10 @@ Re=6370e3;
 
 %JUST PICK AN X3 LOCATION FOR THE MERIDIONAL SLICE PLOT, AND AN ALTITUDE FOR THE LAT./LON. SLICE
 ix3=floor(lx3/2);
-altref=300;
+altref=175;
 
 
 %SIZE OF PLOT GRID THAT WE ARE INTERPOLATING ONTO
-%meantheta=mean(xg.theta(:));
-%meanphi=mean(xg.phi(:));
-%x=(xg.theta-meantheta);   %this is a mag colat. coordinate and is only used for defining grid in linspaces below
-%y=(xg.phi-meanphi);       %mag. lon coordinate
-%z=xg.alt/1e3;
 ix1s=find(xg.x1(inds1)>=0);    %works for asymmetric grids
 minz=0;
 maxz=100;
@@ -65,7 +60,6 @@ x=(thetavals-meantheta);      %this is a mag colat. coordinate and is only used 
 y=(phivals-meanphi);          %mag. lon coordinate
 z=xg.alt(ix1:lx1,:,:)/1e3;    %altitude
 lxp=500;
-%lxp=1500;
 lyp=500;
 lzp=500;
 minx=min(x(:));
@@ -75,6 +69,7 @@ maxy=max(y(:));
 %minz=min(z(:));
 minz=-10e0;     %to give some space for the marker on th plots
 maxz=max(z(:));
+maxz=min(750e0,maxz);
 xp=linspace(minx,maxx,lxp);
 yp=linspace(miny,maxy,lyp);
 zp=linspace(minz,maxz,lzp)';
@@ -129,7 +124,7 @@ parmp=reshape(parmp,lzp,lxp);    %slice expects the first dim. to be "y" ("z" in
 
 
 %LAT./LONG. SLICE COORDIANTES
-zp2=[290,300,310];
+zp2=[altref-10,altref,altref+10];
 lzp2=3;
 [X2,Y2,Z2]=meshgrid(xp,yp,zp2*1e3);       %lat./lon. meshgrid, need 3D since and altitude slice cuts through all 3 dipole dimensions
 
@@ -204,18 +199,22 @@ minzp=min(zp(:));
 maxzp=max(zp(:));
 
 
-%NOW THAT WE'VE SORTED, WE NEED TO REGENERATE THE MESHGRID
-%[XP,YP,ZP]=meshgrid(xp,yp,zp);
-
-
+%SET THE FONT SIZE FOR THE PLOT
 FS=8;
+
+
+%SELECT AXIS LIMITS IF AUTO OPTION ENABLED
+if (isnan(caxlims(1)) | isnan(caxlims(2)))
+  caxlimsval=max( [max(abs(parmp(:))),max(abs(parmp2(:))),max(abs(parmp3(:)))] );
+  caxlims=[-caxlimsval,caxlimsval];
+end
 
 
 %MAKE THE PLOT!
 ha=subplot(1,3,1, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
 h=imagesc(ha,xp,zp,parmp);
 if (flagsource)
-  plot(ha,[minxp,maxxp],[altref,altref],'w--','LineWidth',1);
+  plot(ha,[minxp,maxxp],[altref,altref],'k--','LineWidth',1);
   plot(ha,[sourcemlat,sourcemlat],[minzp,maxzp],'k--','LineWidth',1);
   plot(ha,sourcemlat,0,'r^','MarkerSize',6,'LineWidth',2);
 end
