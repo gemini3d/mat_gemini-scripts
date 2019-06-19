@@ -4,7 +4,7 @@ function [zUEN,xUEN,yUEN]=geog2UENgeog(alt,glon,glat,mlonctr,mlatctr)
 
 Re=6370e3;
 
-addpath ../../GEMINI/script_utils;
+%addpath ../../GEMINI/script_utils;
 
 %mag coords. of input grid points
 [theta,phi]=geog2geomag(glat,glon);

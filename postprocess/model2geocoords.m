@@ -9,8 +9,8 @@ function [alti,gloni,glati,parmi]=model2geocoords(xg,parm,lalt,llon,llat,altlims
 
 
 %% Paths
-addpath ../script_utils;
-addpath ../../GEMINI/script_utils;
+%addpath ../script_utils;
+%addpath ../../GEMINI/script_utils;
 
 %% Need at least two input arguments, set defaults an necessary
 narginchk(2,8);
