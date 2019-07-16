@@ -24,12 +24,13 @@ E3=E(:,:,:,3);
 
 
 %% GRID DATA
-% [alti,mloni,mlati,J1i]=model2magcoords(xg,J1);
-% [alti,mloni,mlati,E2i]=model2magcoords(xg,E2);
-% [alti,mloni,mlati,E3i]=model2magcoords(xg,E3);
+[alti,mloni,mlati,~]=model2magcoords(xg,J1);    %this grid is needed to do interpolation of precipitation inputs
 [zi,xi,yi,J1i]=model2magUENcoords(xg,J1);
 [zi,xi,yi,E2i]=model2magUENcoords(xg,E2);
 [zi,xi,yi,E3i]=model2magUENcoords(xg,E3);
+J1i=squeeze(J1i(end,:,:));
+E2i=squeeze(E2i(end,:,:));
+E3i=squeeze(E3i(end,:,:));
 
 
 %% LOAD THE PRECIPITATION INPUT FILE
@@ -44,5 +45,5 @@ E0i=interp2(mlon,mlat,E0it(:,:,end),MLONI,MLATI);
 
 %% CREATE A DATASET
 outfile='~/electro_data.mat';
-save(outfile,'Qi','E0i','J1i','E2i','E3i');
+save(outfile,'Qi','E0i','J1i','E2i','E3i','xi','yi');
 
