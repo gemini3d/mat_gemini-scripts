@@ -23,9 +23,9 @@ inds1=3:lx1+2; inds2=3:lx2+2; inds3=3:lx3+2;
 x1=xg.x1(inds1); x2=xg.x2(inds2); x3=xg.x3(inds3);
 
 if (nargin<8)    %default to using grid limits if not given
-    zlims=[min(zUEN(:)),max(zUEN(:))];
-    xlims=[min(xUEN(:)),max(xUEN(:))];
-    ylims=[min(yUEN(:)),max(yUEN(:))];    
+    zlims=[min(zUEN(:))+1,max(zUEN(:))-1];   %stay just inside given grid
+    xlims=[min(xUEN(:))+1,max(xUEN(:))-1];
+    ylims=[min(yUEN(:))+1,max(yUEN(:))-1];    
 end %if
 if (nargin<5)    %default to some number of grid points if not given
     lz=150; lx=150; ly=150;

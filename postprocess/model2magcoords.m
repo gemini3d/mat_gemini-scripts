@@ -19,9 +19,9 @@ inds1=3:lx1+2; inds2=3:lx2+2; inds3=3:lx3+2;
 x1=xg.x1(inds1); x2=xg.x2(inds2); x3=xg.x3(inds3);
 
 if (nargin<8)    %default to using grid limits if not given
-    altlims=[min(alt(:)),max(alt(:))];
-    mlonlims=[min(mlon(:)),max(mlon(:))];
-    mlatlims=[min(mlat(:)),max(mlat(:))];    
+    altlims=[min(alt(:))+0.0001,max(alt(:))-0.0001];   %make sure we say just inside model limits...
+    mlonlims=[min(mlon(:))+0.0001,max(mlon(:))-0.0001];
+    mlatlims=[min(mlat(:))+0.0001,max(mlat(:))-0.0001];    
 end %if
 if (nargin<5)    %default to some number of grid points if not given
     lalt=150; llon=150; llat=150;
