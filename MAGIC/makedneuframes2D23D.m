@@ -72,6 +72,18 @@ z=linspace(min(zn),max(zn),lz);
 RHO=sqrt(X.^2+Y.^2);
 PHI=atan2(Y,X);
 
+
+
+%% CREATE A FILE WITH THE NEUTRAL SIMULATION SIZE
+%system(['rm -rf ',outdir,'/*.dat'])
+filename=[outdir,'simsize.dat']
+fid=fopen(filename,'w');
+fwrite(fid,lx,'integer*4');
+fwrite(fid,ly,'integer*4');
+fwrite(fid,lz,'integer*4');
+fclose(fid);
+
+
 %% CYCLE THROUGH INTERPOLATE, ROTATE, AND OUTPUT
 ymd=ymd0;
 UTsec=UTsec0;
@@ -124,13 +136,4 @@ for it=1:lt
     [ymd,UTsec]=dateinc(dtneu,ymd,UTsec);
 end %for
 
-
-%% CREATE A FILE WITH THE NEUTRAL SIMULATION SIZE
-%system(['rm -rf ',outdir,'/*.dat'])
-filename=[outdir,'simsize.dat']
-fid=fopen(filename,'w');
-fwrite(fid,lx,'integer*4');
-fwrite(fid,ly,'integer*4');
-fwrite(fid,lz,'integer*4');
-fclose(fid);
 
