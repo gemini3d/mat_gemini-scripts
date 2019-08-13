@@ -45,6 +45,7 @@ dtneu=6;
 %% LOAD THE DATA FROM AN INPUT MAGIC SIMULATION
 if ~exist('velx')
     load([indir,'/velx',simlab,loc,'.mat']);
+    load([indir,'/vely',simlab,loc,'.mat']);
     load([indir,'/velz',simlab,loc,'.mat']);
     load([indir,'/temp',simlab,loc,'.mat']);
     load([indir,'/dox2s',simlab,loc,'.mat']);
@@ -54,7 +55,7 @@ if ~exist('velx')
 %    load([indir,'/dnit2',simlab,loc,'.mat']);
 %    load([indir,'/dox',simlab,loc,'.mat']);
 end
-[lt,lrho,lz]=size(velx);
+[lt,lx,ly,lz]=size(velx);
 
 
 %CREATE A SEQUENCE OF BINBARY OUTPUT FILES THAT CONTAIN A FRAME OF DATA EACH
@@ -71,6 +72,9 @@ UTsec=UTsec0;
 for it=1:lt
     velxnow=squeeze(velx(it,:,:,:));     %note that these are assumed to be organized as t,x,y,z - the fortran code wants z,x,y
     velxnow=permute(velxnow,[3,1,2]);
+
+    velynow=squeeze(vely(it,:,:,:));
+    velynow=permute(velynow,[3,1,2]);
 
     velznow=squeeze(velz(it,:,:,:));
     velznow=permute(velznow,[3,1,2]);
@@ -94,6 +98,7 @@ for it=1:lt
     fwrite(fid,dnit2snow,'real*8');
     fwrite(fid,dox2snow,'real*8');
     fwrite(fid,velxnow,'real*8');
+    fwrite(fig,velynow,'real*8');
     fwrite(fid,velznow,'real*8');
     fwrite(fid,tempnow,'real*8');
     fclose(fid);
