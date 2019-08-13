@@ -12,7 +12,7 @@ loc='';
 %simlab='chile'
 %simlab='nepal'
 simlab='strong'
-simlab='';
+%simlab='';
 
 %outdir=['~/simulations/mooreOK_neutrals/'];
 %outdir=['~/simulations/chile2015_0.5_neutrals/'];
@@ -44,12 +44,12 @@ if ~exist('velx')
     load([indir,'/velx',simlab,loc,'.mat']);
     load([indir,'/velz',simlab,loc,'.mat']);
     load([indir,'/temp',simlab,loc,'.mat']);
-    load([indir,'/dox2s',simlab,loc,'.mat']);
-    load([indir,'/dnit2s',simlab,loc,'.mat']);
-    load([indir,'/doxs',simlab,loc,'.mat']);
-%    load([indir,'/dox2',simlab,loc,'.mat']);
-%    load([indir,'/dnit2',simlab,loc,'.mat']);
-%    load([indir,'/dox',simlab,loc,'.mat']);
+%    load([indir,'/dox2s',simlab,loc,'.mat']);
+%    load([indir,'/dnit2s',simlab,loc,'.mat']);
+%    load([indir,'/doxs',simlab,loc,'.mat']);
+    load([indir,'/dox2',simlab,loc,'.mat']);
+    load([indir,'/dnit2',simlab,loc,'.mat']);
+    load([indir,'/dox',simlab,loc,'.mat']);
 end
 [lt,lrhon,lzn]=size(velx);
 
@@ -77,9 +77,9 @@ ymd=ymd0;
 UTsec=UTsec0;
 for it=1:lt
     velrhonow=squeeze(velx(it,:,:));     %note that these are organized as t,rho,z - the fortran code wants z,rho
-    velrhonow=permute(velxnow,[2, 1]);
-    velrho3D=interp2(zn,rhon,velxnow,Z(:),RHO(:));
-    velrho3D=reshape(velx3D,[lz,lx,ly]);
+    velrhonow=permute(velrhonow,[2, 1]);
+    velrho3D=interp2(zn,rhon,velrhonow,Z(:),RHO(:));
+    velrho3D=reshape(velrho3D,[lz,lx,ly]);
     
     velx3D=-1*velrho3D.*sin(PHI);
     vely3D=velrho3D.*cos(PHI);
