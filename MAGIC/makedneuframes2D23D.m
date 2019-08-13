@@ -90,35 +90,47 @@ UTsec=UTsec0;
 for it=1:lt
     velrhonow=squeeze(velx(it,:,:));     %note that these are organized as t,rho,z - the fortran code wants z,rho
     velrhonow=permute(velrhonow,[2, 1]);
-    velrho3D=interp2(zn,rhon,velrhonow,Z(:),RHO(:));
-    velrho3D=reshape(velrho3D,[lz,lx,ly]);
-    
+    velrho3D=interp2(rhon,zn,velrhonow,RHO(:),Z(:));
+    inds=find(isnan(velrho3D));
+    velrho3D(inds)=0;
+    velrho3D=reshape(velrho3D,[lz,lx,ly]);   
+ 
     velx3D=-1*velrho3D.*sin(PHI);
     vely3D=velrho3D.*cos(PHI);
     
     velznow=squeeze(velz(it,:,:));
     velznow=permute(velznow,[2, 1]);
-    velz3D=interp2(zn,rhon,velznow,Z(:),RHO(:));
+    velz3D=interp2(rhon,zn,velznow,RHO(:),Z(:));
+    inds=find(isnan(velz3D));
+    velz3D(inds)=0;
     velz3D=reshape(velz3D,[lz,lx,ly]);
     
     tempnow=squeeze(temp(it,:,:));
     tempnow=permute(tempnow,[2, 1]);
-    temp3D=interp2(zn,rhon,tempnow,Z(:),RHO(:));
+    temp3D=interp2(rhon,zn,tempnow,RHO(:),Z(:));
+    inds=find(isnan(temp3D));
+    temp3D(inds)=0;
     temp3D=reshape(temp3D,[lz,lx,ly]);
     
     dox2snow=squeeze(dox2s(it,:,:));
     dox2snow=permute(dox2snow,[2, 1]);
-    dox2s3D=interp2(zn,rhon,dox2snow,Z(:),RHO(:));
+    dox2s3D=interp2(rhon,zn,dox2snow,RHO(:),Z(:));
+    inds=find(isnan(dox2s3D));
+    dox2s3D(inds)=0;
     dox2s3D=reshape(dox2s3D,[lz,lx,ly]);
     
     dnit2snow=squeeze(dnit2s(it,:,:));
     dnit2snow=permute(dnit2snow,[2, 1]);
-    dnit2s3D=interp2(zn,rhon,dnit2snow,Z(:),RHO(:));
+    dnit2s3D=interp2(rhon,zn,dnit2snow,RHO(:),Z(:));
+    inds=find(isnan(dnit2s3D));
+    dnit2s3D(inds)=0;
     dnit2s3D=reshape(dnit2s3D,[lz,lx,ly]);
     
     doxsnow=squeeze(doxs(it,:,:));
     doxsnow=permute(doxsnow,[2, 1]);    
-    doxs3D=interp2(zn,rhon,doxsnow,Z(:),RHO(:));
+    doxs3D=interp2(rhon,zn,doxsnow,RHO(:),Z(:));
+    inds=find(isnan(doxs3D));
+    doxs3D(inds)=0;
     doxs3D=reshape(doxs3D,[lz,lx,ly]);    
     
     filename=datelab(ymd,UTsec);
