@@ -65,12 +65,12 @@ rhon=0:drhon:(lrhon-1)*drhon;
 lx=256;
 ly=256;
 lz=256;
-x=linspace(-1*max(rhon),max(rhon),lx);
-y=linspace(-1*max(rhon),max(rhon),ly);
-z=linspace(min(zn),max(zn),lz);
+x=linspace(-1*max(rhon),max(rhon),lx);    %interpreted as eastward distance
+y=linspace(-1*max(rhon),max(rhon),ly);    %northward distance
+z=linspace(min(zn),max(zn),lz);           %altitude
 [X,Z,Y]=meshgrid(x,z,y);
-RHO=sqrt(X.^2+Y.^2);
-PHI=atan2(Y,X);
+RHO=sqrt(X.^2+Y.^2);                      %ground distance from epicenter
+PHI=atan2(Y,X);                           %angle from east
 
 
 
@@ -95,8 +95,11 @@ for it=1:lt
     velrho3D(inds)=0;
     velrho3D=reshape(velrho3D,[lz,lx,ly]);   
  
-    velx3D=-1*velrho3D.*sin(PHI);
-    vely3D=velrho3D.*cos(PHI);
+%   @#$%-ing bad math aghhhhhh!!!!!!!!!!!!!!!
+%    velx3D=-1*velrho3D.*sin(PHI);
+%    vely3D=velrho3D.*cos(PHI);
+    velx3D=velrho3D.*cos(PHI);
+    vely3D=velrho3D.*sin(PHI);
     
     velznow=squeeze(velz(it,:,:));
     velznow=permute(velznow,[2, 1]);
