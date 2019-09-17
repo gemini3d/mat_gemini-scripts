@@ -1,4 +1,4 @@
-function [sigP,sigH,sig0,SIGP,SIGH]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1)
+function [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1)
 
 
 %% GET THE NEUTRAL ATMOSPHERE NEEDED FOR COLLISIONS, ETC.
@@ -35,7 +35,7 @@ vs1=repmat(v1,[1 1 1 7]);
 [nusn,nus,nusj,nuss,Phisj,Psisj]=collisions3D(natm,Ts,ns,vs1,ms);
 %B=abs(xg.Bmag);                                                         %need to check whether abs is okay here...
 B=xg.Bmag;                                                               %carries to sign of B1...
-[muP,muH,mu0,sigP,sigH,sig0]=conductivities3D(nus,nusj,ns,ms,qs,B);
+[muP,muH,mu0,sigP,sigH,sig0,incap]=conductivities3D(nus,nusj,ns,ms,qs,B);
 
 
 %% COMPUTE THE INTEGRATED CONDUCTANCES
@@ -47,12 +47,14 @@ l1=cumsum(dl1);
 
 SIGP=zeros(xg.lx(2),xg.lx(3));
 SIGH=zeros(xg.lx(2),xg.lx(3));
+INCAP=zeros(xg.lx(2),xg.lx(3));
 for ix2=1:xg.lx(2)
     for ix3=1:xg.lx(3)
         SIGP(ix2,ix3)=trapz(l1(:,ix2,ix3),sigP(:,ix2,ix3),1);
         SIGH(ix2,ix3)=trapz(l1(:,ix2,ix3),sigH(:,ix2,ix3),1);
-    end
-end
+        INCAP(ix2,ix3)=trapz(l1(:,ix2,ix3),incap(:,ix2,ix3),1);)
+    end %for
+end %for
 
 end %function conductivity_reconstruct
 

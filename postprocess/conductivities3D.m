@@ -1,4 +1,4 @@
-function [muP,muH,mu0,sigP,sigH,sig0]=conductivities3D(nus,nusj,ns,ms,qs,B) 
+function [muP,muH,mu0,sigP,sigH,sig0,incap]=conductivities3D(nus,nusj,ns,ms,qs,B) 
 
 [lx1,lx2,lx3,lsp]=size(nus);
 mu0=zeros(lx1,lx2,lx3,lsp);
@@ -8,7 +8,7 @@ mubase=zeros(lx1,lx2,lx3,lsp);
 cfact=zeros(lx1,lx2,lx3,lsp);
 
 
-%MOBILITIES;
+%% MOBILITIES;
 for is=1:lsp
    OMs=qs(is)*B/ms(is);                 %cycltron
    
@@ -26,7 +26,7 @@ for is=1:lsp
 end
 
 
-%CONDUCTIVITIES
+%% CONDUCTIVITIES
 sig0=ns(:,:,:,lsp)*qs(lsp).*mu0(:,:,:,lsp);        %parallel includes only electrons...
 
 for is=1:lsp
@@ -34,5 +34,13 @@ for is=1:lsp
 end
 sigP=sum(cfact.*muP,4);
 sigH=sum(cfact.*muH,4);
+
+
+%% Inertial capacitance
+incap=0.0;
+for isp=1:lsp
+  incap=incap+ns(:,:,:,isp)*ms(isp);
+end %for
+incap=incap./B.^2
 
 end
