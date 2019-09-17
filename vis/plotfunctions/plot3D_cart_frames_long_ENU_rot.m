@@ -233,7 +233,7 @@ FS=9;
 
 %MAKE THE PLOT!
 ha=subplot(1,3,1, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
-h=imagesc(ha,yp,zp,parmp3);
+h=imagesc(ha,yp,zp,fliplr(parmp3));    %need to flip to be consxistent with rotation
 plot(ha,[minyp,maxyp],[altref,altref],'w--','LineWidth',2);
 if (~isempty(sourcemlat))
   plot(ha,sourcemlat,0,'r^','MarkerSize',12,'LineWidth',2);
@@ -245,30 +245,31 @@ colormap(ha,cmap)
 caxis(ha,caxlims)
 c=colorbar(ha);
 xlabel(c,parmlbl);
-xlabel(ha,'x (km)');
+xlabel(ha,'eastward distance (km)');
 ylabel(ha,'altitude (km)');
-
-%% CONSTRUCT A STRING FOR THE TIME AND DATE
-%t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
-%ttxt = {datestr(t,1), [datestr(t,13),' UT']};
-%title(ha, ttxt)
 
 
 ha=subplot(1,3,2, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
-h=imagesc(ha,yp,xp,parmp2(:,:,2)');
+h=imagesc(ha,yp(2:end-1),xp(2:end-1),rot90(parmp2(2:end-1,2:end-1,2),-1));
 if (~isempty(sourcemlat))
   plot(ha,[minxp,maxxp],[sourcemlon,sourcemlon],'w--','LineWidth',2);
   plot(ha,sourcemlat,sourcemlon,'r^','MarkerSize',12,'LineWidth',2);
 end
-set(h,'alphadata',~isnan(parmp2(:,:,2)));
+set(h,'alphadata',~isnan(rot90(parmp2(2:end-1,2:end-1,2),-1)));
 
 tight_axis(ha)
 colormap(ha,cmap)
 caxis(ha,caxlims)
 c=colorbar(ha);
 xlabel(c,parmlbl);
-ylabel(ha,'y (km)');
-xlabel(ha,'x (km)');
+ylabel(ha,'northward distance (km)');
+xlabel(ha,'eastward distance (km)');
+
+%% CONSTRUCT A STRING FOR THE TIME AND DATE
+%t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
+%ttxt = {datestr(t,1), [datestr(t,13),' UT']};
+ttxt=sprintf('%6.1f s',UTsec-28500);
+title(ha, ttxt)
 
 ha=subplot(1,3,3, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
 h=imagesc(ha,xp,zp,parmp);
@@ -283,7 +284,7 @@ colormap(ha,cmap)
 caxis(ha,caxlims)
 c=colorbar(ha);
 xlabel(c,parmlbl);
-xlabel(ha,'y (km)')
+xlabel(ha,'northward distance (km)')
 ylabel(ha,'altitude (km)')
 
 end
