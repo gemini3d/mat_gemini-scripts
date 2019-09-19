@@ -52,7 +52,7 @@ for ix2=1:xg.lx(2)
     for ix3=1:xg.lx(3)
         SIGP(ix2,ix3)=trapz(l1(:,ix2,ix3),sigP(:,ix2,ix3),1);
         SIGH(ix2,ix3)=trapz(l1(:,ix2,ix3),sigH(:,ix2,ix3),1);
-        INCAP(ix2,ix3)=trapz(l1(:,ix2,ix3),incap(:,ix2,ix3),1);)
+        INCAP(ix2,ix3)=trapz(l1(:,ix2,ix3),incap(:,ix2,ix3),1);
     end %for
 end %for
 

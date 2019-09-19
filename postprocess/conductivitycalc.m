@@ -8,8 +8,10 @@ addpath([gemini_root, filesep, 'setup'])
 
 
 %% SIMULATIONS LOCAITONS
-flagplot=1;
-simname='isinglass_clayton1/'
+%flagplot=1;
+%simname='isinglass_clayton1/'
+flagplot=false;
+simname='KHI_Andres/';
 basedir=[gemini_root,'/../simulations/'];
 direc=[basedir,simname];
 
@@ -19,13 +21,15 @@ direc=[basedir,simname];
 
 
 %% TIME OF INTEREST
-UTsec=25496;
-ymd=[2017,3,2];
+%UTsec=25496;
+%ymd=[2017,3,2];
+UTsec=28500;
+ymd=[2014,12,01];
 
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
 [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc);
-[sigP,sigH,sig0,SIGP,SIGH]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
+[sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
 
 
 %% THIS COMPUTES THE CURRENTS DIRECTLY FROM THE ELECTRIC FIELDS AND CONDUCTIVITES (AS OPPOSED TO DIRECT MODEL OUTPUT)
