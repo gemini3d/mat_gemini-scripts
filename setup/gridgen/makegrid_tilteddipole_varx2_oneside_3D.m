@@ -56,9 +56,11 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %coeffs=[6.9595e-06,-2.2428e-05,8.0440e-04];   %3D moore OK interhemispheric, ~5km resolution
 %coeffs=[1.3919e-05,-4.4856e-05,0.0016];  %3D moore, 10km resolution
 %coeffs=[2.3e-05,-6.7284e-05,0.0024];   %3D moore, 15 km resolution
-coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution
-%coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
+%coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution
+%coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km
+%res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
+coeffs=[0.0010,0.0048,-0.0011];    %eq run iowa3D
 p(1)=pmin;
 ip=1;
 while p(ip)<pmax

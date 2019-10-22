@@ -1,8 +1,9 @@
 addpath ~/Projects/GEMINI/vis;
 
-direc1='~/Projects/GEMINI/objects/test3d';
-direc2='~/simulations/zenodo3d/';
-
+%direc1='~/Projects/GEMINI/objects/test3d';
+%direc2='~/simulations/zenodo3d/';
+direc1='~/Projects/GEMINI/build/test3d_glow/';
+direc2='~/Projects/GEMINI/tests/data/zenodo3d_glow/';
 
 
 ymd=[2013,02,20];
@@ -32,8 +33,6 @@ lalt=200;
 [alti,mloni,mlati,v2i2]=model2magcoords(xg,v2,lalt,llon,llat);
 [alti,mloni,mlati,v1i2]=model2magcoords(xg,v1,lalt,llon,llat);
 [alti,mloni,mlati,Tii2]=model2magcoords(xg,Ti,lalt,llon,llat);
-
-ix3=30
 
 figure;
 subplot(121)
