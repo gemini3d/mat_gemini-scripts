@@ -30,7 +30,7 @@ ymd=[2017,03,02];
 
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc);
+[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec, flagoutput,mloc);
 [sigP,sigH,sig0,SIGP,SIGH]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
 
 
@@ -52,14 +52,14 @@ if (flagplot)
     J2lim=max(abs(J2(:)));
     plotfun(ymd,UTsec,xg,J2(:,:,:),'J_2 (A/m^2)',[-J2lim,J2lim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J2model.png']);
-    J2reconlim=max(abs(J2recon(:)));    
+    J2reconlim=max(abs(J2recon(:)));
     plotfun(ymd,UTsec,xg,J2recon(:,:,:),'J_2 recon. (A/m^2)',[-J2reconlim J2reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J2fromsigma.png'],'-r300');
-    
+
     J3lim=max(abs(J3(:)));
     plotfun(ymd,UTsec,xg,J3(:,:,:),'J_3 (A/m^2)',[-J3lim J3lim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J3model.png']);
-    J3reconlim=max(abs(J3recon(:)));        
+    J3reconlim=max(abs(J3recon(:)));
     plotfun(ymd,UTsec,xg,J3recon(:,:,:),'J_3 recon. (A/m^2)',[-J3reconlim J3reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J3fromsigma.png'],'-r300');
 end %if
@@ -80,13 +80,13 @@ if (flagplot)
     %make plots
     %J2lim=max(abs(J2(:)));
     %plotfun(ymd,UTsec,xg,J2(:,:,:),'J_2 (A/m^2)',[-J2lim,J2lim],[mlatsrc,mlonsrc]);
-    J2reconlim=max(abs(J2recon2(:)));    
+    J2reconlim=max(abs(J2recon2(:)));
     plotfun(ymd,UTsec,xg,J2recon2(:,:,:),'J_2 recon. 2 (A/m^2)',[-J2reconlim J2reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J2fromJPJH.png'],'-r300');
 
     %J3lim=max(abs(J3(:)));
     %plotfun(ymd,UTsec,xg,J3(:,:,:),'J_3 (A/m^2)',[-J3lim J3lim],[mlatsrc,mlonsrc]);
-    J3reconlim=max(abs(J3recon2(:)));        
+    J3reconlim=max(abs(J3recon2(:)));
     plotfun(ymd,UTsec,xg,J3recon2(:,:,:),'J_3 recon. 2 (A/m^2)',[-J3reconlim J3reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J3fromJPJH.png'],'-r300');
 end %if
@@ -96,7 +96,7 @@ end %if
 x2=xg.x2(3:end-2);    %strip off ghost cells
 x3=xg.x3(3:end-2);
 x1=xg.x1(3:end-2);
-lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);  
+lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
 
 divJ=divergence(x2,x3,x1,permute(J2,[3,2,1]),permute(J3,[3,2,1]),zeros(lx3,lx2,lx1));     %permute b/c MATLAB wants the column dim to be y-->x3
 intdivJ=trapz(x1,divJ,3);
@@ -115,7 +115,7 @@ intdivJrecon2=-1*intdivJrecon2;    %we are solving for Jfac at the top of the do
 
 if(flagplot)
     figure; set(gcf,'Paperposition',[0 0 16 4.5]);
-    
+
     subplot(142);
     imagesc(x2/1e3,x3/1e3,intdivJ);
     axis xy;
@@ -124,7 +124,7 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from \int \nabla \cdot J_\perp')
     colorbar;
-    
+
     subplot(143);
     imagesc(x2/1e3,x3/1e3,intdivJrecon);
     axis xy;
@@ -141,8 +141,8 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('J_{||} from \int \nabla \cdot J_\perp recon. 2')
-    colorbar;    
-    
+    colorbar;
+
     subplot(141);
     imagesc(x2/1e3,x3/1e3,squeeze(Jfac(end,:,:,1))');     %transpose again to deal with MATLAB y expectations
     axis xy;
@@ -181,7 +181,7 @@ JgradSIGH=-1*dot(gradSIGH,bhatxE,3);
 if(flagplot)
     figure;
     set(gcf,'PaperPosition',[0 0 11 6]);
-    
+
     subplot(235);
     imagesc(x2/1e3,x3/1e3,squeeze(Jfac(end,:,:,1))');
     axis xy;
@@ -189,9 +189,9 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('J_{||} from model')
-    colorbar; 
+    colorbar;
     cax=caxis;
-    
+
     subplot(231);
     imagesc(x2/1e3,x3/1e3,JdivE');
     axis xy;
@@ -201,7 +201,7 @@ if(flagplot)
     title('J_{||} from \Sigma_P \nabla \cdot E')
     caxis(cax);
     colorbar;
-    
+
     subplot(232);
     imagesc(x2/1e3,x3/1e3,JgradSIGP');
     axis xy;
@@ -211,7 +211,7 @@ if(flagplot)
     title('J_{||} from \nabla \Sigma_P \cdot E')
     caxis(cax);
     colorbar;
-    
+
     subplot(233);
     imagesc(x2/1e3,x3/1e3,JgradSIGH');
     axis xy;
@@ -221,7 +221,7 @@ if(flagplot)
     title('J_{||} from \nabla \Sigma_H \cdot (b \times E)')
     caxis(cax);
     colorbar;
-      
+
     subplot(234);
     imagesc(x2/1e3,x3/1e3,(JdivE+JgradSIGP+JgradSIGH)');
     axis xy;
@@ -230,8 +230,8 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from sum of sources')
     caxis(cax);
-    colorbar;    
-        
+    colorbar;
+
     print('-dpng',[debugdir,filesep,'Jpardecomp.png'],'-r300');
 end %if
 
@@ -251,7 +251,7 @@ divperpSIGHE=divperpSIGHE';    %back to model index ordering
 
 if(flagplot)
     figure;
-    
+
     subplot(131);
     imagesc(x2/1e3,x3/1e3,JgradSIGH');        %transpose again to deal with MATLAB y expectation
     axis xy;
@@ -260,7 +260,7 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from \nabla \Sigma_H \cdot (b \times E)')
     colorbar;
-      
+
     subplot(132);
     imagesc(x2/1e3,x3/1e3,intdivJH);
     axis xy;
@@ -270,7 +270,7 @@ if(flagplot)
     title('J_{||} from \int \nabla \cdot J_H');
     colorbar;
     cax=caxis;
-    
+
     subplot(133);
     imagesc(x2/1e3,x3/1e3,divperpSIGHE');     %transpose again to deal with MATLAB y expectations
     axis xy;
@@ -290,7 +290,7 @@ c1=permute(c1,[2,1,3]);
 
 if(flagplot)
     figure
-    
+
     subplot(121)
     imagesc(x2,x3,-1*(abs(SIGH).*squeeze(c1(end,:,:)))')
     axis xy;
@@ -300,7 +300,7 @@ if(flagplot)
     title('\Sigma_H (b \cdot \nabla \times E) (FAC from curl E)');
     caxis(cax);
     colorbar;
-    
+
     subplot(122);
     imagesc(x2/1e3,x3/1e3,JgradSIGH'-(abs(SIGH).*squeeze(c1(end,:,:)))');        %transpose again to deal with MATLAB y expectation
     axis xy;
@@ -309,7 +309,7 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from \nabla \Sigma_H \cdot (b \times E) + \Sigma_H (b \cdot \nabla \times E)')
     caxis(cax)
-    colorbar;    
+    colorbar;
 
     print('-dpng',[debugdir,filesep,'curlEcontributions.png'],'-r300');
 end %if

@@ -162,11 +162,11 @@ for iorb=1:lorb
       ymd=datevecmodprev(1:3);
       UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
       UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
-      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xg);
+      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
       neprev=ne; viprev=v1; Tiprev=Ti; Teprev=Te;
       J1prev=J1; J2prev=J2; J3prev=J3; v2prev=v2; v3prev=v3;
       clear ne v1 Ti Te J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
-      datebufprev=datemodprev; 
+      datebufprev=datemodprev;
     end
     if (datebufnext~=datemodnext | isempty(nenext))    %need to reload the next output frame data buffers
       fprintf('Loading next buffer...\n');
@@ -174,7 +174,7 @@ for iorb=1:lorb
       ymd=datevecmodnext(1:3);
       UTsec=datevecmodnext(4)*3600+datevecmodnext(5)*60+datevecmodnext(6);
       UTsec=round(UTsec);
-      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc,xg);
+      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
       nenext=ne; vinext=v1; Tinext=Ti; Tenext=Te;
       J1next=J1; J2next=J2; J3next=J3; v2next=v2; v3next=v3;
       clear ne v1 Ti T3 J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
@@ -196,7 +196,7 @@ for iorb=1:lorb
       J3satprev=interp3(X2,X1,X3,J3prev,x2sat,x1sat,x3sat);
       v2satprev=interp3(X2,X1,X3,v2prev,x2sat,x1sat,x3sat);
       v3satprev=interp3(X2,X1,X3,v3prev,x2sat,x1sat,x3sat);
-  
+
       nesatnext=interp3(X2,X1,X3,nenext,x2sat,x1sat,x3sat);
       visatnext=interp3(X2,X1,X3,vinext,x2sat,x1sat,x3sat);
       Tisatnext=interp3(X2,X1,X3,Tinext,x2sat,x1sat,x3sat);
@@ -206,7 +206,7 @@ for iorb=1:lorb
       J3satnext=interp3(X2,X1,X3,J3next,x2sat,x1sat,x3sat);
       v2satnext=interp3(X2,X1,X3,v2next,x2sat,x1sat,x3sat);
       v3satnext=interp3(X2,X1,X3,v3next,x2sat,x1sat,x3sat);
-  
+
       nesattmp(isat)=nesatprev+(nesatnext-nesatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       visattmp(isat)=visatprev+(visatnext-visatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       Tisattmp(isat)=Tisatprev+(Tisatnext-Tisatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);

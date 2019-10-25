@@ -1,9 +1,10 @@
-addpath ~/Projects/GEMINI/vis;
 
-%direc1='~/Projects/GEMINI/objects/test3d';
-%direc2='~/simulations/zenodo3d/';
-direc1='~/Projects/GEMINI/build/test3d_glow/';
-direc2='~/Projects/GEMINI/tests/data/zenodo3d_glow/';
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../GEMINI'];
+addpath([gemini_root, filesep, 'vis'])
+
+direc1 = [gemini_root, filesep, 'build/test3d_glow'];
+direc2 = [gemini_root, filesep, 'build/zenodo3d_glow'];
 
 
 ymd=[2013,02,20];

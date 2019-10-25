@@ -56,16 +56,16 @@ UTsec=UTsec0;
 simdate=[];
 for it=1:lt
     simdate=cat(1,simdate,[ymd,UTsec/3600,0,0]);
-    [ne,mlatsrc,mlonsrc,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop] = loadframe(direc,UTsec,ymd,UTsec0,ymd0,mloc,xg);
+    [ne,mlatsrc,mlonsrc,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop] = loadframe(direc,UTsec,ymd, nan, mloc,xg);
     disp(filename)
 
     neprof(:,it) = ne(:,ix2,ix3);
     Teprof(:,it) = Te(:,ix2,ix3);
     Tiprof(:,it) = Ti(:,ix2,ix3);
     viprof(:,it) = v1(:,ix2,ix3);
-    
+
     [ymd,UTsec]=dateinc(dtout,ymd,UTsec);
 end % for
-    
-    
+
+
 end % function

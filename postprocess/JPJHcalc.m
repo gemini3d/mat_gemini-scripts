@@ -23,7 +23,7 @@ ymd=[2017,3,2];
 
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,ymd0,UTsec0,tdur,dtout,flagoutput,mloc);
+[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec, flagoutput,mloc);
 
 
 %% DECOMPOSE INTO PEDERSEN, HALL, AND FAC COMPONENTS
