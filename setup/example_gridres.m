@@ -84,7 +84,7 @@ x2=xg.x2(3:end-2);
 ix1=floor(lx1/2);
 ix3=floor(lx3/2);
 dl2trial=squeeze(dl2(ix1,:,ix3));              % step size for the original grid
-dl2target=20e3;                                % define a desired grid step size in x2
+dl2target=7.5e3;                                % define a desired grid step size in x2
 dx2target=squeeze(dl2target./h2(ix1,:,ix3));   % what dx2 needs to be to hit target grid size
 
 %A polynomial is being fitted to the target dL as a function of L, this
