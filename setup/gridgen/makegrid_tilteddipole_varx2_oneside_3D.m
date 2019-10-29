@@ -108,7 +108,7 @@ qmax=cos(thetamax)*Re^2/rmax^2;
 sigq=0.075;
 amp=0.0064;
 qloc=0.48;
-mindq=0.005/3;
+mindq=0.005/2.9;
 
 %%IOWA3D
 %sigq=0.075;
