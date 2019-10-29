@@ -62,9 +62,9 @@ zn=0:dzn:(lzn-1)*dzn;
 rhon=0:drhon:(lrhon-1)*drhon;
 
 %output grid
-lx=256;
-ly=256;
-lz=256;
+lx=600;
+ly=600;
+lz=375;
 x=linspace(-1*max(rhon),max(rhon),lx);    %interpreted as eastward distance
 y=linspace(-1*max(rhon),max(rhon),ly);    %northward distance
 z=linspace(min(zn),max(zn),lz);           %altitude
