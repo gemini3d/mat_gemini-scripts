@@ -61,10 +61,10 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
 
-coeffs=[0.0010,0.0048,-0.0011];    %eq run iowa3D, 20km resolution
+%coeffs=[0.0010,0.0048,-0.0011];    %eq run iowa3D, 20km resolution
 %coeffs=[3.8562e-04, 0.0018, -4.8448e-04];    %dist run iowa3D, 7.5km resolution
 %coeffs=[3.8562e-04, 0.0018, -4.6448e-04];    %dist run iowa3D, 7.5km resolution, evenly divisible
-%coeffs=[4.1133e-04, 0.0019, -5.1677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
+coeffs=[4.1133e-04, 0.0019, -5.7677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
 p(1)=pmin;
 ip=1;
 while p(ip)<pmax
@@ -99,16 +99,16 @@ qmax=cos(thetamax)*Re^2/rmax^2;
 
 
 % %SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
-% sigq=0.075;
-% amp=0.0064;
-% qloc=0.48;
-% mindq=0.005/6.5;
-
-%iowa3Deq
 sigq=0.075;
 amp=0.0064;
 qloc=0.48;
-mindq=0.005/2.9;
+mindq=0.005/6.5;
+
+%%iowa3Deq
+%sigq=0.075;
+%amp=0.0064;
+%qloc=0.48;
+%mindq=0.005/2.9;
 
 %%IOWA3D
 %sigq=0.075;
