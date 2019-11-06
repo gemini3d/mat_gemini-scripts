@@ -102,24 +102,11 @@ qmax=cos(thetamax)*Re^2/rmax^2;
 %q=sort(q);
 
 
-<<<<<<< HEAD
-%SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
-=======
 % %SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
->>>>>>> d8735ff263532d29a82937d178282ae071fc4068
 sigq=0.075;
 amp=0.0064;
 qloc=0.48;
 mindq=0.005/6.5;
-<<<<<<< HEAD
-=======
-
-%%iowa3Deq
-%sigq=0.075;
-%amp=0.0064;
-%qloc=0.48;
-%mindq=0.005/2.9;
->>>>>>> d8735ff263532d29a82937d178282ae071fc4068
 
 % %IOWA3D
 % sigq=0.075;
