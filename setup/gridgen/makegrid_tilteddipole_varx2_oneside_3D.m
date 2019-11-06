@@ -66,6 +66,7 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %coeffs=[3.8562e-04, 0.0018, -4.6448e-04];    %dist run iowa3D, 7.5km resolution, evenly divisible
 %coeffs=[4.1133e-04, 0.0019, -5.1677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
 
+%coeffs=[4.1133e-04, 0.0019, -5.7677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
 %coeffs=[3.3986e-04, 0.0017, -5.0597e-04];     %iowa3D that doesn't overrun neutral grid
 coeffs=[3.3986e-04, 0.0017, -6.7597e-04];     %iowa3D that doesn't overrun neutral grid, vega, friendly
 
