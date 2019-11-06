@@ -69,7 +69,6 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %coeffs=[3.3986e-04, 0.0017, -5.0597e-04];     %iowa3D that doesn't overrun neutral grid
 coeffs=[3.3986e-04, 0.0017, -6.7597e-04];     %iowa3D that doesn't overrun neutral grid, vega, friendly
 
-
 p(1)=pmin;
 ip=1;
 while p(ip)<pmax
@@ -103,11 +102,24 @@ qmax=cos(thetamax)*Re^2/rmax^2;
 %q=sort(q);
 
 
+<<<<<<< HEAD
 %SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
+=======
+% %SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
+>>>>>>> d8735ff263532d29a82937d178282ae071fc4068
 sigq=0.075;
 amp=0.0064;
 qloc=0.48;
 mindq=0.005/6.5;
+<<<<<<< HEAD
+=======
+
+%%iowa3Deq
+%sigq=0.075;
+%amp=0.0064;
+%qloc=0.48;
+%mindq=0.005/2.9;
+>>>>>>> d8735ff263532d29a82937d178282ae071fc4068
 
 % %IOWA3D
 % sigq=0.075;
