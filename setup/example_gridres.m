@@ -20,13 +20,27 @@ addpath([gemini_root, filesep, 'vis'])
 
 
 %% Iowa grid for AGU 2019
-dtheta=20;
-dphi=30;
+%{
+dtheta=19;
+dphi=29;
 lp=128;
 lq=256;
 lphi=48;
 altmin=80e3;
 glat=40;   %38.9609;
+glon=360-94.088;
+gridflag=0;
+flagsource=1;
+iscurv=true;
+%}
+dtheta=16;
+dphi=29;
+lp=100;
+lq=200;
+lphi=40;
+altmin=80e3;
+%glat=40;   %38.9609;
+glat=41.5;   %38.9609;
 glon=360-94.088;
 gridflag=0;
 flagsource=1;
@@ -84,7 +98,7 @@ x2=xg.x2(3:end-2);
 ix1=floor(lx1/2);
 ix3=floor(lx3/2);
 dl2trial=squeeze(dl2(ix1,:,ix3));              % step size for the original grid
-dl2target=7.5e3;                                % define a desired grid step size in x2
+dl2target=6.75e3;                                % define a desired grid step size in x2
 dx2target=squeeze(dl2target./h2(ix1,:,ix3));   % what dx2 needs to be to hit target grid size
 
 %A polynomial is being fitted to the target dL as a function of L, this
