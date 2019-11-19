@@ -3,6 +3,14 @@
 
 
 %% Load the grid of interest (user needs to tweak locations)
+addpath ../../GEMINI/script_utils/;
+direc='~/zettergmdata/simulations/iowa3D_hemis_medres2/'
+xg=readgrid(direc);
+rmpath ../../GEMINI/script_utils/;
+
+
+%% Compute the resolutions
+[dl1,dl2,dl3]=gridres(xg);
 
 
 %% Set some parameters that the plotting function needs but that don't matter
@@ -14,8 +22,9 @@ mlatsrc=90-theta*180/pi;
 mlonsrc=phi*180/pi;
 sourceloc=[mlatsrc,mlonsrc];
 
+
 %% Plot the grid resolutions
-addpath ../../GEMINI/vis/plotfunctions/
+addpath ../../GEMINI/vis/plotfunctions/;
 parm=log10(dl1/1e3);
 parmlbl='x_1 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
@@ -25,4 +34,4 @@ parm=log10(dl2/1e3);
 parmlbl='x_2 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
 h=plot3D_curv_frames_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc);
-rmpath ../../GEMINI/vis/plotfunctions/
+rmpath ../../GEMINI/vis/plotfunctions/;
