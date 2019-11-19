@@ -1,12 +1,12 @@
 % This script load a grid from a file and plots the resolution of the grid
 % in a physics coordinate system.  
+addpath ../../GEMINI/script_utils;
+addpath ../../GEMINI/vis/plotfunctions/;
 
 
 %% Load the grid of interest (user needs to tweak locations)
-addpath ../../GEMINI/script_utils/;
 direc='~/zettergmdata/simulations/iowa3D_hemis_medres2/'
-xg=readgrid(direc);
-rmpath ../../GEMINI/script_utils/;
+xg=readgrid([direc,filesep,'inputs',filesep]);
 
 
 %% Compute the resolutions
@@ -24,14 +24,17 @@ sourceloc=[mlatsrc,mlonsrc];
 
 
 %% Plot the grid resolutions
-addpath ../../GEMINI/vis/plotfunctions/;
 parm=log10(dl1/1e3);
 parmlbl='x_1 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
 h=plot3D_curv_frames_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc);
+savefig('~/dl1.fig');
 
 parm=log10(dl2/1e3);
 parmlbl='x_2 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
 h=plot3D_curv_frames_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc);
+savefig('~/dl2.fig');
+
+rmpath ../../GEMINI/script_utils/;
 rmpath ../../GEMINI/vis/plotfunctions/;
