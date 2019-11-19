@@ -7,32 +7,8 @@ addpath([gemini_root, filesep, 'setup/'])
 addpath([gemini_root, filesep, 'vis'])
 
 
-% %% MOORE, OK GRID (FULL)
-% dtheta=20;
-% dphi=27.5;
-% lp=128;
-% lq=96;
-% lphi=16;
-% altmin=80e3;
-% glat=39;
-% glon=262.51;
-% gridflag=1;
-
-
 %% Iowa grid for AGU 2019
 %{
-dtheta=19;
-dphi=29;
-lp=128;
-lq=256;
-lphi=48;
-altmin=80e3;
-glat=40;   %38.9609;
-glon=360-94.088;
-gridflag=0;
-flagsource=1;
-iscurv=true;
-%}
 dtheta=16;
 dphi=29;
 lp=100;
@@ -42,18 +18,54 @@ altmin=80e3;
 %glat=40;   %38.9609;
 glat=41.5;   %38.9609;
 glon=360-94.088;
-gridflag=0;
+gridflag=1;
+flagsource=1;
+iscurv=true;
+%}
+dtheta=16;
+dphi=29;
+lp=100;
+lq=200;
+lphi=210;
+altmin=80e3;
+glat=41.5;   %38.9609;
+glon=360-94.088;
+gridflag=1;
 flagsource=1;
 iscurv=true;
 
 
 %% Compute the grid
 xg=makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-
+%addpath ../../GEMINI-scripts/setup/gridgen;
+%xg=makegrid_tilteddipole_varx2_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);  
+%rmpath ../../GEMINI-scripts/setup/gridgen;
 
 
 %% DETERMINE GRID RESOLUTION
 [dl1,dl2,dl3]=gridres(xg);
+
+
+%% Plot the grid resolution on an appropriate set of physical axes (lat/lon)
+ymd=[1981,05,22];
+UTsec=4*3600+21*60;
+saveplot_fmt={};
+[theta,phi]=geog2geomag(38.96,360-94.088);
+mlatsrc=90-theta*180/pi;
+mlonsrc=phi*180/pi;
+sourceloc=[mlatsrc,mlonsrc];
+
+addpath ../../GEMINI/vis/plotfunctions/
+parm=log10(dl1/1e3);
+parmlbl='x_1 grid spacing (km)';
+caxlims=[min(parm(:)),max(parm(:))];
+h=plot3D_curv_frames_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc);
+
+parm=log10(dl2/1e3);
+parmlbl='x_2 grid spacing (km)';
+caxlims=[min(parm(:)),max(parm(:))];
+h=plot3D_curv_frames_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc);
+rmpath ../../GEMINI/vis/plotfunctions/
 
 
 %% PLOTS
