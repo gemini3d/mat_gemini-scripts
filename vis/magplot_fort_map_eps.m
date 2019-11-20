@@ -4,6 +4,7 @@ addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'vis'])
 
 
+%{
 %SIMULATIONS LOCAITONS
 simname='tohoku20113D_highres_var/';
 basedir=[gemini_root,'/../simulations/'];
@@ -92,6 +93,12 @@ disp('...Done reading data...')
 
 %STORE THE DATA IN A MATLAB FILE FOR LATER USE
 save([direc,'/magfields_fort.mat'],'simdate_series','mlat','mlon','Brt','Bthetat','Bphit');
+%}
+
+direc='~/SDHCcard/iowa3D_hemis_medres2/';
+filename='magfields_fort_diff.mat';
+load([direc,filename]);
+lt=size(simdate_series,1);
 
 
 %INTERPOLATE TO HIGHER SPATIAL RESOLUTION FOR PLOTTING
