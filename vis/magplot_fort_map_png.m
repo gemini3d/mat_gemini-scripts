@@ -1,5 +1,9 @@
-direc='~/SDHCcard/iowa3D_hemis_medres2/';
-filename='magfields_fort_diff.mat';
+cwd = fileparts(mfilename('fullpath'));
+gemini_root = [cwd,filesep,'../../GEMINI'];
+addpath([gemini_root, filesep, 'vendor/colormaps']);
+
+direc='~/SDHCcard/mooreOK3D_hemis_medres/';
+filename='magfields_fort.mat';
 load([direc,filename]);
 lt=size(simdate_series,1);
 
@@ -64,7 +68,8 @@ for it=1:lt-1
     mlonlim=[min(mlonp),max(mlonp)];
     [MLAT,MLON]=meshgrat(mlatlim,mlonlim,size(param));
     pcolorm(MLAT,MLON,param);
-    colormap(parula(256));
+    %colormap(parula(256));
+    colormap(flipud(lbmap(256,'redblue')));
     set(gca,'FontSize',FS);
     tightmap;
     caxlim=max(abs(param(:)))
@@ -86,7 +91,8 @@ for it=1:lt-1
     axesm('MapProjection','Mercator','MapLatLimit',mlatlimplot,'MapLonLimit',mlonlimplot);
     param=squeeze(Bthetatp(:,:,:,it))*1e9;
     pcolorm(MLAT,MLON,param);
-    colormap(parula(256));
+    %colormap(parula(256));
+    colormap(flipud(lbmap(256,'redblue')));
     set(gca,'FontSize',FS);
     tightmap;
     caxlim=max(abs(param(:)))
@@ -109,7 +115,8 @@ for it=1:lt-1
     param=squeeze(Bphitp(:,:,:,it))*1e9;
     %imagesc(mlon,mlat,param);
     pcolorm(MLAT,MLON,param);
-    colormap(parula(256));
+    %colormap(parula(256));
+    colormap(flipud(lbmap(256,'redblue')));
     set(gca,'FontSize',FS);
     tightmap;
     caxlim=max(abs(param(:)))
@@ -144,7 +151,7 @@ for it=1:lt-1
         ax=axis;
         plotm(mlatcoast,mloncoast,'k-','LineWidth',1);
 %        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',10,'PLineLocation',5,'MLabelLocation',10,'PLabelLocation',5);
-        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',2,'PLineLocation',1,'MLabelLocation',2,'PLabelLocation',1);
+        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',2,'PLineLocation',1,'MLabelLocation',4,'PLabelLocation',2);
         gridm on;
         print('-dpng',[direc,'/Brplots/',filename,'.png'],'-r300');
 %        print('-depsc2',[direc,'/Brplots_eps/',filename,'.eps']);
@@ -155,7 +162,7 @@ for it=1:lt-1
         ax=axis;
         plotm(mlatcoast,mloncoast,'k-','LineWidth',1);
 %        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',10,'PLineLocation',5,'MLabelLocation',10,'PLabelLocation',5);
-        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',2,'PLineLocation',1,'MLabelLocation',2,'PLabelLocation',1);
+        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',2,'PLineLocation',1,'MLabelLocation',4,'PLabelLocation',2);
         gridm on;
         print('-dpng',[direc,'/Bthplots/',filename,'.png'],'-r300');
 %        print('-depsc2',[direc,'/Bthplots_eps/',filename,'.eps']);
@@ -166,7 +173,7 @@ for it=1:lt-1
         ax=axis;
         plotm(mlatcoast,mloncoast,'k-','LineWidth',1);
 %        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',10,'PLineLocation',5,'MLabelLocation',10,'PLabelLocation',5);
-        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',2,'PLineLocation',1,'MLabelLocation',2,'PLabelLocation',1);
+        setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',2,'PLineLocation',1,'MLabelLocation',4,'PLabelLocation',2);
         gridm on;
         print('-dpng',[direc,'/Bphiplots/',filename,'.png'],'-r300');
 %        print('-depsc2',[direc,'/Bphiplots_eps/',filename,'.eps']);
