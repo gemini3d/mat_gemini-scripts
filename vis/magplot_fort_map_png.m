@@ -2,8 +2,8 @@ cwd = fileparts(mfilename('fullpath'));
 gemini_root = [cwd,filesep,'../../GEMINI'];
 addpath([gemini_root, filesep, 'vendor/colormaps']);
 
-direc='~/SDHCcard/mooreOK3D_hemis_medres/';
-filename='magfields_fort.mat';
+direc='~/SDHCcard/iowa3D_hemis_medres2/';
+filename='magfields_fort_diff.mat';
 load([direc,filename]);
 lt=size(simdate_series,1);
 
