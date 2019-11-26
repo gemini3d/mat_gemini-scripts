@@ -23,6 +23,8 @@ for it=1:lt
     [zUEN,xUEN,yUEN]=geomag2UENgeomag(alt,mlon,mlat);
     x=xUEN(:,1);
     y=yUEN(1,:);
+    x0=x(ix0);
+    y0=y(iy0);
     Ex=squeeze(outu(it,:,:));
     Ey=squeeze(outv(it,:,:));
     Phinow=zeros(lx,ly);
@@ -33,59 +35,82 @@ for it=1:lt
                 fprintf('Center point %d %d grounded\n',ix,iy);
                 Phi(ix,iy)=0;
             else
-                % integrate x then y
-                if (ix<ix0)
-                   inds=ix:ix0;
-                   dirfact=1;
-                else
-                   inds=ix0:ix;
-                   dirfact=-1;
-                end %if
-                xhere=x(inds);
-                Exhere=Ex(inds,iy0);
-                if (numel(inds)>1)
-                    Phinow(ix,iy)=trapz(xhere,dirfact*Exhere);
-                end
+                %find a line connected present point to reference point
+                xhere=x(ix);
+                yhere=y(iy);
+                %if (xhere>x0)
+                    xline=linspace(x0,xhere,32);
+                %else
+                %    xline=linspace(xhere,x0,100);
+                %end %if
+                yline=y0+(yhere-y0)/(xhere-x0)*(xline-x0);
                 
-                if (iy<iy0)
-                    inds=iy:iy0;
-                    dirfact=1;
-                else
-                    inds=iy0:iy;
-                    dirfact=-1;
-                end %if
-                yhere=y(inds);
-                Eyhere=Ey(ix,inds);
-                if (numel(inds)>1)
-                    Phinow(ix,iy)=Phinow(ix,iy)+trapz(yhere,dirfact*Eyhere);
-                end
+                %interpolate electric field data to this line
+                Exline=interp2(x,y,Ex',xline,yline);
+                Exline=Exline';
+                Eyline=interp2(x,y,Ey',xline,yline);
+                Eylin=Eyline';                
                 
-                %integrate y then x
-                if (iy<iy0)
-                    inds=iy:iy0;
-                    dirfact=1;
-                else
-                    inds=iy0:iy;
-                    dirfact=-1;
-                end %if
-                yhere=y(inds);
-                Eyhere=Ey(ix0,inds);
-                if (numel(inds)>1)
-                    Phinow2(ix,iy)=trapz(yhere,dirfact*Eyhere);
-                end
-                if (ix<ix0)
-                   inds=ix:ix0;
-                   dirfact=1;
-                else
-                   inds=ix0:ix;
-                   dirfact=-1;
-                end %if
-                xhere=x(inds);
-                Exhere=Ex(inds,iy);
-                if (numel(inds)>1)
-                    Phinow2(ix,iy)=Phinow2(ix,iy)+trapz(xhere,dirfact*Exhere);
-                end
+                %perform integral
+                Phinow(ix,iy)=-1*trapz(xline,Exline)-trapz(yline,Eyline);
             end %if
+                
+%                 % integrate x then y
+%                 if (ix<ix0)
+%                    inds=ix:ix0;
+%                    dirfact=1;
+%                 else
+%                    inds=ix0:ix;
+%                    dirfact=-1;
+%                 end %if
+%                 xhere=x(inds);
+%                 Exhere=Ex(inds,iy0);
+%                 if (numel(inds)>1)
+%                     Phinow(ix,iy)=trapz(xhere,dirfact*Exhere);
+%                 end
+%                 
+%                 if (iy<iy0)
+%                     inds=iy:iy0;
+%                     dirfact=1;
+%                 else
+%                     inds=iy0:iy;
+%                     dirfact=-1;
+%                 end %if
+%                 yhere=y(inds);
+%                 Eyhere=Ey(ix,inds);
+%                 if (numel(inds)>1)
+%                     Phinow(ix,iy)=Phinow(ix,iy)+trapz(yhere,dirfact*Eyhere);
+%                 end
+%                 
+%                 %integrate y then x
+%                 if (iy<iy0)
+%                     inds=iy:iy0;
+%                     dirfact=1;
+%                 else
+%                     inds=iy0:iy;
+%                     dirfact=-1;
+%                 end %if
+%                 yhere=y(inds);
+%                 Eyhere=Ey(ix0,inds);
+%                 if (numel(inds)>1)
+%                     Phinow2(ix,iy)=trapz(yhere,dirfact*Eyhere);
+%                 end
+%                 if (ix<ix0)
+%                    inds=ix:ix0;
+%                    dirfact=1;
+%                 else
+%                    inds=ix0:ix;
+%                    dirfact=-1;
+%                 end %if
+%                 xhere=x(inds);
+%                 Exhere=Ex(inds,iy);
+%                 if (numel(inds)>1)
+%                     Phinow2(ix,iy)=Phinow2(ix,iy)+trapz(xhere,dirfact*Exhere);
+%                 end
+%             end %if
+            
+            
+            
             
 %             if (ix==1 && iy==1)
 %                 Phinow(ix,iy)=0;
@@ -105,10 +130,14 @@ for it=1:lt
 %                     Phinow(ix,iy)=Phinow(ix,iy)+trapz(x(1:ix),-1*Ex(1:ix,iy));    %now integrate in y
 %                 end %if
 %            end %if
+
+
+
         end %for
     end %for
-    [~,Excleannow]=gradient(-1*(Phinow2),y,x);                   %note backwardness of array dims...
-    [Eycleannow,~]=gradient(-1*(Phinow),y,x);    
+%    [~,Excleannow]=gradient(-1*(Phinow2),y,x);                   %note backwardness of array dims...
+%    [Eycleannow,~]=gradient(-1*(Phinow),y,x);    
+    [Eycleannow,Excleannow]=gradient(-1*(Phinow),y,x);  
     Exclean(:,:,it)=Excleannow;
     Eyclean(:,:,it)=Eycleannow;
     Phi(:,:,it)=Phinow;
