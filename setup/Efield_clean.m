@@ -1,6 +1,8 @@
 %% Load data from Rob and compute sizes
 addpath ../script_utils/
-load ~/SDHCcard/isinglass_clayton/clayton5_step_smooth7.mat;
+direc='~/SDHCcard/isinglass_clayton/';
+load([direc,'clayton5_step_smooth7.mat']);
+mkdir([direc,'/plots/']);
 [lt,lx,ly]=size(outx);
 Re=6370e3;
 
@@ -38,15 +40,19 @@ for it=1:lt
                 %find a line connected present point to reference point
                 xhere=x(ix);
                 yhere=y(iy);
-                %if (xhere>x0)
-                    xline=linspace(x0,xhere,32);
-                %else
-                %    xline=linspace(xhere,x0,100);
-                %end %if
-                yline=y0+(yhere-y0)/(xhere-x0)*(xline-x0);
+                
+                %x-y pairs for line integration
+                xline=linspace(x0,xhere,32);
+                if (abs(xline(2)-xline(1))<0.1)    %degenerate slope
+                    slope=0;
+                    yline=linspace(y0,yhere,32);
+                else
+                    slope=(yhere-y0)/(xhere-x0);
+                    yline=y0+slope*(xline-x0);
+                end %if
                 
                 %interpolate electric field data to this line
-                Exline=interp2(x,y,Ex',xline,yline);
+                Exline=interp2(x,y,Ex',xline,yline);     %transpose to deal with x,y->y,x matlab weirdness
                 Exline=Exline';
                 Eyline=interp2(x,y,Ey',xline,yline);
                 Eylin=Eyline';                
@@ -156,7 +162,9 @@ for it=1:lt
     imagesc(x,y,Excleannow');
     axis xy;
     colorbar;
-    title('E_x cleaned');
+    title(sprintf('E_x cleaned: %f',outt(it)));
+    xlabel('E');
+    ylabel('N');
     caxx=caxis;
     
     subplot(222)
@@ -164,6 +172,8 @@ for it=1:lt
     axis xy;
     colorbar;
     title('E_y cleaned');
+    xlabel('E');
+    ylabel('N');
     caxy=caxis;
     
     subplot(223)
@@ -171,6 +181,8 @@ for it=1:lt
     axis xy;
     colorbar;
     title('E_x original');
+    xlabel('E');
+    ylabel('N');
     caxis(caxx);
     
     subplot(224)
@@ -178,9 +190,11 @@ for it=1:lt
     axis xy;
     colorbar;
     title('E_y original');
+    xlabel('E');
+    ylabel('N');
     caxis(caxy);
     
-    pause(0.01);
+    print('-dpng','-r300',[direc,'/plots/',num2str(it),'.png']);
 end %for
 
 
