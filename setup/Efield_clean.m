@@ -1,7 +1,7 @@
 %% Load data from Rob and compute sizes
 addpath ../script_utils/
 direc='~/SDHCcard/isinglass_clayton/';
-load([direc,'clayton5_step_smooth7.mat']);
+load([direc,'clayton1_step_smooth7.mat']);
 mkdir([direc,'/plots/']);
 [lt,lx,ly]=size(outx);
 Re=6370e3;
