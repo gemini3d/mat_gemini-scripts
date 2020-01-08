@@ -18,6 +18,7 @@ UTsec=14400;
 [zUENi,xUENi,yUENi,v2i]=model2magUENcoords(xg,v2);
 [zUENi,xUENi,yUENi,v1i]=model2magUENcoords(xg,v1);
 [zUENi,xUENi,yUENi,Tii]=model2magUENcoords(xg,Ti);
+[zUENi,xUENi,yUENi,nei2]=model2magUENcoords(xg,ne,100,100,100,[0, 600e3],[-250e3, 250e3],[-250e3, 250e3]);
 
 figure;
 subplot(121)
