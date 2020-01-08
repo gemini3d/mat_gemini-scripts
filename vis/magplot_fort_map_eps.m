@@ -95,15 +95,17 @@ disp('...Done reading data...')
 save([direc,'/magfields_fort.mat'],'simdate_series','mlat','mlon','Brt','Bthetat','Bphit');
 %}
 
-direc='~/SDHCcard/iowa3D_hemis_medres2/';
-filename='magfields_fort_diff.mat';
+%direc='~/SDHCcard/iowa3D_hemis_medres2/';
+%filename='magfields_fort_diff.mat';
+direc='~/SDHCcard/mooreOK3D_hemis_medres/';
+filename='magfields_fort.mat';
 load([direc,filename]);
 lt=size(simdate_series,1);
 
 
 %INTERPOLATE TO HIGHER SPATIAL RESOLUTION FOR PLOTTING
-llonp=200;
-llatp=200;
+llonp=384;
+llatp=384;
 mlonp=linspace(min(mlon(:)),max(mlon(:)),llonp);
 mlatp=linspace(min(mlat(:)),max(mlat(:)),llatp);
 [MLONP,MLATP]=meshgrid(mlonp,mlatp);
@@ -126,7 +128,7 @@ phidist=mlonsrc*pi/180;
 
 
 %MAKE THE PLOTS AND SAVE TO A FILE
-for it=1:lt-1
+for it=1:lt
     disp('Printing magnetic field plots...')
     figure(1);
     FS=8;

@@ -1,7 +1,8 @@
 %% Load data from Rob and compute sizes
-addpath ../script_utils/
+addpath ../script_utils/;
+addpath ../../GEMINI/script_utils;
 direc='~/SDHCcard/isinglass_clayton/';
-load([direc,'clayton1_step_smooth7.mat']);
+load([direc,'clayton5_step_smooth7.mat']);
 mkdir([direc,'/plots/']);
 [lt,lx,ly]=size(outx);
 Re=6370e3;
@@ -194,7 +195,11 @@ for it=1:lt
     ylabel('N');
     caxis(caxy);
     
-    print('-dpng','-r300',[direc,'/plots/',num2str(it),'.png']);
+    ymd=[2017,3,2];
+    UTsec=outt(it)*3600;
+    filestr=datelab(ymd,UTsec);
+    filename=[direc,'/plots/',filestr,'.png']
+    print('-dpng','-r300',filename);
 end %for
 
 

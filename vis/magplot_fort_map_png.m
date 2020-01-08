@@ -2,17 +2,22 @@ cwd = fileparts(mfilename('fullpath'));
 gemini_root = [cwd,filesep,'../../GEMINI'];
 addpath([gemini_root, filesep, 'vendor/colormaps']);
 
-direc='~/SDHCcard/iowa3D_hemis_medres2/';
-filename='magfields_fort_diff.mat';
+%direc='~/Downloads/iowa3D_hemis_medres2/';
+%filename='magfields.insitu.diff.mat';
+direc='~/Downloads/mooreOK3D_hemis_medres/';
+filename='magfields.insitu.conj.mat';
 load([direc,filename]);
 lt=size(simdate_series,1);
 
 
 %INTERPOLATE TO HIGHER SPATIAL RESOLUTION FOR PLOTTING
-llonp=200;
-llatp=200;
-mlonp=linspace(min(mlon(:)),max(mlon(:)),llonp);
-mlatp=linspace(min(mlat(:)),max(mlat(:)),llatp);
+llonp=384;
+llatp=384;
+%mlonp=linspace(min(mlon(:)),max(mlon(:)),llonp);
+%mlatp=linspace(min(mlat(:)),max(mlat(:)),llatp);
+mlonp=linspace(360-40,360-22,llonp);
+%mlatp=linspace(36,50,llatp);
+mlatp=linspace(-50,-36,llatp);
 [MLONP,MLATP]=meshgrid(mlonp,mlatp);
 for it=1:lt
     param=interp2(mlon,mlat,squeeze(Brt(:,:,:,it)),MLONP,MLATP);
@@ -44,7 +49,7 @@ end
 
 
 %MAKE THE PLOTS AND SAVE TO A FILE
-for it=1:lt-1
+for it=1:lt
     fprintf('Printing magnetic field plots...\n');
     %CREATE A MAP AXIS
     figure(1);
@@ -60,8 +65,10 @@ for it=1:lt-1
 %    subplot(131);
     figure(1);
     clf;
-    mlatlimplot=[min(mlat)-0.5,max(mlat)+0.5];
-    mlonlimplot=[min(mlon)-0.5,max(mlon)+0.5];
+%    mlatlimplot=[min(mlat)-0.5,max(mlat)+0.5];
+%    mlonlimplot=[min(mlon)-0.5,max(mlon)+0.5];
+    mlatlimplot=[min(mlatp)-0.5,max(mlatp)+0.5];
+    mlonlimplot=[min(mlonp)-0.5,max(mlonp)+0.5];
     axesm('MapProjection','Mercator','MapLatLimit',mlatlimplot,'MapLonLimit',mlonlimplot);
     param=squeeze(Brtp(:,:,:,it))*1e9;
     mlatlim=[min(mlatp),max(mlatp)];

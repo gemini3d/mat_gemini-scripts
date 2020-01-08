@@ -6,7 +6,9 @@ function [zUENi,xUENi,yUENi,parmi]=model2magUENcoords(xg,parm,lz,lx,ly,zlims,xli
 %2D grids...
 %
 %function [zUENi,xUENi,yUENi,parmi]=model2magcoords(xg,parm,lz,lx,ly,zlims,xlims,ylims)
-%
+
+%% Annoying path stuff
+addpath ../script_utils/;
 
 %% Need at least two arguments, set defaults an necessary
 narginchk(2,8);
@@ -22,18 +24,14 @@ lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
 inds1=3:lx1+2; inds2=3:lx2+2; inds3=3:lx3+2;
 x1=xg.x1(inds1); x2=xg.x2(inds2); x3=xg.x3(inds3);
 
+if (nargin<5)    %default to some number of grid points if not given
+    lz=150; lx=150; ly=150;
+end %if
 if (nargin<8)    %default to using grid limits if not given
     zlims=[min(zUEN(:))+1,max(zUEN(:))-1];   %stay just inside given grid
     xlims=[min(xUEN(:))+1,max(xUEN(:))-1];
     ylims=[min(yUEN(:))+1,max(yUEN(:))-1];    
 end %if
-if (nargin<5)    %default to some number of grid points if not given
-    lz=150; lx=150; ly=150;
-end %if
-
-
-%% Paths
-addpath ../script_utils;
 
 
 %% Define a regular mesh of a set number of points that encompasses the grid (or part of the grid)
@@ -58,7 +56,7 @@ end %if
 %There needs to be a separate transformation here for each coordinate system that the model
 % may use...
 if (flagcurv==1)
-    [ALTi,MLONi,MLATi]=UENgeomag2geomag(zUENi,xUENi,yUENi,reflon,reflat);
+    [ALTi,MLONi,MLATi]=UENgeomag2geomag(ZUENi,XUENi,YUENi,reflon,reflat);
     [qi,pei,phii]=geomag2dipole(ALTi,MLONi,MLATi);
     x1i=qi(:); x2i=pei(:); x3i=phii(:);
 elseif (flagcurv==0)

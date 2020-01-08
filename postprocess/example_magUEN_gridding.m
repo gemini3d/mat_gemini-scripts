@@ -3,11 +3,10 @@ gemini_root = [cwd,filesep,'../../GEMINI'];
 addpath([gemini_root, filesep, 'script_utils'])
 addpath([gemini_root, filesep, 'vis'])
 
+direc='~/Downloads/ESF_medres/';
 
-direc='~/Projects/GEMINI/objects/test3d_glow/';
-
-ymd=[2013,02,20];
-UTsec=18060;
+ymd=[2016,03,03];
+UTsec=14400;
 
 [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec);
 [zUENi,xUENi,yUENi,Tei]=model2magUENcoords(xg,Te);
