@@ -1,8 +1,10 @@
 %% Load data from Rob and compute sizes
 addpath ../script_utils/;
 addpath ../../GEMINI/script_utils;
-direc='~/SDHCcard/isinglass_clayton/';
+direc='~/Downloads/isinglass_clayton/';
 load([direc,'clayton5_step_smooth7.mat']);
+%direc='~/Downloads/isinglass_clayton/';
+%load([direc,'tucker/divfreeflow_RCformat.mat']);
 mkdir([direc,'/plots/']);
 [lt,lx,ly]=size(outx);
 Re=6370e3;
@@ -26,13 +28,14 @@ for it=1:lt
     [zUEN,xUEN,yUEN]=geomag2UENgeomag(alt,mlon,mlat);
     x=xUEN(:,1);
     y=yUEN(1,:);
+    [X,Y]=meshgrid(x(:)',y(:));
     x0=x(ix0);
     y0=y(iy0);
     Ex=squeeze(outu(it,:,:));
     Ey=squeeze(outv(it,:,:));
     Phinow=zeros(lx,ly);
     Phinow2=zeros(lx,ly);
-    for iy=1:ly      %ix=iy=1 point assumed grounded
+    for iy=1:ly
         for ix=1:lx
             if (ix==ix0 && iy==iy0)
                 fprintf('Center point %d %d grounded\n',ix,iy);
@@ -51,12 +54,13 @@ for it=1:lt
                     slope=(yhere-y0)/(xhere-x0);
                     yline=y0+slope*(xline-x0);
                 end %if
+                yline(end)=min(yline(end),max(y));    %gets rid of numerical results outside original grid which can cause NaNs
                 
                 %interpolate electric field data to this line
                 Exline=interp2(x,y,Ex',xline,yline);     %transpose to deal with x,y->y,x matlab weirdness
                 Exline=Exline';
                 Eyline=interp2(x,y,Ey',xline,yline);
-                Eylin=Eyline';                
+                Eyline=Eyline';                
                 
                 %perform integral
                 Phinow(ix,iy)=-1*trapz(xline,Exline)-trapz(yline,Eyline);
@@ -137,9 +141,6 @@ for it=1:lt
 %                     Phinow(ix,iy)=Phinow(ix,iy)+trapz(x(1:ix),-1*Ex(1:ix,iy));    %now integrate in y
 %                 end %if
 %            end %if
-
-
-
         end %for
     end %for
 %    [~,Excleannow]=gradient(-1*(Phinow2),y,x);                   %note backwardness of array dims...
@@ -150,18 +151,23 @@ for it=1:lt
     Phi(:,:,it)=Phinow;
     
     % Test for residual curl;
-    curlE=curl(x,y,Ex',Ey');
-    curlEnow=curl(x,y,Excleannow',Eycleannow');
+%    curlE=curl(x,y,Ex',Ey');
+%    curlEnow=curl(x,y,Excleannow',Eycleannow');
+    curlEnow=curl(X,Y,Excleannow',Eycleannow');
+    curlE=curl(X,Y,Ex',Ey');
+    
+    % Need to be taking a mean over the grid...
     disp('Old max curl:  ');
-    disp(max(abs(curlE(:))));
+    disp(mean(abs(curlE(:))));
     disp('Max curl of cleaned data:  ');    
-    disp(max(abs(curlEnow(:))));
+    disp(mean(abs(curlEnow(:))));
     
     figure(1);
     clf;
     subplot(221)
     imagesc(x,y,Excleannow');
     axis xy;
+    colormap(jet);
     colorbar;
     title(sprintf('E_x cleaned: %f',outt(it)));
     xlabel('E');
@@ -171,6 +177,7 @@ for it=1:lt
     subplot(222)
     imagesc(x,y,Eycleannow');
     axis xy;
+    colormap(jet);
     colorbar;
     title('E_y cleaned');
     xlabel('E');
@@ -180,6 +187,7 @@ for it=1:lt
     subplot(223)
     imagesc(x,y,Ex');
     axis xy;
+    colormap(jet);
     colorbar;
     title('E_x original');
     xlabel('E');
@@ -189,6 +197,7 @@ for it=1:lt
     subplot(224)
     imagesc(x,y,Ey');
     axis xy;
+    colormap(jet);
     colorbar;
     title('E_y original');
     xlabel('E');
@@ -200,6 +209,7 @@ for it=1:lt
     filestr=datelab(ymd,UTsec);
     filename=[direc,'/plots/',filestr,'.png']
     print('-dpng','-r300',filename);
+    
 end %for
 
 

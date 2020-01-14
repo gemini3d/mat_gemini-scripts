@@ -18,7 +18,7 @@ UTsec=14400;
 [zUENi,xUENi,yUENi,v2i]=model2magUENcoords(xg,v2);
 [zUENi,xUENi,yUENi,v1i]=model2magUENcoords(xg,v1);
 [zUENi,xUENi,yUENi,Tii]=model2magUENcoords(xg,Ti);
-[zUENi,xUENi,yUENi,nei2]=model2magUENcoords(xg,ne,100,100,100,[0, 600e3],[-250e3, 250e3],[-250e3, 250e3]);
+[zUENi,xUENi,yUENi,nei2]=model2magUENcoords(xg,ne,150,150,150,[100e3, 750e3],[-300e3, 300e3],[-300e3, 300e3]);
 
 figure;
 subplot(121)
@@ -27,6 +27,16 @@ axis xy;
 colorbar;
 subplot(122)
 imagesc(yUENi,zUENi,squeeze(nei(:,end/2,:)));
+axis xy;
+colorbar;
+
+figure;
+subplot(121)
+imagesc(xUENi,zUENi,nei2(:,:,end/2));
+axis xy;
+colorbar;
+subplot(122)
+imagesc(yUENi,zUENi,squeeze(nei2(:,end/2,:)));
 axis xy;
 colorbar;
 
