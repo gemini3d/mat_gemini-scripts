@@ -10,9 +10,9 @@ addpath([gemini_root, filesep, 'setup'])
 %% SIMULATIONS LOCAITONS
 flagplot=1;
 %simname='isinglass_clayton1/'
-simname='ARCS/'
+simname='isinglass_clayton5_clean/'
 %basedir=[gemini_root,'/media/data/'];
-basedir='/media/data/'
+basedir='~/Downloads/'
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
 mkdir(debugdir);
@@ -25,9 +25,10 @@ mkdir(debugdir);
 %% TIME OF INTEREST
 %UTsec=25496;
 %ymd=[2017,3,2];
-UTsec=27300;
+%UTsec=27300;
+%ymd=[2017,03,02];
+UTsec=28380;
 ymd=[2017,03,02];
-
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
 [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec, flagoutput,mloc);
