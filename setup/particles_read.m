@@ -1,3 +1,4 @@
+% This is likely deprecated; the most up-to-date version in in GEMINI-examples/initialize/isinglass
 
 %CREATE SOME SPACE FOR OUTPUT FILES
 outdir='particles/';
