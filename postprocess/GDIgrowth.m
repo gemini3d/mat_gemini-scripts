@@ -1,5 +1,5 @@
 %% Load a GDI simulation
-direc='~/simulations/GDI_periodic_lowres_tmp4/';
+direc='~/simulations/GDI_periodic_lowres_varx2/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -22,7 +22,7 @@ while (t<=tdur)
     simdatenow=[ymd,0,0,UTsec]
     simdate(it,:)=simdatenow;
     data=loadframe(direc,ymd,UTsec);
-    x2now=x2ref+t*1e3;    %moving at 1 kms/
+    x2now=x2ref+t*0.5e3;    %moving at 1 kms/
     ix2=min(find(x2>x2now));
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
 
@@ -46,14 +46,18 @@ end %for
 %% Fluctuation average and relative change
 nepwr=std(dneline,0,2);   %compute a standard deviation along the x2-direction on the grid (tangent to gradient)
 nerelpwr=nepwr./meanne;
+
+
+%% Evaluate time constant empirically from the simulation output
 tconsts=log(nepwr);       %time elapsed measured in growth times
 dtconsts=diff(tconsts);   %difference in time constants between outputs
-avgdtconst=mean(dtconsts(3:6));   %average time constants elapsed per output
+itslinear=find(nerelpwr<0.1);
+avgdtconst=mean(dtconsts(3:max(itslinear)));   %average time constants elapsed per output, only use times after 3rd output to allow settling
 growthtime=dtout/avgdtconst;
 
 
 %% Growth rate from linear estimate Im{omega} = E/(B*ell)
-gamma=1e3/10e3;     % 1 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
+gamma=0.5e3/10e3;     % 1 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
 lineargrowthtime=1/gamma;
 
 
@@ -83,7 +87,7 @@ Snnmag(:,lx3)=NaN;
 %% Plot wavenumber dependent growth
 figure(2);
 
-its=[3,5,7,9,11,17];
+its=2*[2,4,6,8,10,12];
 subplot(121);
 plot(x3,dneline(its,:));
 xlabel('horizontal distance (m)');
