@@ -10,9 +10,10 @@ addpath([gemini_root, filesep, 'setup'])
 %% SIMULATIONS LOCAITONS
 flagplot=1;
 %simname='isinglass_clayton1/'
-simname='isinglass_clayton5_clean/'
+%simname='isinglass_clayton5_clean/'
+simname='isinglass_clayton5_tucker/'
 %basedir=[gemini_root,'/media/data/'];
-basedir='~/Downloads/'
+basedir='~/simulations/'
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
 mkdir(debugdir);
@@ -20,7 +21,6 @@ mkdir(debugdir);
 
 %% READ IN DATA - need to add the f10.7
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ]=readconfig([direc,filesep,'inputs/config.ini']);
-
 
 %% TIME OF INTEREST
 %UTsec=25496;
@@ -31,7 +31,23 @@ UTsec=28380;
 ymd=[2017,03,02];
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec, flagoutput,mloc);
+%[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec, flagoutput,mloc);
+xg=readgrid(direc);
+framedata = loadframe(direc,ymd,UTsec,flagoutput,mloc);
+ne=framedata.ne;
+Ti=framedata.Ti;
+Te=framedata.Te;
+J1=framedata.J1;
+J2=framedata.J2;
+J3=framedata.J3;
+%ns=framedata.ns;
+%vs1=framedata.vs1;
+%Ts=framedata.Ts;
+v2=framedata.v2;
+v3=framedata.v3;
+v1=framedata.v1;
+mlatsrc=framedata.mlatsrc;
+mlonsrc=framedata.mlonsrc;
 [sigP,sigH,sig0,SIGP,SIGH]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
 
 

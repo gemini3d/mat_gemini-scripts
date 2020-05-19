@@ -1,5 +1,5 @@
 %% Load a GDI simulation
-direc='~/simulations/GDI_periodic_lowres_varx2/';
+direc='~/simulations/GDI_periodic_lowres_lineartest/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 

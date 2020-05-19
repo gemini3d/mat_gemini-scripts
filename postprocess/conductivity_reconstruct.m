@@ -4,7 +4,11 @@ function [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,
 %% GET THE NEUTRAL ATMOSPHERE NEEDED FOR COLLISIONS, ETC.
 UThrs=UTsec/3600;
 dmy=[ymd(3),ymd(2),ymd(1)];
-natm=msis_matlab3D(xg,UThrs,dmy,activ);
+%natm=msis_matlab3D(xg,UThrs,dmy,activ);
+params.UTsec0=UThrs*3600;
+params.ymd=ymd;
+params.activ=activ;
+natm=msis_matlab3D(params,xg);
 
 
 %% MASS AND CHARGE VARIABLES DESCRIBING SPECIES (needed to recompute the collision freqs.) - this is a little messy maybe have some global script that sets???
