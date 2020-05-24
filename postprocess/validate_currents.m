@@ -10,8 +10,8 @@ addpath([gemini_root, filesep, 'setup'])
 %% SIMULATIONS LOCAITONS
 flagplot=1;
 %simname='isinglass_clayton1/'
-%simname='isinglass_clayton5_clean/'
-simname='isinglass_clayton5_tucker/'
+simname='isinglass_clayton5/'
+%simname='isinglass_clayton5_tucker/'
 %basedir=[gemini_root,'/media/data/'];
 basedir='~/simulations/'
 direc=[basedir,simname];
