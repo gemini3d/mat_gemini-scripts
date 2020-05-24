@@ -30,10 +30,8 @@ while (t<=tdur)
         ne=data.ne; Ti=data.Ti; Te=data.Te; v1=data.v1;
         [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
         
-        % min relaxation parameter over entire grid at the first time
-        % step - the corresponds roughly to the background value (not the
-        % patch value).
-        nutilde=min(SIGP(:)./(INCAP(:)+5));    %FIXME:  need to manually add in the magnetospheric capacitance, should be read from input file
+        % mean relaxation parameter over entire grid, first time step
+        nutilde=mean(SIGP(:)./(INCAP(:)+5));    %FIXME:  need to manually add in the magnetospheric capacitance, should be read from input file
     end %if
     
     t=t+dtout;
@@ -69,7 +67,10 @@ growthtime=dtout/avgdtconst;
 %% Growth rate from linear estimate Im{omega} = sqrt(nutilde*E/(B*ell))
 t=datenum(simdate);
 t0=t(itmin);
-gamma=sqrt(nutilde*0.5e3/10e3);     % inertial limit, 0.5 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
+% inertial limit, 0.5 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
+%gamma=sqrt(nutilde*0.5e3/10e3);    % yikes not very accurate compared to
+%full expression...
+gamma=-nutilde/2+1/2*sqrt(nutilde^2+4*nutilde*0.5e3/10e3);
 lineargrowthtime=1/gamma;
 linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
 
