@@ -1,5 +1,6 @@
 %% Load a GDI simulation
-direc='~/simulations/GDI_periodic_lowres_lineartest/';
+%direc='~/simulations/GDI_periodic_lowres_lineartest/';
+direc='~/simulations/GDI_periodic_lowres/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -52,23 +53,32 @@ nerelpwr=nepwr./meanne;
 tconsts=log(nepwr);       %time elapsed measured in growth times
 dtconsts=diff(tconsts);   %difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-avgdtconst=mean(dtconsts(3:max(itslinear)));   %average time constants elapsed per output, only use times after 3rd output to allow settling
+itmin=3;
+avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
 
 %% Growth rate from linear estimate Im{omega} = E/(B*ell)
+t=datenum(simdate);
+t0=t(itmin);
 gamma=0.5e3/10e3;     % 1 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
 lineargrowthtime=1/gamma;
+linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
 
 
 %% Do some basic plot containing this info (avg'd over space)
 figure(1);
-t=datenum(simdate);
-plot(t,100*nerelpwr);
-datetick
+plot(t,100*nerelpwr);    % growth from simulation
+ax=axis;
+hold on;
+plot(t,100*linear_nerelpwr);    %pure linear growth
+hold off;
+axis(ax);
+datetick;
+legend({'simulation','linear growth'})
 xlabel('UT');
 ylabel('% variation from background (avg.)');
-title(sprintf('Theoretical \\gamma:  %d; emprically determined \\gamma:  %d',lineargrowthtime,growthtime));
+title(sprintf('Theoretical \\gamma:  %d; model \\gamma:  %d',lineargrowthtime,growthtime));
 
 
 %% Break down the growth according to wavenumber
