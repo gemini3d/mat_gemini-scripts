@@ -1,5 +1,5 @@
 %% Load a GDI simulation
-direc='~/simulations/GDI_periodic_lowres_nocap/';
+direc='~/simulations/GDI_periodic_lowres_cap/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -12,7 +12,7 @@ ix1=min(find(xg.x1>300e3));    %F-region location in terms of grid index
 x2ref=-85e3;
 
 
-%% Loop over data and pull in the density for main part of gradient
+%% Loop over data and pull in the density for location of density gradient
 neline=[];
 t=0;
 it=1;
@@ -25,6 +25,14 @@ while (t<=tdur)
     x2now=x2ref+t*0.5e3;    %moving at 0.5 kms/
     ix2=min(find(x2>x2now));
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
+
+    if (it==1)     % on the first time step compute the conductance and inertial capacitance for the simulation
+        ne=data.ne; Ti=data.Ti; Te=data.Te; v1=data.v1;
+        [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
+        
+        % mean relaxation parameter over entire grid, first time step
+        nutilde=mean(SIGP(:)./(INCAP(:)+5));    %FIXME:  need to manually add in the magnetospheric capacitance, should be read from input file
+    end %if
     
     t=t+dtout;
     it=it+1;
@@ -56,16 +64,19 @@ avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elaps
 growthtime=dtout/avgdtconst;
 
 
-%% Growth rate from linear estimate Im{omega} = E/(B*ell)
+%% Growth rate from linear estimate Im{omega} = sqrt(nutilde*E/(B*ell))
 t=datenum(simdate);
 t0=t(itmin);
-gamma=0.5e3/10e3;     % 0.5 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
+% inertial limit, 0.5 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
+%gamma=sqrt(nutilde*0.5e3/10e3);    % yikes not very accurate compared to
+%full expression...
+gamma=-nutilde/2+1/2*sqrt(nutilde^2+4*nutilde*0.5e3/10e3);
 lineargrowthtime=1/gamma;
 linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
 
 
 %% Do some basic plot containing this info (avg'd over space)
-figure;
+figure(1);
 plot(t,100*nerelpwr);    % growth from simulation
 ax=axis;
 hold on;
@@ -93,7 +104,7 @@ Snnmag(:,lx3)=NaN;
 
 
 %% Plot wavenumber dependent growth
-figure;
+figure(2);
 
 its=2*[2,4,6,8,10,12];
 subplot(121);
