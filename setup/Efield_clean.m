@@ -1,14 +1,22 @@
 %% Load data from Rob and compute sizes
 addpath ../script_utils/;
 addpath ../../GEMINI/script_utils;
-direc='~/Downloads/isinglass_clayton/';
+
+
+%% Locations needed by this script
+direc='~/Dropbox/common/mypapers/ISINGLASS/paper2_finally/';
+outplotdir=[direc,'/clayton_plots/'];
+mkdir(outplotdir);
+
+
+%% Load the data
 load([direc,'clayton5_step_smooth7.mat']);
-%direc='~/Downloads/isinglass_clayton/';
-%load([direc,'tucker/divfreeflow_RCformat.mat']);
-mkdir([direc,'/plots/']);
+%load([direc,'tucker_reconstructions_reordered_translated.mat']);
 [lt,lx,ly]=size(outx);
 Re=6370e3;
 
+% following input we need these variables in the workspace:  outt (time),
+% outx (longitude dist.), outy (lat. dist.), outu (Ex), outv(Ey).  
 
 %% Choose a reference point on the grid for zero potential
 ix0=floor(lx/2);
@@ -19,7 +27,7 @@ iy0=floor(ly/2);
 Phi=zeros(lx,ly,lt);              %storage space for electric potential
 Exclean=zeros(lx,ly,lt);          %cleaned electric field (curl free)
 Eyclean=zeros(lx,ly,lt);
-for it=1:lt
+parfor it=1:lt
     mlon=squeeze(outx(it,:,:));
     mlat=squeeze(outy(it,:,:));
     alt=zeros(lx,ly);
@@ -39,7 +47,7 @@ for it=1:lt
         for ix=1:lx
             if (ix==ix0 && iy==iy0)
                 fprintf('Center point %d %d grounded\n',ix,iy);
-                Phi(ix,iy)=0;
+                Phinow(ix,iy)=0;
             else
                 %find a line connected present point to reference point
                 xhere=x(ix);
@@ -157,9 +165,9 @@ for it=1:lt
     curlE=curl(X,Y,Ex',Ey');
     
     % Need to be taking a mean over the grid...
-    disp('Old max curl:  ');
+    disp('Old mean curl:  ');
     disp(mean(abs(curlE(:))));
-    disp('Max curl of cleaned data:  ');    
+    disp('Mean of cleaned data:  ');    
     disp(mean(abs(curlEnow(:))));
     
     figure(1);
@@ -173,6 +181,10 @@ for it=1:lt
     xlabel('E');
     ylabel('N');
     caxx=caxis;
+    maxval=max(abs(caxis));
+    maxval=min(maxval,0.025);
+    caxx=[-maxval,maxval];
+    caxis(caxx);
     
     subplot(222)
     imagesc(x,y,Eycleannow');
@@ -207,7 +219,7 @@ for it=1:lt
     ymd=[2017,3,2];
     UTsec=outt(it)*3600;
     filestr=datelab(ymd,UTsec);
-    filename=[direc,'/plots/',filestr,'.png']
+    filename=[outplotdir,filestr,'.png']
     print('-dpng','-r300',filename);
     
 end %for
