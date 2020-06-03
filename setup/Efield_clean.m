@@ -5,13 +5,14 @@ addpath ../../GEMINI/script_utils;
 
 %% Locations needed by this script
 direc='~/Dropbox/common/mypapers/ISINGLASS/paper2_finally/';
-outplotdir=[direc,'/clayton_plots/'];
+outplotdir=[direc,'/tucker_plots/'];
 mkdir(outplotdir);
+flagplot=true;
 
 
 %% Load the data
-load([direc,'clayton5_step_smooth7.mat']);
-%load([direc,'tucker_reconstructions_reordered_translated.mat']);
+%load([direc,'clayton5_step_smooth7.mat']);
+load([direc,'tucker_reconstructions_reordered_translated.mat']);
 [lt,lx,ly]=size(outx);
 Re=6370e3;
 
@@ -27,7 +28,7 @@ iy0=floor(ly/2);
 Phi=zeros(lx,ly,lt);              %storage space for electric potential
 Exclean=zeros(lx,ly,lt);          %cleaned electric field (curl free)
 Eyclean=zeros(lx,ly,lt);
-parfor it=1:lt
+for it=1:lt
     mlon=squeeze(outx(it,:,:));
     mlat=squeeze(outy(it,:,:));
     alt=zeros(lx,ly);
@@ -170,58 +171,82 @@ parfor it=1:lt
     disp('Mean of cleaned data:  ');    
     disp(mean(abs(curlEnow(:))));
     
-    figure(1);
-    clf;
-    subplot(221)
-    imagesc(x,y,Excleannow');
-    axis xy;
-    colormap(jet);
-    colorbar;
-    title(sprintf('E_x cleaned: %f',outt(it)));
-    xlabel('E');
-    ylabel('N');
-    caxx=caxis;
-    maxval=max(abs(caxis));
-    maxval=min(maxval,0.025);
-    caxx=[-maxval,maxval];
-    caxis(caxx);
-    
-    subplot(222)
-    imagesc(x,y,Eycleannow');
-    axis xy;
-    colormap(jet);
-    colorbar;
-    title('E_y cleaned');
-    xlabel('E');
-    ylabel('N');
-    caxy=caxis;
-    
-    subplot(223)
-    imagesc(x,y,Ex');
-    axis xy;
-    colormap(jet);
-    colorbar;
-    title('E_x original');
-    xlabel('E');
-    ylabel('N');
-    caxis(caxx);
-    
-    subplot(224)
-    imagesc(x,y,Ey');
-    axis xy;
-    colormap(jet);
-    colorbar;
-    title('E_y original');
-    xlabel('E');
-    ylabel('N');
-    caxis(caxy);
-    
-    ymd=[2017,3,2];
-    UTsec=outt(it)*3600;
-    filestr=datelab(ymd,UTsec);
-    filename=[outplotdir,filestr,'.png']
-    print('-dpng','-r300',filename);
-    
+    if (flagplot)
+        figure(1);
+        clf;
+        subplot(221)
+        imagesc(x,y,Excleannow');
+        axis xy;
+        colormap(jet);
+        colorbar;
+        title(sprintf('E_x cleaned: %f',outt(it)));
+        xlabel('E');
+        ylabel('N');
+        %caxx=caxis;
+        %maxval=max(abs(caxis));
+        maxval=0.025;
+        caxx=[-maxval,maxval];
+        caxis(caxx);
+        
+        subplot(222)
+        imagesc(x,y,Eycleannow');
+        axis xy;
+        colormap(jet);
+        colorbar;
+        title('E_y cleaned');
+        xlabel('E');
+        ylabel('N');
+        caxy=caxis;
+        maxval=0.09;
+        caxy=[-maxval,maxval];
+        caxis(caxy);
+        
+        subplot(223)
+        imagesc(x,y,Ex');
+        axis xy;
+        colormap(jet);
+        colorbar;
+        title('E_x original');
+        xlabel('E');
+        ylabel('N');
+        caxis(caxx);
+        
+        subplot(224)
+        imagesc(x,y,Ey');
+        axis xy;
+        colormap(jet);
+        colorbar;
+        title('E_y original');
+        xlabel('E');
+        ylabel('N');
+        caxis(caxy);
+        
+        ymd=[2017,3,2];
+        UTsec=outt(it)*3600;
+        filestr=datelab(ymd,UTsec);
+        filename=[outplotdir,filestr,'.png']
+        print('-dpng','-r300',filename);
+        
+        figure(2);
+        subplot(121);
+        imagesc(x(5:end-5),y(5:end-5),curlE(5:end-5,5:end-5)');
+        axis xy;
+        colorbar;
+        title('\nabla \times E original');
+        xlabel('E');
+        ylabel('N');
+        
+        subplot(122);
+        imagesc(x(5:end-5),y(5:end-5),curlEnow(5:end-5,5:end-5)');
+        axis xy;
+        colorbar;
+        title('\nabla \times E cleaned');
+        xlabel('E');
+        ylabel('N');
+        
+        filename=[outplotdir,filestr,'_curl.png']
+        print('-dpng','-r300',filename);
+    end %if
 end %for
 
 
