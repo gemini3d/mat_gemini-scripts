@@ -87,7 +87,7 @@ datetick;
 legend({'simulation','linear growth'})
 xlabel('UT');
 ylabel('% variation from background (avg.)');
-title(sprintf('Theoretical \\gamma:  %d; model \\gamma:  %d',lineargrowthtime,growthtime));
+title(sprintf('Theoretical \\tau:  %d; model \\tau:  %d',lineargrowthtime,growthtime));
 
 
 %% Break down the growth according to wavenumber
