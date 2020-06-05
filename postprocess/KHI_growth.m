@@ -1,5 +1,5 @@
 %% Load a GDI simulation
-direc='~/simulations/KHI_periodic_lowres_K88_large_0.5km_signcorrect/';
+direc='~/simulations/KHI_periodic_lowres_K88_large_0.5km_signcorrect_long/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -67,7 +67,7 @@ nerelpwr=nepwr./meanne;
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=6;                  % allow a minute to establish fields due to large capacitance and zero start potential
+itmin=10;                  % allow ~100s to establish fields due to large capacitance and zero start potential
 avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
  
@@ -76,6 +76,7 @@ growthtime=dtout/avgdtconst;
 gammanorm=0.16;                %small nutilde limit from Keskinen, 1988; figure 3
 gamma=gammanorm*v0/ell;
 lineargrowthtime=1./gamma;
+t=datenum(simdate);
 t0=t(itmin);
 linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
 
@@ -111,7 +112,7 @@ Snnmag(:,lx3)=NaN;
 %% Plot wavenumber dependent growth
 figure(2);
 
-its=2*[2,4,6,8,10,12];
+its=[1,8,12,24,48,64];
 subplot(121);
 plot(x3,dneline(its,:));
 xlabel('horizontal distance (m)');
