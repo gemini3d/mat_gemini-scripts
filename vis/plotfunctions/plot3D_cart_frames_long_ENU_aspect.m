@@ -178,7 +178,9 @@ ylabel(ha,'northward distance (km)');
 xlabel(ha,'eastward distance (km)');
 
 %% CONSTRUCT A STRING FOR THE TIME AND DATE
-ttxt=sprintf('%6.1f s',UTsec-28500);
+time=datenum([ymd,0,0,UTsec]);
+%ttxt=sprintf('%6.1f s',UTsec-28500);
+ttxt=datestr(time,'HH:MM:SS');
 title(ha, ttxt);
 set(ha,'FontSize',FS);
 
