@@ -1,13 +1,13 @@
 %% Load data from Rob and compute sizes
-addpath ../script_utils/;
-addpath ../../GEMINI/script_utils;
+% addpath ../script_utils/;
+% addpath ../../GEMINI/script_utils;
 
 
 %% Locations needed by this script
 direc='~/Dropbox/common/mypapers/ISINGLASS/paper2_finally/';
 outplotdir=[direc,'/tucker_plots/'];
 mkdir(outplotdir);
-flagplot=true;
+flagplot=false;
 
 
 %% Load the data
@@ -28,9 +28,11 @@ iy0=floor(ly/2);
 Phi=zeros(lx,ly,lt);              %storage space for electric potential
 Exclean=zeros(lx,ly,lt);          %cleaned electric field (curl free)
 Eyclean=zeros(lx,ly,lt);
-for it=1:lt
-    mlon=squeeze(outx(it,:,:));
-    mlat=squeeze(outy(it,:,:));
+parfor it=1:lt
+%    mlon=squeeze(outx(it,:,:));
+%    mlat=squeeze(outy(it,:,:));
+    mlon=squeeze(outx(1,:,:));
+    mlat=squeeze(outy(1,:,:));
     alt=zeros(lx,ly);
     
     % Clean the data of any residual curl
