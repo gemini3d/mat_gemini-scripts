@@ -1,28 +1,27 @@
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../GEMINI'];
-addpath([gemini_root, filesep, 'script_utils'])
-addpath([gemini_root, filesep, 'vis'])
+%% sim and time of interest
+direc='~/simulations/tohoku20113D_lowres/'
+ymd=[2011,03,11];
+UTsec=20783+900;
 
 
-direc='~/Projects/GEMINI/objects/test3d_glow/';
-%direc='~/simulations/zenodo3d/';
-%direc='~/simulations/junktest3d/';
+%% read in data
+xg=readgrid(direc);
+dat=loadframe(direc,ymd,UTsec);
 
 
-ymd=[2013,02,20];
-UTsec=18060;
+%% regrid
+[alti,mloni,mlati,Tei]=model2magcoords(xg,dat.Te);
+[alti,mloni,mlati,J1i]=model2magcoords(xg,dat.J1);
+[alti,mloni,mlati,J3i]=model2magcoords(xg,dat.J3);
+[alti,mloni,mlati,J2i]=model2magcoords(xg,dat.J2);
+[alti,mloni,mlati,nei]=model2magcoords(xg,dat.ne);
+[alti,mloni,mlati,v3i]=model2magcoords(xg,dat.v3);
+[alti,mloni,mlati,v2i]=model2magcoords(xg,dat.v2);
+[alti,mloni,mlati,v1i]=model2magcoords(xg,dat.v1);
+[alti,mloni,mlati,Tii]=model2magcoords(xg,dat.Ti);
 
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec);
-[alti,mloni,mlati,Tei]=model2magcoords(xg,Te);
-[alti,mloni,mlati,J1i]=model2magcoords(xg,J1);
-[alti,mloni,mlati,J3i]=model2magcoords(xg,J3);
-[alti,mloni,mlati,J2i]=model2magcoords(xg,J2);
-[alti,mloni,mlati,nei]=model2magcoords(xg,ne);
-[alti,mloni,mlati,v3i]=model2magcoords(xg,v3);
-[alti,mloni,mlati,v2i]=model2magcoords(xg,v2);
-[alti,mloni,mlati,v1i]=model2magcoords(xg,v1);
-[alti,mloni,mlati,Tii]=model2magcoords(xg,Ti);
 
+%% plot
 figure;
 subplot(121)
 imagesc(mloni,alti,nei(:,:,end/2));

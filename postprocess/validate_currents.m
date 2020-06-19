@@ -1,12 +1,3 @@
-%% FIX THE PATHS
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../GEMINI'];
-addpath([gemini_root, filesep, 'script_utils'])
-addpath([gemini_root, filesep, 'vis/plotfunctions'])
-addpath([gemini_root, filesep, 'vis'])
-addpath([gemini_root, filesep, 'setup'])
-
-
 %% SIMULATIONS LOCAITONS
 flagplot=1;
 %simname='isinglass_clayton5/'
@@ -26,7 +17,8 @@ mkdir(debugdir);
 %ymd=[2017,3,2];
 %UTsec=27300;
 %ymd=[2017,03,02];
-UTsec=28380;
+%UTsec=28380;
+UTsec=28435;
 ymd=[2017,03,02];
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
