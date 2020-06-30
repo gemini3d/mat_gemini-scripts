@@ -1,7 +1,5 @@
 %% SIMULATIONS LOCAITONS
 flagplot=1;
-%simname='isinglass_clayton5/'
-%simname='isinglass_clayton5_tucker/'
 simname='isinglass_clayton5_tucker_decurl/'
 basedir='~/simulations/'
 direc=[basedir,simname];

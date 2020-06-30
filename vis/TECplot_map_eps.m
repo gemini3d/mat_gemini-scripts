@@ -1,17 +1,15 @@
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
-addpath([gemini_root, filesep, 'script_utils']);
+addpath ~/matlab_ext/;
 
-%SIMULATIONS LOCAITONS
-simname='tohoku20113D_highres_long/';
-basedir=[gemini_root,'/../simulations/'];
+%SIMULATION LOCAITONS
+simname='mooreOK3D_hemis_medres/';
+basedir=['~/simulations/'];
 direc=[basedir,simname];
-mkdir([direc,'/TECplots']);    %store output plots with the simulation data
+%mkdir([direc,'/TECplots']);    %store output plots with the simulation data
 mkdir([direc,'/TECplots_eps']);    %store output plots with the simulation data
 
 
 %LOAD THE COMPUTED MAGNETIC FIELD DATA
-load([direc,'/vTEC_hemis.mat']);
+load([direc,'/vTEC.10deg.mat']);
 %load([direc,'/vTEC.mat']);
 lt=numel(t);
 mlon=mlong;
@@ -53,13 +51,13 @@ for it=1:lt
     param=dvTEC(:,:,it);
     imagesc(mlon,mlat,param);
     axis xy;
-    axis equal;
+    axis equal;    
     axis([mlonlimplot,mlatlimplot]);
     %pcolorm(MLAT,MLON,param);
-    colormap(parula(256));
+    colormap(old_parula(256));
     set(gca,'FontSize',FS);
 %    caxis([-3,3]);
-    caxis([-0.25,0.25]);
+    caxis([-0.62,0.62]);
     c=colorbar
     set(c,'FontSize',FS)
     xlabel(c,'\Delta vTEC (TECU)')

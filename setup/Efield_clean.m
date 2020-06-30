@@ -1,18 +1,19 @@
 %% Load data from Rob and compute sizes
-% addpath ../script_utils/;
+addpath ../script_utils/;
 % addpath ../../GEMINI/script_utils;
 
 
 %% Locations needed by this script
 direc='~/Dropbox/common/mypapers/ISINGLASS/paper2_finally/';
-outplotdir=[direc,'/tucker_plots/'];
+outplotdir=[direc,'/clayton5_plots/'];
+%outplotdir=[direc,'/tucker_plots/'];
 mkdir(outplotdir);
 flagplot=false;
 
 
 %% Load the data
-%load([direc,'clayton5_step_smooth7.mat']);
-load([direc,'tucker_reconstructions_reordered_translated.mat']);
+load([direc,'clayton5_step_smooth7.mat']);
+%load([direc,'tucker_reconstructions_reordered_translated.mat']);
 [lt,lx,ly]=size(outx);
 Re=6370e3;
 
