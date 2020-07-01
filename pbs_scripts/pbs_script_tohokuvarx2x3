@@ -1,7 +1,7 @@
 #!/bin/bash
 # This is comment
 #PBS -q longq
-# Not necessary to set wall time, 
+# Not necessary to set wall time,
 # longq: 168 hours, 10 nodes (with 36proc for each), maximum 1 longq in queue per user
 # normalq: 24 hours, 10 nodes, maximum 4 normalq in queue per user
 #PBS -l walltime=168:00:00
@@ -23,4 +23,4 @@ cd $PBS_O_WORKDIR
 module load openmpi/gcc/64/1.10.3
 
 # Run the program
-mpirun -np $PBS_NP ./gemini_mumps ./initialize/tohoku20113D_highres_var/config.ini ../simulations/tohoku20113D_highres_varx2x3/  
+mpirun -np $PBS_NP ./gemini_mumps ./initialize/tohoku20113D_highres_var/config.ini ../simulations/tohoku20113D_highres_varx2x3/
