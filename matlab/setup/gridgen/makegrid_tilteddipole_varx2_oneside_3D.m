@@ -56,7 +56,7 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %coeffs=[6.9595e-06,-2.2428e-05,8.0440e-04];   %3D moore OK interhemispheric, ~5km resolution
 %coeffs=[1.3919e-05,-4.4856e-05,0.0016];  %3D moore, 10km resolution
 %coeffs=[2.3e-05,-6.7284e-05,0.0024];   %3D moore, 15 km resolution
-%coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution
+coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution - used for the paper
 %coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km
 %res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
@@ -68,7 +68,7 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 
 %coeffs=[4.1133e-04, 0.0019, -5.7677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
 %coeffs=[3.3986e-04, 0.0017, -5.0597e-04];     %iowa3D that doesn't overrun neutral grid
-coeffs=[3.3986e-04, 0.0017, -6.7597e-04];     %iowa3D that doesn't overrun neutral grid, vega, friendly
+%coeffs=[3.3986e-04, 0.0017, -6.7597e-04];     %iowa3D that doesn't overrun neutral grid, vega, friendly
 
 p(1)=pmin;
 ip=1;

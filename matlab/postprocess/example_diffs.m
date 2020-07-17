@@ -3,37 +3,54 @@ cwd = fileparts(mfilename('fullpath'));
 gemini_root = [cwd,filesep,'../../GEMINI'];
 addpath([gemini_root, filesep, 'vis'])
 
-direc1 = [gemini_root, filesep, 'build/test3d_glow'];
-direc2 = [gemini_root, filesep, 'build/zenodo3d_glow'];
+direc1 = [gemini_root, filesep, '../simulations/mooreOK3D_hemis_medres/'];
+direc2 = [gemini_root, filesep, '../simulations/mooreOK3D_hemis_medres_VEGA/'];
 
 
-ymd=[2013,02,20];
-UTsec=18300;
-llat=200;
-llon=100;
-lalt=200;
+ymd=[2013,05,20];
+UTsec=71400;
 
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop1,ns,vs1,Ts] = loadframe(direc1,ymd,UTsec);
-[alti,mloni,mlati,Tei1]=model2magcoords(xg,Te,lalt,llon,llat);
-[alti,mloni,mlati,J1i1]=model2magcoords(xg,J1,lalt,llon,llat);
-[alti,mloni,mlati,J3i1]=model2magcoords(xg,J3,lalt,llon,llat);
-[alti,mloni,mlati,J2i1]=model2magcoords(xg,J2,lalt,llon,llat);
-[alti,mloni,mlati,nei1]=model2magcoords(xg,ne,lalt,llon,llat);
-[alti,mloni,mlati,v3i1]=model2magcoords(xg,v3,lalt,llon,llat);
-[alti,mloni,mlati,v2i1]=model2magcoords(xg,v2,lalt,llon,llat);
-[alti,mloni,mlati,v1i1]=model2magcoords(xg,v1,lalt,llon,llat);
-[alti,mloni,mlati,Tii1]=model2magcoords(xg,Ti,lalt,llon,llat);
 
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop2,ns,vs1,Ts] = loadframe(direc2,ymd,UTsec);
-[alti,mloni,mlati,Tei2]=model2magcoords(xg,Te,lalt,llon,llat);
-[alti,mloni,mlati,J1i2]=model2magcoords(xg,J1,lalt,llon,llat);
-[alti,mloni,mlati,J3i2]=model2magcoords(xg,J3,lalt,llon,llat);
-[alti,mloni,mlati,J2i2]=model2magcoords(xg,J2,lalt,llon,llat);
-[alti,mloni,mlati,nei2]=model2magcoords(xg,ne,lalt,llon,llat);
-[alti,mloni,mlati,v3i2]=model2magcoords(xg,v3,lalt,llon,llat);
-[alti,mloni,mlati,v2i2]=model2magcoords(xg,v2,lalt,llon,llat);
-[alti,mloni,mlati,v1i2]=model2magcoords(xg,v1,lalt,llon,llat);
-[alti,mloni,mlati,Tii2]=model2magcoords(xg,Ti,lalt,llon,llat);
+% load the data
+if (~exist('xg','var'))
+  xg=readgrid(direc1);
+end
+if (~exist('dat1','var'))
+  dat1 = loadframe(direc1,ymd,UTsec);
+  dat2 = loadframe(direc2,ymd,UTsec);
+end
+
+
+% Grid to interp to
+llat=512;
+llon=25;
+lalt=512;
+altlims=[0,500e3];
+lonlims=[min(xg.phi(:)*180/pi),max(xg.phi(:)*180/pi)];
+latlims=[-60,-30];
+
+
+[alti,mloni,mlati,Tei1]=model2magcoords(xg,dat1.Te,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,J1i1]=model2magcoords(xg,dat1.J1,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,J3i1]=model2magcoords(xg,dat1.J3,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,J2i1]=model2magcoords(xg,dat1.J2,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,nei1]=model2magcoords(xg,dat1.ne,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,v3i1]=model2magcoords(xg,dat1.v3,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,v2i1]=model2magcoords(xg,dat1.v2,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,v1i1]=model2magcoords(xg,dat1.v1,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,Tii1]=model2magcoords(xg,dat1.Ti,lalt,llon,llat,altlims,lonlims,latlims);
+
+[alti,mloni,mlati,Tei2]=model2magcoords(xg,dat2.Te,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,J1i2]=model2magcoords(xg,dat2.J1,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,J3i2]=model2magcoords(xg,dat2.J3,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,J2i2]=model2magcoords(xg,dat2.J2,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,nei2]=model2magcoords(xg,dat2.ne,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,v3i2]=model2magcoords(xg,dat2.v3,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,v2i2]=model2magcoords(xg,dat2.v2,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,v1i2]=model2magcoords(xg,dat2.v1,lalt,llon,llat,altlims,lonlims,latlims);
+[alti,mloni,mlati,Tii2]=model2magcoords(xg,dat2.Ti,lalt,llon,llat,altlims,lonlims,latlims);
+
+ix3=floor(llon/2);
 
 figure;
 subplot(121)
@@ -67,11 +84,11 @@ colorbar;
 
 figure;
 subplot(121)
-imagesc(mloni,alti,v2i1(:,:,ix3)-v2i2(:,:,ix3));
+imagesc(mloni,alti,v1i1(:,:,ix3)-v1i2(:,:,ix3));
 axis xy;
 colorbar;
 subplot(122)
-imagesc(mlati,alti,squeeze(v2i1(:,ix3,:)-v2i2(:,ix3,:)));
+imagesc(mlati,alti,squeeze(v1i1(:,ix3,:)-v1i2(:,ix3,:)));
 axis xy;
 colorbar;
 

@@ -1,5 +1,11 @@
-%% Load a GDI simulation
-direc='~/simulations/KHI_periodic_lowres_K88_large_0.5km_signcorrect_long/';
+% Notes
+%   should be testing single mode growth
+%   problems with large capacitance and startup???
+
+%% Load a KHI simulation
+%direc='~/simulations/KHI_periodic_lowres_K88_large_0.5km_signcorrect_long/';
+%direc='~/simulations/KHI_periodic_lowres_noF1_restart/';
+direc='~/simulations/KHI_periodic_lowres_bridge_restart/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -25,6 +31,7 @@ while (t<=tdur)
 
     ix2=floor(lx2/2);    % measure perturbations at the middle x2 point of the domain.
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
+    Phitop(:,:,it)=data.Phitop;
 
     if (it==1)     % on the first time step compute the conductance and inertial capacitance for the simulation
         ne=data.ne; Ti=data.Ti; Te=data.Te; v1=data.v1;
@@ -44,8 +51,8 @@ end %while
 v0=500;         %drift value
 ell=1e3;         % shear scale length from input script for KHI run
 kellmax=0.44;    % k*ell for max growth rate per Figure 3 of Keskinen, 1988
-k=kellmax/ell;
-lambda=2*pi/k;   % wavelength of fastest growing KHI mode (can be compared against the nonlinear simulation)
+kmax=kellmax/ell;
+lambda=2*pi/kmax;   % wavelength of fastest growing KHI mode (can be compared against the nonlinear simulation)
 
 
 %% Compute amplitude of fluctuations (BG subtract)
@@ -67,7 +74,7 @@ nerelpwr=nepwr./meanne;
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=10;                  % allow ~100s to establish fields due to large capacitance and zero start potential
+itmin=12;                  % allow ~100s to establish fields due to large capacitance and zero start potential
 avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
@@ -83,7 +90,7 @@ linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
 
 %% Do some basic plot containing this info (avg'd over space)
 figure(1);
-plot(t,100*nerelpwr);           % growth from simulation
+plot(t(itmin:end),100*nerelpwr(itmin:end));           % growth from simulation
 ax=axis;
 hold on;
 plot(t,100*linear_nerelpwr);    % pure linear growth
@@ -98,11 +105,13 @@ title(sprintf('Theoretical \\tau:  %d; model \\tau:  %d',lineargrowthtime,growth
 
 %% Break down the growth according to wavenumber
 dx=xg.x3(2)-xg.x3(1);            %grid spacing
-M=2*numel(x3)-1;                     %number of spatial samples in acf
+M=numel(x3);
+%M=2*numel(x3)-1;                     %number of spatial samples in acf
 k=2*pi*[-(M-1)/2:(M-1)/2]/M/dx;  %wavenumber axis for fft
 Snn=zeros(lt,numel(k));
 for it=1:lt
-    acfne=xcorr(dneline(it,:));           %autocorrelation function (spatial) of density variations at this time
+    acfne=dneline(it,:);
+    %acfne=xcorr(dneline(it,:));           %autocorrelation function (spatial) of density variations at this time
     Snn(it,:)=fftshift(fft(acfne));         %power spectral density, no window
 end %for
 Snnmag=abs(Snn);
@@ -126,5 +135,18 @@ subplot(122);
 semilogy(k,Snnmag(its,:));
 xlabel('wavenumber (1/m)');
 ylabel('\Delta n_e power spectral density');
+
+
+%% Look at "fundamental" mode
+[val,ik]=min(abs(k-kmax));
+[val,ik2]=min(abs(k-2*kmax));
+[val,ik3]=min(abs(k-3*kmax));
+[val,ik4]=min(abs(k-4*kmax));
+iks=[ik,ik2,ik3,ik4];
+figure;
+semilogy(t(itmin:end),Snnmag(itmin:end,iks));
+datetick;
+axis tight;
+legend('k_0','2 k_0','3 k_0','4 k_0');
 
 

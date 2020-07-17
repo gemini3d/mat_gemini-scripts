@@ -1,6 +1,6 @@
 %% SIMULATIONS LOCAITONS
 flagplot=1;
-simname='isinglass_clayton5_tucker_decurl/'
+simname='isinglass_clayton5/'
 basedir='~/simulations/'
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
@@ -11,13 +11,10 @@ mkdir(debugdir);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ]=readconfig([direc,filesep,'inputs/config.ini']);
 
 %% TIME OF INTEREST
-%UTsec=25496;
-%ymd=[2017,3,2];
-%UTsec=27300;
-%ymd=[2017,03,02];
-%UTsec=28380;
-UTsec=28435;
+UTsec=28380;
 ymd=[2017,03,02];
+%UTsec=25440;
+%ymd=[2017,03,02];
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
 %[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec, flagoutput,mloc);
