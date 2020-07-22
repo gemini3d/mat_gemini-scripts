@@ -43,16 +43,17 @@ end %for
 
 
 %% Fluctuation average and relative change
+% The GDI growth rate
 nepwr=std(dneline,0,2);   %compute a standard deviation along the x2-direction on the grid (tangent to gradient)
 nerelpwr=nepwr./meanne;
 
 
 %% Evaluate time constant empirically from the simulation output
-tconsts=log(nepwr);       %time elapsed measured in growth times
-dtconsts=diff(tconsts);   %difference in time constants between outputs
+tconsts=log(nepwr);       % time elapsed measured in growth times
+dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=3;
-avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
+itmin=3;                  % first few frames involve some settling
+avgdtconst=mean(dtconsts(itmin:max(itslinear)));   % average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
 

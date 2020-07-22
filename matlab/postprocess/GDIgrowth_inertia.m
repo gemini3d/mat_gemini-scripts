@@ -56,10 +56,10 @@ nerelpwr=nepwr./meanne;
 
 
 %% Evaluate time constant empirically from the simulation output
-tconsts=log(nepwr);       %time elapsed measured in growth times
-dtconsts=diff(tconsts);   %difference in time constants between outputs
+tconsts=log(nepwr);       % time elapsed measured in growth times
+dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=3;
+itmin=3;                  % first few frames involve settling and decay of applied noise
 avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
