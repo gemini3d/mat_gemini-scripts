@@ -33,7 +33,7 @@ while (t<=tdur)
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
     Phitop(:,:,it)=data.Phitop;
 
-    if (it==1)     % on the first time step compute the conductance and inertial capacitance for the simulation
+    if (it==1 & ~exist('sigP','var'))     % on the first time step compute the conductance and inertial capacitance for the simulation
         ne=data.ne; Ti=data.Ti; Te=data.Te; v1=data.v1;
         [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
 
@@ -71,10 +71,14 @@ nerelpwr=nepwr./meanne;
 
 
 %% Evaluate time constant empirically from the simulation output
+% This is a bit tricky because some sort of dynamic at the beginning of the
+% simulation causes settling and decay of noise, which makes the growth
+% take longer to start than one would expect; nonetheless once it commences
+% the growth rate appears to agree fine with linear theory
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=12;                  % allow ~100s to establish fields due to large capacitance and zero start potential
+itmin=14;                  % allow ~120s to establish fields due to large capacitance and zero start potential
 avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
@@ -137,7 +141,7 @@ xlabel('wavenumber (1/m)');
 ylabel('\Delta n_e power spectral density');
 
 
-%% Look at "fundamental" mode
+%% Look at "fundamental" mode and first few "harmonics"
 [val,ik]=min(abs(k-kmax));
 [val,ik2]=min(abs(k-2*kmax));
 [val,ik3]=min(abs(k-3*kmax));
@@ -145,8 +149,18 @@ ylabel('\Delta n_e power spectral density');
 iks=[ik,ik2,ik3,ik4];
 figure;
 semilogy(t(itmin:end),Snnmag(itmin:end,iks));
-datetick;
 axis tight;
-legend('k_0','2 k_0','3 k_0','4 k_0');
+ax=axis;
+datetick;
+
+
+%% Compute linear growth rate for fundamental mode
+hold on;
+refval=Snnmag(itmin,iks(1));     %reference fluctuation power for the fundamental mode
+linear_neabspwr=refval*exp(gamma*(t-t0)*86400);
+semilogy(t(itmin:end),linear_neabspwr(itmin:end),'k-');
+hold off;
+axis(ax);
+legend('k_0','2 k_0','3 k_0','4 k_0','linear theory');
 
 
