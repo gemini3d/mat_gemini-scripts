@@ -138,7 +138,7 @@ maxyp=max(yp(:));
 
 
 %NOW THAT WE'VE SORTED, WE NEED TO REGENERATE THE MESHGRID
-FS=20;
+FS=8;
 
 %MAKE THE PLOT!
 % ha=subplot(1,3,1, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
@@ -174,8 +174,8 @@ colormap(ha,cmap);
 caxis(ha,caxlims);
 c=colorbar(ha);
 xlabel(c,parmlbl);
-ylabel(ha,'northward distance (km)');
-xlabel(ha,'eastward distance (km)');
+ylabel(ha,'y (km)');
+xlabel(ha,'x (km)');
 
 %% CONSTRUCT A STRING FOR THE TIME AND DATE
 time=datenum([ymd,0,0,UTsec]);

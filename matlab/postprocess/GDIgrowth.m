@@ -1,5 +1,6 @@
 %% Load a GDI simulation
-direc='~/simulations/GDI_periodic_lowres_nocap/';
+%direc='~/simulations/GDI_periodic_lowres_nocap/';
+direc='~/simulations/GDI_ionospheric_noinertia_paper/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -52,7 +53,7 @@ nerelpwr=nepwr./meanne;
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=3;                  % first few frames involve some settling
+itmin=5;                  % first few frames involve some settling, remove these
 avgdtconst=mean(dtconsts(itmin:max(itslinear)));   % average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
@@ -112,3 +113,27 @@ xlabel('wavenumber (1/m)');
 ylabel('\Delta n_e power spectral density');
 
 
+%% Log plot absolute growth of irregularities
+figure(3);
+FS=22;
+
+refval=nepwr(itmin);
+linear_neabspwr=refval*exp(gamma*(t-t0)*86400);
+
+semilogy(t(itmin:end),nepwr(itmin:end),'LineWidth',1.5);
+set(gca,'FontSize',FS);
+datetick;
+xlabel('UT');
+ylabel('Fluctuation amplitude (m^{-3})');
+axis tight;
+ax=axis;
+hold on;
+semilogy(t(itmin:end),linear_neabspwr(itmin:end),'o','LineWidth',1.5);
+axis(ax);
+hold off;
+
+leglinear=sprintf('linear growth; \\tau = %4.2f s',lineargrowthtime);
+legsim=   sprintf('simulation growth; \\tau = %4.2f s',growthtime);
+legend(legsim,leglinear,'Location','SouthEast');
+
+print(3,[direc,'/plots/growth_compare.eps'],'-depsc');

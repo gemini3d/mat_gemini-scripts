@@ -1,8 +1,13 @@
 %% Load a GDI simulation
-direc='~/simulations/GDI_periodic_lowres_cap/';
+direc='~/simulations/GDI_maginertia_paper/';
+%direc='~/simulations/GDI_ionospheric_inertia_paper/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
+
+%% Hardcoded magnetospheric capacitance
+magcap=5;
+%magcap=0;
 
 %% Pick a reference point to extract a line of density
 x2=xg.x2(3:end-2);
@@ -31,7 +36,7 @@ while (t<=tdur)
         [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
 
         % mean relaxation parameter over entire grid, first time step
-        nutilde=mean(SIGP(:)./(INCAP(:)+5));    %FIXME:  need to manually add in the magnetospheric capacitance, should be read from input file
+        nutilde=mean(SIGP(:)./(INCAP(:)+magcap));    %FIXME:  hardcoded magnetospheric capacitance, should be read from input file
     end %if
 
     t=t+dtout;
@@ -59,7 +64,7 @@ nerelpwr=nepwr./meanne;
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=3;                  % first few frames involve settling and decay of applied noise
+itmin=5;                  % first few frames involve settling and decay of applied noise
 avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
@@ -68,8 +73,7 @@ growthtime=dtout/avgdtconst;
 t=datenum(simdate);
 t0=t(itmin);
 % inertial limit, 0.5 km/s drift, gradient scale ~ 10km, hardcoded specific user defined choices here... OR FIXME:  read in config.nml file and figure it out...
-%gamma=sqrt(nutilde*0.5e3/10e3);    % yikes not very accurate compared to
-%full expression...
+%gamma=sqrt(nutilde*0.5e3/10e3);    % yikes not very accurate compared to full growth rate expression...
 gamma=-nutilde/2+1/2*sqrt(nutilde^2+4*nutilde*0.5e3/10e3);
 lineargrowthtime=1/gamma;
 linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
@@ -122,3 +126,27 @@ xlabel('wavenumber (1/m)');
 ylabel('\Delta n_e power spectral density');
 
 
+%% Log plot absolute growth of irregularities
+figure(3);
+FS=22;
+
+refval=nepwr(itmin);
+linear_neabspwr=refval*exp(gamma*(t-t0)*86400);
+
+semilogy(t(itmin:end),nepwr(itmin:end),'LineWidth',1.5);
+set(gca,'FontSize',FS);
+datetick;
+xlabel('UT');
+ylabel('Fluctuation amplitude (m^{-3})');
+axis tight;
+ax=axis;
+hold on;
+semilogy(t(itmin:end),linear_neabspwr(itmin:end),'o','LineWidth',1.5);
+axis(ax);
+hold off;
+
+leglinear=sprintf('linear growth; \\tau = %4.2f s',lineargrowthtime);
+legsim=   sprintf('simulation growth; \\tau = %4.2f s',growthtime);
+legend(legsim,leglinear,'Location','SouthEast');
+
+print(3,[direc,'/plots/growth_compare.eps'],'-depsc2');
