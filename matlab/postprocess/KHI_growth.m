@@ -1,11 +1,44 @@
 % Notes
-%   should be testing single mode growth
-%   problems with large capacitance and startup???
+%   X 1) should be testing single mode growth using, e.g. fft and extract
+%   fastest mode
+%   2) problems with large capacitance and startup???  This can be addressed
+%   with a bridge simulation OR by imputting an initial potential that
+%   corresponds to the desired electric field.  
+%   3) large wavenumber noise initially decays quite a lot in the
+%   simulation - see Figure 2 from this script...
+%   4) fundamental mode has approx the right growth rate; but the noise at
+%   small wavenumbers doesn't decay at the beginning so these larger modes emerge
+%   first despite clearly slower growth...
+%   5) This does not appear to be the starting density state, namely the
+%   fact that it starts from a non-equilbrium density profile...
+%   6) Seeding the "fundamental" mode for a given grid also seems to create
+%   basically the same problem...  Could be a matter of the somewhat slower
+%   absolute growth rate not counteracting whatever is causing the noise
+%   decay.  Even with 3 point smoothing of input noise we still see
+%   decay/delay of instability in the simulation.
+%   7) Decay occurs even for really well-resolve gradients
+%   8) There is a substantial temperature variations across the grid, could
+%   this be contributing to irregularity decay...
+%   9) Zeroing out parallel drift and removing temperature solutions (turn off all
+%   solvers except for advection and electrodynamics) brings
+%   things much closer to the linear theory...  Still a bit of decay at the
+%   beginning; maybe I'm not perfectly seeding the harmonic???
+%   10) Even fixing the harmonic still leaves a decay at at the end.
+%   Perhaps I need to also seed initial potential with an eigenfunction
+%   otherwise it has to adjust at the beginning at the cost of density
+%   decay???  Need some way to checking for potentail growth in
+%   simulation...
+
+
 
 %% Load a KHI simulation
 %direc='~/simulations/KHI_periodic_lowres_K88_large_0.5km_signcorrect_long/';
 %direc='~/simulations/KHI_periodic_lowres_noF1_restart/';
-direc='~/simulations/KHI_periodic_lowres_bridge_restart/';
+%direc='~/simulations/KHI_archive/KHI_periodic_lowres_bridge_restart/';
+%direc='~/simulations/KHI_2Dnoise_paper/';
+%direc='~/simulations/KHI_2Dnoisesmooth_halfdomain_k0_paper/';
+%direc='~/simulations/KHI_noisedecay/';
+direc='~/simulations/KHI_noenergy4/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -32,6 +65,10 @@ while (t<=tdur)
     ix2=floor(lx2/2);    % measure perturbations at the middle x2 point of the domain.
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
     Phitop(:,:,it)=data.Phitop;
+    Tiline(it,:)=squeeze(data.Ti(ix1,ix2,:));
+    v1line(it,:)=squeeze(data.v1(ix1,ix2,:));
+    Teline(it,:)=squeeze(data.Te(ix1,ix2,:));
+    v2line(it,:)=squeeze(data.v2(ix1,ix2,:));
 
     if (it==1 & ~exist('sigP','var'))     % on the first time step compute the conductance and inertial capacitance for the simulation
         ne=data.ne; Ti=data.Ti; Te=data.Te; v1=data.v1;
@@ -49,7 +86,7 @@ end %while
 
 %% Parameters for the KHI run
 v0=500;         %drift value
-ell=1e3;         % shear scale length from input script for KHI run
+ell=3.1513e3;         % shear scale length from input script for KHI run
 kellmax=0.44;    % k*ell for max growth rate per Figure 3 of Keskinen, 1988
 kmax=kellmax/ell;
 lambda=2*pi/kmax;   % wavelength of fastest growing KHI mode (can be compared against the nonlinear simulation)
@@ -78,12 +115,12 @@ nerelpwr=nepwr./meanne;
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=14;                  % allow ~120s to establish fields due to large capacitance and zero start potential
-avgdtconst=mean(dtconsts(itmin:max(itslinear)));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
+itmin=1;                  % allow ~120s to establish fields due to large capacitance and zero start potential
+avgdtconst=mean(dtconsts(itmin:min(max(itslinear),numel(dtconsts))));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
 
-%% Growth rate from linear estimate Im{omega} = sqrt(nutilde*E/(B*ell))
+%% Growth rate from linear estimate in Keskinen et al, 1988
 gammanorm=0.16;                %small nutilde limit from Keskinen, 1988; figure 3
 gamma=gammanorm*v0/ell;
 lineargrowthtime=1./gamma;
@@ -122,6 +159,17 @@ Snnmag=abs(Snn);
 Snnmag(:,lx3)=NaN;
 
 
+%% Define wavenumbers of interest
+[val,ik]=min(abs(k-kmax));
+[val,ik2]=min(abs(k-2*kmax));
+[val,ik3]=min(abs(k-3*kmax));
+[val,ik4]=min(abs(k-4*kmax));
+[val,ik_2]=min(abs(k-1/2*kmax));
+[val,ik_3]=min(abs(k-1/3*kmax));
+[val,ik_4]=min(abs(k-1/4*kmax));
+iks=[ik,ik2,ik3,ik4,ik_2,ik_3,ik_4];
+
+
 %% Plot wavenumber dependent growth
 figure(2);
 
@@ -139,14 +187,16 @@ subplot(122);
 semilogy(k,Snnmag(its,:));
 xlabel('wavenumber (1/m)');
 ylabel('\Delta n_e power spectral density');
+ax=axis;
+
+hold on;
+for ik=1:numel(iks)
+    plot([k(iks(ik)),k(iks(ik))],ax(3:4),'--');
+end %for
+hold off;
 
 
 %% Look at "fundamental" mode and first few "harmonics"
-[val,ik]=min(abs(k-kmax));
-[val,ik2]=min(abs(k-2*kmax));
-[val,ik3]=min(abs(k-3*kmax));
-[val,ik4]=min(abs(k-4*kmax));
-iks=[ik,ik2,ik3,ik4];
 figure;
 semilogy(t(itmin:end),Snnmag(itmin:end,iks));
 axis tight;
@@ -154,13 +204,15 @@ ax=axis;
 datetick;
 
 
-%% Compute linear growth rate for fundamental mode
+%% Compute and add to the plot the linear growth rate for fundamental mode
 hold on;
 refval=Snnmag(itmin,iks(1));     %reference fluctuation power for the fundamental mode
 linear_neabspwr=refval*exp(gamma*(t-t0)*86400);
-semilogy(t(itmin:end),linear_neabspwr(itmin:end),'k-');
+semilogy(t(itmin:end),linear_neabspwr(itmin:end),'o');
 hold off;
 axis(ax);
-legend('k_0','2 k_0','3 k_0','4 k_0','linear theory');
+legend('k_0','2 k_0','3 k_0','4 k_0','1/2 k_0','1/3 k_0','1/4 k_0','linear theory','Location','SouthEast');
 
 
+%% Do a similar calculation to look at potential to see startup...
+Philine=squeeze(Phitop(end/2,:,:))';
