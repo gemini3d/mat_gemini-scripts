@@ -28,7 +28,11 @@
 %   otherwise it has to adjust at the beginning at the cost of density
 %   decay???  Need some way to checking for potentail growth in
 %   simulation...
-
+%   11) Seeding simulation with a potential eigenfunction not an option
+%   since we don't know the eigenvalues...  Best approach may just be to
+%   initialize the simulation in a state that corresponds to what the
+%   potential and density are following initial decay (this indeed works
+%   fine)
 
 
 %% Load a KHI simulation
@@ -38,7 +42,9 @@
 %direc='~/simulations/KHI_2Dnoise_paper/';
 %direc='~/simulations/KHI_2Dnoisesmooth_halfdomain_k0_paper/';
 %direc='~/simulations/KHI_noisedecay/';
-direc='~/simulations/KHI_noenergy4/';
+%direc='~/simulations/KHI_noenergy4/';
+%direc='~/simulations/KHI_bridge/';
+direc='~/simulations/KHI_bridge_thermo/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 

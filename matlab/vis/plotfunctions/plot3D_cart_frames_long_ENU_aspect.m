@@ -161,8 +161,9 @@ FS=8;
 %ha=subplot(1,3,2, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
 ha=gca(hf);
 h=imagesc(ha,xp(2:end-1),yp(2:end-1),parmp2(2:end-1,2:end-1,2));
-axis equal;    %fix the aspect ratio...
-axis tight;
+axis(ha,'xy');
+axis(ha,'equal');    %fix the aspect ratio...
+axis(ha,'tight');
 if (~isempty(sourcemlat))
   plot(ha,[minxp,maxxp],[sourcemlon,sourcemlon],'w--','LineWidth',2);
   plot(ha,sourcemlat,sourcemlon,'r^','MarkerSize',12,'LineWidth',2);
