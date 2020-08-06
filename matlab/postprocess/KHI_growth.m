@@ -31,20 +31,16 @@
 %   11) Seeding simulation with a potential eigenfunction not an option
 %   since we don't know the eigenvalues...  Best approach may just be to
 %   initialize the simulation in a state that corresponds to what the
-%   potential and density are following initial decay (this indeed works
-%   fine)
-
+%   potential and density are following initial decay (this indeed seems to
+%   work just fine)
+%   12) The spectrum of growth is super complicated when nutilde is
+%   large...  Yet it does sort of seem like the initial growth is not
+%   strongly dependent on nutilde; is this again an issue of priming with
+%   the wrong eigenfunction, e.g. these should be nu-dependent???
+run('../../../gemini-matlab/setup.m')
 
 %% Load a KHI simulation
-%direc='~/simulations/KHI_periodic_lowres_K88_large_0.5km_signcorrect_long/';
-%direc='~/simulations/KHI_periodic_lowres_noF1_restart/';
-%direc='~/simulations/KHI_archive/KHI_periodic_lowres_bridge_restart/';
-%direc='~/simulations/KHI_2Dnoise_paper/';
-%direc='~/simulations/KHI_2Dnoisesmooth_halfdomain_k0_paper/';
-%direc='~/simulations/KHI_noisedecay/';
-%direc='~/simulations/KHI_noenergy4/';
-%direc='~/simulations/KHI_bridge/';
-direc='~/simulations/KHI_bridge_thermo/';
+direc='~/simulations/KHI_nutildemin_whitenoise/';
 xg=readgrid([direc,'/inputs/']);
 [ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
 
@@ -81,7 +77,9 @@ while (t<=tdur)
         [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(xg,ymd,UTsec,activ,ne,Ti,Te,v1);
 
         % mean relaxation parameter over entire grid, first time step
-        nutilde=mean(SIGP(:)./(INCAP(:)+30));    %FIXME:  need to manually add in the magnetospheric capacitance, should be read from input file
+        maxcap=max(incap(:));
+        INCAP=INCAP*15/980e3/maxcap;         % scaled capacitance
+        nutilde=mean(SIGP(:)./(INCAP(:)));    % FIXME:  need to manually add in the magnetospheric capacitance, should be read from input file
     end %if
 
     t=t+dtout;
@@ -121,13 +119,14 @@ nerelpwr=nepwr./meanne;
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
 itslinear=find(nerelpwr<0.1);
-itmin=1;                  % allow ~120s to establish fields due to large capacitance and zero start potential
+itmin=12;                  % allow ~120s to establish fields due to large capacitance and zero start potential
 avgdtconst=mean(dtconsts(itmin:min(max(itslinear),numel(dtconsts))));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime=dtout/avgdtconst;
 
 
 %% Growth rate from linear estimate in Keskinen et al, 1988
-gammanorm=0.16;                %small nutilde limit from Keskinen, 1988; figure 3
+%gammanorm=0.16;                %small nutilde limit from Keskinen, 1988; figure 3
+gammanorm=0.12;
 gamma=gammanorm*v0/ell;
 lineargrowthtime=1./gamma;
 t=datenum(simdate);
@@ -221,4 +220,27 @@ legend('k_0','2 k_0','3 k_0','4 k_0','1/2 k_0','1/3 k_0','1/4 k_0','linear theor
 
 
 %% Do a similar calculation to look at potential to see startup...
-Philine=squeeze(Phitop(end/2,:,:))';
+dPhiline=zeros(lx3,lt);
+for it=1:lt
+  PhiBG=mean(Phitop(floor(end/2),:,it));
+  dPhiline(:,it)=Phitop(floor(end/2),:,it)-PhiBG;
+end %for
+dPhiline=dPhiline';
+
+
+%% Check the center cut perturbations
+figure;
+subplot(211)
+imagesc(t,x3,dneline')
+axis xy;
+datetick;
+
+subplot(212)
+imagesc(t,x3,dPhiline')
+axis xy;
+datetick;
+
+figure;
+necut=dneline(:,end/2);
+Phicut=dPhiline(:,end/2);
+plotyy(t,necut,t,Phicut);
