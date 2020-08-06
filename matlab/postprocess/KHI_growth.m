@@ -1,43 +1,5 @@
-% Notes
-%   X 1) should be testing single mode growth using, e.g. fft and extract
-%   fastest mode
-%   2) problems with large capacitance and startup???  This can be addressed
-%   with a bridge simulation OR by imputting an initial potential that
-%   corresponds to the desired electric field.  
-%   3) large wavenumber noise initially decays quite a lot in the
-%   simulation - see Figure 2 from this script...
-%   4) fundamental mode has approx the right growth rate; but the noise at
-%   small wavenumbers doesn't decay at the beginning so these larger modes emerge
-%   first despite clearly slower growth...
-%   5) This does not appear to be the starting density state, namely the
-%   fact that it starts from a non-equilbrium density profile...
-%   6) Seeding the "fundamental" mode for a given grid also seems to create
-%   basically the same problem...  Could be a matter of the somewhat slower
-%   absolute growth rate not counteracting whatever is causing the noise
-%   decay.  Even with 3 point smoothing of input noise we still see
-%   decay/delay of instability in the simulation.
-%   7) Decay occurs even for really well-resolve gradients
-%   8) There is a substantial temperature variations across the grid, could
-%   this be contributing to irregularity decay...
-%   9) Zeroing out parallel drift and removing temperature solutions (turn off all
-%   solvers except for advection and electrodynamics) brings
-%   things much closer to the linear theory...  Still a bit of decay at the
-%   beginning; maybe I'm not perfectly seeding the harmonic???
-%   10) Even fixing the harmonic still leaves a decay at at the end.
-%   Perhaps I need to also seed initial potential with an eigenfunction
-%   otherwise it has to adjust at the beginning at the cost of density
-%   decay???  Need some way to checking for potentail growth in
-%   simulation...
-%   11) Seeding simulation with a potential eigenfunction not an option
-%   since we don't know the eigenvalues...  Best approach may just be to
-%   initialize the simulation in a state that corresponds to what the
-%   potential and density are following initial decay (this indeed seems to
-%   work just fine)
-%   12) The spectrum of growth is super complicated when nutilde is
-%   large...  Yet it does sort of seem like the initial growth is not
-%   strongly dependent on nutilde; is this again an issue of priming with
-%   the wrong eigenfunction, e.g. these should be nu-dependent???
 run('../../../gemini-matlab/setup.m')
+
 
 %% Load a KHI simulation
 direc='~/simulations/KHI_nutildemin_whitenoise/';
@@ -67,10 +29,6 @@ while (t<=tdur)
     ix2=floor(lx2/2);    % measure perturbations at the middle x2 point of the domain.
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
     Phitop(:,:,it)=data.Phitop;
-    Tiline(it,:)=squeeze(data.Ti(ix1,ix2,:));
-    v1line(it,:)=squeeze(data.v1(ix1,ix2,:));
-    Teline(it,:)=squeeze(data.Te(ix1,ix2,:));
-    v2line(it,:)=squeeze(data.v2(ix1,ix2,:));
 
     if (it==1 & ~exist('sigP','var'))     % on the first time step compute the conductance and inertial capacitance for the simulation
         ne=data.ne; Ti=data.Ti; Te=data.Te; v1=data.v1;
@@ -78,7 +36,7 @@ while (t<=tdur)
 
         % mean relaxation parameter over entire grid, first time step
         maxcap=max(incap(:));
-        INCAP=INCAP*15/980e3/maxcap;         % scaled capacitance
+        INCAP=INCAP*15/980e3/maxcap;          % scaled capacitance
         nutilde=mean(SIGP(:)./(INCAP(:)));    % FIXME:  need to manually add in the magnetospheric capacitance, should be read from input file
     end %if
 
@@ -105,48 +63,52 @@ for it=1:lt
     dneline(it,:)=neline(it,:)-meanne(it);
 end %for
 
-
-%% Fluctuation average and relative change
-nepwr=std(dneline,0,2);   %compute a standard deviation along the x2-direction on the grid (tangent to gradient)
-nerelpwr=nepwr./meanne;
-
-
-%% Evaluate time constant empirically from the simulation output
-% This is a bit tricky because some sort of dynamic at the beginning of the
-% simulation causes settling and decay of noise, which makes the growth
-% take longer to start than one would expect; nonetheless once it commences
-% the growth rate appears to agree fine with linear theory
-tconsts=log(nepwr);       % time elapsed measured in growth times
-dtconsts=diff(tconsts);   % difference in time constants between outputs
-itslinear=find(nerelpwr<0.1);
-itmin=12;                  % allow ~120s to establish fields due to large capacitance and zero start potential
-avgdtconst=mean(dtconsts(itmin:min(max(itslinear),numel(dtconsts))));   %average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
-growthtime=dtout/avgdtconst;
-
-
-%% Growth rate from linear estimate in Keskinen et al, 1988
-%gammanorm=0.16;                %small nutilde limit from Keskinen, 1988; figure 3
-gammanorm=0.12;
-gamma=gammanorm*v0/ell;
-lineargrowthtime=1./gamma;
+itmin=14;                 % allow ~140s to establish fields due to large capacitance and zero start potential
 t=datenum(simdate);
 t0=t(itmin);
-linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
+gammanorm=0.16;                %small nutilde limit from Keskinen, 1988; figure 3
+gamma=gammanorm*v0/ell;
+lineargrowthtime=1./gamma;
+
+% %% Fluctuation average and relative change
+% nepwr=std(dneline,0,2);   %compute a standard deviation along the x2-direction on the grid (tangent to gradient)
+% nerelpwr=nepwr./meanne;
+% 
+% 
+% %% Evaluate time constant empirically from the simulation output (this uses standard dev which is not really appropriate for KHI)
+% % This is a bit tricky because some sort of dynamic at the beginning of the
+% % simulation causes settling and decay of noise, which makes the growth
+% % take longer to start than one would expect; nonetheless once it commences
+% % the growth rate appears to agree fine with linear theory
+% tconsts=log(nepwr);       % time elapsed measured in growth times
+% dtconsts=diff(tconsts);   % difference in time constants between outputs
+% %itslinear=find(nerelpwr<0.05);
+% itslinear=itmin:itmin+10;
+% avgdtconst=mean(dtconsts(itmin:min(max(itslinear),numel(dtconsts))));
+% growthtime=dtout/avgdtconst;
 
 
-%% Do some basic plot containing this info (avg'd over space)
-figure(1);
-plot(t(itmin:end),100*nerelpwr(itmin:end));           % growth from simulation
-ax=axis;
-hold on;
-plot(t,100*linear_nerelpwr);    % pure linear growth
-hold off;
-axis(ax);
-datetick;
-legend({'simulation','linear growth'})
-xlabel('UT');
-ylabel('% variation from background (avg.)');
-title(sprintf('Theoretical \\tau:  %d; model \\tau:  %d',lineargrowthtime,growthtime));
+% %% Growth rate from linear estimate in Keskinen et al, 1988
+% gammanorm=0.16;                %small nutilde limit from Keskinen, 1988; figure 3
+% gamma=gammanorm*v0/ell;
+% lineargrowthtime=1./gamma;
+% t0=t(itmin);
+% linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
+% 
+% 
+% %% Do some basic plot containing this info (avg'd over space)
+% figure(1);
+% plot(t(itmin:end),100*nerelpwr(itmin:end));           % growth from simulation
+% ax=axis;
+% hold on;
+% plot(t,100*linear_nerelpwr);    % pure linear growth
+% hold off;
+% axis(ax);
+% datetick;
+% legend({'simulation','linear growth'})
+% xlabel('UT');
+% ylabel('% variation from background (avg.)');
+% title(sprintf('Theoretical \\tau:  %d; model \\tau:  %d',lineargrowthtime,growthtime));
 
 
 %% Break down the growth according to wavenumber
@@ -164,7 +126,7 @@ Snnmag=abs(Snn);
 Snnmag(:,lx3)=NaN;
 
 
-%% Define wavenumbers of interest
+%% Define wavenumbers of possible interest...
 [val,ik]=min(abs(k-kmax));
 [val,ik2]=min(abs(k-2*kmax));
 [val,ik3]=min(abs(k-3*kmax));
@@ -203,7 +165,10 @@ hold off;
 
 %% Look at "fundamental" mode and first few "harmonics"
 figure;
-semilogy(t(itmin:end),Snnmag(itmin:end,iks));
+FS=22;
+
+semilogy(t(itmin:end),Snnmag(itmin:end,iks(1)),'LineWidth',1.5);
+set(gca,'FontSize',FS);
 axis tight;
 ax=axis;
 datetick;
@@ -213,34 +178,38 @@ datetick;
 hold on;
 refval=Snnmag(itmin,iks(1));     %reference fluctuation power for the fundamental mode
 linear_neabspwr=refval*exp(gamma*(t-t0)*86400);
-semilogy(t(itmin:end),linear_neabspwr(itmin:end),'o');
+semilogy(t(itmin:end),linear_neabspwr(itmin:end),'o','LineWidth',1.5);
 hold off;
 axis(ax);
-legend('k_0','2 k_0','3 k_0','4 k_0','1/2 k_0','1/3 k_0','1/4 k_0','linear theory','Location','SouthEast');
+%legend('k_0','2 k_0','3 k_0','4 k_0','1/2 k_0','1/3 k_0','1/4 k_0','linear theory','Location','SouthEast');
+leglinear=sprintf('linear growth');
+legsim=   sprintf('simulation growth');
+legend(legsim,leglinear,'Location','SouthEast');
+print([direc,'/plots/growth_compare.eps'],'-depsc');
 
 
-%% Do a similar calculation to look at potential to see startup...
-dPhiline=zeros(lx3,lt);
-for it=1:lt
-  PhiBG=mean(Phitop(floor(end/2),:,it));
-  dPhiline(:,it)=Phitop(floor(end/2),:,it)-PhiBG;
-end %for
-dPhiline=dPhiline';
-
-
-%% Check the center cut perturbations
-figure;
-subplot(211)
-imagesc(t,x3,dneline')
-axis xy;
-datetick;
-
-subplot(212)
-imagesc(t,x3,dPhiline')
-axis xy;
-datetick;
-
-figure;
-necut=dneline(:,end/2);
-Phicut=dPhiline(:,end/2);
-plotyy(t,necut,t,Phicut);
+% %% Do a similar calculation to look at potential to see startup effects...
+% dPhiline=zeros(lx3,lt);
+% for it=1:lt
+%   PhiBG=mean(Phitop(floor(end/2),:,it));
+%   dPhiline(:,it)=Phitop(floor(end/2),:,it)-PhiBG;
+% end %for
+% dPhiline=dPhiline';
+% 
+% 
+% %% Check the center cut perturbations to see relative phasing
+% figure;
+% subplot(211)
+% imagesc(t,x3,dneline')
+% axis xy;
+% datetick;
+% 
+% subplot(212)
+% imagesc(t,x3,dPhiline')
+% axis xy;
+% datetick;
+% 
+% figure;
+% necut=dneline(:,end/2);
+% Phicut=dPhiline(:,end/2);
+% plotyy(t,necut,t,Phicut);
