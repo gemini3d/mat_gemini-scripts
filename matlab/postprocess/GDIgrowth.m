@@ -114,7 +114,7 @@ ylabel('\Delta n_e power spectral density');
 
 
 %% Log plot absolute growth of irregularities
-figure(3);
+hf3=figure(3);
 FS=22;
 
 refval=nepwr(itmin);
@@ -136,4 +136,5 @@ leglinear=sprintf('linear growth; \\tau = %4.2f s',lineargrowthtime);
 legsim=   sprintf('simulation growth; \\tau = %4.2f s',growthtime);
 legend(legsim,leglinear,'Location','SouthEast');
 
-print(3,[direc,'/plots/growth_compare.eps'],'-depsc');
+%print(3,[direc,'/plots/growth_compare.eps'],'-depsc');
+export_graphics(hf3, fullfile(direc, 'plots/growth_compare.eps'))

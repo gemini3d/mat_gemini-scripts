@@ -164,7 +164,7 @@ hold off;
 
 
 %% Look at "fundamental" mode and first few "harmonics"
-figure;
+hf3 = figure(3);
 FS=22;
 
 semilogy(t(itmin:end),Snnmag(itmin:end,iks(1)),'LineWidth',1.5);
@@ -185,8 +185,9 @@ axis(ax);
 leglinear=sprintf('linear growth');
 legsim=   sprintf('simulation growth');
 legend(legsim,leglinear,'Location','SouthEast');
-print([direc,'/plots/growth_compare.eps'],'-depsc');
 
+%print([direc,'/plots/growth_compare.eps'],'-depsc');
+export_graphics(hf3, fullfile(direc, 'plots/growth_compare.eps'))
 
 % %% Do a similar calculation to look at potential to see startup effects...
 % dPhiline=zeros(lx3,lt);
