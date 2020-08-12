@@ -3,8 +3,8 @@ run('../../../gemini-matlab/setup.m')
 
 %% Load a KHI simulation
 direc='~/simulations/KHI_nutildemin_whitenoise/';
-xg=readgrid([direc,'/inputs/']);
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
+xg=readgrid(fullfile(direc,'inputs'));
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig(direc);
 
 
 %% Pick a reference point to extract a line of density
@@ -24,7 +24,7 @@ ymd=ymd0;
 while (t<=tdur)
     simdatenow=[ymd,0,0,UTsec]
     simdate(it,:)=simdatenow;
-    data=loadframe(direc,ymd,UTsec);
+    data=loadframe(get_frame_filename(direc,ymd,UTsec));
 
     ix2=floor(lx2/2);    % measure perturbations at the middle x2 point of the domain.
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
@@ -73,8 +73,8 @@ lineargrowthtime=1./gamma;
 % %% Fluctuation average and relative change
 % nepwr=std(dneline,0,2);   %compute a standard deviation along the x2-direction on the grid (tangent to gradient)
 % nerelpwr=nepwr./meanne;
-% 
-% 
+%
+%
 % %% Evaluate time constant empirically from the simulation output (this uses standard dev which is not really appropriate for KHI)
 % % This is a bit tricky because some sort of dynamic at the beginning of the
 % % simulation causes settling and decay of noise, which makes the growth
@@ -94,8 +94,8 @@ lineargrowthtime=1./gamma;
 % lineargrowthtime=1./gamma;
 % t0=t(itmin);
 % linear_nerelpwr=nerelpwr(itmin)*exp(gamma*(t-t0)*86400);
-% 
-% 
+%
+%
 % %% Do some basic plot containing this info (avg'd over space)
 % figure(1);
 % plot(t(itmin:end),100*nerelpwr(itmin:end));           % growth from simulation
@@ -195,20 +195,20 @@ print([direc,'/plots/growth_compare.eps'],'-depsc');
 %   dPhiline(:,it)=Phitop(floor(end/2),:,it)-PhiBG;
 % end %for
 % dPhiline=dPhiline';
-% 
-% 
+%
+%
 % %% Check the center cut perturbations to see relative phasing
 % figure;
 % subplot(211)
 % imagesc(t,x3,dneline')
 % axis xy;
 % datetick;
-% 
+%
 % subplot(212)
 % imagesc(t,x3,dPhiline')
 % axis xy;
 % datetick;
-% 
+%
 % figure;
 % necut=dneline(:,end/2);
 % Phicut=dPhiline(:,end/2);

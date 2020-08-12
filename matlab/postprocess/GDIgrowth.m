@@ -1,8 +1,8 @@
 %% Load a GDI simulation
 %direc='~/simulations/GDI_periodic_lowres_nocap/';
 direc='~/simulations/GDI_ionospheric_noinertia_paper/';
-xg=readgrid([direc,'/inputs/']);
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig([direc,'/inputs/']);
+xg=readgrid(fullfile(direc, 'inputs'));
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file] = readconfig(direc);
 
 
 %% Pick a reference point to extract a line of density
@@ -22,7 +22,7 @@ ymd=ymd0;
 while (t<=tdur)
     simdatenow=[ymd,0,0,UTsec]
     simdate(it,:)=simdatenow;
-    data=loadframe(direc,ymd,UTsec);
+    data=loadframe(get_frame_filename(direc,ymd,UTsec));
     x2now=x2ref+t*0.5e3;    %moving at 0.5 kms/
     ix2=min(find(x2>x2now));
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));
