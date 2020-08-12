@@ -11,9 +11,7 @@ direc='~/simulations/EIA_eq/';
 
 ymd=[2011,03,10];
 UTsec=65783;
-file_format='raw';
-realbits=64;
-xg=readgrid(direc,file_format,realbits);
+xg=readgrid(direc);
 simdat=loadframe(direc,ymd,UTsec);
 [alti,gloni,glati,nei]=model2geocoords(xg,simdat.ne);
 [alti,gloni,glati,Tei]=model2geocoords(xg,simdat.Te);
