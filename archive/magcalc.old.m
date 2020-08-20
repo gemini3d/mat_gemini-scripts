@@ -273,4 +273,3 @@ axis tight;
 hold off;
 
 print('-depsc2',['magfields_',simname,'_geogcomps_time.eps']);
-

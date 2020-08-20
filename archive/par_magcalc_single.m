@@ -530,5 +530,3 @@ end
 %SAVE THE DATA TO A .MAT FILE IN CASE WE3 NEED IT LATER
 t=datenum(simdate_series);
 save([direc,'/magfields.mat'],'mlat','mlon','t','simdate_series','Brt','Bthetat','Bphit','-v7');
-
-

@@ -18,7 +18,7 @@ Simply `git clone https://github.com/gemini3d/gemini-scripts`
 
 ### Requirements
 
-Matlab &ge; R2017a  (Matlab &ge; R2020a recommended for best plots)
+Matlab &ge; R2017b  (Matlab &ge; R2020a recommended for best plots)
 
 ## Usage
 
@@ -33,7 +33,9 @@ setup
 
 These functions are intended to be run by the end-user or automatically for various purposes.
 
-under `matlab/vis/`:
+```matlab
+import gemscr.vis
+```
 
 * `magcalc`
 * `magcalc_single`

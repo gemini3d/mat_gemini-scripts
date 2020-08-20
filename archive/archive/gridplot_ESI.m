@@ -252,4 +252,3 @@ plot3(squeeze(MLATn(end,end,:)),squeeze(MLONn(end,end,:)),squeeze(Zn(end,end,:))
 %print -dpng 3Datmosionos_grid.png;
 %print -depsc2 -painters 3Datmosionos_grid.eps;
 %print -dpdf -painters 3Datmosionos_grid.pdf;
-

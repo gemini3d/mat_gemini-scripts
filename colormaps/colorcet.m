@@ -88,13 +88,13 @@ mapnames = {
 spaces = '                                                           ';
 
 if ~exist('mapname', 'var') || isempty(mapname)
-    
+
     fprintf('\nName(s):         Description:\n');
     fprintf('------------------------------------------------------\n');
-    
+
     for n = 1:length(mapnames)
         [map, descriptorname, description] = colorcet(mapnames{n}{1});
-        
+
         len = 0;
         for m = 1:length(mapnames{n})
             len = len + fprintf('%s', upper(mapnames{n}{m}));
@@ -102,11 +102,11 @@ if ~exist('mapname', 'var') || isempty(mapname)
                 len = len+fprintf('/');
             end
         end
-        
+
         fprintf('%s', spaces(1:16-len));
         fprintf(' %s \n', description);
     end
-    
+
     return
 end
 
@@ -370,7 +370,7 @@ switch upper(mapname)
             0.990954 0.991152 0.991103
             0.995403 0.995602 0.995553
             0.999862 1.000000 1.000000];
-        
+
     case { 'L2'  'REDUCEDGREY' }
         descriptorname = 'linear_grey_10-95_c0_n256';
         description = 'Grey scale with slightly reduced contrast to avoid display saturation problems';
@@ -630,7 +630,7 @@ switch upper(mapname)
             0.935848 0.936036 0.935990
             0.939591 0.939780 0.939733
             0.943337 0.943525 0.943479];
-        
+
     case { 'L3'  'KRYW'  'HEAT'  'FIRE' }
         descriptorname = 'linear_kryw_0-100_c71_n256';
         description = 'Black-Red-Yellow-White heat colour map';
@@ -890,7 +890,7 @@ switch upper(mapname)
             1.000000 0.999530 0.871151
             1.000000 0.999885 0.936834
             1.000000 1.000000 1.000000];
-        
+
     case { 'L4'  'KRY'  'YELLOWHEAT' }
         descriptorname = 'linear_kry_0-97_c73_n256';
         description = 'Black-Red-Yellow heat colour map';
@@ -1150,7 +1150,7 @@ switch upper(mapname)
             1.000000 0.988468 0.000000
             1.000000 0.994234 0.000000
             1.000000 1.000000 0.000000];
-        
+
     case { 'L5'  'KGY' }
         descriptorname = 'linear_kgy_5-95_c69_n256';
         description = 'Colour Map along the green edge of CIELAB space';
@@ -1410,7 +1410,7 @@ switch upper(mapname)
             0.815550 1.000000 0.081210
             0.831586 1.000000 0.081204
             0.847538 1.000000 0.081223];
-        
+
     case { 'L6'  'KBC' }
         descriptorname = 'linear_kbc_5-95_c73_n256';
         description = 'Blue shades running vertically up the blue edge of CIELAB space';
@@ -1670,7 +1670,7 @@ switch upper(mapname)
             0.678637 0.993297 0.963781
             0.690720 0.996258 0.963301
             0.702714 0.999222 0.962818];
-        
+
     case { 'L7'  'BMW' }
         descriptorname = 'linear_bmw_5-95_c86_n256';
         description = 'Blue-Pink-Light Pink colour map';
@@ -1930,7 +1930,7 @@ switch upper(mapname)
             0.997886 0.909182 0.997438
             0.997752 0.914978 0.997387
             0.997602 0.920768 0.997331];
-        
+
     case { 'L8'  'BMY' }
         descriptorname = 'linear_bmy_10-95_c71_n256';
         description = 'Blue-Magenta-Yellow highly saturated colour map';
@@ -2190,7 +2190,7 @@ switch upper(mapname)
             0.964356 0.964928 0.299378
             0.963103 0.970262 0.302058
             0.961816 0.975591 0.304771];
-        
+
     case { 'L9'  'BGYW' }
         descriptorname = 'linear_bgyw_20-98_c66_n256';
         description = 'Blue-green-yellow colour map';
@@ -2450,7 +2450,7 @@ switch upper(mapname)
             0.991455 0.973485 0.870116
             0.985442 0.975455 0.921874
             0.977176 0.977372 0.977324];
-        
+
     case { 'L10'  'GEOGRAPHIC' }
         descriptorname = 'linear_gow_60-85_c27_n256';
         description = 'A "geographical" colour map.  Best used with relief shading';
@@ -2710,7 +2710,7 @@ switch upper(mapname)
             0.833020 0.829973 0.823855
             0.832617 0.831175 0.828091
             0.832208 0.832374 0.832333];
-        
+
     case { 'L11'  'GEOGRAPHIC2' }
         descriptorname = 'linear_gow_65-90_c35_n256';
         description = 'A lighter "geographical" colour map.  Best used with relief shading';
@@ -2970,7 +2970,7 @@ switch upper(mapname)
             0.888270 0.885191 0.878999
             0.887859 0.886409 0.883287
             0.887441 0.887619 0.887576];
-        
+
     case { 'L12'  'DEPTH' }
         descriptorname = 'linear_blue_95-50_c20_n256';
         description = 'A "water depth" colour map';
@@ -3230,7 +3230,7 @@ switch upper(mapname)
             0.238828 0.487668 0.699029
             0.234308 0.486013 0.698315
             0.229665 0.484366 0.697605];
-        
+
     case { 'L13'  'REDTERNARY' }
         descriptorname = 'linear_ternary-red_0-50_c52_n256';
         description = 'red colour map for ternary images';
@@ -3490,7 +3490,7 @@ switch upper(mapname)
             0.892773 0.168634 0.000000
             0.896392 0.169319 0.000000
             0.900000 0.170000 0.000000];
-        
+
     case { 'L14'  'GREENTERNARY' }
         descriptorname = 'linear_ternary-green_0-46_c42_n256';
         description = 'green colour map for ternary images';
@@ -3750,7 +3750,7 @@ switch upper(mapname)
             0.000000 0.495969 0.000000
             0.000000 0.497998 0.000000
             0.000000 0.500000 0.000000];
-        
+
     case { 'L15'  'BLUETERNARY' }
         descriptorname = 'linear_ternary-blue_0-44_c57_n256';
         description = 'blue colour map for ternary images';
@@ -4010,7 +4010,7 @@ switch upper(mapname)
             0.099201 0.327365 0.992016
             0.099601 0.328683 0.996011
             0.100000 0.330000 1.000000];
-        
+
     case { 'L16'  'KBGYW' }
         descriptorname = 'linear_kbgyw_5-98_c62_n256';
         description = 'Black-Blue-Green-Yellow-White colour map';
@@ -4270,7 +4270,7 @@ switch upper(mapname)
             0.993265 0.972710 0.851178
             0.986752 0.975079 0.911686
             0.977176 0.977372 0.977324];
-        
+
     case { 'L17'  'KBGYW' }
         descriptorname = 'linear_worb_100-25_c53_n256';
         description = 'White-Orange-Red-Blue, decreasing lightness with increasing saturation';
@@ -4530,7 +4530,7 @@ switch upper(mapname)
             0.094242 0.163093 0.654706
             0.038143 0.164291 0.656134
             0.000000 0.165388 0.657553];
-        
+
     case { 'L18'  'WORB' }
         descriptorname = 'linear_wyor_100-45_c55_n256';
         description = 'White-Yellow-Orange-Red, decreasing lightness with increasing saturation';
@@ -4790,7 +4790,7 @@ switch upper(mapname)
             0.836016 0.087701 0.113425
             0.835117 0.074450 0.113949
             0.834216 0.059213 0.114471];
-        
+
     case { 'L19'  'WCMR' }
         descriptorname = 'linear_wcmr_100-45_c42_n256';
         description = 'White-Cyan-Magenta-Red, decreasing lightness with increasing saturation';
@@ -5050,7 +5050,7 @@ switch upper(mapname)
             0.822954 0.131393 0.081950
             0.819425 0.130485 0.069425
             0.815891 0.129538 0.055606];
-        
+
     case { 'D1'  'BWR'  'COOLWARM' }
         descriptorname = 'diverging_bwr_40-95_c42_n256';
         description = 'Classic diverging blue - white - red colour map. End colours are matched in lightness and chroma';
@@ -5310,7 +5310,7 @@ switch upper(mapname)
             0.758619 0.060659 0.038618
             0.755534 0.036080 0.029827
             0.752427 0.008418 0.021805];
-        
+
     case { 'D1A'  'BWRA' }
         descriptorname = 'diverging_bwr_20-95_c54_n256';
         description = 'Diverging blue - white - red colour map. Similar to D1 but with darker end point colours';
@@ -5570,7 +5570,7 @@ switch upper(mapname)
             0.419914 0.027159 0.013240
             0.410078 0.027551 0.011092
             0.400282 0.027868 0.008951];
-        
+
     case { 'D2'  'GWV' }
         descriptorname = 'diverging_gwv_55-95_c39_n256';
         description = 'Diverging green - white - violet colour map';
@@ -5830,7 +5830,7 @@ switch upper(mapname)
             0.724443 0.360233 0.895996
             0.722195 0.355043 0.895484
             0.719948 0.349793 0.894972];
-        
+
     case { 'D3'  'GWR' }
         descriptorname = 'diverging_gwr_55-95_c38_n256';
         description = 'Diverging green - white - red colour map';
@@ -6090,7 +6090,7 @@ switch upper(mapname)
             0.931836 0.292464 0.276678
             0.930530 0.285582 0.271880
             0.929203 0.278617 0.267119];
-        
+
     case { 'D4'  'BKR' }
         descriptorname = 'diverging_bkr_55-10_c35_n256';
         description = 'Diverging blue - black - red colour map';
@@ -6350,7 +6350,7 @@ switch upper(mapname)
             0.888727 0.310149 0.254437
             0.895504 0.311465 0.255606
             0.902290 0.312793 0.256787];
-        
+
     case { 'D5'  'GKR' }
         descriptorname = 'diverging_gkr_60-10_c40_n256';
         description = 'Diverging green - black - red colour map';
@@ -6610,7 +6610,7 @@ switch upper(mapname)
             0.977027 0.341079 0.219702
             0.984612 0.342688 0.220501
             0.992203 0.344268 0.221276];
-        
+
     case { 'D6'  'BKY' }
         descriptorname = 'diverging_bky_60-10_c30_n256';
         description = 'Diverging blue - black - yellow colour map';
@@ -6870,7 +6870,7 @@ switch upper(mapname)
             0.692325 0.537331 0.104115
             0.697354 0.541110 0.103000
             0.702399 0.544909 0.101796];
-        
+
     case { 'D7'  'BJY'  'DIVBJY' }
         descriptorname = 'diverging-linear_bjy_30-90_c45_n256';
         description = 'Linear-diverging blue - grey - yellow colour map. This kind of diverging map has no perceptual dead spot at the centre';
@@ -7130,7 +7130,7 @@ switch upper(mapname)
             0.985048 0.888488 0.074910
             0.988006 0.891196 0.057534
             0.990967 0.893909 0.035647];
-        
+
     case { 'D8'  'BJR' }
         descriptorname = 'diverging-linear_bjr_30-55_c53_n256';
         description = 'Linear-diverging blue - grey - red';
@@ -7390,7 +7390,7 @@ switch upper(mapname)
             1.000000 0.117060 0.005434
             1.000000 0.107566 0.000000
             1.000000 0.097091 0.000000];
-        
+
     case { 'D9' }
         descriptorname = 'diverging_bwr_55-98_c37_n256';
         description = 'Diverging low contrast blue - white - red colour map.  Good in conjunction with relief shading';
@@ -7650,7 +7650,7 @@ switch upper(mapname)
             0.906678 0.327333 0.225524
             0.904868 0.321205 0.219989
             0.903044 0.315005 0.214434];
-        
+
     case { 'D10' }
         descriptorname = 'diverging_cwm_80-100_c22_n256';
         description = 'Diverging low contrast cyan - white - magenta colour map.  Good in conjunction with relief shading';
@@ -7910,7 +7910,7 @@ switch upper(mapname)
             0.980592 0.685599 0.942535
             0.980271 0.683007 0.942050
             0.979948 0.680409 0.941565];
-        
+
     case { 'D11' }
         descriptorname = 'diverging-isoluminant_cjo_70_c25_n256';
         description = 'Diverging isoluminant lightblue - lightgrey - orange colour map';
@@ -8170,7 +8170,7 @@ switch upper(mapname)
             0.962662 0.567039 0.430608
             0.964551 0.566048 0.428674
             0.966440 0.565054 0.426741];
-        
+
     case { 'D12' }
         descriptorname = 'diverging-isoluminant_cjm_75_c23_n256';
         description = 'Diverging isoluminant lightblue - lightgrey - pink colour map';
@@ -8430,7 +8430,7 @@ switch upper(mapname)
             0.928046 0.623428 0.890225
             0.929556 0.622452 0.891548
             0.931065 0.621481 0.892870];
-        
+
     case { 'D13'  'BWG' }
         descriptorname = 'diverging_bwg_20-95_c41_n256';
         description = 'Diverging blue - white - green colour map';
@@ -8690,7 +8690,7 @@ switch upper(mapname)
             0.001437 0.237131 0.012975
             0.000581 0.231503 0.009410
             0.000000 0.225900 0.005946];
-        
+
     case { 'C1' }
         descriptorname = 'cyclic_mrybm_35-75_c68_n256';
         description = 'Cyclic: magenta - red - yellow - blue. Alows four orientations/phase angles to be visulaised.';
@@ -8950,7 +8950,7 @@ switch upper(mapname)
             0.956308 0.524462 0.988644
             0.963596 0.523740 0.983677
             0.970035 0.522293 0.977792];
-        
+
     case { 'C2'  'PHASE4' }
         descriptorname = 'cyclic_mygbm_30-95_c78_n256';
         description = 'Cyclic: magenta - yellow - green - blue. Alows four orientations/phase angles to be visulaised.  Really good!';
@@ -9210,7 +9210,7 @@ switch upper(mapname)
             0.915672 0.309845 0.961820
             0.923611 0.316999 0.957797
             0.930949 0.324889 0.953227];
-        
+
     case { 'C3' }
         descriptorname = 'cyclic_rwbkr_15-85_c43_n256';
         description = 'Cyclic: red - white - blue - black - red.  Allows four orientations/phase angles to be visulaised.';
@@ -9470,7 +9470,7 @@ switch upper(mapname)
             0.843960 0.217449 0.135098
             0.851553 0.221996 0.138432
             0.858572 0.227395 0.142421];
-        
+
     case { 'C4'  'PHASE2' }
         descriptorname = 'cyclic_wrwbw_40-90_c42_n256';
         description = 'Cyclic: white - red - white - blue. Good if you just want to visualise +ve and -ve phase';
@@ -9730,7 +9730,7 @@ switch upper(mapname)
             0.856118 0.835162 0.867711
             0.862203 0.836544 0.862130
             0.867831 0.836807 0.855777];
-        
+
     case { 'C5'  'CYCLICGREY' }
         descriptorname = 'cyclic_grey_15-85_c0_n256';
         description = 'Cyclic: greyscale';
@@ -9990,7 +9990,7 @@ switch upper(mapname)
             0.453699 0.453796 0.453773
             0.458724 0.458822 0.458798
             0.463745 0.463845 0.463821];
-        
+
     case { 'C6' }
         descriptorname = 'cyclic-isoluminant colour circle_mgbm_67_c31_n256';
         description = 'Cyclic: isoluminant';
@@ -10250,7 +10250,7 @@ switch upper(mapname)
             0.855851 0.564162 0.534214
             0.854873 0.565086 0.529553
             0.853721 0.566097 0.524967];
-        
+
     case { 'C7' }
         descriptorname = 'cyclic_mygbm_50-90_c46_n256';
         description = 'Cyclic: low contrast colour ellipse';
@@ -10510,7 +10510,7 @@ switch upper(mapname)
             0.903872 0.568559 0.600432
             0.906953 0.572476 0.595637
             0.909895 0.576450 0.590868];
-        
+
     case { 'C8' }
         descriptorname = 'cyclic_mybm_20-100_c48_n256';
         description = 'Cyclic: colour ellipse';
@@ -10770,7 +10770,7 @@ switch upper(mapname)
             0.750440 0.476831 0.464961
             0.754273 0.483991 0.462635
             0.758003 0.491206 0.460337];
-        
+
     case { 'C9' }
         descriptorname = 'cyclic_bgrmb_35-70_c75_n256';
         description = 'Cyclic: blue - green - red - magenta. Allows four orientations/phase angles to be visulaised.';
@@ -11030,7 +11030,7 @@ switch upper(mapname)
             0.294471 0.178440 0.961833
             0.287449 0.182005 0.957517
             0.282495 0.186507 0.952617];
-        
+
     case { 'R1'  'RAINBOW' }
         descriptorname = 'rainbow_bgyrm_35-85_c69_n256';
         description = 'The least worst rainbow colour map I can devise.  Note there are small perceptual blind spots at yellow and red';
@@ -11290,7 +11290,7 @@ switch upper(mapname)
             0.996596 0.560390 0.944944
             0.994532 0.566003 0.962686
             0.992279 0.571631 0.980481];
-        
+
     case { 'R2'  'RAINBOW2' }
         descriptorname = 'rainbow_bgyr_35-85_c72_n256';
         description = 'Reasonable rainbow colour map from blue to red.  Note there is a small perceptual blind spot at yellow';
@@ -11550,7 +11550,7 @@ switch upper(mapname)
             0.991553 0.213705 0.000000
             0.990988 0.201692 0.000000
             0.990411 0.189028 0.000000];
-        
+
     case { 'R3'  'RAINBOW3' }
         descriptorname = 'diverging-rainbow_bgymr_45-85_c67_n256';
         description = 'Diverging-rainbow colourmap. Yellow is the central reference colour. The blue and red end points are matched in lightness and chroma';
@@ -11810,7 +11810,7 @@ switch upper(mapname)
             0.850828 0.038404 0.048987
             0.846867 0.028128 0.024389
             0.842871 0.018301 0.001517];
-        
+
     case { 'I1' }
         descriptorname = 'isoluminant_cgo_70_c39_n256';
         description = 'Isoluminant blue to green to orange at lightness 70.  Poor on its own but works well with relief shading';
@@ -12070,7 +12070,7 @@ switch upper(mapname)
             0.961303 0.568337 0.423482
             0.963876 0.566707 0.425112
             0.966440 0.565054 0.426741];
-        
+
     case { 'I2' }
         descriptorname = 'isoluminant_cgo_80_c38_n256';
         description = 'Isoluminant blue to green to orange at lightness 80.  Poor on its own but works well with relief shading';
@@ -12330,7 +12330,7 @@ switch upper(mapname)
             1.000000 0.701694 0.504210
             1.000000 0.700389 0.505843
             1.000000 0.699074 0.507526];
-        
+
     case { 'I3' }
         descriptorname = 'isoluminant_cm_70_c39_n256';
         description = 'Isoluminant blue to pink at lightness 70.  Poor on its own but works well with relief shading';
@@ -12590,7 +12590,7 @@ switch upper(mapname)
             0.990686 0.523129 0.681868
             0.992443 0.522184 0.679992
             0.994191 0.521253 0.678122];
-        
+
     case { 'CBL1' }
         descriptorname = 'linear-protanopic-deuteranopic_kbjyw_5-95_c25_n256';
         description = 'Linear map for Protanopic/Deuteranopic viewers';
@@ -12850,7 +12850,7 @@ switch upper(mapname)
             0.941193 0.935256 0.921642
             0.942298 0.939387 0.932528
             0.943337 0.943525 0.943479];
-        
+
     case { 'CBL2' }
         descriptorname = 'linear-protanopic-deuteranopic_kbw_5-98_c40_n256';
         description = 'Linear map with maximal chroma for Protanopic/Deuteranopic viewers';
@@ -13110,7 +13110,7 @@ switch upper(mapname)
             0.988242 0.967997 0.920982
             0.987634 0.972396 0.937358
             0.987153 0.976787 0.953107];
-        
+
     case { 'CBL3' }
         descriptorname = 'linear-protanopic-deuteranopic_kbw_5-95_c34_n256';
         description = 'Linear blue map for Protanopic/Deuteranopic viewers';
@@ -13370,7 +13370,7 @@ switch upper(mapname)
             0.932935 0.935402 0.944644
             0.938143 0.939462 0.944063
             0.943337 0.943525 0.943479];
-        
+
     case { 'CBL4' }
         descriptorname = 'linear-protanopic-deuteranopic_kyw_5-95_c49_n256';
         description = 'Linear yellow map for Protanopic/Deuteranopic viewers';
@@ -13630,7 +13630,7 @@ switch upper(mapname)
             0.972691 0.933428 0.837480
             0.965829 0.938018 0.872169
             0.958142 0.942664 0.907032];
-        
+
     case { 'CBD1' }
         descriptorname = 'diverging-protanopic-deuteranopic_bwy_60-95_c32_n256';
         description = 'Diverging map blue-white-yellow';
@@ -13890,7 +13890,7 @@ switch upper(mapname)
             0.663171 0.568555 0.066579
             0.660304 0.565796 0.051268
             0.657440 0.563050 0.033040];
-        
+
     case { 'CBD2' }
         descriptorname = 'diverging-linear-protanopic-deuteranopic_bjy_57-89_c34_n256';
         description = 'Diverging-linear map blue-grey-yellow';
@@ -14150,7 +14150,7 @@ switch upper(mapname)
             0.994823 0.867782 0.357865
             0.996787 0.869160 0.354310
             0.998753 0.870532 0.350743];
-        
+
     case { 'CBC1' }
         descriptorname = 'cyclic-protanopic-deuteranopic_bwyk_16-96_c31_n256';
         description = '4-phase cyclic map blue-white-yellow-black';
@@ -14410,7 +14410,7 @@ switch upper(mapname)
             0.222303 0.511011 0.895416
             0.227531 0.516713 0.903843
             0.234665 0.522373 0.911275];
-        
+
     case { 'CBC2' }
         descriptorname = 'cyclic-protanopic-deuteranopic_wywb_55-96_c33_n256';
         description = '2-phase cyclic map white-yellow-white-blue';
@@ -14670,7 +14670,7 @@ switch upper(mapname)
             0.922994 0.926336 0.944488
             0.927507 0.928543 0.939559
             0.931005 0.929665 0.933581];
-        
+
     case { 'CBTL1' }
         descriptorname = 'linear-tritanopic_krjcw_5-98_c46_n256';
         description = 'Tritanopic linear map with maximal chroma';
@@ -14930,7 +14930,7 @@ switch upper(mapname)
             0.952791 0.972919 0.978314
             0.965016 0.975146 0.977821
             0.977176 0.977372 0.977324];
-        
+
     case { 'CBTL2' }
         descriptorname = 'linear-tritanopic_krjcw_5-95_c24_n256';
         description = 'Tritanopic linear map';
@@ -15190,7 +15190,7 @@ switch upper(mapname)
             0.918281 0.939619 0.945350
             0.930812 0.941584 0.944439
             0.943337 0.943525 0.943479];
-        
+
     case { 'CBTL3' }
         descriptorname = 'linear-tritanopic_kcw_5-95_c22_n256';
         description = 'Tritanopic linear blue map';
@@ -15450,7 +15450,7 @@ switch upper(mapname)
             0.911733 0.941117 0.949033
             0.927537 0.942353 0.946302
             0.943337 0.943525 0.943479];
-        
+
     case { 'CBTL4' }
         descriptorname = 'linear-tritanopic_krw_5-95_c46_n256';
         description = 'Tritanopic linear red/heat map';
@@ -15710,7 +15710,7 @@ switch upper(mapname)
             0.947555 0.932496 0.930053
             0.945473 0.938012 0.936763
             0.943337 0.943525 0.943479];
-        
+
     case { 'CBTD1' }
         descriptorname = 'diverging-tritanopic_cwr_75-98_c20_n256';
         description = 'Tritanopic diverging map';
@@ -15970,7 +15970,7 @@ switch upper(mapname)
             0.992222 0.634587 0.586333
             0.991906 0.631816 0.583374
             0.991584 0.629045 0.580425];
-        
+
     case { 'CBTC1' }
         descriptorname = 'cyclic-tritanopic_cwrk_40-100_c20_n256';
         description = '4-phase tritanopic cyclic map';
@@ -16230,7 +16230,7 @@ switch upper(mapname)
             0.132681 0.721011 0.827081
             0.133766 0.725906 0.832640
             0.139328 0.730637 0.837768];
-        
+
     case { 'CBTC2' }
         descriptorname = 'cyclic-tritanopic_wrwc_70-100_c20_n256';
         description = '2-phase tritanopic cyclic map';
@@ -16490,7 +16490,7 @@ switch upper(mapname)
             0.967246 0.982334 0.987017
             0.973848 0.982744 0.985982
             0.979630 0.982363 0.984219];
-        
+
     otherwise
         error('Unrecognised colour map name')
 end
@@ -16543,16 +16543,16 @@ colourmap = gray(256);
 for n = 1:length(arg);
     if isscalar(arg{n})
         figNo = arg{n};
-        
+
     elseif ischar(arg{n})
         Title = arg{n};
-        
+
     elseif isnumeric(arg{n}) && all(size(arg{n}) == [1,2])
         clim = arg{n};
-        
+
     elseif isnumeric(arg{n}) && size(arg{n},1) > 1 && size(arg{n},2) == 3
         colourmap = arg{n};
-        
+
     else
         error('Unable to process arguments');
     end
@@ -16584,7 +16584,7 @@ if ndims(im) == 2          % Apply colour map
     else
         imagesc(im, clim);
     end
-    
+
     colormap(colourmap);
 else
     imshow(im(:,:,1:3));   % Display as RGB (ignore any alpha channel)
@@ -16597,7 +16597,7 @@ if figNo == 0              % Assume we are trying to do a subplot
 else
     %axis('image'); axis('off');
     set(figNo,'name', ['  ' Title])
-    
+
     % If not running Octave and size of image > 500 plot image at 1:1
     % resolution. Otherwise we let imagesc use its default scaling.
     if ~Octave && sze > 500
@@ -16628,17 +16628,17 @@ if nargin == 1   % Normalise 0 - 1
         n = im - min(im(:));
         n = n/max(n(:));
     end
-    
+
 else  % Normalise to desired mean and variance
-    
+
     if ndims(im) == 3         % colour image?
         error('cannot normalise colour image to desired mean and variance');
     end
-    
+
     if ~isa(im,'double'), im = double(im); end
     im = im - mean(im(:));
     im = im/std(im(:));      % Zero mean, unit std dev
-    
+
     n = reqmean + im*sqrt(reqvar);
 end
 end
@@ -16680,14 +16680,14 @@ ang = mod(ang, cycle);   % Ensure data values are within range 0 - cycle
 rgbim = applycolourmap(ang, map, [0 cycle]);
 
 if ~isempty(amp)  % Display image with rgb values modulated by amplitude
-    
+
     amp = normalise(amp);  % Enforce amplitude  0 - 1
-    
+
     if ~bw  % Modulate rgb values by amplitude fading to black
         for n = 1:3
             rgbim(:,:,n) = rgbim(:,:,n).*amp;
         end
-        
+
     else  % Modulate rgb values by amplitude fading to white
         for n = 1:3
             rgbim(:,:,n) = 1 - (1 - rgbim(:,:,n)).*amp;
