@@ -1,33 +1,39 @@
-function plot3D_cart_frames_long_ENU_aspect_squeeze(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
+function plot3D_cart_frames_long_ENU_aspect_squeeze(t,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
 
 narginchk(4,9)
-validateattributes(ymd, {'numeric'}, {'vector', 'numel', 3}, mfilename, 'year month day', 1)
-validateattributes(UTsec, {'numeric'}, {'scalar'}, mfilename, 'UTC second', 2)
+%validateattributes(ymd, {'numeric'}, {'vector', 'numel', 3}, mfilename, 'year month day', 1)
+%validateattributes(UTsec, {'numeric'}, {'scalar'}, mfilename, 'UTC second', 2)
 %plotparams.ymd = ymd; plotparams.utsec = UTsec;
+
+datearr=datevec(t);
+plotparams.ymd=datearr(1:3);
+ymd=plotparams.ymd;
+plotparams.UTsec=datearr(4)*3600+datearr(5)*60+datearr(6);
+UTsec=plotparams.UTsec;
 
 validateattributes(xg, {'struct'}, {'scalar'}, mfilename, 'grid structure', 3)
 validateattributes(parm, {'numeric'}, {'real'}, mfilename, 'parameter to plot',4)
 
-if nargin<5, parmlbl=''; end
+if nargin<4, parmlbl=''; end
 validateattributes(parmlbl, {'char'}, {'vector'}, mfilename, 'parameter label', 5)
 %plotparams.parmlbl = parmlbl;
 
-if nargin<6
+if nargin<5
   caxlims=[];
 else
   validateattributes(caxlims, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'plot intensity (min, max)', 6)
 end
 %plotparams.caxlims = caxlims;
 
-if nargin<7 || isempty(sourceloc) % leave || for validate
+if nargin<6 || isempty(sourceloc) % leave || for validate
   sourceloc = [];
 else
   validateattributes(sourceloc, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'source magnetic coordinates', 7)
 end
-if nargin<8 || isempty(hf)
+if nargin<7 || isempty(hf)
   hf = figure();
 end
-if nargin<9 || isempty(cmap)
+if nargin<8 || isempty(cmap)
   cmap = parula(256);
 end
 
