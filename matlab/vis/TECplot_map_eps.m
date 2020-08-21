@@ -47,14 +47,21 @@ for it=1:lt
 
     mlatlimplot=double([min(mlat)-0.5,max(mlat)+0.5]);
     mlonlimplot=double([min(mlon)-0.5,max(mlon)+0.5]);
+    axesm('MapProjection','Mercator','MapLatLimit',mlatlimplot,'MapLonLimit',mlonlimplot);
+    
     param=dvTEC(:,:,it);
-    imagesc(mlon,mlat,param);
-    axis xy;
-    axis equal;    
-    axis([mlonlimplot,mlatlimplot]);
-    %pcolorm(MLAT,MLON,param);
+%     imagesc(mlon,mlat,param);
+%     axis xy;
+%     axis equal;    
+%     axis([mlonlimplot,mlatlimplot]);
+    mlatlim=double([min(mlat),max(mlat)]);
+    mlonlim=double([min(mlon),max(mlon)]);
+    [MLAT,MLON]=meshgrat(mlatlim,mlonlim,size(param));
+    pcolorm(MLAT,MLON,param);
+    
     colormap(old_parula(256));
     set(gca,'FontSize',FS);
+    tightmap;
 %    caxis([-3,3]);
     caxis([-0.62,0.62]);
     c=colorbar
@@ -82,8 +89,8 @@ for it=1:lt
 
      figure(2)
       axesm('MapProjection','Mercator','MapLatLimit',mlatlimplot,'MapLonLimit',mlonlimplot);
-      mlatlim=double([min(mlat),max(mlat)]);
-      mlonlim=double([min(mlon),max(mlon)]);
+      mlatlim=double([min(mlat)-0.5,max(mlat)+0.5]);
+      mlonlim=double([min(mlon)-0.5,max(mlon)+0.5]);
       [MLAT,MLON]=meshgrat(mlatlim,mlonlim,size(param));
       plotm(mlatcoast,mloncoast,'k-','LineWidth',1);
       setm(gca,'MeridianLabel','on','ParallelLabel','on','MLineLocation',10,'PLineLocation',5,'MLabelLocation',10,'PLabelLocation',5);
