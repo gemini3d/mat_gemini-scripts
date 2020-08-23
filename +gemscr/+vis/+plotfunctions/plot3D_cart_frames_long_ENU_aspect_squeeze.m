@@ -1,34 +1,24 @@
-function plot3D_cart_frames_long_ENU_aspect_squeeze(t,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
+function plot3D_cart_frames_long_ENU_aspect_squeeze(time,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
 
-narginchk(4,9)
-%validateattributes(ymd, {'numeric'}, {'vector', 'numel', 3}, mfilename, 'year month day', 1)
-%validateattributes(UTsec, {'numeric'}, {'scalar'}, mfilename, 'UTC second', 2)
-%plotparams.ymd = ymd; plotparams.utsec = UTsec;
+narginchk(4,8)
 
-datearr=datevec(t);
-plotparams.ymd=datearr(1:3);
-ymd=plotparams.ymd;
-plotparams.UTsec=datearr(4)*3600+datearr(5)*60+datearr(6);
-UTsec=plotparams.UTsec;
-
-validateattributes(xg, {'struct'}, {'scalar'}, mfilename, 'grid structure', 3)
-validateattributes(parm, {'numeric'}, {'real'}, mfilename, 'parameter to plot',4)
+validateattributes(time, {'datetime'}, {'scalar'}, 1)
+validateattributes(xg, {'struct'}, {'scalar'}, mfilename, 'grid structure', 2)
+validateattributes(parm, {'numeric'}, {'real'}, mfilename, 'parameter to plot',3)
 
 if nargin<4, parmlbl=''; end
-validateattributes(parmlbl, {'char'}, {'vector'}, mfilename, 'parameter label', 5)
-%plotparams.parmlbl = parmlbl;
+validateattributes(parmlbl, {'char'}, {'vector'}, mfilename, 'parameter label', 4)
 
 if nargin<5
   caxlims=[];
 else
-  validateattributes(caxlims, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'plot intensity (min, max)', 6)
+  validateattributes(caxlims, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'plot intensity (min, max)', 5)
 end
-%plotparams.caxlims = caxlims;
 
 if nargin<6 || isempty(sourceloc) % leave || for validate
   sourceloc = [];
 else
-  validateattributes(sourceloc, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'source magnetic coordinates', 7)
+  validateattributes(sourceloc, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'source magnetic coordinates', 6)
 end
 if nargin<7 || isempty(hf)
   hf = figure();
@@ -52,8 +42,8 @@ end
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
 inds1=3:lx1+2;
 %inds2=3:lx2+2;
-inds2min=max(find(xg.x2<-100e3));
-inds2max=min(find(xg.x2>100e3));
+inds2min=find(xg.x2<-100e3, 1, 'last' );
+inds2max=find(xg.x2>100e3, 1 );
 inds2=inds2min:inds2max;
 inds3=3:lx3+2;
 Re=6370e3;
@@ -61,7 +51,6 @@ Re=6370e3;
 
 %JUST PICK AN X3 LOCATION FOR THE MERIDIONAL SLICE PLOT, AND AN ALTITUDE FOR THE LAT./LON. SLICE
 ix3=floor(lx3/2);
-%plotparams.altref=300;
 altref=300;
 
 
@@ -173,7 +162,7 @@ axis(ha,'xy');
 axis(ha,'equal');    %fix the aspect ratio...
 axis(ha,'tight');
 if (~isempty(sourcemlat))
-  plot(ha,[minxp,maxxp],[sourcemlon,sourcemlon],'w--','LineWidth',2);
+  yline(ha, sourcemlon,'w--','LineWidth',2);
   plot(ha,sourcemlat,sourcemlon,'r^','MarkerSize',12,'LineWidth',2);
 end
 set(h,'alphadata',~isnan(rot90(parmp2(2:end-1,2:end-1,2),-1)));
@@ -187,11 +176,9 @@ ylabel(ha,'y (km)');
 xlabel(ha,'x (km)');
 
 %% CONSTRUCT A STRING FOR THE TIME AND DATE
-time=datenum([ymd,0,0,UTsec]);
-%ttxt=sprintf('%6.1f s',UTsec-28500);
-ttxt=datestr(time,'HH:MM:SS');
-title(ha, ttxt);
-set(ha,'FontSize',FS);
+
+title(ha, datestr(time))
+set(ha,'FontSize',FS)
 
 % ha=subplot(1,3,3, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);
 % h=imagesc(ha,xp,zp,parmp);
