@@ -18,7 +18,7 @@ x2ref=-85e3;
 Nt = numel(cfg.times);
 neline = nan(Nt, numel(x3));
 
-for i = 1:length(cfg.times)
+for i = 1:Nt
   data = gemini3d.vis.loadframe(direc, cfg.times(i), {'ne'});
   t_elapsed = seconds(cfg.times(i) - cfg.times(1));
   x2now = x2ref + t_elapsed * drift_velocity;    %moving at 0.5 kms/
@@ -29,9 +29,9 @@ end
 %% Compute amplitude of fluctuations (BG subtract)
 dneline = zeros(size(neline));
 meanne = zeros(Nt,1);
-for i=1:Nt
+for i = 1:Nt
   meanne(i) = mean(neline(i,:));
-  dneline(i,:)= neline(i,:) - meanne(i);
+  dneline(i,:) = neline(i,:) - meanne(i);
 end
 %% Fluctuation average and relative change
 % The GDI growth rate
@@ -41,9 +41,9 @@ nerelpwr = nepwr ./ meanne;
 %% Evaluate time constant empirically from the simulation output
 tconsts=log(nepwr);       % time elapsed measured in growth times
 dtconsts=diff(tconsts);   % difference in time constants between outputs
-itslinear = find(nerelpwr<0.1);
+itslinear = find(nerelpwr<0.1, 1, 'last');
 itmin=5;                  % first few frames involve some settling, remove these
-avgdtconst=mean(dtconsts(itmin:max(itslinear)));   % average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
+avgdtconst=mean(dtconsts(itmin:itslinear));   % average time constants elapsed per output, only use times after itmin output to allow settling from initial condition
 growthtime = cfg.dtout/avgdtconst;
 %% Growth rate from linear estimate Im{omega} = E/(B*ell)
 gamma = drift_velocity / gradient_scale;
@@ -67,11 +67,12 @@ linear_nerelpwr = ne_rel_pwr(it_min) * exp(gamma*seconds(times - times(it_min)))
 %% Do some basic plot containing this info (avg'd over space)
 fig = figure;
 ax = axes(fig);
+
 hold on;
 plot(times,100*ne_rel_pwr);    % growth from simulation
 plot(times,100*linear_nerelpwr);    %pure linear growth
 hold off;
-datetick;
+
 legend(ax, {'simulation','linear growth'})
 xlabel(ax, 'UT');
 ylabel(ax, '% variation from background (avg.)');
@@ -105,7 +106,7 @@ plot(ax, x3, dneline(its,:));
 xlabel(ax, 'horizontal distance (m)');
 ylabel(ax, '\Delta n_e');
 for i=1:numel(its)
-  leg{i} = sprintf('%d s', its(i)*10);
+  leg{i} = sprintf('%d s', its(i)*10); %#ok<AGROW>
 end
 legend(ax, leg);
 
@@ -121,23 +122,22 @@ function fig = make_figure3(times, it_min, ne_pwr, gamma, growth_time)
 %% Log plot absolute growth of irregularities
 lineargrowthtime = 1/gamma;
 fig = figure();
-FS=22;
 ax = axes(fig);
-ref_val= ne_pwr(it_min);
-linear_neabspwr=ref_val*exp(gamma*seconds(times - times(it_min)));
+
+ref_val = ne_pwr(it_min);
+linear_neabspwr = ref_val*exp(gamma*seconds(times - times(it_min)));
 
 semilogy(ax, times(it_min:end), ne_pwr(it_min:end),'LineWidth',1.5);
 
-datetick(ax);
-xlabel(ax, 'UT');
-ylabel(ax, 'Fluctuation amplitude (m^{-3})');
+xlabel(ax, 'UT')
+ylabel(ax, 'Fluctuation amplitude (m^{-3})')
 
 hold on;
-semilogy(ax, times(it_min:end), linear_neabspwr(it_min:end),'o','LineWidth',1.5);
+semilogy(ax, times(it_min:end), linear_neabspwr(it_min:end),'o','LineWidth',1.5)
 hold off;
 
 leglinear=sprintf('linear growth; \\tau = %4.2f s', lineargrowthtime);
 legsim=   sprintf('simulation growth; \\tau = %4.2f s', growth_time);
-legend(legsim,leglinear,'Location','SouthEast');
+legend(legsim,leglinear,'Location','SouthEast')
 
 end % function

@@ -43,6 +43,6 @@ incap=0.0;
 for isp=1:lsp
   incap=incap+ns(:,:,:,isp)*ms(isp);
 end %for
-incap=incap./B.^2
+incap = incap./B.^2;
 
 end

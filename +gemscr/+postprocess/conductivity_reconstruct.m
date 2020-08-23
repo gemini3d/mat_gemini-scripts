@@ -9,7 +9,6 @@ validateattributes(xg, {'struct'}, {'scalar'}, 4)
 params.activ = cfg.activ;
 natm= gemini3d.setup.msis_matlab3D(params,xg, time);
 
-
 %% MASS AND CHARGE VARIABLES DESCRIBING SPECIES (needed to recompute the collision freqs.) - this is a little messy maybe have some global script that sets???
 %kb=1.3806503e-23;
 elchrg=1.60217646e-19;
@@ -17,7 +16,6 @@ amu=1.66053886e-27;
 ms=[16,30,28,32,14,1,9.1e-31/amu]*amu;
 %gammas=[5/3,7/5,7/5,7/5,5/3,5/3,5/3];
 qs=[1,1,1,1,1,1,-1]*elchrg;
-
 
 %% DEFINE A COMPOSITION OF THE PLASMA - THIS ACTUALLY DOESN'T MUCH IMPACT THE CONDUCTIVITY
 p=1/2+1/2*tanh((xg.alt-220e3)/20e3);
@@ -29,9 +27,9 @@ ns(:,:,:,3)=1/3*nmolc;
 ns(:,:,:,4)=1/3*nmolc;
 ns(:,:,:,7)= dat.ne;               %if you don't separately assign electron density the hall and parallel terms are wrong
 
-Ts(:,:,:,1:6)=repmat(Ti,[1,1,1,6]);
+Ts(:,:,:,1:6)=repmat(dat.Ti,[1,1,1,6]);
 Ts(:,:,:,7)= dat.Te;
-vs1=repmat(v1,[1 1 1 7]);
+vs1=repmat(dat.v1,[1 1 1 7]);
 
 
 %% NEED TO CREATE A FULL IONOSPHERIC OUT OF A PARTIAL CALCULATION

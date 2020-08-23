@@ -3,8 +3,8 @@ function [mlon,mlat,simdate,Qit,E0it] = readparticles(outdir)
 narginchk(1,1)
 
 
-%% GRAB THE SIZE AND GRID FOR THE INPUT FILES (COULD BE DIFFERENT FROM SIM
-%GRID)
+%% GRAB THE SIZE AND GRID FOR THE INPUT FILES
+% (COULD BE DIFFERENT FROM SIM GRID)
 filename = fullfile(outdir,'simsize.dat');
 fid=fopen(filename,'r');
 llon=fread(fid,1,'integer*4');

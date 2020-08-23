@@ -122,10 +122,10 @@ kb=1.3806503e-23;
               Wst=abs(vsx1(:,:,:,is1)-vsx1(:,:,:,is2))./sqrt(2*kb*T./mred);
               Psisj(:,:,:,is1,is2)=exp(-Wst.^2);
               %Wst=max(Wst,0.01);       %major numerical issues with asymptotic form (as Wst -> 0)!!!
-              inds=find(Wst<0.1);
+
               Phinow=3/4*sqrt(pi)*erf(Wst)./Wst.^3 ...
                   -3/2./Wst.^2.*Psisj(:,:,:,is1,is2);
-              Phinow(inds)=1;
+              Phinow(Wst < 0.1)=1;
               Phisj(:,:,:,is1,is2)=Phinow;
          end
      end
