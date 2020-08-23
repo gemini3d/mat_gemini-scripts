@@ -1,48 +1,37 @@
-addpath ~/matlab_ext/;
-run('../../../mat_gemini/setup.m')
+addpath ~/matlab_ext/
+
+cwd = fileparts(mfilename('fullpath'));
+run(fullfile(cwd, '../../setup.m'))
 
 %SIMULATION LOCAITONS
 simname='mooreOK3D_hemis_medres_corrected/';
-basedir=['~/simulations/'];
-direc=[basedir,simname];
+basedir='~/simulations/';
+direc= gemini3d.fileio.expanduser(fullfile(basedir, simname));
 %mkdir([direc,'/TECplots']);    %store output plots with the simulation data
-mkdir([direc,'/TECplots_eps']);    %store output plots with the simulation data
-
+mkdir(fullfile(direc, 'TECplots_eps'));    %store output plots with the simulation data
 
 %LOAD THE COMPUTED MAGNETIC FIELD DATA
-load([direc,'/vTEC.mat']);
-lt=numel(t);
+load(fullfile(direc, 'vTEC.mat'));
+
 mlon=mlong;
 
-
-%SIMULATION META-DATA
+%% SIMULATION META-DATA
 cfg = gemini3d.read_config(direc);
 
-
-%TABULATE THE SOURCE LOCATION
+%% TABULATE THE SOURCE LOCATION
 thdist = pi/2 - deg2rad(cfg.sourcemlat);    %zenith angle of source location
 phidist = deg2rad(cfg.sourcemlon);
 
-
-figure(1);
-%set(gcf,'PaperPosition',[0 0 4 8]);
-
-
 %MAKE THE PLOTS AND SAVE TO A FILE
-for it=1:lt
+for it=1:numel(cfg.times)
     fprintf('Printing TEC plots...\n');
     %CREATE A MAP AXIS
-    figure(1);
+    fig1 = figure(1);
     clf;
 %    FS=16;
     FS=10;
 
-    datehere=datevec(cfg.times(it));
-    ymd=datehere(1:3);
-    UTsec=datehere(4)*3600+datehere(5)*60+datehere(6);
-    filename=gemini3d.datelab(ymd,UTsec);
-    filename=[filename,'.dat'];
-    titlestring=datestr(datenum(datehere));
+    filename = gemini3d.get_frame_filename(direc, cfg.times(it));
 
     mlatlimplot=double([min(mlat)-0.5,max(mlat)+0.5]);
     mlonlimplot=double([min(mlon)-0.5,max(mlon)+0.5]);
@@ -63,18 +52,17 @@ for it=1:lt
     tightmap;
 %    caxis([-3,3]);
     caxis([-0.62,0.62]);
-    c=colorbar
+    c=colorbar;
     set(c,'FontSize',FS)
     xlabel(c,'\Delta vTEC (TECU)')
     xlabel(sprintf('magnetic long. (deg.)\n\n'))
     ylabel(sprintf('magnetic lat. (deg.)\n\n\n'))
 
-    titlestring=datestr(datenum(datehere));
-    title(sprintf([titlestring,'\n\n']));
-    print('-depsc2',[direc,'/TECplots_eps/',filename,'.eps']);
+    title(datestr(cfg.times(it)))
+    gemini3d.vis.export_graphics(fig1, fullfile(direc,'TECplots_eps',[filename,'.eps']))
 
 
-    %MAKE A MAP OF THE COAST ON THE FIRST TIME STEP
+%% MAKE A MAP OF THE COAST ON THE FIRST TIME STEP
     if (it==1)
       load coastlines;
       [thetacoast,phicoast]=gemini3d.geog2geomag(coastlat,coastlon);
@@ -82,11 +70,11 @@ for it=1:lt
       mloncoast=phicoast*180/pi;
 
       if (360-cfg.sourcemlon<20)
-          inds=find(mloncoast>180);
+          inds= mloncoast>180;
           mloncoast(inds)=mloncoast(inds)-360;
       end
 
-     figure(2)
+     fig2 = figure(2);
       axesm('MapProjection','Mercator','MapLatLimit',mlatlimplot,'MapLonLimit',mlonlimplot);
       mlatlim=double([min(mlat)-0.5,max(mlat)+0.5]);
       mlonlim=double([min(mlon)-0.5,max(mlon)+0.5]);
@@ -100,6 +88,6 @@ for it=1:lt
       axis equal;
       tightmap;
       gridm on;
-      print('-depsc2',[direc,'/TECplots_eps/','map.eps']);
+      gemini3d.vis.export_graphics(fig2, fullfile(direc,'TECplots_eps','map.eps'))
     end
 end
