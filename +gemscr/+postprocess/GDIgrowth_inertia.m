@@ -1,11 +1,11 @@
-function GDIgrowth_inertia(direc)
+function GDIgrowth_inertia(direc, namedargs)
+arguments
+  direc (1,1) string
+  namedargs.drift_velocity (1,1) double = 0.5e3 % [meters / sec]
+  namedargs.magcap (1,1) double = 5 % magnetospheric capacitance
+end
 cwd = fileparts(mfilename('fullpath'));
 run(fullfile(cwd, '../../setup.m'))
-
-narginchk(1,1)
-
-drift_velocity = 0.5e3; % [meters / sec]
-magcap=5; % Hardcoded magnetospheric capacitance
 
 xg = gemini3d.readgrid(direc);
 cfg = gemini3d.read_config(direc);
@@ -19,9 +19,9 @@ Nt = numel(cfg.times);
 neline = nan(Nt, numel(x3));
 
 for i = 1:Nt
-  data = gemini3d.vis.loadframe(direc, cfg.times(i), {'ne', 'Te', 'Ti', 'v1'});
+  data = gemini3d.vis.loadframe(direc, cfg.times(i), ["ne", "Te", "Ti", "v1"]);
   t_elapsed = seconds(cfg.times(i) - cfg.times(1));
-  x2now = x2ref + t_elapsed * drift_velocity;    %moving at 0.5 kms/
+  x2now = x2ref + t_elapsed * namedargs.drift_velocity;    %moving
   ix2 = find(x2 > x2now, 1);
 
   neline(i,:) = data.ne(ix1,ix2,:);
@@ -31,7 +31,7 @@ for i = 1:Nt
     [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP] = gemscr.postprocess.conductivity_reconstruct(cfg.times(i), data, cfg, xg);
 
     % mean relaxation parameter over entire grid, first time step
-    nutilde = mean(SIGP(:)./(INCAP(:)+magcap));
+    nutilde = mean(SIGP(:)./(INCAP(:)+ namedargs.magcap));
     % FIXME:  hardcoded magnetospheric capacitance, should be read from input file
   end %if
 end % for
