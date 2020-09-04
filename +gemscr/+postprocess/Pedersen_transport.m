@@ -2,7 +2,9 @@
 
 
 % Load and prep. data
-direc='~/simulations/isinglass_clayton6_MB'
+%direc='~/simulations/isinglass_clayton6_MB'
+direc='~/simulations/isinglass_clayton5_decurl'
+
 dat=gemini3d.vis.loadframe(direc,datetime([2017,3,2,0,0,28400]));
 
 xg=gemini3d.readgrid(direc);
@@ -21,23 +23,28 @@ x3=xg.x3(3:end-2);
 
 
 % transport rates
-divflux=divergence(X2,X3,v2,v3);
+divflux=divergence(X2,X3,ne'.*v2',ne'.*v3');
 
 
 % plots
 figure(1)
 subplot(131)
-imagesc(x2,x3,ne);
+imagesc(x2,x3,ne');
 axis xy;
 
 subplot(132)
-imagesc(x2,x3,v2);
+imagesc(x2,x3,v2');
 axis xy;
 
 subplot(133);
-imagesc(x2,x3,v3);
+imagesc(x2,x3,v3');
 axis xy;
 
 figure(2);
-imagesc(x2,x3,divflux);
+imagesc(x2,x3,-1*divflux);
 axis xy;
+
+figure(3);
+imagesc(x2,x3,-1*divflux*60)
+axis xy;
+
