@@ -2,14 +2,16 @@
 
 
 % Load and prep. data
-%direc='~/simulations/isinglass_clayton6_MB'
-direc='~/simulations/isinglass_clayton5_decurl'
+direc='~/simulations/isinglass_clayton6_MB'
+%direc='~/simulations/isinglass_clayton5_decurl'
+%direc='~/simulations/isinglass_clayton3'
 
 dat=gemini3d.vis.loadframe(direc,datetime([2017,3,2,0,0,28400]));
-
 xg=gemini3d.readgrid(direc);
 alt=xg.alt;
-[~,ix1]=min(abs(alt(:,1,1)-120e3));    %index closest to 120 km
+refalt=120e3;      %Pedersen layer
+%refalt=100e3;      %Hall layer
+[~,ix1]=min(abs(alt(:,1,1)-refalt));    %index closest to reference altitude
 
 v1=squeeze(dat.v1(ix1,:,:));
 v2=squeeze(dat.v2(ix1,:,:));
@@ -45,6 +47,22 @@ imagesc(x2,x3,-1*divflux);
 axis xy;
 
 figure(3);
-imagesc(x2,x3,-1*divflux*60)
+subplot(121)
+imagesc(x2/1e3,x3/1e3,-1*divflux*5)
+xlabel('east dist. (km)')
+ylabel('north dist. (km)')
+title([direc,':  -div (n_e v) * 5 sec '],'Interpreter', 'none');
 axis xy;
+c=colorbar;
+ylabel(c,'n_e m^{-3}')
+
+subplot(122)
+imagesc(x2/1e3,x3/1e3,ne');
+xlabel('east dist. (km)')
+ylabel('north dist. (km)')
+title([direc,':  n_e'],'Interpreter', 'none');
+axis xy;
+colorbar;
+c=colorbar;
+ylabel(c,'n_e m^{-3}')
 
