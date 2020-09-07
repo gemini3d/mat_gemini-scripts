@@ -6,7 +6,9 @@ direc='~/simulations/isinglass_clayton6_MB'
 %direc='~/simulations/isinglass_clayton5_decurl'
 %direc='~/simulations/isinglass_clayton3'
 
-dat=gemini3d.vis.loadframe(direc,datetime([2017,3,2,0,0,28400]));
+%UTsec=28400;
+UTsec=28420;
+dat=gemini3d.vis.loadframe(direc,datetime([2017,3,2,0,0,UTsec]));
 xg=gemini3d.readgrid(direc);
 alt=xg.alt;
 refalt=120e3;      %Pedersen layer
