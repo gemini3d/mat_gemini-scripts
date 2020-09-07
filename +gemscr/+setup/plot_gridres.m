@@ -4,7 +4,7 @@
 %% Load the grid of interest (user needs to tweak locations)
 direc='~/simulations/ESF_noise_highres/'
 cfg=gemini3d.read_config(direc);
-xg= gemini3d.readgrid(direc);
+xg=gemini3d.readgrid(direc);
 
 
 %% Compute the resolutions
@@ -40,3 +40,9 @@ parmlbl='x_2 grid spacing (log_{10} km)';
 caxlims=[min(parm(:)),max(parm(:))];
 gemini3d.vis.plotfunctions.plot3D_curv_frames_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
 savefig('~/dl2.fig');
+
+parm=log10(dl3/1e3);
+parmlbl='x_3 grid spacing (log_{10} km)';
+caxlims=[min(parm(:)),max(parm(:))];
+gemini3d.vis.plotfunctions.plot3D_curv_frames_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
+savefig('~/dl3.fig');
