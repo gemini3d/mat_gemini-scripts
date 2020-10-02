@@ -17,7 +17,7 @@ dtheta=16;
 dphi=29;
 lp=100;
 lq=200;
-lphi=210;
+lphi=100;
 altmin=80e3;
 glat=41.5;   %38.9609;
 glon=360-94.088;
@@ -27,10 +27,7 @@ iscurv=true;
 
 
 %% Compute the grid
-xg= gemini3d.setup.makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%addpath ../../GEMINI-scripts/setup/gridgen;
-%xg=makegrid_tilteddipole_varx2_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%rmpath ../../GEMINI-scripts/setup/gridgen;
+xg=gemini3d.setup.gridgen.makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
 
 
 %% DETERMINE GRID RESOLUTION
@@ -47,14 +44,14 @@ mlonsrc=phi*180/pi;
 sourceloc=[mlatsrc,mlonsrc];
 
 parm=log10(dl1/1e3);
-parmlbl='x_1 grid spacing (km)';
+parmlbl='log_{10} x_1 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
-h= gemini3d.vis.plotfunctions.plot3D_curv_frames_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc);
+gemini3d.vis.plotfunctions.plot3D_curv_frames_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
 
 parm=log10(dl2/1e3);
-parmlbl='x_2 grid spacing (km)';
+parmlbl='log_{10} x_2 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
-h= gemini3d.vis.plotfunctions.plot3D_curv_frames_long(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc);
+gemini3d.vis.plotfunctions.plot3D_curv_frames_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
 
 
 
@@ -99,9 +96,9 @@ x2=xg.x2(3:end-2);
 
 ix1=floor(lx1/2);
 ix3=floor(lx3/2);
-dl2trial=squeeze(dl2(ix1,:,ix3));              % step size for the original grid
+dl2trial=squeeze(dl2(ix1,:,ix3));                % step size for the original grid
 dl2target=6.75e3;                                % define a desired grid step size in x2
-dx2target=squeeze(dl2target./h2(ix1,:,ix3));   % what dx2 needs to be to hit target grid size
+dx2target=squeeze(dl2target./h2(ix1,:,ix3));     % what dx2 needs to be to hit target grid size
 
 %A polynomial is being fitted to the target dL as a function of L, this
 %can, in turn be used in the grid generation scripts which can handle
@@ -116,6 +113,7 @@ plot(x2,dx2new,x2,dx2target);
 xlabel('L shell');
 ylabel('\Delta L');
 legend('dL of nonuniform grid','target dL');
+title(sprintf('poly coeffs:  %f %f %f',coeffs))
 
 subplot(122);
 plot(x2,dl2new,x2,dl2trial);
