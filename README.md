@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/154507405.svg)](https://zenodo.org/badge/latestdoi/154507405)
 
-Auxiliary scripts for the [GEMINI ionospheric model](https://github.com/gemini3d/gemini-scripts).
+This repository contains auxiliary scripts for the [GEMINI ionospheric model](https://github.com/gemini3d/gemini-scripts).  It is distinct from the [mat_gemini repository](https://github.com/gemini3d/mat_gemini) which contains polished, tested, and functioning script for handling output data from GEMINI.  Instead this repository is a sandbox for experimental/developing capabilities for input preparation for GEMINI and for processing output data.  
 
 ## Install
 
@@ -22,7 +22,7 @@ Matlab &ge; R2017b  (Matlab &ge; R2020a recommended for best plots)
 
 ## Usage
 
-The scripts are meant to "just work" without fiddling for a particular computer.
+The intention is eventually for these scripts to "just work" without fiddling for a particular computer.
 From Matlab, run the setup.m to configure all the needed paths for this Matlab session.
 
 ```matlab
