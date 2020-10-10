@@ -1,6 +1,15 @@
 function [v,E]=Efield(xg,v2,v3)
 
+% This is a standard interface to be used for conversion of plasma drifts
+% into electric fields.  The output vectors (drift v, and field E) are stored as 4D arrays with
+% dimensions:  
+% x1,x2,x3,component
+
 narginchk(3, 3)
+if (~isfield(xg,'Bmag'))
+    error('The field xg.Bmag must be defined for the 1st argument.')
+end %if
+
 %COMPUTE THE ELECTRIC FIELD FROM THE PERP DRIFT OUTPUT FROM THE MODEL
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
 
@@ -10,10 +19,10 @@ if (xg.x1(1)-xg.x1(end)>0)
   ix1ref=1;
 else
   ix1ref=lx1;
-end
+end %if
 if (abs(xg.x1(1)-xg.x1(end))<1.0)
   ix1ref=floor(lx1/2);
-end
+end %if
 
 
 %COMPILE A V VECTOR
