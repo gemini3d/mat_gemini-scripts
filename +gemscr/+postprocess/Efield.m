@@ -1,7 +1,10 @@
 function [v,E]=Efield(xg,v2,v3)
 
 % This is a standard interface to be used for conversion of plasma drifts
-% into electric fields.  The output vectors (drift v, and field E) are stored as 4D arrays with
+% into electric fields.  Because the drifts include the backgroudn drifts
+% the computed fields will include the background value.  
+%
+% The output vectors (drift v, and field E) are stored as 4D arrays with
 % dimensions:  
 % x1,x2,x3,component (field-aligned, field perp 1, field perp 2)
 
