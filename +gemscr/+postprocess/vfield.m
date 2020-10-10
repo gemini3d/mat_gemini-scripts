@@ -1,7 +1,7 @@
-function [v,E]=Efield(xg,v2,v3)
+function [E,v]=vfield(xg,E2,E3)
 
 % This is a standard interface to be used for conversion of plasma drifts
-% into electric fields.  The output vectors (drift v, and field E) are stored as 4D arrays with
+% into electric fields.  The output vectors (field E, and drift v) are stored as 4D arrays with
 % dimensions:  
 % x1,x2,x3,component (field-aligned, field perp 1, field perp 2)
 
@@ -26,14 +26,18 @@ end %if
 
 
 %COMPILE A V VECTOR
-vperp2=squeeze(v2(ix1ref,:,:));
-vperp2=repmat(vperp2,[1,1,lx1]);
-vperp3=squeeze(v3(ix1ref,:,:));
-vperp3=repmat(vperp3,[1,1,lx1]);
-v=cat(4,vperp2,vperp3,zeros(lx2,lx3,lx1));           %create a vector for the ExB drift in the curvilinear basis (i.e. e1,e2,e3 basis vectors), permuted as 231 so that the parallel direction is the third dimension
+Eperp2=squeeze(E2(ix1ref,:,:));
+Eperp2=repmat(Eperp2,[1,1,lx1]);
+Eperp3=squeeze(E3(ix1ref,:,:));
+Eperp3=repmat(Eperp3,[1,1,lx1]);
+E=cat(4,Eperp2,Eperp3,zeros(lx2,lx3,lx1));           %create a vector for the Electric field in the curvilinear basis (i.e. e1,e2,e3 basis vectors), permuted as 231 so that the parallel direction is the third dimension
 
 B=cat(4,zeros(lx2,lx3,lx1),zeros(lx2,lx3,lx1),ones(lx2,lx3,lx1).*permute(xg.Bmag,[2,3,1]));
-E=cross(-1*v,B,4);
+v=cross(E,B,4);
+B2=dot(B,B,4);
+for icomp=1:3
+  v(:,:,:,icomp)=v(:,:,:,icomp)./B2;
+end %for
 
 
 %PERMUTE OUTPUTS TO MATCH MODEL natural ordering - this handles functional
@@ -46,4 +50,4 @@ E=permute(E,[3,1,2,4]);
 v=circshift(v,1,4);
 E=circshift(E,1,4);
 
-end %function Efield
+end %function vfield
