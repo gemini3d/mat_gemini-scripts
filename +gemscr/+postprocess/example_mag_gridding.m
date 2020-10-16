@@ -7,7 +7,7 @@ gime = datetime(2011,03,11) + seconds(20783 + 900);
 
 %% read in data
 xg= gemini3d.readgrid(direc);
-dat= gemini3d.vis.loadframe(direc, time);
+dat= gemini3d.loadframe(direc, "time", time);
 
 
 %% regrid

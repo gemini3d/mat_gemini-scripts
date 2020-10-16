@@ -11,8 +11,8 @@ if (~exist('xg','var'))
   xg= gemini3d.readgrid(direc1);
 end
 if (~exist('dat1','var'))
-  dat1 = gemini3d.vis.loadframe(direc1,time);
-  dat2 = gemini3d.vis.loadframe(direc2,time);
+  dat1 = gemini3d.loadframe(direc1, "time", time);
+  dat2 = gemini3d.loadframe(direc2, "time", time);
 end
 
 

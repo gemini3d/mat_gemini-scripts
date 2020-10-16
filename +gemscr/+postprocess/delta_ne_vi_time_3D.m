@@ -32,7 +32,7 @@ lh=lx1;lsp=7;
 %% Read in config file
 cfg=gemini3d.read_config(direc);
 ymd0=cfg.ymd; UTsec0=cfg.UTsec0; tdur=cfg.tdur; dtout=cfg.dtout; flagoutput=cfg.flagoutput;
-mloc(1)=cfg.sourcemlat; mloc(2)=cfg.sourcemlon; 
+mloc(1)=cfg.sourcemlat; mloc(2)=cfg.sourcemlon;
 %[ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file]=readconfig([direc,'/inputs/']);
 
 
@@ -58,8 +58,8 @@ while(t<tdur)
     disp('loading data...')
     disp(ymd)
     disp(UTsec)
-    dat=gemini3d.vis.loadframe(direc,cfg.times(it));
-    datBG=gemini3d.vis.loadframe(direc2,cfg.times(it));
+    dat=gemini3d.loadframe(direc, "time", cfg.times(it));
+    datBG=gemini3d.loadframe(direc2, "time", cfg.times(it));
 
 
     %% Project velocity into geographic coordinates
@@ -71,23 +71,23 @@ while(t<tdur)
     neBG=reshape(neBG,[lx1,lx2,lx3]);
     dvir=vir-virBG;
     dnepct=(dat.ne-neBG)./neBG*100;
-    
+
 
     %% Sample model data on plotting grid
     disp('interpolating...')
     [alti,~,mlati,dvirilat]=gemscr.postprocess.model2magcoords(xg,dvir,lalt,1,llat,altlims,[lon2,lon2],mlatlims);
     [~,mloni,~,dvirilon]=gemscr.postprocess.model2magcoords(xg,dvir,lalt,llon,1,altlims,mlonlims,[lat2,lat2]);
     [~,~,~,dneilat]=gemscr.postprocess.model2magcoords(xg,dnepct,lalt,1,llat,altlims,[lon2,lon2],mlatlims);
-    [~,~,~,dneilon]=gemscr.postprocess.model2magcoords(xg,dnepct,lalt,llon,1,altlims,mlonlims,[lat2,lat2]);    
-    
-    
+    [~,~,~,dneilon]=gemscr.postprocess.model2magcoords(xg,dnepct,lalt,llon,1,altlims,mlonlims,[lat2,lat2]);
+
+
     %% Figure and resizing
     disp('plotting...');
     figure;    %generating a new figure and closing each time prevents resizing issues with print.
     set(gcf,'PaperPosition',[0 0 8.5 11]);
     ax=[lat2-8.5 lat2+8.5 90 550];
     FS=12;
-    
+
     subplot(221)
     h=imagesc(mlati,alti/1e3,squeeze(dneilat));
     hold on;
@@ -104,7 +104,7 @@ while(t<tdur)
     c=colorbar;
     xlabel(c,'\Delta n_e (pct. diff.)')
     set(c,'Location','SouthOutside');
-    set(c,'Fontsize',FS)   
+    set(c,'Fontsize',FS)
 
     timestr=datestr(datenum([ymd,UTsec/3600,0,0]));
     title(timestr);
@@ -125,15 +125,15 @@ while(t<tdur)
     c=colorbar;
     xlabel(c,'\Delta n_e (pct. diff.)')
     set(c,'Location','SouthOutside');
-    set(c,'Fontsize',FS)       
-    
+    set(c,'Fontsize',FS)
+
     subplot(223)
     h=imagesc(mlati,alti/1e3,squeeze(dvirilat));
     hold on;
     plot([lat2 lat2],altlims/1e3,'w--','LineWidth',2);
     hold off;
 %    set(h,'alphadata',~isnan(neI));
-    set(gca,'FontSize',FS);   
+    set(gca,'FontSize',FS);
     xlabel('magnetic latitude (deg.)')
     ylabel('altitude (km)')
 %    axis(ax);
@@ -144,14 +144,14 @@ while(t<tdur)
     xlabel(c,'\Delta v_{i,r} (m/s)')
     set(c,'Location','SouthOutside');
     set(c,'Fontsize',FS)
-    
+
     subplot(224)
     h=imagesc(mloni,alti/1e3,squeeze(dvirilon));
     hold on;
     plot([lon2 lon2],altlims/1e3,'w--','LineWidth',2);
     hold off;
 %    set(h,'alphadata',~isnan(neI));
-    set(gca,'FontSize',FS);   
+    set(gca,'FontSize',FS);
     xlabel('magnetic longitude (deg.)')
     ylabel('altitude (km)')
 %    axis(ax);
@@ -162,7 +162,7 @@ while(t<tdur)
     xlabel(c,'\Delta v_{i,r} (m/s)')
     set(c,'Location','SouthOutside');
     set(c,'Fontsize',FS)
-    
+
     % PRINT
     filename=gemini3d.datelab(ymd,UTsec);
     print('-dpng',['./plots3D/png/',filename,'.png'],'-r300');
@@ -173,4 +173,3 @@ while(t<tdur)
     it=it+1;
     close all;
 end
-
