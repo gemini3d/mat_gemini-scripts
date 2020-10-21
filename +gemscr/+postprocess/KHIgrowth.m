@@ -22,7 +22,7 @@ ymd=ymd0;
 while (t<=tdur)
     simdatenow=[ymd,0,0,UTsec]
     simdate(it,:)=simdatenow;
-    data= gemini3d.vis.loadframe(gemini3d.get_frame_filename(direc,ymd,UTsec));
+    data= gemini3d.loadframe(gemini3d.get_frame_filename(direc,ymd,UTsec));
 
     ix2=floor(lx2/2);    % measure perturbations at the middle x2 point of the domain.
     neline(it,:)=squeeze(data.ne(ix1,ix2,:));

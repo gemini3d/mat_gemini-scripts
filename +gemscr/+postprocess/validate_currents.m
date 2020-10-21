@@ -18,7 +18,7 @@ time = datetime(2017,03,02) + seconds(28380);
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
 xg = gemini3d.readgrid(direc);
-dat = gemini3d.vis.loadframe(direc,time, xg);
+dat = gemini3d.loadframe(direc, "time", time);
 
 mlatsrc= dat.mlatsrc;
 mlonsrc= dat.mlonsrc;

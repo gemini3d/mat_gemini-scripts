@@ -5,7 +5,7 @@ direc='~/Downloads/ARCS_angle_decimate/';
 time = datetime(2017,3,2) + seconds(27300);
 
 %% LOAD DATA
-dat = gemini3d.vis.loadframe(direc, time);
+dat = gemini3d.loadframe(direc, "time", time);
 
 
 %% CONVERT FLOWS INTO ELECTRIC FIELDS

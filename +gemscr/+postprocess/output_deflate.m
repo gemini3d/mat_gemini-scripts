@@ -23,7 +23,7 @@ UTsec=29329;
 ymd=ymd0;
 for it=1:lt
   %load data for this frame
-  dat = gemini3d.vis.loadframe(direc,ymd,UTsec);
+  dat = gemini3d.loadframe(gemini3d.get_frame_filename(direc,ymd,UTsec));
 
   %deflate down to just the density
   dmy=[ymd(3),ymd(2),ymd(1)]

@@ -10,7 +10,7 @@ time = datetime([2013,2,20,0,0,18320]);
 
 
 xg = gemini3d.readgrid(direc);
-simdat = gemini3d.vis.loadframe(direc,time);
+simdat = gemini3d.loadframe(direc, "time", time);
 [alti,gloni,glati,nei]=model2geocoords(xg,simdat.ne);
 [alti,gloni,glati,Tei]=model2geocoords(xg,simdat.Te);
 [alti,gloni,glati,J1i]=model2geocoords(xg,simdat.J1);
