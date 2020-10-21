@@ -2,9 +2,25 @@
 % in a physical coordinate system.
 
 %% Load the grid of interest (user needs to tweak locations)
-direc='~/simulations/ESF_noise_highres/'
-cfg=gemini3d.read_config(direc);
-xg=gemini3d.readgrid(direc);
+% direc='~/simulations/ESF_noise_highres/'
+% cfg=gemini3d.read_config(direc);
+% xg=gemini3d.readgrid(direc);
+
+
+%% Create a new grid
+dtheta=20;
+dphi=27.5;
+lp=256;
+lq=256;
+lphi=210;
+altmin=80e3;
+%glat=39;
+glat=-39;
+glon=262.51;
+gridflag=1;
+xg=gemscr.setup.gridgen.makegrid_tilteddipole_varx2_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+cfg=struct.empty;
+cfg(1).sourcemlat=[];
 
 
 %% Compute the resolutions

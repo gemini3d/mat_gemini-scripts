@@ -33,18 +33,32 @@ Re=6370e3;
 %TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
 [thetatd,phid]= gemini3d.geog2geomag(glat,glon);
 
+% thetax2min=thetatd-dtheta/2*pi/180;
+% thetax2max=thetatd+dtheta/2*pi/180;
+% pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
+% qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
+% pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
+% rtmp=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
+% % %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
+% % %p=linspace(pmin,pmax,lp);
+% % p=linspace(pmin,pmax,lpp);
+% % %p=p(:)';    %ensure a row vector
+% % %pstride=p(2)-p(1);
+% % %p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
+
+%SETS THE EDGES OF THE GRID
 thetax2min=thetatd-dtheta/2*pi/180;
 thetax2max=thetatd+dtheta/2*pi/180;
-pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
-qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
-pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
-rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
-% %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
-% %p=linspace(pmin,pmax,lp);
-% p=linspace(pmin,pmax,lpp);
-% %p=p(:)';    %ensure a row vector
-% %pstride=p(2)-p(1);
-% %p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
+if(thetatd<pi/2)   %NH
+  pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
+  qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
+  pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
+else               %SH
+  pmax=(Re+altmin)/Re/sin(thetax2max)^2;	%bottom left grid point p
+  qtmp=(Re/(Re+altmin))^2*cos(thetax2max);	%bottom left grid q (also bottom right)
+  pmin=sqrt(cos(thetax2max)/sin(thetax2min)^4/qtmp); %bottom right grid p, why mixing of max/min here???
+end
+% rtmp=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 
 
 %NONUNIFORM IN X2 GRID - TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN
@@ -56,7 +70,6 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %coeffs=[6.9595e-06,-2.2428e-05,8.0440e-04];   %3D moore OK interhemispheric, ~5km resolution
 %coeffs=[1.3919e-05,-4.4856e-05,0.0016];  %3D moore, 10km resolution
 %coeffs=[2.3e-05,-6.7284e-05,0.0024];   %3D moore, 15 km resolution
-coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution - used for the paper
 %coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km
 %res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
@@ -65,10 +78,13 @@ coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution - 
 %coeffs=[3.8562e-04, 0.0018, -4.8448e-04];    %dist run iowa3D, 7.5km resolution
 %coeffs=[3.8562e-04, 0.0018, -4.6448e-04];    %dist run iowa3D, 7.5km resolution, evenly divisible
 %coeffs=[4.1133e-04, 0.0019, -5.1677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
-
 %coeffs=[4.1133e-04, 0.0019, -5.7677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
 %coeffs=[3.3986e-04, 0.0017, -5.0597e-04];     %iowa3D that doesn't overrun neutral grid
 %coeffs=[3.3986e-04, 0.0017, -6.7597e-04];     %iowa3D that doesn't overrun neutral grid, vega, friendly
+
+
+%coeffs=[2.7838e-05,-8.9712e-05,0.0032-0.000095];  %3D moore, 20 km resolution - used for the paper
+coeffs=[1.0210e-05, -3.3422e-05, 0.0079];    %low-resolution test
 
 p(1)=pmin;
 ip=1;
@@ -90,24 +106,61 @@ lp=lpp+4;
 % hold off;
 
 
-if gridflag==0
-    thetamax=thetax2min+pi/15;        %open
-else
-    thetamax=pi-thetax2min;           %closed
+if gridflag==0      %open dipole grid
+%    thetamax=thetax2min+pi/180;        %open
+%    thetamax=thetax2min+pi/75;        %open
+%     thetamax=thetamin+pi/50;        %open
+%     thetamax=thetamin+pi/30;        %open
+   if(thetatd<pi/2)   %northern hemisphere
+     thetamax=thetax2min+pi/25;
+   else
+     thetamax=thetax2max-pi/25;
+   end
+else                %close dipole grid
+   if(thetatd<pi/2) %NH
+     thetamax=pi-thetax2min;
+   else             %SH
+     thetamax=pi-thetax2max;
+   end
 end
-rmin=p(end)*Re*sin(thetax2min)^2; %use last field line to get qmin and qmax
-rmax=p(end)*Re*sin(thetamax)^2;
-qmin=cos(thetax2min)*Re^2/rmin^2;
-qmax=cos(thetamax)*Re^2/rmax^2;
-%q=linspace(qmin,qmax,lqp)';
-%q=sort(q);
+if(thetatd<pi/2)
+  rmin=p(end)*Re*sin(thetax2min)^2; %use last field line to get qmin and qmax
+  rmax=p(end)*Re*sin(thetamax)^2;
+  qmin=cos(thetax2min)*Re^2/rmin^2;
+  qmax=cos(thetamax)*Re^2/rmax^2;
+else
+  rmin=p(end)*Re*sin(thetamax)^2; %use last field line to get qmin and qmax
+  rmax=p(end)*Re*sin(thetax2max)^2;
+  qmin=cos(thetamax)*Re^2/rmin^2;
+  qmax=cos(thetax2max)*Re^2/rmax^2;
+end
+
+% if gridflag==0
+%     thetamax=thetax2min+pi/15;        %open
+% else
+%     thetamax=pi-thetax2min;           %closed
+% end
+% rmin=p(end)*Re*sin(thetax2min)^2; %use last field line to get qmin and qmax
+% rmax=p(end)*Re*sin(thetamax)^2;
+% qmin=cos(thetax2min)*Re^2/rmin^2;
+% qmax=cos(thetamax)*Re^2/rmax^2;
+% %q=linspace(qmin,qmax,lqp)';
+% %q=sort(q);
 
 
 % %SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
+
+% Lowres test, OK
 sigq=0.075;
-amp=0.0064;
+ampref=0.0064;
 qloc=0.48;
-mindq=0.005/6.5;
+mindq=0.005/2;
+
+% % MOORE OK 3D
+% sigq=0.075;
+% amp=0.0064;
+% qloc=0.48;
+% mindq=0.005/6.5;
 
 % %IOWA3D
 % sigq=0.075;
@@ -131,24 +184,29 @@ if gridflag==0
     end
     q=sort(q);
 else
-    q(iq)=0;
-    while q(iq)<=qmax
+    q(iq)=0;               % start at the equator
+    amp=ampref;
+    while q(iq)<=qmax      % NH
         iq=iq+1;
         dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-(qmax-qloc))/sigq));
         q(iq)=q(iq-1)+dq;
     end
     iq=1;
     q2(iq)=q(1)-(q(2)-q(1));
-    %amp=amp/1.3;                      %non-source hemisphere doesn't need to be sampled as densely
-    amp=amp/2;
-    while q2(iq)>=-qmax
+    amp=ampref/2;
+    while q2(iq)>=-qmax    % SH
         iq=iq+1;
         dq=(q(2)-q(1))-amp*(1/2-1/2*tanh((q2(iq-1)+(qmax-qloc))/sigq));
         q2(iq)=q2(iq-1)-dq;
+        %iq,q2(iq),dq
     end
     q2=fliplr(q2);
     q=[q2,q];
 end
+if (thetatd>pi/2)
+    q=-q;
+    q=sort(q);
+end %if
 q=q(:);
 lqp=numel(q);
 lq=lqp+4;
@@ -194,7 +252,7 @@ qtol=1e-9;
 fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Converting q,p grid centers to spherical coords.');
 for iq=1:lq
     for ip=1:lp
-        [r(iq,ip),fval(iq,ip)]=fminbnd(@(x) qp2robj(x,q(iq),p(ip)),0,100*Re);
+        [r(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,q(iq),p(ip)),0,100*Re);
         if abs(q(iq))<qtol
             theta(iq,ip)=pi/2;
         elseif q(iq)>=0        %northern hemisphere
@@ -268,7 +326,7 @@ rqi=zeros(lq+1,lp);
 thetaqi=zeros(lq+1,lp);
 for iq=1:lq+1
     for ip=1:lp
-        [rqi(iq,ip),fval(iq,ip)]=fminbnd(@(x) qp2robj(x,qi(iq),p(ip)),0,100*Re);
+        [rqi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,qi(iq),p(ip)),0,100*Re);
         if abs(qi(iq))<qtol
             thetaqi(iq,ip)=pi/2;
         elseif qi(iq)>=0        %northern hemisphere
@@ -290,7 +348,7 @@ rpi=zeros(lq,lp+1);
 thetapi=zeros(lq,lp+1);
 for iq=1:lq
     for ip=1:lp+1
-        [rpi(iq,ip),fval(iq,ip)]=fminbnd(@(x) qp2robj(x,q(iq),pii(ip)),0,100*Re);
+        [rpi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,q(iq),pii(ip)),0,100*Re);
         if abs(q(iq))<qtol
             thetapi(iq,ip)=pi/2;
         elseif q(iq)>=0        %northern hemisphere
@@ -426,7 +484,7 @@ xg.Bmag=Bmag;
 
 %xg.glat=(pi/2-theta)*180/pi; xg.glon=phi*180/pi*ones(lx(1),lx(2));
 for iphi=1:lphi
-  [glats,glons]=geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
+  [glats,glons]=gemini3d.geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
   xg.glat(:,:,iphi)=glats;
   xg.glon(:,:,iphi)=glons;
 end

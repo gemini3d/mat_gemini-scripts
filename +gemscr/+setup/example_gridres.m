@@ -4,19 +4,6 @@ dtheta=16;
 dphi=29;
 lp=100;
 lq=200;
-lphi=40;
-altmin=80e3;
-%glat=40;   %38.9609;
-glat=41.5;   %38.9609;
-glon=360-94.088;
-gridflag=1;
-flagsource=1;
-iscurv=true;
-%}
-dtheta=16;
-dphi=29;
-lp=100;
-lq=200;
 lphi=100;
 altmin=80e3;
 glat=41.5;   %38.9609;
@@ -24,7 +11,20 @@ glon=360-94.088;
 gridflag=1;
 flagsource=1;
 iscurv=true;
+%}
 
+%% Moore OK
+dtheta=20;
+dphi=27.5;
+lp=256;
+lq=256;
+lphi=210;
+altmin=80e3;
+glat=39;
+glon=262.51;
+gridflag=1;
+flagsource=1;
+iscurv=true;
 
 %% Compute the grid
 xg=gemini3d.setup.gridgen.makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
@@ -97,7 +97,8 @@ x2=xg.x2(3:end-2);
 ix1=floor(lx1/2);
 ix3=floor(lx3/2);
 dl2trial=squeeze(dl2(ix1,:,ix3));                % step size for the original grid
-dl2target=6.75e3;                                % define a desired grid step size in x2
+%dl2target=6.75e3;                                % define a desired grid step size in x2
+dl2target=50e3;
 dx2target=squeeze(dl2target./h2(ix1,:,ix3));     % what dx2 needs to be to hit target grid size
 
 %A polynomial is being fitted to the target dL as a function of L, this

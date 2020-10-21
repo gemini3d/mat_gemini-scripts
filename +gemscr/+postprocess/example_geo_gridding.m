@@ -3,9 +3,10 @@ import gemini3d.postprocess.model2geocoords
 %direc='~/Projects/GEMINI/objects/test3d_glow/';
 %direc='~/simulations/zenodo3d/';
 %direc='~/simulations/junktest3d/';
-direc='~/simulations/EIA_eq/';
+%direc='~/simulations/EIA_eq/';
+direc="~/simulations/gdi_lagrangian/"
 
-time = datetime(2011,03,10) - seconds(65783);
+time = datetime([2013,2,20,0,0,18320]);
 
 
 xg = gemini3d.readgrid(direc);
