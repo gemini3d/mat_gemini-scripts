@@ -1,40 +1,15 @@
+% This scripts prepares 2D Cartesian neutral inputs
 
-indir='~/zettergmdata/simulations.MAGIC/okx2/old/'
-%indir='~/neutral_sims/chile06052017/'
-%indir='~/neutral_sims/2016mooreOK/'
-%indir='/media/data/chile2015_0.5MSIS/'
-%indir='/media/data/nepal/'
-loc='';
-%simlab='chile'
-%simlab='nepal'
-%simlab='strong'
-simlab='';
+% Location of output data
+outdir='./datap/'
+mkdir([outdir]);
 
-%outdir=['~/simulations/mooreOK_neutrals/'];
-%outdir=['~/simulations/chile2015_0.5_neutrals/'];
-%outdir='~/simulations/nepal2015_neutrals/'
-outdir='~/zettergmdata/simulations/mooreOKx2_neutrals/'
-mkdir(outdir);
+% Specify date and time of simulation start
+ymd0=[2011,03,11]; % date
+UTsec0=20783; % Second from day start (UT)
+dtneu=4; % Sampling of time steps (in seconds)
 
-%ymd0=[2015,09,16];
-%UTsec0=82473;
-%dtneu=4;
-
-ymd0=[2013,05,20];
-UTsec0=71100;
-dtneu=6;
-
-%ymd0=[2015,4,24];
-%UTsec0=22285;
-%dtneu=4;
-
-%TOHOKU EXAMPLE
-%ymd0=[2011,3,11];
-%UTsec0=20783;
-%dtneu=2;
-
-
-%LOAD THE DATA FROM AN INPUT SIMULATION
+% Thie example expects to load all inputs together in the format (time,x,z) -> (time,lat,alt)
 if ~exist('velx')
     load([indir,'/velx',simlab,loc,'.mat']);
     load([indir,'/velz',simlab,loc,'.mat']);
@@ -42,27 +17,22 @@ if ~exist('velx')
     load([indir,'/dox2s',simlab,loc,'.mat']);
     load([indir,'/dnit2s',simlab,loc,'.mat']);
     load([indir,'/doxs',simlab,loc,'.mat']);
-%    load([indir,'/dox2',simlab,loc,'.mat']);
-%    load([indir,'/dnit2',simlab,loc,'.mat']);
-%    load([indir,'/dox',simlab,loc,'.mat']);
 end
+
 [lt,lrho,lz]=size(velx);
 
-
-%CREATE A SEQUENCE OF BINBARY OUTPUT FILES THAT CONTAIN A FRAME OF DATA EACH
-%system(['rm -rf ',outdir,'/*.dat'])
+% Create a binary file that contain information on neutral input grid size
 filename=[outdir,'simsize.dat']
 fid=fopen(filename,'w');
 fwrite(fid,lrho,'integer*4');
 fwrite(fid,lz,'integer*4');
 fclose(fid);
 
-
 ymd=ymd0;
 UTsec=UTsec0;
 for it=1:lt
-    velxnow=squeeze(velx(it,:,:));     %note that these are organized as t,rho,z - the fortran code wants z,rho
-    velxnow=permute(velxnow,[2, 1]);
+    velxnow=squeeze(velx(it,:,:));
+    velxnow=permute(velxnow,[2, 1]);  % GEMINI expects z,x,y (alt,lat) inputs. This script expect *.mat file input is saved as x,z (lat,alt)
 
     velznow=squeeze(velz(it,:,:));
     velznow=permute(velznow,[2, 1]);
