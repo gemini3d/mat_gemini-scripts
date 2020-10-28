@@ -1,12 +1,11 @@
 % This script prepares 3D Cartesian neutral inputs
 
 % Location of output data
-outdir='./datap/'
-mkdir([outdir]);
+outdir = 'datap';
+gemini3d.fileio.makedir(outdir);
 
 % Specify date and time of simulation start
-ymd0=[2011,03,11]; % date
-UTsec0=20783; % Second from day start (UT)
+time = datetime(2011,03,11) + seconds(20783); % Second from day start (UT)
 
 lt=630; % Number of time steps
 dtneu=4; % Sampling of time steps (in seconds)
@@ -15,15 +14,12 @@ ly=300; % number of points in meridional direction
 lz=300; % number of points in vertical direction
 
 % Create a binary file that contain information on neutral input grid size
-filename=[outdir,'simsize.dat'];
+filename= fullfile(outdir,'simsize.dat');
 fid=fopen(filename,'w');
 fwrite(fid,lx,'integer*4');
 fwrite(fid,ly,'integer*4');
 fwrite(fid,lz,'integer*4');
 fclose(fid);
-
-ymd=ymd0;
-UTsec=UTsec0;
 
 % Create a sequence of binary output files that contain a frame of data each
 for it=1:lt
@@ -51,8 +47,7 @@ load(strcat('temps',num2str(it-1),'.mat'),'temps');
 
     doxs=permute(doxs,[3,1,2]);
 
-    filename= gemini3d.datelab(ymd,UTsec);
-    filename=[outdir,filename,'.dat']
+    filename = fullfile(outdir, gemini3d.datelab(time), '.dat');
     fid=fopen(filename,'w');
     fwrite(fid,doxs,'real*8');
     fwrite(fid,dnit2s,'real*8');
@@ -63,5 +58,5 @@ load(strcat('temps',num2str(it-1),'.mat'),'temps');
     fwrite(fid,temps,'real*8');
     fclose(fid);
 
-    [ymd,UTsec]= gemini3d.dateinc(dtneu,ymd,UTsec);
+    time = time + dtneu;
 end
