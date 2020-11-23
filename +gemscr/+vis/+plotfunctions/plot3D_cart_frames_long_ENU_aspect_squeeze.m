@@ -28,6 +28,12 @@ if nargin<8 || isempty(cmap)
 end
 
 
+% Just bail out if this is potential for now
+if (numel(size(parm))~=3)
+   return; 
+end
+
+
 %SOURCE LOCATION (SHOULD PROBABLY BE AN INPUT)
 if (~isempty(sourceloc))
   sourcemlat=sourceloc(1);

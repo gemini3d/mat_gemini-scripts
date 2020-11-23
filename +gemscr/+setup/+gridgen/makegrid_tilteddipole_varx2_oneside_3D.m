@@ -151,9 +151,15 @@ end
 % %SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
 
 % Lowres test, OK
+% sigq=0.075;
+% ampref=0.0064;
+% qloc=0.48;
+% mindq=0.005/2;
+
+% Lowres test, Paul
 sigq=0.075;
 ampref=0.0064;
-qloc=0.48;
+qloc=0.35;
 mindq=0.005/2;
 
 % % MOORE OK 3D

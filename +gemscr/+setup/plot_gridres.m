@@ -8,6 +8,7 @@
 
 
 %% Create a new grid
+%{
 dtheta=20;
 dphi=27.5;
 lp=256;
@@ -18,9 +19,23 @@ altmin=80e3;
 glat=-39;
 glon=262.51;
 gridflag=1;
+%}
+
+dtheta=16.8;
+dphi=11;
+lp=216;
+lq=128;
+lphi=60;
+altmin=80e3;
+glat=-30.9;
+glon=287;
+gridflag=1;
+
 xg=gemscr.setup.gridgen.makegrid_tilteddipole_varx2_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
 cfg=struct.empty;
 cfg(1).sourcemlat=[];
+
+
 
 
 %% Compute the resolutions
