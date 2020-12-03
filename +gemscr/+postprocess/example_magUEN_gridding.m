@@ -1,10 +1,27 @@
-import gemini3d.postprocess.model2magUENcoords
+% This script shows an example of how to take curvilinear or nonuniformly
+% gridded GEMINI output and reinterpolate these onto a uniform grid in
+% up, east, and north coordinates. 
+%
+% You'll need to run the setup.m script for the gemini-scripts repository
+% prior to using this program
 
-direc='~/Downloads/ESF_medres/';
 
-time = datetime(2016,03,03) + second(14400);
+import gemscr.postprocess.model2magUENcoords
 
-dat = loadframe(direc, time);
+
+% simulation and date/time of interest
+% direc='~/Downloads/ESF_medres/';
+% time = datetime(2016,03,03) + second(14400);
+direc="~/simulations/arcs_angle_wide_nonuniform/";
+time = datetime([2017,03,02,0,0,27000 + 270]);% read in data
+
+
+% read grid and frame data
+xg=gemini3d.readgrid(direc);
+dat=gemini3d.loadframe(direc,"time",time);
+
+
+% interpolations
 [zUENi,xUENi,yUENi,Tei]=model2magUENcoords(xg, dat.Te);
 [zUENi,xUENi,yUENi,J1i]=model2magUENcoords(xg, dat.J1);
 [zUENi,xUENi,yUENi,J3i]=model2magUENcoords(xg, dat.J3);
@@ -16,6 +33,8 @@ dat = loadframe(direc, time);
 [zUENi,xUENi,yUENi,Tii]=model2magUENcoords(xg, dat.Ti);
 [zUENi,xUENi,yUENi,nei2]=model2magUENcoords(xg, dat.ne,150,150,150,[100e3, 750e3],[-300e3, 300e3],[-300e3, 300e3]);
 
+
+% plots
 figure;
 subplot(121)
 imagesc(xUENi,zUENi,nei(:,:,end/2));

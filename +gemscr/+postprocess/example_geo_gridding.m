@@ -1,16 +1,25 @@
-import gemini3d.postprocess.model2geocoords
+% This script shows an example of how to take curvilinear or nonuniformly
+% gridded GEMINI output and reinterpolate these onto a uniform grid in
+% glon,glat, and altitude. 
+%
+% You'll need to run the setup.m script for the gemini-scripts repository
+% prior to using this program
 
-%direc='~/Projects/GEMINI/objects/test3d_glow/';
-%direc='~/simulations/zenodo3d/';
-%direc='~/simulations/junktest3d/';
-%direc='~/simulations/EIA_eq/';
-direc="~/simulations/gdi_lagrangian/"
-
-time = datetime([2013,2,20,0,0,18320]);
+import gemscr.postprocess.model2geocoords
 
 
+% simulation name, date and time of interest
+% direc="~/simulations/gdi_lagrangian/"
+% time = datetime([2013,2,20,0,0,18320]);
+direc="~/simulations/arcs_angle_wide_nonuniform/";
+time = datetime([2017,03,02,0,0,27000 + 270]);% read in data
+
+% load grid and frame data
 xg = gemini3d.readgrid(direc);
 simdat = gemini3d.loadframe(direc, "time", time);
+
+
+% interpolate onto a geographic grid
 [alti,gloni,glati,nei]=model2geocoords(xg,simdat.ne);
 [alti,gloni,glati,Tei]=model2geocoords(xg,simdat.Te);
 [alti,gloni,glati,J1i]=model2geocoords(xg,simdat.J1);
@@ -22,6 +31,7 @@ simdat = gemini3d.loadframe(direc, "time", time);
 [alti,gloni,glati,Tii]=model2geocoords(xg,simdat.Ti);
 
 
+% plots
 figure;
 subplot(121)
 imagesc(gloni,alti,nei(:,:,end/2));
