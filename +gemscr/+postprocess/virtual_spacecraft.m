@@ -4,11 +4,11 @@ function track=virtual_spacecraft(direc,glonsat,glatsat,altsat,tsat)
 %
 %    direc (string) - location of simulation output data, must contain output files,
 %        config files, and grid data
-%    glonsat (#times x #spacecraft) - longitude of spacecraft
-%    glatsat (#times x #spacecraft) - latitude of spacecraft
-%    altsat (#times x #spacecraft) - altitude of spacecraft
+%    glonsat (#times x #spacecraft) - longitude of spacecraft, degrees
+%    glatsat (#times x #spacecraft) - latitude of spacecraft, degrees
+%    altsat (#times x #spacecraft) - altitude of spacecraft, meters
 %    tstat (#times) - time basis for the spacecraft, assumed to start at
-%    the beginning of the simulation
+%    the beginning of the simulation, seconds
 
 % READ IN THE SIMULATION INFORMATION
 cfg = gemini3d.read_config(direc);
