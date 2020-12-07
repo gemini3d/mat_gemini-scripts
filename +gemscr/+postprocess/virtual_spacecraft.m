@@ -26,7 +26,7 @@ if ~exist('xg','var')
   xg = gemini3d.readgrid(direc);
   lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
   x1=double(xg.x1(3:end-2)); x2=double(xg.x2(3:end-2)); x3=double(xg.x3(3:end-2));
-  [X2,X1,X3]=meshgrid(x2,x1,x3);
+  [X1,X2,X3]=ndgrid(x1,x2,x3);
 
   %In case the simulation is cartesian we need to know the center geomgagetic coordinates of the grid
   thetactr=double(mean(xg.theta(:)));
@@ -88,9 +88,9 @@ datesat=datenum(datevecsat);
 
 
 %ATTEMPT TO COMPUTE FOR VARIOUS SPACECRAFT IN PARALLEL
-try
- parpool(floor(lsat/2));
-end
+%try
+% parpool(floor(lsat/2));
+%end
 
 %THIS IS A BASIC TWO SATELLITE TEST
 %{
@@ -132,6 +132,10 @@ J2sat=zeros(lorb,lsat);
 J3sat=zeros(lorb,lsat);
 v2sat=zeros(lorb,lsat);
 v3sat=zeros(lorb,lsat);
+
+firstprev=true;
+firstnext=true;
+
 for iorb=1:lorb
   datenow=datesat(iorb);
 
@@ -143,10 +147,12 @@ for iorb=1:lorb
     datemodprev=datemodnext;
     datemodnext=datemodnext+dtout/86400;    %matlab datenums are in units of days from 0000
   end
-  datestr(datemodprev),datestr(datenow),datestr(datemodnext)
+  %datestr(datemodprev),
+  datestr(datenow),
+  %datestr(datemodnext)
 
 
-  if (datemodnext==datemodprev | datemodnext>datemod(end))    %set everything to NaNs if outside model time domain
+  if (datemodnext==datemodprev | datemodnext>datemod(end))    %set everything to zero if outside model time domain
     fprintf('Requested time is out of bounds...\n');
     neprev=zeros(lx1,lx2,lx3); nenext=neprev;
     viprev=neprev; vinext=neprev;
@@ -157,64 +163,94 @@ for iorb=1:lorb
     J3prev=neprev; J3next=neprev;
     v2prev=neprev; v2next=neprev;
     v3prev=neprev; v3next=neprev;
-    datestr(datenow)
+    %datestr(datenow)
+    
+    continue;
   else     %go ahead and read in data and set up the interpolations
     %DATA BUFFER UPDATES required for time interpolation
-    if (datebufprev~=datemodprev | isempty(neprev))    %need to reload the previous output frame data buffers
+    if (datebufprev~=datemodprev | firstprev)    %need to reload the previous output frame data buffers
       fprintf('Loading previous buffer...\n');
       datevecmodprev=datevec(datemodprev);
       ymd=datevecmodprev(1:3);
       UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
       UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
       dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
-      neprev=dat.ne; viprev=dat.v1; Tiprev=dat.Ti; Teprev=dat.Te;
-      J1prev=dat.J1; J2prev=dat.J2; J3prev=dat.J3; v2prev=dat.v2; v3prev=dat.v3;
+      neprev=double(dat.ne); viprev=double(dat.v1); Tiprev=double(dat.Ti); Teprev=double(dat.Te);
+      J1prev=double(dat.J1); J2prev=double(dat.J2); J3prev=double(dat.J3); v2prev=double(dat.v2); 
+      v3prev=double(dat.v3);
       clear dat;    %avoid keeping extra copies of data      
       datebufprev=datemodprev;
+      
+      % Interpolant in space (prev)
+      fnesatprev=griddedInterpolant(X1,X2,X3,neprev);
+      fvisatprev=griddedInterpolant(X1,X2,X3,viprev);
+      fTisatprev=griddedInterpolant(X1,X2,X3,Tiprev);
+      fTesatprev=griddedInterpolant(X1,X2,X3,Teprev);
+      fJ1satprev=griddedInterpolant(X1,X2,X3,J1prev);
+      fJ2satprev=griddedInterpolant(X1,X2,X3,J2prev);
+      fJ3satprev=griddedInterpolant(X1,X2,X3,J3prev);
+      fv2satprev=griddedInterpolant(X1,X2,X3,v2prev);
+      fv3satprev=griddedInterpolant(X1,X2,X3,v3prev);
+      
+      firstprev=false;
     end
-    if (datebufnext~=datemodnext | isempty(nenext))    %need to reload the next output frame data buffers
+    if (datebufnext~=datemodnext | firstprev)    %need to reload the next output frame data buffers
       fprintf('Loading next buffer...\n');
       datevecmodnext=datevec(datemodnext);
       ymd=datevecmodnext(1:3);
       UTsec=datevecmodnext(4)*3600+datevecmodnext(5)*60+datevecmodnext(6);
       UTsec=round(UTsec);
       dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
-      nenext=dat.ne; vinext=dat.v1; Tinext=dat.Ti; Tenext=dat.Te;
-      J1next=dat.J1; J2next=dat.J2; J3next=dat.J3; v2next=dat.v2; v3next=dat.v3;
+      nenext=double(dat.ne); vinext=double(dat.v1); Tinext=double(dat.Ti); Tenext=double(dat.Te);
+      J1next=double(dat.J1); J2next=double(dat.J2); J3next=double(dat.J3); v2next=double(dat.v2); 
+      v3next=double(dat.v3);
       clear dat;    %avoid keeping extra copies of data
       datebufnext=datemodnext;
+      
+      % Interpolant in space (next)
+      fnesatnext=griddedInterpolant(X1,X2,X3,nenext);
+      fvisatnext=griddedInterpolant(X1,X2,X3,vinext);
+      fTisatnext=griddedInterpolant(X1,X2,X3,Tinext);
+      fTesatnext=griddedInterpolant(X1,X2,X3,Tenext);
+      fJ1satnext=griddedInterpolant(X1,X2,X3,J1next);
+      fJ2satnext=griddedInterpolant(X1,X2,X3,J2next);
+      fJ3satnext=griddedInterpolant(X1,X2,X3,J3next);
+      fv2satnext=griddedInterpolant(X1,X2,X3,v2next);
+      fv3satnext=griddedInterpolant(X1,X2,X3,v3next);
+      
+      firstnext=false;
     end
   end
 
 
     %INTERPOLATIONS
-    parfor isat=1:lsat
-    %for isat=1:lsat
+    %parfor isat=1:lsat
+    for isat=1:lsat
       [x1sat,x2sat,x3sat]=gemini3d.geog2UEN(altsat(iorb,isat),glonsat(iorb,isat),glatsat(iorb,isat),thetactr,phictr);
-      fprintf('Starting interpolations for satellite:  %d\n',isat);
-      
+      %fprintf('Starting interpolations for satellite:  %d\n',isat);
+
       % Interp in space (prev)
-      nesatprev=interp3(X2,X1,X3,neprev,x2sat,x1sat,x3sat);
-      visatprev=interp3(X2,X1,X3,viprev,x2sat,x1sat,x3sat);
-      Tisatprev=interp3(X2,X1,X3,Tiprev,x2sat,x1sat,x3sat);
-      Tesatprev=interp3(X2,X1,X3,Teprev,x2sat,x1sat,x3sat);
-      J1satprev=interp3(X2,X1,X3,J1prev,x2sat,x1sat,x3sat);
-      J2satprev=interp3(X2,X1,X3,J2prev,x2sat,x1sat,x3sat);
-      J3satprev=interp3(X2,X1,X3,J3prev,x2sat,x1sat,x3sat);
-      v2satprev=interp3(X2,X1,X3,v2prev,x2sat,x1sat,x3sat);
-      v3satprev=interp3(X2,X1,X3,v3prev,x2sat,x1sat,x3sat);
-
+      nesatprev=fnesatprev(x2sat,x1sat,x3sat);
+      visatprev=fvisatprev(x2sat,x1sat,x3sat);
+      Tisatprev=fTisatprev(x2sat,x1sat,x3sat);
+      Tesatprev=fTesatprev(x2sat,x1sat,x3sat);
+      J1satprev=fJ1satprev(x2sat,x1sat,x3sat);
+      J2satprev=fJ2satprev(x2sat,x1sat,x3sat);
+      J3satprev=fJ3satprev(x2sat,x1sat,x3sat);
+      v2satprev=fv2satprev(x2sat,x1sat,x3sat);
+      v3satprev=fv3satprev(x2sat,x1sat,x3sat); 
+      
       % Interp in space (next)
-      nesatnext=interp3(X2,X1,X3,nenext,x2sat,x1sat,x3sat);
-      visatnext=interp3(X2,X1,X3,vinext,x2sat,x1sat,x3sat);
-      Tisatnext=interp3(X2,X1,X3,Tinext,x2sat,x1sat,x3sat);
-      Tesatnext=interp3(X2,X1,X3,Tenext,x2sat,x1sat,x3sat);
-      J1satnext=interp3(X2,X1,X3,J1next,x2sat,x1sat,x3sat);
-      J2satnext=interp3(X2,X1,X3,J2next,x2sat,x1sat,x3sat);
-      J3satnext=interp3(X2,X1,X3,J3next,x2sat,x1sat,x3sat);
-      v2satnext=interp3(X2,X1,X3,v2next,x2sat,x1sat,x3sat);
-      v3satnext=interp3(X2,X1,X3,v3next,x2sat,x1sat,x3sat);
-
+      nesatnext=fnesatnext(x2sat,x1sat,x3sat);
+      visatnext=fvisatnext(x2sat,x1sat,x3sat);
+      Tisatnext=fTisatnext(x2sat,x1sat,x3sat);
+      Tesatnext=fTesatnext(x2sat,x1sat,x3sat);
+      J1satnext=fJ1satnext(x2sat,x1sat,x3sat);
+      J2satnext=fJ2satnext(x2sat,x1sat,x3sat);
+      J3satnext=fJ3satnext(x2sat,x1sat,x3sat);
+      v2satnext=fv2satnext(x2sat,x1sat,x3sat);
+      v3satnext=fv3satnext(x2sat,x1sat,x3sat);      
+      
       % Interp in time
       nesattmp(isat)=nesatprev+(nesatnext-nesatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       visattmp(isat)=visatprev+(visatnext-visatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
