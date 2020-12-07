@@ -3,27 +3,34 @@
 %
 % not a function, for now.
 
+
+%imports
+run("../../setup.m");
+
+
 %INPUT DATA
 %direc= '~/simulations/Aether_discrete_50mWm2/';
-direc= '~/simulations/ARCS_large_intense/';
+%direc= '~/simulations/ARCS_large_intense/';
+direc="~/simulations/arcs_angle_wide_nonuniform/";
 
 
 %%READ IN THE SIMULATION INFORMATION
 cfg = gemini3d.read_config(direc);
-ymd=ymd0; UTsec=UTsec0;
-
+ymd0=cfg.ymd; UTsec0=cfg.UTsec0;
+mloc=[cfg.sourcemlat,cfg.sourcemlon];
+dtout=cfg.dtout; tdur=cfg.tdur;
 
 %CHECK WHETHER WE NEED TO RELOAD THE GRID (WHICH CAN BE TIME CONSUMING)
 if ~exist('xg','var')
   disp('Loading grid...')
   xg = gemini3d.readgrid(direc);
   lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
-  x1=xg.x1(3:end-2); x2=xg.x2(3:end-2); x3=xg.x3(3:end-2);
+  x1=double(xg.x1(3:end-2)); x2=double(xg.x2(3:end-2)); x3=double(xg.x3(3:end-2));
   [X2,X1,X3]=meshgrid(x2,x1,x3);
 
   %In case the simulation is cartesian we need to know the center geomgagetic coordinates of the grid
-  thetactr=mean(xg.theta(:));
-  phictr=mean(xg.phi(:));
+  thetactr=double(mean(xg.theta(:)));
+  phictr=double(mean(xg.phi(:)));
   [glatctr,glonctr]= gemini3d.geomag2geog(thetactr,phictr);
 end
 
@@ -71,7 +78,8 @@ zsp=400e3*ones(lorb,ltoffset);
 %}
 
 %load ~/articles/ARCS/orbits_v1.mat;
-load ~/articles/ARCS/orbits.mat;
+%load ~/articles/ARCS/orbits.mat;
+load ~/Documents/proposals/ARCS/scraper/orbits.mat;
 [lorb,lsat]=size(altsat);
 UTsat=UTsec0+tsat;
 ymdsat=repmat(ymd0,[lorb,1]);
@@ -81,8 +89,9 @@ datesat=datenum(datevecsat);
 
 %ATTEMPT TO COMPUTE FOR VARIOUS SPACECRAFT IN PARALLEL
 try
-  parpool(floor(lsat/2));
+ parpool(floor(lsat/2));
 end
+
 %THIS IS A BASIC TWO SATELLITE TEST
 %{
 %Individual orbit alt,lon,lat
@@ -157,10 +166,14 @@ for iorb=1:lorb
       ymd=datevecmodprev(1:3);
       UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
       UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
-      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
-      neprev=ne; viprev=v1; Tiprev=Ti; Teprev=Te;
-      J1prev=J1; J2prev=J2; J3prev=J3; v2prev=v2; v3prev=v3;
-      clear ne v1 Ti Te J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
+      %[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
+      %neprev=ne; viprev=v1; Tiprev=Ti; Teprev=Te;
+      %J1prev=J1; J2prev=J2; J3prev=J3; v2prev=v2; v3prev=v3;
+      %clear ne v1 Ti Te J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
+      dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
+      neprev=dat.ne; viprev=dat.v1; Tiprev=dat.Ti; Teprev=dat.Te;
+      J1prev=dat.J1; J2prev=dat.J2; J3prev=dat.J3; v2prev=dat.v2; v3prev=dat.v3;
+      clear dat;    %avoid keeping extra copies of data      
       datebufprev=datemodprev;
     end
     if (datebufnext~=datemodnext | isempty(nenext))    %need to reload the next output frame data buffers
@@ -169,10 +182,14 @@ for iorb=1:lorb
       ymd=datevecmodnext(1:3);
       UTsec=datevecmodnext(4)*3600+datevecmodnext(5)*60+datevecmodnext(6);
       UTsec=round(UTsec);
-      [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
-      nenext=ne; vinext=v1; Tinext=Ti; Tenext=Te;
-      J1next=J1; J2next=J2; J3next=J3; v2next=v2; v3next=v3;
-      clear ne v1 Ti T3 J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
+%       [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
+%       nenext=ne; vinext=v1; Tinext=Ti; Tenext=Te;
+%       J1next=J1; J2next=J2; J3next=J3; v2next=v2; v3next=v3;
+%       clear ne v1 Ti T3 J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
+      dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
+      nenext=dat.ne; vinext=dat.v1; Tinext=dat.Ti; Tenext=dat.Te;
+      J1next=dat.J1; J2next=dat.J2; J3next=dat.J3; v2next=dat.v2; v3next=dat.v3;
+      clear dat;    %avoid keeping extra copies of data
       datebufnext=datemodnext;
     end
   end
@@ -180,8 +197,11 @@ for iorb=1:lorb
 
     %INTERPOLATIONS
     parfor isat=1:lsat
-      [x1sat,x2sat,x3sat]=geog2UEN(altsat(iorb,isat),glonsat(iorb,isat),glatsat(iorb,isat),thetactr,phictr);
+    %for isat=1:lsat
+      [x1sat,x2sat,x3sat]=gemini3d.geog2UEN(altsat(iorb,isat),glonsat(iorb,isat),glatsat(iorb,isat),thetactr,phictr);
       fprintf('Starting interpolations for satellite:  %d\n',isat);
+      
+      % Interp in space
       nesatprev=interp3(X2,X1,X3,neprev,x2sat,x1sat,x3sat);
       visatprev=interp3(X2,X1,X3,viprev,x2sat,x1sat,x3sat);
       Tisatprev=interp3(X2,X1,X3,Tiprev,x2sat,x1sat,x3sat);
@@ -202,6 +222,7 @@ for iorb=1:lorb
       v2satnext=interp3(X2,X1,X3,v2next,x2sat,x1sat,x3sat);
       v3satnext=interp3(X2,X1,X3,v3next,x2sat,x1sat,x3sat);
 
+      % Interp in time
       nesattmp(isat)=nesatprev+(nesatnext-nesatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       visattmp(isat)=visatprev+(visatnext-visatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       Tisattmp(isat)=Tisatprev+(Tisatnext-Tisatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
