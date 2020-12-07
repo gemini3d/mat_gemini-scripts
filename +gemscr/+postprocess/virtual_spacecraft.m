@@ -87,11 +87,6 @@ datevecsat=[ymdsat,UTsat(:)/3600,zeros(lorb,1),zeros(lorb,1)];
 datesat=datenum(datevecsat);
 
 
-%ATTEMPT TO COMPUTE FOR VARIOUS SPACECRAFT IN PARALLEL
-%try
-% parpool(floor(lsat/2));
-%end
-
 %THIS IS A BASIC TWO SATELLITE TEST
 %{
 %Individual orbit alt,lon,lat
@@ -135,6 +130,8 @@ v3sat=zeros(lorb,lsat);
 
 firstprev=true;
 firstnext=true;
+interptype="linear";
+extraptype="none";
 
 for iorb=1:lorb
   datenow=datesat(iorb);
@@ -182,15 +179,15 @@ for iorb=1:lorb
       datebufprev=datemodprev;
       
       % Interpolant in space (prev)
-      fnesatprev=griddedInterpolant(X1,X2,X3,neprev);
-      fvisatprev=griddedInterpolant(X1,X2,X3,viprev);
-      fTisatprev=griddedInterpolant(X1,X2,X3,Tiprev);
-      fTesatprev=griddedInterpolant(X1,X2,X3,Teprev);
-      fJ1satprev=griddedInterpolant(X1,X2,X3,J1prev);
-      fJ2satprev=griddedInterpolant(X1,X2,X3,J2prev);
-      fJ3satprev=griddedInterpolant(X1,X2,X3,J3prev);
-      fv2satprev=griddedInterpolant(X1,X2,X3,v2prev);
-      fv3satprev=griddedInterpolant(X1,X2,X3,v3prev);
+      fnesatprev=griddedInterpolant(X1,X2,X3,neprev,interptype,extraptype);
+      fvisatprev=griddedInterpolant(X1,X2,X3,viprev,interptype,extraptype);
+      fTisatprev=griddedInterpolant(X1,X2,X3,Tiprev,interptype,extraptype);
+      fTesatprev=griddedInterpolant(X1,X2,X3,Teprev,interptype,extraptype);
+      fJ1satprev=griddedInterpolant(X1,X2,X3,J1prev,interptype,extraptype);
+      fJ2satprev=griddedInterpolant(X1,X2,X3,J2prev,interptype,extraptype);
+      fJ3satprev=griddedInterpolant(X1,X2,X3,J3prev,interptype,extraptype);
+      fv2satprev=griddedInterpolant(X1,X2,X3,v2prev,interptype,extraptype);
+      fv3satprev=griddedInterpolant(X1,X2,X3,v3prev,interptype,extraptype);
       
       firstprev=false;
     end
@@ -208,15 +205,15 @@ for iorb=1:lorb
       datebufnext=datemodnext;
       
       % Interpolant in space (next)
-      fnesatnext=griddedInterpolant(X1,X2,X3,nenext);
-      fvisatnext=griddedInterpolant(X1,X2,X3,vinext);
-      fTisatnext=griddedInterpolant(X1,X2,X3,Tinext);
-      fTesatnext=griddedInterpolant(X1,X2,X3,Tenext);
-      fJ1satnext=griddedInterpolant(X1,X2,X3,J1next);
-      fJ2satnext=griddedInterpolant(X1,X2,X3,J2next);
-      fJ3satnext=griddedInterpolant(X1,X2,X3,J3next);
-      fv2satnext=griddedInterpolant(X1,X2,X3,v2next);
-      fv3satnext=griddedInterpolant(X1,X2,X3,v3next);
+      fnesatnext=griddedInterpolant(X1,X2,X3,nenext,interptype,extraptype);
+      fvisatnext=griddedInterpolant(X1,X2,X3,vinext,interptype,extraptype);
+      fTisatnext=griddedInterpolant(X1,X2,X3,Tinext,interptype,extraptype);
+      fTesatnext=griddedInterpolant(X1,X2,X3,Tenext,interptype,extraptype);
+      fJ1satnext=griddedInterpolant(X1,X2,X3,J1next,interptype,extraptype);
+      fJ2satnext=griddedInterpolant(X1,X2,X3,J2next,interptype,extraptype);
+      fJ3satnext=griddedInterpolant(X1,X2,X3,J3next,interptype,extraptype);
+      fv2satnext=griddedInterpolant(X1,X2,X3,v2next,interptype,extraptype);
+      fv3satnext=griddedInterpolant(X1,X2,X3,v3next,interptype,extraptype);
       
       firstnext=false;
     end
@@ -224,7 +221,6 @@ for iorb=1:lorb
 
 
     %INTERPOLATIONS
-    %parfor isat=1:lsat
     for isat=1:lsat
       [x1sat,x2sat,x3sat]=gemini3d.geog2UEN(altsat(iorb,isat),glonsat(iorb,isat),glatsat(iorb,isat),thetactr,phictr);
       %fprintf('Starting interpolations for satellite:  %d\n',isat);
