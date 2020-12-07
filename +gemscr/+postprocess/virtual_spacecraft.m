@@ -159,17 +159,13 @@ for iorb=1:lorb
     v3prev=neprev; v3next=neprev;
     datestr(datenow)
   else     %go ahead and read in data and set up the interpolations
-    %DATA BUFFER UPDATES
+    %DATA BUFFER UPDATES required for time interpolation
     if (datebufprev~=datemodprev | isempty(neprev))    %need to reload the previous output frame data buffers
       fprintf('Loading previous buffer...\n');
       datevecmodprev=datevec(datemodprev);
       ymd=datevecmodprev(1:3);
       UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
       UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
-      %[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
-      %neprev=ne; viprev=v1; Tiprev=Ti; Teprev=Te;
-      %J1prev=J1; J2prev=J2; J3prev=J3; v2prev=v2; v3prev=v3;
-      %clear ne v1 Ti Te J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
       dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
       neprev=dat.ne; viprev=dat.v1; Tiprev=dat.Ti; Teprev=dat.Te;
       J1prev=dat.J1; J2prev=dat.J2; J3prev=dat.J3; v2prev=dat.v2; v3prev=dat.v3;
@@ -182,10 +178,6 @@ for iorb=1:lorb
       ymd=datevecmodnext(1:3);
       UTsec=datevecmodnext(4)*3600+datevecmodnext(5)*60+datevecmodnext(6);
       UTsec=round(UTsec);
-%       [ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = loadframe(direc,ymd,UTsec,flagoutput,mloc,xg);
-%       nenext=ne; vinext=v1; Tinext=Ti; Tenext=Te;
-%       J1next=J1; J2next=J2; J3next=J3; v2next=v2; v3next=v3;
-%       clear ne v1 Ti T3 J1 v2 v3 J2 J3 Phitop;    %avoid keeping extra copies of large data
       dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
       nenext=dat.ne; vinext=dat.v1; Tinext=dat.Ti; Tenext=dat.Te;
       J1next=dat.J1; J2next=dat.J2; J3next=dat.J3; v2next=dat.v2; v3next=dat.v3;
@@ -201,7 +193,7 @@ for iorb=1:lorb
       [x1sat,x2sat,x3sat]=gemini3d.geog2UEN(altsat(iorb,isat),glonsat(iorb,isat),glatsat(iorb,isat),thetactr,phictr);
       fprintf('Starting interpolations for satellite:  %d\n',isat);
       
-      % Interp in space
+      % Interp in space (prev)
       nesatprev=interp3(X2,X1,X3,neprev,x2sat,x1sat,x3sat);
       visatprev=interp3(X2,X1,X3,viprev,x2sat,x1sat,x3sat);
       Tisatprev=interp3(X2,X1,X3,Tiprev,x2sat,x1sat,x3sat);
@@ -212,6 +204,7 @@ for iorb=1:lorb
       v2satprev=interp3(X2,X1,X3,v2prev,x2sat,x1sat,x3sat);
       v3satprev=interp3(X2,X1,X3,v3prev,x2sat,x1sat,x3sat);
 
+      % Interp in space (next)
       nesatnext=interp3(X2,X1,X3,nenext,x2sat,x1sat,x3sat);
       visatnext=interp3(X2,X1,X3,vinext,x2sat,x1sat,x3sat);
       Tisatnext=interp3(X2,X1,X3,Tinext,x2sat,x1sat,x3sat);
