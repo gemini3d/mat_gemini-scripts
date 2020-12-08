@@ -31,22 +31,22 @@ for it=1:numel(cfg.times)
 %    FS=16;
     FS=10;
 
-    filename = gemini3d.get_frame_filename(direc, cfg.times(it));
+    filename = gemini3d.find.frame(direc, cfg.times(it));
 
     mlatlimplot=double([min(mlat)-0.5,max(mlat)+0.5]);
     mlonlimplot=double([min(mlon)-0.5,max(mlon)+0.5]);
     axesm('MapProjection','Mercator','MapLatLimit',mlatlimplot,'MapLonLimit',mlonlimplot);
-    
+
     param=dvTEC(:,:,it);
 %     imagesc(mlon,mlat,param);
 %     axis xy;
-%     axis equal;    
+%     axis equal;
 %     axis([mlonlimplot,mlatlimplot]);
     mlatlim=double([min(mlat),max(mlat)]);
     mlonlim=double([min(mlon),max(mlon)]);
     [MLAT,MLON]=meshgrat(mlatlim,mlonlim,size(param));
     pcolorm(MLAT,MLON,param);
-    
+
     colormap(old_parula(256));
     set(gca,'FontSize',FS);
     tightmap;
