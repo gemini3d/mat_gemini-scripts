@@ -5,20 +5,14 @@ if nargin > 1
   validateattributes(xy, {'struct'}, {'scalar'}, mfilename, 'grid parameters', 2)
 end
 
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
-addpath([gemini_root, filesep, 'vis',filesep, 'plotfunctions'])
-addpath([gemini_root, filesep, 'vis'])
-
 
 %%READ IN THE SIMULATION INFORMATION
-[ymd0,UTsec0,tdur,dtout,~,mloc]=gemini3d.read.config([direc,filesep,'inputs/config.ini']);
+[ymd0,UTsec0,tdur,dtout,~,mloc]= gemini3d.read.config(direc);
 
 
 %CHECK WHETHER WE NEED TO RELOAD THE GRID (WHICH CAN BE TIME CONSUMING)
 if nargin < 2
-  xg =read.grid([direc,filesep,'inputs',filesep]);
+  xg = gemini3d.read.grid([direc,filesep,'inputs',filesep]);
 end
 
 
@@ -56,7 +50,7 @@ UTsec=UTsec0;
 simdate=[];
 for it=1:lt
     simdate=cat(1,simdate,[ymd,UTsec/3600,0,0]);
-    [ne,mlatsrc,mlonsrc,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop] = loadframe(direc,UTsec,ymd, nan, mloc,xg);
+    [ne,mlatsrc,mlonsrc,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop] = gemini3d.read.frame(direc,UTsec,ymd, nan, mloc,xg);
     disp(filename)
 
     neprof(:,it) = ne(:,ix2,ix3);

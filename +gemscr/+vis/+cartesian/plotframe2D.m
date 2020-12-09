@@ -10,7 +10,7 @@ clc;
 %direc='~/simulations/2DGLOWtest/'
 direc='/media/data/zettergm/simulations/gemini2D/2Ddiscarc/'
 filename='20130220_18300.000000.dat'
-loadframe3D;
+dat = gemini3d.read.frame(fullfile(direc, filename));
 
 
 %INTERPOLATION OF SIMULATION DATA ONTO A UNIFORM GRID

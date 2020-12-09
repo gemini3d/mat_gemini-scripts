@@ -15,7 +15,6 @@
 
 
 function [nei,zctr] = SIGMAinterp_time_MZfunction(plasmatype,tinterp,dcoord,x,y,dt,dz,nz,hmF2)
-addpath ../script_utils;
 
 addpath scripts_MZ-modKD/;
 clear numden
@@ -33,14 +32,14 @@ flagrot=1;    %do we want to rotation E-W to N-S?
 %direc='/home/deshpank/simulations/GDI_sigma3/';
 %GDI_periodic_highres_fileinput_large/';
 
-direc=['/home/deshpank/simulations/',plasmatype,'_sigma3_6e11/'];
+direc=['~/simulations/',plasmatype,'_sigma3_6e11/'];
 
 %WHAT TIME DO THE DATA NEED TO BE INTERPOLATED TO?
 % tinterp=200.4;   %whatever time interval you want 50Hz data for (just give any time within the interval), this is time after the simulation start
 
 
 %LOAD CONFIG FILE TO SEE WHAT THE START TIMES ARE AND WHAT DT IS FOR THE SPECIFIED RUN
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=gemini3d.read.config([direc,'inputs/config.ini']);
+cfg = gemini3d.read.config(direc);
 
 
 % %NOW CREATE A FINE MESH SIMILAR TO WHAT SIGMA USES THIS IS USER ADJUSTABLE

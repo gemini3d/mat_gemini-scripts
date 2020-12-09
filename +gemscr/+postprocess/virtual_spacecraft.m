@@ -62,7 +62,7 @@ interptype="linear";
 extraptype="none";
 for iorb=1:lorb
   datenow=datesat(iorb);
-  
+
 
   %FIND THE TWO FRAMES THAT BRACKET THIS ORBIT TIME
   datemodnext=datemod0;
@@ -84,7 +84,7 @@ for iorb=1:lorb
     J3prev=zeroarray; J3next=zeroarray;
     v2prev=zeroarray; v2next=zeroarray;
     v3prev=zeroarray; v3next=zeroarray;
-    
+
     continue;   % go to next iteration, nothing else to do
   else     % go ahead and read in data (in needed) and set up the spatial interpolations
       %DATA BUFFER UPDATES required for time interpolation
@@ -95,12 +95,12 @@ for iorb=1:lorb
               ymd=datevecmodprev(1:3);
               UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
               UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
-              dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
+              dat=gemini3d.read.frame(direc, 'time', datetime(ymd,0,0,UTsec));
               neprev=double(dat.ne); viprev=double(dat.v1); Tiprev=double(dat.Ti); Teprev=double(dat.Te);
               J1prev=double(dat.J1); J2prev=double(dat.J2); J3prev=double(dat.J3); v2prev=double(dat.v2);
               v3prev=double(dat.v3);
               clear dat;    %avoid keeping extra copies of data
-              
+
               % Interpolant in space (prev)
               fnesatprev=griddedInterpolant(X1,X2,X3,neprev,interptype,extraptype);
               fvisatprev=griddedInterpolant(X1,X2,X3,viprev,interptype,extraptype);
@@ -132,12 +132,12 @@ for iorb=1:lorb
       ymd=datevecmodnext(1:3);
       UTsec=datevecmodnext(4)*3600+datevecmodnext(5)*60+datevecmodnext(6);
       UTsec=round(UTsec);
-      dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
+      dat=gemini3d.read.frame(direc,'time', datetime(ymd,0,0,UTsec));
       nenext=double(dat.ne); vinext=double(dat.v1); Tinext=double(dat.Ti); Tenext=double(dat.Te);
-      J1next=double(dat.J1); J2next=double(dat.J2); J3next=double(dat.J3); v2next=double(dat.v2); 
+      J1next=double(dat.J1); J2next=double(dat.J2); J3next=double(dat.J3); v2next=double(dat.v2);
       v3next=double(dat.v3);
       clear dat;    %avoid keeping extra copies of data
-      
+
       % Interpolant in space (next)
       fnesatnext=griddedInterpolant(X1,X2,X3,nenext,interptype,extraptype);
       fvisatnext=griddedInterpolant(X1,X2,X3,vinext,interptype,extraptype);
@@ -148,7 +148,7 @@ for iorb=1:lorb
       fJ3satnext=griddedInterpolant(X1,X2,X3,J3next,interptype,extraptype);
       fv2satnext=griddedInterpolant(X1,X2,X3,v2next,interptype,extraptype);
       fv3satnext=griddedInterpolant(X1,X2,X3,v3next,interptype,extraptype);
-      
+
       datebufnext=datemodnext;
       firstnext=false;
     end %if
@@ -156,7 +156,7 @@ for iorb=1:lorb
 
 
     %INTERPOLATIONS
-    nesattmp=zeros(lsat,1); visattmp=zeros(lsat,1); Tisattmp=zeros(lsat,1); 
+    nesattmp=zeros(lsat,1); visattmp=zeros(lsat,1); Tisattmp=zeros(lsat,1);
     Tesattmp=zeros(lsat,1); J1sattmp=zeros(lsat,1); J2sattmp=zeros(lsat,1);
     J3sattmp=zeros(lsat,1); v2sattmp=zeros(lsat,1); v3sattmp=zeros(lsat,1);
     for isat=1:lsat
@@ -172,8 +172,8 @@ for iorb=1:lorb
       J2satprev=fJ2satprev(x2sat,x1sat,x3sat);
       J3satprev=fJ3satprev(x2sat,x1sat,x3sat);
       v2satprev=fv2satprev(x2sat,x1sat,x3sat);
-      v3satprev=fv3satprev(x2sat,x1sat,x3sat); 
-      
+      v3satprev=fv3satprev(x2sat,x1sat,x3sat);
+
       % Interp in space (next)
       nesatnext=fnesatnext(x2sat,x1sat,x3sat);
       visatnext=fvisatnext(x2sat,x1sat,x3sat);
@@ -183,8 +183,8 @@ for iorb=1:lorb
       J2satnext=fJ2satnext(x2sat,x1sat,x3sat);
       J3satnext=fJ3satnext(x2sat,x1sat,x3sat);
       v2satnext=fv2satnext(x2sat,x1sat,x3sat);
-      v3satnext=fv3satnext(x2sat,x1sat,x3sat);      
-      
+      v3satnext=fv3satnext(x2sat,x1sat,x3sat);
+
       % Interp in time
       nesattmp(isat)=nesatprev+(nesatnext-nesatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       visattmp(isat)=visatprev+(visatnext-visatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);

@@ -1,10 +1,6 @@
 close all;
-clear;
-clc;
+clear
 direc='~/gemini.fort.ind/output/'
-
-filename='0.000001.dat'
-loadframe3D;
 
 
 %BEGIN YISHI'S PLOT CODE

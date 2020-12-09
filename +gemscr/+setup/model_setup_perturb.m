@@ -1,7 +1,3 @@
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
-addpath([gemini_root, filesep, 'vis'])
 
 %READ IN THE SIMULATION INFORMATION
 ID='~/simulations/input/KHI_periodic_highres/';

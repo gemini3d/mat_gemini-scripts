@@ -14,8 +14,7 @@ if (~exist('xg','var'))
   t=simdate(4);  %assumes fortran code outputs the date in UT hours.
 
   %WE ALSO NEED TO LOAD THE GRID FILE
-  xg=gemini3d.read.grid([direc,'/']);
-  fprintf('Grid loaded...\n');
+  xg=gemini3d.read.grid(direc);
 end
 
 
@@ -83,7 +82,7 @@ print -dpng v1_2D.png
 glat=38.429575d0
 glon=142.734757d0
 addpath ../setup;
-[theta,phi]=geog2geomag(glat,glon);
+[theta,phi]= gemini3d.geog2geomag(glat,glon);
 mlat=90-theta*180/pi;
 mlon=phi*180/pi;
 rmpath ../setup;
