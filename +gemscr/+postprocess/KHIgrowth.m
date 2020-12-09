@@ -185,7 +185,7 @@ legsim=   sprintf('simulation growth');
 legend(legsim,leglinear,'Location','SouthEast');
 
 %print([direc,'/plots/growth_compare.eps'],'-depsc');
-export_graphics(hf3, fullfile(direc, 'plots/growth_compare.eps'))
+exportgraphics(hf3, fullfile(direc, 'plots/growth_compare.eps'))
 
 % %% Do a similar calculation to look at potential to see startup effects...
 % dPhiline=zeros(lx3,lt);

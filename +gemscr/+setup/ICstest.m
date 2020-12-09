@@ -33,8 +33,8 @@ cfg.nme=2e11;
 
 %WRITE THE GRID AND INITIAL CONDITIONS
 fprintf('Writing grid to file...\n');
-gemini3d.writegrid(xg,'curvtest');
+gemini3d.write.grid(xg,'curvtest');
 
 fprintf('Writing initial conditions to file...\n');
 time=UT*3600;   %doesn't matter for input files
-gemini3d.writedata(time,ns,Ts,vsx1,'curvtest');
+gemini3d.write.data(time,ns,Ts,vsx1,'curvtest');

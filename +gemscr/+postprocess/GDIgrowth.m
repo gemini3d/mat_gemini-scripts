@@ -56,7 +56,7 @@ fig2 = make_figure2(xg, x3, dneline);
 
 fig3 = make_figure3(cfg.times, itmin, nepwr, gamma, growthtime);
 
-% gemini3d.vis.export_graphics(fig3, fullfile(direc, 'plots/growth_compare.eps'))
+% exportgraphics(fig3, fullfile(direc, 'plots/growth_compare.eps'))
 
 end % function
 

@@ -91,4 +91,4 @@ colorbar;
 %WRITE OUT THE RESULTS TO A NEW FILE
 dmy=[simdate(3),simdate(2),simdate(1)];
 UTsec=simdate(4)*3600;
-writedata(dmy,UTsec,nsperturb,vs1,Ts,[filebase,'_perturb']);
+gemini3d.write.data(dmy,UTsec,nsperturb,vs1,Ts,[filebase,'_perturb']);

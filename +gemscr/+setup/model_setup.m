@@ -287,6 +287,6 @@ nme=2e11;
 %simlabel='ARCS_eq'
 outdir='~/';
 simlabel='tohoku_eq';
-gemini3d.writegrid(xg,outdir,simlabel);
+gemini3d.write.grid(xg,outdir,simlabel);
 time=UT*3600;   %doesn't matter for input files
-gemini3d.writedata(dmy,time,ns,vsx1,Ts,outdir,simlabel);
+gemini3d.write.data(dmy,time,ns,vsx1,Ts,outdir,simlabel);

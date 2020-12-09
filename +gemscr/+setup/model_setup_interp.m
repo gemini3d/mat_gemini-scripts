@@ -384,9 +384,9 @@ end
 
 
 %WRITE OUT THE GRID
-gemini3d.writegrid(xg,simid);    %just put it in pwd for now
+gemini3d.write.grid(xg,simid);    %just put it in pwd for now
 dmy=[ymdend(3),ymdend(2),ymdend(1)];
-gemini3d.writedata(dmy,UTsecend,nsi,vs1i,Tsi,simid);
+gemini3d.write.data(dmy,UTsecend,nsi,vs1i,Tsi,simid);
 
 
 %MAKE A SAMPLE PLOT OF INTERPOLATED DATA

@@ -59,7 +59,7 @@ for it=1:numel(cfg.times)
     ylabel(sprintf('magnetic lat. (deg.)\n\n\n'))
 
     title(datestr(cfg.times(it)))
-    gemini3d.vis.export_graphics(fig1, fullfile(direc,'TECplots_eps',[filename,'.eps']))
+    exportgraphics(fig1, fullfile(direc,'TECplots_eps',[filename,'.eps']))
 
 
 %% MAKE A MAP OF THE COAST ON THE FIRST TIME STEP
@@ -88,6 +88,6 @@ for it=1:numel(cfg.times)
       axis equal;
       tightmap;
       gridm on;
-      gemini3d.vis.export_graphics(fig2, fullfile(direc,'TECplots_eps','map.eps'))
+      exportgraphics(fig2, fullfile(direc,'TECplots_eps','map.eps'))
     end
 end

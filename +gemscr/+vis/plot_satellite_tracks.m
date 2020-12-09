@@ -69,10 +69,10 @@ xlabel(t, 'latitude')
 ylabel(ax, 'T_e')
 
 if any(strcmp(plot_format, 'eps'))
-  export_graphics(fg1, 'ARCS_sats.eps')
+  exportgraphics(fg1, 'ARCS_sats.eps')
 end
 if any(strcmp(plot_format, 'png'))
-	export_graphics(fg1, 'ARCS_sats.png', 'Resolution', 300)
+	exportgraphics(fg1, 'ARCS_sats.png', 'Resolution', 300)
 end
 
 
@@ -94,10 +94,10 @@ ylabel(c,'v_i @ orbital alt.')
 colormap(ax, 'bwr')
 
 if any(strcmp(plot_format, 'eps'))
-  export_graphics(fg1, 'ARCS_synthdatmap.eps')
+  exportgraphics(fg1, 'ARCS_synthdatmap.eps')
 end
 if any(strcmp(plot_format, 'png'))
-	export_graphics(fg1, 'ARCS_synthdatmap.png', 'Resolution', 300)
+	exportgraphics(fg1, 'ARCS_synthdatmap.png', 'Resolution', 300)
 end
 
 end % function
