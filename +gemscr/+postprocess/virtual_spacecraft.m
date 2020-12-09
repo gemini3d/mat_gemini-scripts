@@ -73,47 +73,60 @@ for iorb=1:lorb
   end
 
   if (datemodnext==datemodprev | datemodnext>datemod(end))    %set everything to zero if outside model time domain
-    fprintf('Requested time is out of bounds...\n');
-    neprev=zeros(lx1,lx2,lx3); nenext=neprev;
-    viprev=neprev; vinext=neprev;
-    Tiprev=neprev; Tinext=neprev;
-    Teprev=neprev; Tenext=neprev;
-    J1prev=neprev; J1next=neprev;
-    J2prev=neprev; J2next=neprev;
-    J3prev=neprev; J3next=neprev;
-    v2prev=neprev; v2next=neprev;
-    v3prev=neprev; v3next=neprev;
+    fprintf('Requested time %s is out of simulation time interval...\n',datestr(datenow));
+    zeroarray=zeros(lx1,lx2,lx3);     %infuriatingly MATLAB is was faster this way rather than calling zeros a bunch...
+    neprev=zeroarray; nenext=zeroarray;
+    viprev=zeroarray; vinext=zeroarray;
+    Tiprev=zeroarray; Tinext=zeroarray;
+    Teprev=zeroarray; Tenext=zeroarray;
+    J1prev=zeroarray; J1next=zeroarray;
+    J2prev=zeroarray; J2next=zeroarray;
+    J3prev=zeroarray; J3next=zeroarray;
+    v2prev=zeroarray; v2next=zeroarray;
+    v3prev=zeroarray; v3next=zeroarray;
     
     continue;   % go to next iteration, nothing else to do
-  else     % go ahead and read in data and set up the interpolations
-    %DATA BUFFER UPDATES required for time interpolation
-    if (datebufprev~=datemodprev | firstprev)    %need to reload the previous output frame data buffers
-      fprintf('Loading previous buffer... %s \n',datestr(datenow));
-      datevecmodprev=datevec(datemodprev);
-      ymd=datevecmodprev(1:3);
-      UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
-      UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
-      dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
-      neprev=double(dat.ne); viprev=double(dat.v1); Tiprev=double(dat.Ti); Teprev=double(dat.Te);
-      J1prev=double(dat.J1); J2prev=double(dat.J2); J3prev=double(dat.J3); v2prev=double(dat.v2); 
-      v3prev=double(dat.v3);
-      clear dat;    %avoid keeping extra copies of data      
-      datebufprev=datemodprev;
-      
-      % Interpolant in space (prev)
-      fnesatprev=griddedInterpolant(X1,X2,X3,neprev,interptype,extraptype);
-      fvisatprev=griddedInterpolant(X1,X2,X3,viprev,interptype,extraptype);
-      fTisatprev=griddedInterpolant(X1,X2,X3,Tiprev,interptype,extraptype);
-      fTesatprev=griddedInterpolant(X1,X2,X3,Teprev,interptype,extraptype);
-      fJ1satprev=griddedInterpolant(X1,X2,X3,J1prev,interptype,extraptype);
-      fJ2satprev=griddedInterpolant(X1,X2,X3,J2prev,interptype,extraptype);
-      fJ3satprev=griddedInterpolant(X1,X2,X3,J3prev,interptype,extraptype);
-      fv2satprev=griddedInterpolant(X1,X2,X3,v2prev,interptype,extraptype);
-      fv3satprev=griddedInterpolant(X1,X2,X3,v3prev,interptype,extraptype);
-      
-      firstprev=false;
-    end
-    if (datebufnext~=datemodnext | firstnext)    %need to reload the next output frame data buffers
+  else     % go ahead and read in data (in needed) and set up the spatial interpolations
+      %DATA BUFFER UPDATES required for time interpolation
+      if (datebufprev~=datemodprev || firstprev)    %need to reload the previous output frame data buffers
+          if (firstprev && firstnext)
+              fprintf('Loading previous buffer... %s \n',datestr(datenow));
+              datevecmodprev=datevec(datemodprev);
+              ymd=datevecmodprev(1:3);
+              UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
+              UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
+              dat=gemini3d.vis.loadframe(direc,datetime([ymd,0,0,UTsec]));
+              neprev=double(dat.ne); viprev=double(dat.v1); Tiprev=double(dat.Ti); Teprev=double(dat.Te);
+              J1prev=double(dat.J1); J2prev=double(dat.J2); J3prev=double(dat.J3); v2prev=double(dat.v2);
+              v3prev=double(dat.v3);
+              clear dat;    %avoid keeping extra copies of data
+              
+              % Interpolant in space (prev)
+              fnesatprev=griddedInterpolant(X1,X2,X3,neprev,interptype,extraptype);
+              fvisatprev=griddedInterpolant(X1,X2,X3,viprev,interptype,extraptype);
+              fTisatprev=griddedInterpolant(X1,X2,X3,Tiprev,interptype,extraptype);
+              fTesatprev=griddedInterpolant(X1,X2,X3,Teprev,interptype,extraptype);
+              fJ1satprev=griddedInterpolant(X1,X2,X3,J1prev,interptype,extraptype);
+              fJ2satprev=griddedInterpolant(X1,X2,X3,J2prev,interptype,extraptype);
+              fJ3satprev=griddedInterpolant(X1,X2,X3,J3prev,interptype,extraptype);
+              fv2satprev=griddedInterpolant(X1,X2,X3,v2prev,interptype,extraptype);
+              fv3satprev=griddedInterpolant(X1,X2,X3,v3prev,interptype,extraptype);
+          else    % we are assuming here that the tracer cadence does not skip over model output files...
+              fprintf('Copying next into previous buffer... %s \n',datestr(datenow));
+              fnesatprev=fnesatnext;
+              fvisatprev=fvisatnext;
+              fTisatprev=fTisatnext;
+              fTesatprev=fTesatnext;
+              fJ1satprev=fJ1satnext;
+              fJ2satprev=fJ2satnext;
+              fJ3satprev=fJ3satnext;
+              fv2satprev=fv2satnext;
+              fv3satprev=fv3satnext;
+          end %if
+          datebufprev=datemodprev;
+          firstprev=false;
+      end %if
+    if (datebufnext~=datemodnext || firstnext)    %need to reload the next output frame data buffers
       fprintf('Loading next buffer... %s \n',datestr(datenow));
       datevecmodnext=datevec(datemodnext);
       ymd=datevecmodnext(1:3);
@@ -124,7 +137,6 @@ for iorb=1:lorb
       J1next=double(dat.J1); J2next=double(dat.J2); J3next=double(dat.J3); v2next=double(dat.v2); 
       v3next=double(dat.v3);
       clear dat;    %avoid keeping extra copies of data
-      datebufnext=datemodnext;
       
       % Interpolant in space (next)
       fnesatnext=griddedInterpolant(X1,X2,X3,nenext,interptype,extraptype);
@@ -137,9 +149,10 @@ for iorb=1:lorb
       fv2satnext=griddedInterpolant(X1,X2,X3,v2next,interptype,extraptype);
       fv3satnext=griddedInterpolant(X1,X2,X3,v3next,interptype,extraptype);
       
+      datebufnext=datemodnext;
       firstnext=false;
-    end
-  end
+    end %if
+  end %if
 
 
     %INTERPOLATIONS

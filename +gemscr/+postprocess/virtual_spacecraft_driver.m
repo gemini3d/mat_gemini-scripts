@@ -2,10 +2,10 @@
 % extraction utility on gemini output.  
 
 % imports
-run("../../setup.m");
+run("setup.m");
 
 % input data
-direc="~/simulations/arcs_angle_wide_nonuniform/";
+direc="~/simulations/arcs_angle_wide_nonuniform_large_highresx1/";
 
 % Satellite track
 load ~/Documents/proposals/ARCS/scraper/orbits.mat;
