@@ -1,5 +1,3 @@
-import gemini3d.plot.*
-
 %% SIMULATIONS LOCAITONS
 simname='isinglass_clayton1/'
 flagplot=1;
@@ -32,7 +30,7 @@ end
 plotfun=[];
 if (flagplot)
     %choose an appropriate function handle for plotting
-    plotfun = grid2plotfun(plotfun,xg);
+    plotfun = gemini3d.plot.grid2plotfun(plotfun,xg);
 
     %make plots
     JPplot=sqrt(sum(JP.^2,4));

@@ -1,4 +1,3 @@
-import gemini3d.plot.*
 %% SIMULATIONS LOCAITONS
 flagplot=1;
 simname='isinglass_clayton5/'
@@ -37,7 +36,7 @@ J3recon=sigP.*E3+sigH.*E2;
 plotfun=[];
 if (flagplot)
     %choose an appropriate function handle for plotting
-    plotfun = grid2plotfun(plotfun,xg);
+    plotfun = gemini3d.plot.grid2plotfun(plotfun,xg);
 
     %make plots
     J2lim=max(abs(J2(:)));
@@ -66,7 +65,7 @@ J3recon2=JP(:,:,:,3)+JH(:,:,:,3);
 plotfun=[];
 if (flagplot)
     %choose an appropriate function handle for plotting
-    plotfun = grid2plotfun(plotfun,xg);
+    plotfun = gemini3d.plot.grid2plotfun(plotfun,xg);
 
     %make plots
     %J2lim=max(abs(J2(:)));
