@@ -83,7 +83,7 @@ plot(dl33/1e3);
 %WRITE THE GRID DATA TO TO A BINARY FILE
 %writegrid(xg,'');
 %save -v7.3 curvtest.mat xg;   %to compare file sizes - seems MATLAB does some aggressive compression
-%xg=readgrid('curvtest');
+%xg=gemini3d.read.grid('curvtest');
 
 
 %PLOT THE OUTLINES OF THE DIPOLE GRID - THIS VERSION USES X,Y,Z COORDS.

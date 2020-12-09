@@ -1,4 +1,4 @@
-function xgf=readgrid(inID)
+function xgf=gemini3d.read.grid(inID)
 
 %--------------------------------------------------------
 %-----THIS READS A GRID FROM A BINARY FILE CREATED

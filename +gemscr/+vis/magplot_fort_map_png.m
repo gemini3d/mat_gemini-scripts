@@ -31,7 +31,7 @@ fprintf('...Done interpolating...\n');
 
 
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc, filesep, 'inputs']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=gemini3d.read.config([direc, filesep, 'inputs']);
 
 
 %TABULATE THE SOURCE OR GRID CENTER LOCATION

@@ -6,7 +6,7 @@ addpath([gemini_root, filesep, 'vis'])
 %READ IN THE SIMULATION INFORMATION
 ID='~/simulations/input/KHI_periodic_highres/';
 %ID='~/simulations/input/GDI_periodic/';
-xg=readgrid(ID);
+xg=gemini3d.read.grid(ID);
 
 
 %LOAD THE FRAME OF THE SIMULATION THAT WE WANT TO PERTURB

@@ -8,7 +8,7 @@ time = datetime(2013,5,20) + seconds(71400);
 
 % load the data
 if (~exist('xg','var'))
-  xg= gemini3d.readgrid(direc1);
+  xg= gemini3d.read.grid(direc1);
 end
 if (~exist('dat1','var'))
   dat1 = gemini3d.loadframe(direc1, "time", time);

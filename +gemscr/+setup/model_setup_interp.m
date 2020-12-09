@@ -331,8 +331,8 @@ ID='~/zettergmdata/simulations/tohoku_eq/'
 
 
 %READ IN THE SIMULATION INFORMATION
-cfg = gemini3d.read_config(ID);
-xgin= gemini3d.readgrid(ID);
+cfg = gemini3d.read.config(ID);
+xgin= gemini3d.read.grid(ID);
 direc=ID;
 
 

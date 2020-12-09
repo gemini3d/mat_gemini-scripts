@@ -9,8 +9,8 @@ cwd = fileparts(mfilename('fullpath'));
 run(fullfile(cwd, "../../setup.m"))
 
 %% Load a GDI simulation
-xg = gemini3d.readgrid(direc);
-cfg = gemini3d.read_config(direc);
+xg = gemini3d.read.grid(direc);
+cfg = gemini3d.read.config(direc);
 %% Pick a reference point to extract a line of density
 x2=xg.x2(3:end-2);
 x3=xg.x3(3:end-2);

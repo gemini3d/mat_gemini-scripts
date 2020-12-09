@@ -10,7 +10,7 @@ direc=[basedir,simname];
 
 
 %% READ IN DATA - need to add the f10.7
-cfg = gemini3d.read_config(direc);
+cfg = gemini3d.read.config(direc);
 
 
 %% TIME OF INTEREST

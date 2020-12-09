@@ -14,7 +14,7 @@ if (~exist('xg','var'))
   t=simdate(4);  %assumes fortran code outputs the date in UT hours.
 
   %WE ALSO NEED TO LOAD THE GRID FILE
-  xg=readgrid([direc,'/']);
+  xg=gemini3d.read.grid([direc,'/']);
   fprintf('Grid loaded...\n');
 end
 

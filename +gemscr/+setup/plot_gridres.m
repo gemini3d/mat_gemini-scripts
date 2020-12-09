@@ -3,8 +3,8 @@
 
 %% Load the grid of interest (user needs to tweak locations)
 % direc='~/simulations/ESF_noise_highres/'
-% cfg=gemini3d.read_config(direc);
-% xg=gemini3d.readgrid(direc);
+% cfg=gemini3d.read.config(direc);
+% xg=gemini3d.read.grid(direc);
 
 
 %% Create a new grid

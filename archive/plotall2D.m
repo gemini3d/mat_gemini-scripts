@@ -23,7 +23,7 @@ UTsec0=20783;
 %CHECK WHETHER WE NEED TO RELOAD THE GRID
 if (~exist('xg','var'))
   %WE ALSO NEED TO LOAD THE GRID FILE
-  xg=readgrid([direc,'/']);
+  xg=gemini3d.read.grid([direc,'/']);
   fprintf('Grid loaded...\n');
 end
 

@@ -83,7 +83,7 @@ rmpath ./vis;
 % filename='10800.000000.dat'
 % cd vis;
 % loadframe3Dcurv;
-% xg=readgrid([direc,'/']);
+% xg=gemini3d.read.grid([direc,'/']);
 %
 % figure;
 % set(gcf,'PaperPosition',[0 0 8.5 4]);

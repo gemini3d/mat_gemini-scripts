@@ -11,7 +11,7 @@ function track=virtual_spacecraft(direc,glonsat,glatsat,altsat,tsat)
 %    the beginning of the simulation, seconds
 
 % READ IN THE SIMULATION INFORMATION
-cfg = gemini3d.read_config(direc);
+cfg = gemini3d.read.config(direc);
 ymd0=cfg.ymd; UTsec0=cfg.UTsec0;
 mloc=[cfg.sourcemlat,cfg.sourcemlon];
 dtout=cfg.dtout; tdur=cfg.tdur;
@@ -19,7 +19,7 @@ dtout=cfg.dtout; tdur=cfg.tdur;
 % CHECK WHETHER WE NEED TO RELOAD THE GRID (WHICH CAN BE TIME CONSUMING)
 if ~exist('xg','var')
   disp('Loading grid...')
-  xg = gemini3d.readgrid(direc);
+  xg = gemini3d.read.grid(direc);
   lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
   x1=double(xg.x1(3:end-2)); x2=double(xg.x2(3:end-2)); x3=double(xg.x3(3:end-2));
   [X1,X2,X3]=ndgrid(x1,x2,x3);

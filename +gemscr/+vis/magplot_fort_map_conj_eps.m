@@ -17,7 +17,7 @@ mkdir([direc,'/Bphiplots_eps'])
 
 
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=gemini3d.read.config([direc,'/inputs/config.ini']);
 times=UTsec0:dtout:UTsec0+tdur;
 lt=numel(times);
 

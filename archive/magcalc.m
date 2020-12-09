@@ -27,7 +27,7 @@ mkdir([direc,'/magplots'])   %store output plots with the simulation data
 
 
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'/inputs/config.ini']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=gemini3d.read.config([direc,'/inputs/config.ini']);
 
 
 %TABULATE THE SOURCE LOCATION
@@ -54,7 +54,7 @@ dang=5;
 %WE ALSO NEED TO LOAD THE GRID FILE
 if (~exist('xg','var'))
   fprintf('Reading grid...\n');
-  xg=readgrid([direc,'/']);
+  xg=gemini3d.read.grid([direc,'/']);
   lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
   lh=lx1;   %possibly obviated in this version - need to check
   if (lx3==1)

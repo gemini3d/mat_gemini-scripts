@@ -3,7 +3,7 @@ flagplots=true;
 
 %% LOAD AN EXAMPLE SIMULATION
 direc='~/SDHCcard/ARCS/'
-cfg = gemini3d.read_config(direc);
+cfg = gemini3d.read.config(direc);
 time = datetime(2017,03,02) + seconds(27300);
 dat = gemini3d.loadframe(direc, "time", time);
 

@@ -15,7 +15,7 @@ time = datetime([2017,03,02,0,0,27000 + 270]);% read in data
 
 
 % load grid and frame data
-xg= gemini3d.readgrid(direc);
+xg= gemini3d.read.grid(direc);
 dat= gemini3d.loadframe(direc, "time", time);
 
 

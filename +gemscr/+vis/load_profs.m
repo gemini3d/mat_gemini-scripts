@@ -13,12 +13,12 @@ addpath([gemini_root, filesep, 'vis'])
 
 
 %%READ IN THE SIMULATION INFORMATION
-[ymd0,UTsec0,tdur,dtout,~,mloc]=readconfig([direc,filesep,'inputs/config.ini']);
+[ymd0,UTsec0,tdur,dtout,~,mloc]=gemini3d.read.config([direc,filesep,'inputs/config.ini']);
 
 
 %CHECK WHETHER WE NEED TO RELOAD THE GRID (WHICH CAN BE TIME CONSUMING)
 if nargin < 2
-  xg = readgrid([direc,filesep,'inputs',filesep]);
+  xg =read.grid([direc,filesep,'inputs',filesep]);
 end
 
 

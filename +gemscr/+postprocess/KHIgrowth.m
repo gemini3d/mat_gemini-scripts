@@ -1,8 +1,8 @@
 
 %% Load a KHI simulation
 direc='~/simulations/KHI_nutildemin_whitenoise/';
-xg = gemini3d.readgrid(fullfile(direc,'inputs'));
-cfg = gemini3d.read_config(direc);
+xg = gemini3d.read.grid(fullfile(direc,'inputs'));
+cfg = gemini3d.read.config(direc);
 
 
 %% Pick a reference point to extract a line of density

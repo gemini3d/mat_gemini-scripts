@@ -5,13 +5,13 @@ mkdir(direc2);
 
 
 %% NEED TO READ INPUT FILE TO GET DURATION OF SIMULATION AND START TIME
-cfg = gemini3d.read_config(direc);
+cfg = gemini3d.read.config(direc);
 
 
 %% CHECK WHETHER WE NEED TO RELOAD THE GRID (check if one is given because this can take a long time)
 %if isempty(xg)
   disp('Reloading grid...')
-  xg = gemini3d.readgrid(direc);
+  xg = gemini3d.read.grid(direc);
 %end
 
 

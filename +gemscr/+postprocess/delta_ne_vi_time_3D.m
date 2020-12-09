@@ -18,9 +18,9 @@ direc2=[basedir,simname_control];
 
 %% Load sizes and grid
 if (~exist('xg','var'))
-  xg=gemini3d.readgrid([direc,'/inputs/']);    % for now assume that the control grid is the same as the dist; otherwise can get interpolation artifacts in BG subtraction
+  xg=gemini3d.read.grid([direc,'/inputs/']);    % for now assume that the control grid is the same as the dist; otherwise can get interpolation artifacts in BG subtraction
   x1=xg.x1(3:end-2); x2=xg.x2(3:end-2); x3=xg.x3(3:end-2);
-  xgBG=gemini3d.readgrid([direc2,'/inputs/']);
+  xgBG=gemini3d.read.grid([direc2,'/inputs/']);
   x1BG=xgBG.x1(3:end-2); x2BG=xgBG.x2(3:end-2); x3BG=xgBG.x3(3:end-2);
   [X2,X1,X3]=meshgrid(x2(:),x1(:),x3(:));
   [X2BG,X1BG,X3BG]=meshgrid(x2BG(:),x1BG(:),x3BG(:));
@@ -30,10 +30,10 @@ lh=lx1;lsp=7;
 
 
 %% Read in config file
-cfg=gemini3d.read_config(direc);
+cfg=gemini3d.read.config(direc);
 ymd0=cfg.ymd; UTsec0=cfg.UTsec0; tdur=cfg.tdur; dtout=cfg.dtout; flagoutput=cfg.flagoutput;
 mloc(1)=cfg.sourcemlat; mloc(2)=cfg.sourcemlon;
-%[ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file]=readconfig([direc,'/inputs/']);
+%[ymd0,UTsec0,tdur,dtout,flagoutput,mloc,activ,indat_size,indat_grid,indat_file]=gemini3d.read.config([direc,'/inputs/']);
 
 
 %% Source location, interp size, and mlat/mlon slice locations

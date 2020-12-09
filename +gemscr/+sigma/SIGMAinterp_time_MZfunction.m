@@ -40,7 +40,7 @@ direc=['/home/deshpank/simulations/',plasmatype,'_sigma3_6e11/'];
 
 
 %LOAD CONFIG FILE TO SEE WHAT THE START TIMES ARE AND WHAT DT IS FOR THE SPECIFIED RUN
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=readconfig([direc,'inputs/config.ini']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=gemini3d.read.config([direc,'inputs/config.ini']);
 
 
 % %NOW CREATE A FINE MESH SIMILAR TO WHAT SIGMA USES THIS IS USER ADJUSTABLE
