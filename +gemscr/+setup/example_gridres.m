@@ -46,12 +46,12 @@ sourceloc=[mlatsrc,mlonsrc];
 parm=log10(dl1/1e3);
 parmlbl='log_{10} x_1 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
-gemini3d.vis.plotfunctions.plot3D_curv_frames_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
+gemini3d.plot.curv3d_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
 
 parm=log10(dl2/1e3);
 parmlbl='log_{10} x_2 grid spacing (km)';
 caxlims=[min(parm(:)),max(parm(:))];
-gemini3d.vis.plotfunctions.plot3D_curv_frames_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
+gemini3d.plot.curv3d_long(datetime([ymd,0,0,UTsec]),xg,parm,parmlbl,caxlims,sourceloc);
 
 
 

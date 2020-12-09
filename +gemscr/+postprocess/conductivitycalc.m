@@ -1,4 +1,4 @@
-import gemini3d.vis.plotfunctions.*
+import gemini3d.plot.*
 
 %% SIMULATIONS LOCAITONS
 %flagplot=1;
@@ -36,7 +36,7 @@ J3recon=sigP.*E3+sigH.*E2;
 plotfun=[];
 if (flagplot)
     %choose an appropriate function handle for plotting
-    plotfun = gemin3d.vis.grid2plotfun(plotfun,xg);
+    plotfun = grid2plotfun(plotfun,xg);
 
     %make plots
     J2lim=max(abs(J2(:)));
