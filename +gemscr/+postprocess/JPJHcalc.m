@@ -16,7 +16,7 @@ time = datetime(2017,3,2) + seconds(25496);
 
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
-dat = gemini3d.loadframe(direc, "time", time);
+dat = gemini3d.read.frame(direc, "time", time);
 
 
 %% DECOMPOSE INTO PEDERSEN, HALL, AND FAC COMPONENTS

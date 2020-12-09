@@ -11,7 +11,7 @@ direc='~/SDHCCard/ARCS_angle_decimate/';
 ymd=[2017,03,02];
 UTsec=27300;
 
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = gemini3d.loadframe(gemini3d.find.frame(direc,ymd,UTsec));
+[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = gemini3d.read.frame(gemini3d.find.frame(direc,ymd,UTsec));
 [zUENi,xUENi,yUENi,Tei]=model2magUENcoords(xg,Te);
 [zUENi,xUENi,yUENi,J1i]=model2magUENcoords(xg,J1);
 [zUENi,xUENi,yUENi,J3i]=model2magUENcoords(xg,J3);

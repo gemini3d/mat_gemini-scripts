@@ -8,7 +8,7 @@ direc='~/simulations/isinglass_clayton6_MB'
 
 %UTsec=28400;
 UTsec=28420;
-dat=gemini3d.loadframe(direc, "time", datetime(2017,3,2,0,0,UTsec));
+dat=gemini3d.read.frame(direc, "time", datetime(2017,3,2,0,0,UTsec));
 xg=gemini3d.read.grid(direc);
 alt=xg.alt;
 refalt=120e3;      %Pedersen layer

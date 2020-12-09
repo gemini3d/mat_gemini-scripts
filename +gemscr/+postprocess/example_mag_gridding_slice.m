@@ -12,7 +12,7 @@ time = datetime(2016,03,03) + seconds(13500);
 %% read in data
 if (~exist('dat','var'))
   xg= gemini3d.read.grid(direc);
-  dat= gemini3d.loadframe(direc, "time", time);
+  dat= gemini3d.read.frame(direc, "time", time);
 end %if
 
 %% dist loc.

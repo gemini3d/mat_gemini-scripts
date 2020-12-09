@@ -344,7 +344,7 @@ filename=[filename,'.dat']
 
 
 %LOAD THE FRAME
-dat = gemini3d.loadframe(filename);
+dat = gemini3d.read.frame(filename);
 
 
 %DO THE INTERPOLATION

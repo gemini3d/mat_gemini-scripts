@@ -21,7 +21,7 @@ Nt = numel(cfg.times);
 neline = nan(Nt, numel(x3));
 
 for i = 1:Nt
-  data = gemini3d.loadframe(direc, "time", cfg.times(i), "vars", "ne");
+  data = gemini3d.read.frame(direc, "time", cfg.times(i), "vars", "ne");
   t_elapsed = seconds(cfg.times(i) - cfg.times(1));
   x2now = x2ref + t_elapsed * namedargs.drift_velocity;    %moving at 0.5 kms/
   ix2 = find(x2 > x2now, 1);
