@@ -27,7 +27,7 @@ flagsource=1;
 iscurv=true;
 
 %% Compute the grid
-xg=gemini3d.setup.gridgen.makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
 
 
 %% DETERMINE GRID RESOLUTION
