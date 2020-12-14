@@ -95,7 +95,7 @@ for iorb=1:lorb
               ymd=datevecmodprev(1:3);
               UTsec=datevecmodprev(4)*3600+datevecmodprev(5)*60+datevecmodprev(6);
               UTsec=round(UTsec);    %some accuracy problems...  this is fishy and an infuriating kludge that needs to be fixed...
-              dat=gemini3d.read.frame(direc, 'time', datetime(ymd,0,0,UTsec));
+              dat=gemini3d.read.frame(direc, 'time', datetime([ymd,0,0,UTsec]));
               neprev=double(dat.ne); viprev=double(dat.v1); Tiprev=double(dat.Ti); Teprev=double(dat.Te);
               J1prev=double(dat.J1); J2prev=double(dat.J2); J3prev=double(dat.J3); v2prev=double(dat.v2);
               v3prev=double(dat.v3);
@@ -132,7 +132,7 @@ for iorb=1:lorb
       ymd=datevecmodnext(1:3);
       UTsec=datevecmodnext(4)*3600+datevecmodnext(5)*60+datevecmodnext(6);
       UTsec=round(UTsec);
-      dat=gemini3d.read.frame(direc,'time', datetime(ymd,0,0,UTsec));
+      dat=gemini3d.read.frame(direc,'time', datetime([ymd,0,0,UTsec]));
       nenext=double(dat.ne); vinext=double(dat.v1); Tinext=double(dat.Ti); Tenext=double(dat.Te);
       J1next=double(dat.J1); J2next=double(dat.J2); J3next=double(dat.J3); v2next=double(dat.v2);
       v3next=double(dat.v3);
