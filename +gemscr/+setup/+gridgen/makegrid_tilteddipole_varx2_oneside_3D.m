@@ -258,7 +258,7 @@ qtol=1e-9;
 fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Converting q,p grid centers to spherical coords.');
 for iq=1:lq
     for ip=1:lp
-        [r(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,q(iq),p(ip)),0,100*Re);
+        [r(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.grid.qp2robj(x,q(iq),p(ip)),0,100*Re);
         if abs(q(iq))<qtol
             theta(iq,ip)=pi/2;
         elseif q(iq)>=0        %northern hemisphere
@@ -354,7 +354,7 @@ rpi=zeros(lq,lp+1);
 thetapi=zeros(lq,lp+1);
 for iq=1:lq
     for ip=1:lp+1
-        [rpi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,q(iq),pii(ip)),0,100*Re);
+        [rpi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.grid.qp2robj(x,q(iq),pii(ip)),0,100*Re);
         if abs(q(iq))<qtol
             thetapi(iq,ip)=pi/2;
         elseif q(iq)>=0        %northern hemisphere
