@@ -7,7 +7,7 @@ validateattributes(cfg, {'struct'}, {'scalar'}, 3)
 validateattributes(xg, {'struct'}, {'scalar'}, 4)
 %% GET THE NEUTRAL ATMOSPHERE NEEDED FOR COLLISIONS, ETC.
 params.activ = cfg.activ;
-natm= gemini3d.setup.msis_matlab3D(params,xg, time);
+natm= gemini3d.model.msis(params,xg, time);
 
 %% MASS AND CHARGE VARIABLES DESCRIBING SPECIES (needed to recompute the collision freqs.) - this is a little messy maybe have some global script that sets???
 %kb=1.3806503e-23;

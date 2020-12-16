@@ -38,7 +38,7 @@ Re=6370e3;
 % pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
 % qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 % pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
-% rtmp=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
+% rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 % % %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
 % % %p=linspace(pmin,pmax,lp);
 % % p=linspace(pmin,pmax,lpp);
@@ -58,7 +58,7 @@ else               %SH
   qtmp=(Re/(Re+altmin))^2*cos(thetax2max);	%bottom left grid q (also bottom right)
   pmin=sqrt(cos(thetax2max)/sin(thetax2min)^4/qtmp); %bottom right grid p, why mixing of max/min here???
 end
-% rtmp=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
+% rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 
 
 %NONUNIFORM IN X2 GRID - TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN
@@ -332,7 +332,7 @@ rqi=zeros(lq+1,lp);
 thetaqi=zeros(lq+1,lp);
 for iq=1:lq+1
     for ip=1:lp
-        [rqi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.setup.gridgen.qp2robj(x,qi(iq),p(ip)),0,100*Re);
+        [rqi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.grid.qp2robj(x,qi(iq),p(ip)),0,100*Re);
         if abs(qi(iq))<qtol
             thetaqi(iq,ip)=pi/2;
         elseif qi(iq)>=0        %northern hemisphere
