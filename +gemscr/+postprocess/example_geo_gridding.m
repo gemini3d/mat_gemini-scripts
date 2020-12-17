@@ -11,8 +11,10 @@ import gemscr.postprocess.model2geocoords
 % simulation name, date and time of interest
 % direc="~/simulations/gdi_lagrangian/"
 % time = datetime([2013,2,20,0,0,18320]);
-direc="~/simulations/arcs_angle_wide_nonuniform/";
-time = datetime([2017,03,02,0,0,27000 + 270]);% read in data
+direc="~/simulations/arcs_angle_wide_nonuniform_large_highresx1/";
+cfg = gemini3d.read.config(direc);
+time=cfg.times(5);
+%time = datetime([2017,03,02,0,0,27000 + 270]);% read in data
 
 % load grid and frame data
 xg = gemini3d.read.grid(direc);
