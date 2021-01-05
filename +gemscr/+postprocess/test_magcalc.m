@@ -10,17 +10,15 @@ Bxt=dat.Bphit;          % alt,theta,phi; east is phi direction
 Byt=-1*dat.Bthetat;     % theta goes against northward distance
 %Byt=dat.Bthetat;
 Bzt=dat.Brt;            % r same direction as up
-it=5;
+it=10;
 
 % convert the coordinates into something we can differentiate as Cartesian
 % x=east, y=north, z=altitude
 [z,x,y]=gemscr.geomag2UENgeomag(dat.r-6370e3,dat.mlon,dat.mlat);
-%[X,Z,Y]=meshgrid(x(:),z(:),y(:));
 [X,Y,Z]=meshgrid(x(:),y(:),z(:));
 
 % permute magnetic field data to righthanded wrt to UEN coords.
 % originally these will come out as r,theta,phi
-% this is an odd permutation...  need to account for this?
 Bz=permute(Bzt(:,:,:,it),[1,3,2]);  % -> r,phi,theta (up,east,north)
 Bx=permute(Bxt(:,:,:,it),[1,3,2]);
 By=permute(Byt(:,:,:,it),[1,3,2]);
