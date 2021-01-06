@@ -1,9 +1,9 @@
 function [alti,mloni,mlati,parmi]=model2magcoords(xg,parm,lalt,llon,llat,altlims,mlonlims,mlatlims)
 
-%Grid the GEMINI output data in parm onto a regular *geomagnetic* coordinates
+%Grid the scalar GEMINI output data in parm onto a regular *geomagnetic* coordinates
 %grid.  By default create a linearly spaced output grid based on
 %user-provided limits (or grid limits).  Needs to be updated to deal with
-%2D grids...
+%2D input grids; can interpolate from 3D grids to 2D slices...
 %
 %  [alt,mlon,mlat,parmi]=model2magcoords(xg,parm,lalt,llon,llat,altlims,mlonlims,mlatlims)
 
