@@ -1,4 +1,4 @@
-function [E,B,S,mlon,mlat,datmag,datplasma]=Poynting_calc(direc,TOI)
+function [E,B,S,mlon,mlat,datmag,datplasma,xg]=Poynting_calc(direc,TOI)
 
 % read in a simulation frame (both plasma and magnetic fields are required for
 % the specified frame) and compute the Poynting flux.  Return the electric,
