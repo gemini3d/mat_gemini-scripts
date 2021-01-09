@@ -21,7 +21,7 @@ disp("Computing conductivities and conductance...");
 [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=gemscr.postprocess.conductivity_reconstruct(TOI,datplasma,cfg,xg);   % Conductivities on the simulation grid
 
 % Get the electric fields 
-disp("Computing Ohmic dissipation...")
+disp("Computing Ohmic dissipation...");
 [v,E]=gemscr.postprocess.Efield(xg,datplasma.v2,datplasma.v3);   % fields, etc. on the simulation grid
 
 % Compute the Joule dissipation
@@ -44,7 +44,58 @@ for ilon=1:llon
     end %for
 end %for
 
-% Make a comparison plot
+
+% Plot the electric and magnetic fields
+figure;
+subplot(231);
+imagesc(mlon,mlat,squeeze(Ei(end,:,:,1))*1e3);
+axis xy;
+xlabel("mag. lon. (deg.)");
+ylabel("mag. lat. (deg.)");
+colorbar;
+title("E_r (mV/m)")
+
+subplot(232);
+imagesc(mlon,mlat,squeeze(Ei(end,:,:,2))*1e3);
+axis xy;
+xlabel("mag. lon. (deg.)");
+ylabel("mag. lat. (deg.)");
+colorbar;
+title("E_\theta (mV/m)")
+
+subplot(233);
+imagesc(mlon,mlat,squeeze(Ei(end,:,:,3))*1e3);
+axis xy;
+xlabel("mag. lon. (deg.)");
+ylabel("mag. lat. (deg.)");
+colorbar;
+title("E_\phi (mV/m)")
+
+subplot(234);
+imagesc(mlon,mlat,squeeze(B(end,:,:,1))*1e9);
+axis xy;
+xlabel("mag. lon. (deg.)");
+ylabel("mag. lat. (deg.)");
+colorbar;
+title("B_r (nT)")
+
+subplot(235);
+imagesc(mlon,mlat,squeeze(B(end,:,:,2))*1e9);
+axis xy;
+xlabel("mag. lon. (deg.)");
+ylabel("mag. lat. (deg.)");
+colorbar;
+title("B_\theta (nT)")
+
+subplot(236);
+imagesc(mlon,mlat,squeeze(B(end,:,:,3))*1e9);
+axis xy;
+xlabel("mag. lon. (deg.)");
+ylabel("mag. lat. (deg.)");
+colorbar;
+title("B_\phi (nT)")
+
+% Make a comparison plot of Poynting flux vs. Ohmic dissipation
 figure;
 
 subplot(121);
@@ -58,6 +109,18 @@ caxval=max(abs(cax));
 caxis([-caxval,caxval]);
 ylabel(c,"Poynting Flux (mW/m^2)");
 title("S_1");
+
+% subplot(132);
+% imagesc(mloni,mlati,SIGP');
+% axis xy;
+% xlabel("mag. lon. (deg.)");
+% ylabel("mag. lat. (deg.)");
+% c=colorbar;
+% cax=caxis;
+% caxval=max(abs(cax));
+% caxis([-caxval,caxval]);
+% ylabel(c,"Pedersen Conductance (mhos)");
+% title("\Sigma_P");
 
 subplot(122);
 int_ohmic=int_ohmic';

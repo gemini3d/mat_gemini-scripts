@@ -2,14 +2,17 @@ run("~/Projects/mat_gemini/setup.m");
 run("~/Projects/GEMINI-scripts/setup.m");
 
 % data set to test with
+ymd=[2017,3,2];
+UTsec=27285;
+TOI=datetime([ymd,0,0,UTsec]);
 direc="~/simulations/arcs_angle_wide_nonuniform_large_highresx1/";
 
 % load the magnetic field perturbations
-[dat,times]=gemini3d.read.magdata(direc,[40,40,40]);
-Bxt=dat.Bphit;          % alt,theta,phi; east is phi direction
-Byt=-1*dat.Bthetat;     % theta goes against northward distance
+dat=gemini3d.read.magframe(direc,"time",TOI);
+Bx=dat.Bphi;          % alt,theta,phi; east is phi direction
+By=-1*dat.Btheta;     % theta goes against northward distance
 %Byt=dat.Bthetat;
-Bzt=dat.Brt;            % r same direction as up
+Bz=dat.Br;            % r same direction as up
 it=10;
 
 % convert the coordinates into something we can differentiate as Cartesian
@@ -19,9 +22,9 @@ it=10;
 
 % permute magnetic field data to righthanded wrt to UEN coords.
 % originally these will come out as r,theta,phi
-Bz=permute(Bzt(:,:,:,it),[1,3,2]);  % -> r,phi,theta (up,east,north)
-Bx=permute(Bxt(:,:,:,it),[1,3,2]);
-By=permute(Byt(:,:,:,it),[1,3,2]);
+Bz=permute(Bz(:,:,:),[1,3,2]);  % -> r,phi,theta (up,east,north)
+Bx=permute(Bx(:,:,:),[1,3,2]);
+By=permute(By(:,:,:),[1,3,2]);
 
 % compute a numerical curl of the magnetic field
 mu0=4*pi*1e-7;
