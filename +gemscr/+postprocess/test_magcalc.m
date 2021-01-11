@@ -1,6 +1,8 @@
 run("~/Projects/mat_gemini/setup.m");
 run("~/Projects/GEMINI-scripts/setup.m");
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % data set to test with
 ymd=[2017,3,2];
 UTsec=27285;
@@ -13,7 +15,6 @@ Bx=dat.Bphi;          % alt,theta,phi; east is phi direction
 By=-1*dat.Btheta;     % theta goes against northward distance
 %Byt=dat.Bthetat;
 Bz=dat.Br;            % r same direction as up
-it=10;
 
 % convert the coordinates into something we can differentiate as Cartesian
 % x=east, y=north, z=altitude
@@ -63,6 +64,8 @@ Jx=permute(Jx/1e-6,[3,1,2]);
 Jy=permute(Jy/1e-6,[3,1,2]); 
 Jz=permute(Jz/1e-6,[3,1,2]);    %so J in uA/m^2
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % make some diagnostic plots
 % magnetic field
 figure(1);

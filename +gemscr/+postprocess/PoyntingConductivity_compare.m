@@ -99,7 +99,7 @@ title("B_\phi (nT)")
 figure;
 
 subplot(121);
-imagesc(mlon,mlat,squeeze(S(1,:,:,1))*1e3);
+imagesc(mlon,mlat,squeeze(S(end,:,:,1))*1e3);
 axis xy;
 xlabel("mag. lon. (deg.)");
 ylabel("mag. lat. (deg.)");
