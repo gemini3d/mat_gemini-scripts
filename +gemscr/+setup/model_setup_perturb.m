@@ -9,7 +9,7 @@ xg=gemini3d.read.grid(ID);
 direc=ID;
 filebase='KHI_periodic_highres';
 filename=[filebase,'_ICs.dat'];
-loadframe3Dcurvnoelec;
+dat = loadframe3Dcurvnoelec(filename);
 
 
 %DEFINE A PERTURBATION AND CHANGE THE INITIAL CONDITIONS
@@ -85,6 +85,5 @@ colorbar;
 
 
 %WRITE OUT THE RESULTS TO A NEW FILE
-dmy=[simdate(3),simdate(2),simdate(1)];
-UTsec=simdate(4)*3600;
-gemini3d.write.data(dmy,UTsec,nsperturb,vs1,Ts,[filebase,'_perturb']);
+time = datetime(simdate(1:4));
+gemini3d.write.state([filebase,'_perturb'],time,nsperturb,vs1,Ts);

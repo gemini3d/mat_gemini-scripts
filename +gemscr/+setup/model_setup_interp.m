@@ -305,7 +305,7 @@ flagsource=1;
 
 
 %RUN THE GRID GENERATION CODE
-if (~exist('xg'))
+if ~exist('xg','var')
 %    xg=makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
 %    xg=makegrid_tilteddipole_nonuniform_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
 %    xg=makegrid_tilteddipole_nonuniform_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
@@ -385,8 +385,8 @@ end
 
 %WRITE OUT THE GRID
 gemini3d.write.grid(xg,simid);    %just put it in pwd for now
-dmy=[ymdend(3),ymdend(2),ymdend(1)];
-gemini3d.write.data(dmy,UTsecend,nsi,vs1i,Tsi,simid);
+time = datetime([ymdend(1:3), 0, 0, UTsecend]);
+gemini3d.write.state(simid, time,nsi,vs1i,Tsi);
 
 
 %MAKE A SAMPLE PLOT OF INTERPOLATED DATA

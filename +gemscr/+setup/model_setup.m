@@ -285,8 +285,7 @@ nme=2e11;
 %simlabel='nepal2D_eq'
 %simlabel='2Dtest_nonperumuted_eq'
 %simlabel='ARCS_eq'
-outdir='~/';
-simlabel='tohoku_eq';
-gemini3d.write.grid(xg,outdir,simlabel);
-time=UT*3600;   %doesn't matter for input files
-gemini3d.write.data(dmy,time,ns,vsx1,Ts,outdir,simlabel);
+outdir = '~/tohoku_eq';
+gemini3d.write.grid(xg, outdir);
+
+gemini3d.write.state(outdir,time,ns,vsx1,Ts);
