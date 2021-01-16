@@ -87,8 +87,8 @@ for iorb=1:lorb
     continue;   % go to next iteration, nothing else to do
   else     % go ahead and read in data (in needed) and set up the spatial interpolations
       %DATA BUFFER UPDATES required for time interpolation
-      if (abs(datebufprev-datemodprev)>=dtout/86400 || firstprev)    % need to reload the previous output frame data buffers
-          if (firstprev && firstnext || abs(datemodprev-datebufnext)>=dtout/86400)               % only load a prev buffer if the desired previous model date (datemodprev) is not the existing next buffer (datebufnext)
+      if (abs(datebufprev-datemodprev)>=dtout/86400/2 || firstprev)    % need to reload the previous output frame data buffers
+          if (firstprev && firstnext || abs(datemodprev-datebufnext)>=dtout/86400/2)               % only load a prev buffer if the desired previous model date (datemodprev) is not the existing next buffer (datebufnext)
               fprintf('Loading previous buffer... %s \n',datestr(datenow));
               datevecmodprev=datevec(datemodprev);
               ymd=datevecmodprev(1:3);
@@ -111,7 +111,7 @@ for iorb=1:lorb
               fv2satprev=griddedInterpolant(X1,X2,X3,v2prev,interptype,extraptype);
               fv3satprev=griddedInterpolant(X1,X2,X3,v3prev,interptype,extraptype);
           else    % we can simply set the previous buffer to the next if we are not skipping over an output file
-              fprintf('Copying next into previous buffer... %s \n',datestr(datenow));
+              fprintf('Copying next into previous buffer... %s %f\n',datestr(datenow),tsat(iorb));
               fnesatprev=fnesatnext;
               fvisatprev=fvisatnext;
               fTisatprev=fTisatnext;
@@ -125,7 +125,7 @@ for iorb=1:lorb
           datebufprev=datemodprev;
           firstprev=false;
       end %if
-    if (abs(datebufnext-datemodnext)>=dtout/86400 || firstnext)    %need to reload the next output frame data buffers
+    if (abs(datebufnext-datemodnext)>=dtout/86400/2 || firstnext)    %need to reload the next output frame into data buffers
       fprintf('Loading next buffer... %s \n',datestr(datenow));
       datevecmodnext=datevec(datemodnext);
       ymd=datevecmodnext(1:3);
