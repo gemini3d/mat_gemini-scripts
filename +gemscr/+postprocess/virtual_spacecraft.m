@@ -162,27 +162,27 @@ for iorb=1:lorb
       [x1sat,x2sat,x3sat]=gemini3d.geog2UEN(altsat(iorb,isat),glonsat(iorb,isat),glatsat(iorb,isat),thetactr,phictr);
       %fprintf('Starting interpolations for satellite:  %d\n',isat);
 
-      % Interp in space (prev)
-      nesatprev=fnesatprev(x2sat,x1sat,x3sat);
-      visatprev=fvisatprev(x2sat,x1sat,x3sat);
-      Tisatprev=fTisatprev(x2sat,x1sat,x3sat);
-      Tesatprev=fTesatprev(x2sat,x1sat,x3sat);
-      J1satprev=fJ1satprev(x2sat,x1sat,x3sat);
-      J2satprev=fJ2satprev(x2sat,x1sat,x3sat);
-      J3satprev=fJ3satprev(x2sat,x1sat,x3sat);
-      v2satprev=fv2satprev(x2sat,x1sat,x3sat);
-      v3satprev=fv3satprev(x2sat,x1sat,x3sat);
+            % Interp in space (prev)
+      nesatprev=fnesatprev(x1sat,x2sat,x3sat);
+      visatprev=fvisatprev(x1sat,x2sat,x3sat);
+      Tisatprev=fTisatprev(x1sat,x2sat,x3sat);
+      Tesatprev=fTesatprev(x1sat,x2sat,x3sat);
+      J1satprev=fJ1satprev(x1sat,x2sat,x3sat);
+      J2satprev=fJ2satprev(x1sat,x2sat,x3sat);
+      J3satprev=fJ3satprev(x1sat,x2sat,x3sat);
+      v2satprev=fv2satprev(x1sat,x2sat,x3sat);
+      v3satprev=fv3satprev(x1sat,x2sat,x3sat);
 
       % Interp in space (next)
-      nesatnext=fnesatnext(x2sat,x1sat,x3sat);
-      visatnext=fvisatnext(x2sat,x1sat,x3sat);
-      Tisatnext=fTisatnext(x2sat,x1sat,x3sat);
-      Tesatnext=fTesatnext(x2sat,x1sat,x3sat);
-      J1satnext=fJ1satnext(x2sat,x1sat,x3sat);
-      J2satnext=fJ2satnext(x2sat,x1sat,x3sat);
-      J3satnext=fJ3satnext(x2sat,x1sat,x3sat);
-      v2satnext=fv2satnext(x2sat,x1sat,x3sat);
-      v3satnext=fv3satnext(x2sat,x1sat,x3sat);
+      nesatnext=fnesatnext(x1sat,x2sat,x3sat);
+      visatnext=fvisatnext(x1sat,x2sat,x3sat);
+      Tisatnext=fTisatnext(x1sat,x2sat,x3sat);
+      Tesatnext=fTesatnext(x1sat,x2sat,x3sat);
+      J1satnext=fJ1satnext(x1sat,x2sat,x3sat);
+      J2satnext=fJ2satnext(x1sat,x2sat,x3sat);
+      J3satnext=fJ3satnext(x1sat,x2sat,x3sat);
+      v2satnext=fv2satnext(x1sat,x2sat,x3sat);
+      v3satnext=fv3satnext(x1sat,x2sat,x3sat);
 
       % Interp in time
       nesattmp(isat)=nesatprev+(nesatnext-nesatprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
