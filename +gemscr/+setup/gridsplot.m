@@ -94,24 +94,24 @@
 % I=90;
 
 %NEW ZEALAND EXAMPLE
-dtheta=17.5;
-dphi=8.5
-lp=256;
-lq=256;
-lphi=10;
-altmin=80e3;
-glat=-45.85;
-glon=173.077;
-gridflag=1;
+p.dtheta=17.5;
+p.dphi=8.5;
+p.lp=256;
+p.lq=256;
+p.lphi=10;
+p.altmin=80e3;
+p.glat=-45.85;
+p.glon=173.077;
+p.gridflag=1;
 
 
 
 %RUN THE GRID GENERATION CODE
-if (~exist('xg'))
-    xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%    xg=makegrid_tilteddipole_nonuniform_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%    xg=makegrid_tilteddipole_nonuniform_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%     xg=makegrid_cart_3D(xdist,lxp,ydist,lyp,I,glat,glon);
+if ~exist('xg', 'var')
+    xg= gemini3d.grid.tilted_dipole3d(p);
+%    xg= gemscr.grid.tilted_dipole3d_nonuniform(p);
+%    xg= gemsrc.grid.tilted_dipole3d_nonuniform_oneside(p);
+%     xg= gemini3d.grid.cart3d(p);
 end
 
 
@@ -127,7 +127,7 @@ hold on;
 LW=2;
 altlinestyle=':';
 
-h=plot3(mlat(:,1,1),mlon(:,1,1),alt(:,1,1),'LineWidth',LW);
+plot3(mlat(:,1,1),mlon(:,1,1),alt(:,1,1),'LineWidth',LW);
 plot3(mlat(:,1,end),mlon(:,1,end),alt(:,1,end),altlinestyle,'LineWidth',LW);
 plot3(mlat(:,end,1),mlon(:,end,1),alt(:,end,1),'LineWidth',LW);
 h=plot3(mlat(:,end,end),mlon(:,end,end),alt(:,end,end),altlinestyle,'LineWidth',LW);

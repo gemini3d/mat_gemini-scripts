@@ -10,29 +10,29 @@
 % glon=270;
 % gridflag=0;
 
-dtheta=2;
-dphi=5;
-lp=110;
-lq=200;
-lphi=80;
-altmin=80e3;
-glat=65;    %high-latitude
-glon=270;
-gridflag=0;
+p.dtheta=2;
+p.dphi=5;
+p.lp=110;
+p.lq=200;
+p.lphi=80;
+p.altmin=80e3;
+p.glat=65;    %high-latitude
+p.glon=270;
+p.gridflag=0;
+p.outdir = '~/simulations/ICs';
 
-xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+xg = gemini3d.grid.tilted_dipole3d(p);
 
 
 %GENERATE INITIAL CONDITIONS
-cfg.times = datetime(2016, 9, 15);
-cfg.activ=[100,100,10];
-cfg.nmf=5e11;
-cfg.nme=2e11;
-[ns,Ts,vsx1] = gemini3d.model.eqICs(cfg, xg);    %note that this actually calls msis_matlab - should be rewritten to includ the neutral module form the fortran code!!!
+p.times = datetime(2016, 9, 15);
+p.activ=[100,100,10];
+p.nmf=5e11;
+p.nme=2e11;
 
+dat = gemini3d.model.eqICs(p, xg);
 
 %WRITE THE GRID AND INITIAL CONDITIONS
-fprintf('Writing grid to file...\n');
-gemini3d.write.grid(xg,'curvtest');
+gemini3d.write.grid(p, xg)
 
-gemini3d.write.state('curvtest',time,ns,Ts,vsx1);
+gemini3d.write.state(p.outdir, dat)

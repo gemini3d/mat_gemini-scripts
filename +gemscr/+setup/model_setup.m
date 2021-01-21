@@ -232,22 +232,22 @@ I=90;
 
 
 %A HIGHRES TOHOKU INIT GRID
-dtheta=10;
-dphi=15;
-lp=100;
-lq=500;
-lphi=25;
-altmin=80e3;
-glat=42.45;
-glon=143.4;
-gridflag=1;
-flagsource=1;
+p.dtheta=10;
+p.dphi=15;
+p.lp=100;
+p.lq=500;
+p.lphi=25;
+p.altmin=80e3;
+p.glat=42.45;
+p.glon=143.4;
+p.gridflag=1;
+p.flagsource=1;
 
 
 
 %MATLAB GRID GENERATION
-xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%xg=makegrid_cart_3D(xdist,lxp,ydist,lyp,I,glat,glon);
+xg= gemini3d.grid.tilted_dipole3d(p);
+%xg= gemini3d.grid.cart3d(p);
 
 
 %GENERATE SOME INITIAL CONDITIONS FOR A PARTICULAR EVENT
@@ -269,14 +269,15 @@ xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridfl
 %activ=[109,109,5];
 
 %%ISINGLASS B LAUNCH
-time = datetime(2017, 3, 2) + hours(7.5);
-cfg.activ=[76.5,79.3,31.5];
+time = datetime(2017, 3, 2, 7.5, 0, 0);
+p.activ=[76.5,79.3,31.5];
 
 
 %USE OLD CODE FROM MATLAB MODEL
-cfg.cfg.nmf=5e11;
-nme=2e11;
-[ns,Ts,vsx1]= gemini3d.model.eqICs(cfg,xg);
+p.nmf=5e11;
+p.nme=2e11;
+
+dat = gemini3d.model.eqICs(p,xg);
 
 %WRITE THE GRID AND INITIAL CONDITIONS
 %simlabel='chile2015_eq'
@@ -285,7 +286,7 @@ nme=2e11;
 %simlabel='nepal2D_eq'
 %simlabel='2Dtest_nonperumuted_eq'
 %simlabel='ARCS_eq'
-outdir = '~/tohoku_eq';
-gemini3d.write.grid(xg, outdir);
+p.outdir = '~/simulations/tohoku_eq';
+gemini3d.write.grid(p,xg);
 
-gemini3d.write.state(outdir,time,ns,vsx1,Ts);
+gemini3d.write.state(p.outdir, dat);

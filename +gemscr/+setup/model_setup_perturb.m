@@ -1,15 +1,12 @@
 
 %READ IN THE SIMULATION INFORMATION
-ID='~/simulations/input/KHI_periodic_highres/';
+ID= "~/simulations/input/KHI_periodic_highres";
 %ID='~/simulations/input/GDI_periodic/';
-xg=gemini3d.read.grid(ID);
+xg = gemini3d.read.grid(ID);
 
 
 %LOAD THE FRAME OF THE SIMULATION THAT WE WANT TO PERTURB
-direc=ID;
-filebase='KHI_periodic_highres';
-filename=[filebase,'_ICs.dat'];
-dat = loadframe3Dcurvnoelec(filename);
+dat = gemini3d.read.frame3Dcurvnoelec(ID);
 
 
 %DEFINE A PERTURBATION AND CHANGE THE INITIAL CONDITIONS
@@ -83,7 +80,7 @@ ylabel('x_2');
 title('Perturbed initial condition');
 colorbar;
 
+datp = struct("ns", nsperturb, "Ts", Ts, "vs1", vs1, "time", dat.time);
 
 %WRITE OUT THE RESULTS TO A NEW FILE
-time = datetime(simdate(1:4));
-gemini3d.write.state([filebase,'_perturb'],time,nsperturb,vs1,Ts);
+gemini3d.write.state(ID + "_perturb", datp);

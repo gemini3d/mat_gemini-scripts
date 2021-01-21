@@ -1,13 +1,13 @@
 %EXAMPLE PARAMETERS
-dtheta=10;
-dphi=10;
-lp=35;
-lq=200;
-lphi=48;
-altmin=80e3;
-glat=25;    %low-latitude
-glon=270;
-gridflag=1;
+p.dtheta=10;
+p.dphi=10;
+p.lp=35;
+p.lq=200;
+p.lphi=48;
+p.altmin=80e3;
+p.glat=25;    %low-latitude
+p.glon=270;
+p.gridflag=1;
 
 % %EXAMPLE PARAMETERS
 % dtheta=10;
@@ -32,7 +32,7 @@ gridflag=1;
 
 
 %RUN THE GRID GENERATION CODE
-xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+xg = gemini3d.grid.tilted_dipole3d(p);
 Re=6370e3;
 
 
@@ -348,4 +348,4 @@ FS=18;
 set(gca,'FontSize',FS);
 view(-11,4);
 grid on;
-print -depsc2 3Datmosionos_grid.eps;
+% print -depsc2 3Datmosionos_grid.eps;

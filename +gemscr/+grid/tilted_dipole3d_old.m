@@ -1,4 +1,4 @@
-function xg=makegrid_tilteddipole(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag,plotflag)
+function xgf= tilted_dipole3d_old(dtheta,dphi,lpp,lqp,lphip,altmin,glat,glon,gridflag)
 
 %NOTE THAT INPUTS DTHETA AND DPHI ARE INTENDED TO REPRESENT THE FULL THETA
 %AND PHI EXTENTS OF
@@ -13,10 +13,21 @@ function xg=makegrid_tilteddipole(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridfl
 %   properly.
 %(5) Terrestrial mag. moment and mass are hard-coded in.
 %(6) We assume target latitude is northern hemisphere
+%
+%OTHER NOTES:
+% - Fortran code will interpret this grid as including ghost cells, so
+% if you want a dimension to be size "n" adjust requested grid size so that
+% it is "n+4"
+
+
+%PAD GRID WITH GHOST CELLS
+lq=lqp+4;
+lp=lpp+4;
+lphi=lphip+4;
 
 
 %DEFINE DIPOLE GRID IN Q,P COORDS.
-fprintf('\nMAKEGRID_DIPOLE.M --> Setting up q,p grid of size %d x %d.',lq,lp);
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Setting up q,p,phi grid of size %d x %d x %d.',lq-4,lp-4,lphi-4);
 Re=6370e3;
 
 
@@ -32,11 +43,11 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
 p=linspace(pmin,pmax,lp);
 if gridflag==0
-%    thetamax=thetamin+pi/100;        %open
-%    thetamax=thetamin+pi/75;        %open
+    thetamax=thetax2min+pi/180;        %open
+%    thetamax=thetax2min+pi/75;        %open
 %     thetamax=thetamin+pi/50;        %open
 %     thetamax=thetamin+pi/30;        %open
-    thetamax=thetax2min+pi/25;        %open
+%    thetamax=thetax2min+pi/25;        %open
 else
     thetamax=pi-thetax2min;           %closed
 end
@@ -49,9 +60,9 @@ q=sort(q);
 
 
 %NOW THE AZIMUTHAL COORDINATE
-phimin=phid-dphi/2;
-phimax=phid+dphi/2;
-phi=linspace(phimin*pi/180,phimax*pi/180,lphi);    %note conversion to radians
+phimin=phid-dphi/2*pi/180;
+phimax=phid+dphi/2*pi/180;
+phi=linspace(phimin,phimax,lphi);    %note conversion to radians in  dphi calculation above
 
 
 %ALLOC/INIT - NOTE THESE DO NOT YET HAVE A PHI DIMENSION...
@@ -62,7 +73,7 @@ qtol=1e-9;
 
 
 %SPHERICAL XFORMATION
-fprintf('\nMAKEGRID_DIPOLE.M --> Converting q,p grid centers to spherical coords.');
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Converting q,p grid centers to spherical coords.');
 for iq=1:lq
     for ip=1:lp
         [r(iq,ip),fval(iq,ip)]=fminbnd(@(x) qp2robj(x,q(iq),p(ip)),0,100*Re);
@@ -86,7 +97,7 @@ phispher=repmat(reshape(phi(:),[1 1 lphi]),[lq,lp,1]);
 %TRUE CARTESIAN
 z=r.*cos(theta);
 x=r.*sin(theta).*cos(phispher);
-y=r.*sin(theta).*sin(phispher)
+y=r.*sin(theta).*sin(phispher);
 
 
 %CARTESIAN FOR PLOTTING PURPOSES
@@ -119,7 +130,7 @@ end
 
 
 %INTERFACE LOCATIONS
-fprintf('\nMAKEGRID_DIPOLE.M --> Converting q,p grid interfaces to spherical coords.');
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Converting q,p grid interfaces to spherical coords.');
 qi=zeros(lq+1,1);
 qi(2:lq)=1/2*(q(1:lq-1)+q(2:lq));
 qi(1)=q(1)-1/2*(q(2)-q(1));
@@ -179,11 +190,15 @@ thetapi=repmat(thetapi,[1 1 lphi]);
 
 
 %METRIC COEFFICIENTS
-fprintf('\nMAKEGRID_DIPOLE.M --> Calculating metric coeffs. and unit vectors.\n');
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Calculating metric coeffs.');
 denom=sqrt(1+3*cos(theta).^2);
 hq=r.^3/Re^2./denom;
 hp=Re*sin(theta).^3./denom;
 hphi=r.*sin(theta);
+
+hqphii=cat(3,hq,hq(:,:,lphi)); %phi interfaces at exactly r,th coords of cell centers.
+hpphii=cat(3,hp,hp(:,:,lphi));
+hphiphii=cat(3,hphi,hphi(:,:,lphi));
 
 denom=sqrt(1+3*cos(thetaqi).^2);
 hqqi=rqi.^3/Re^2./denom;
@@ -197,6 +212,7 @@ hphipi=rpi.*sin(thetapi);
 
 
 %SPHERICAL UNIT VECTORS IN CARTESIAN COMPONENTS (CELL-CENTERED)
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Calculating spherical unit vectors.');
 er(:,:,:,1)=sin(theta).*cos(phispher);
 er(:,:,:,2)=sin(theta).*sin(phispher);
 er(:,:,:,3)=cos(theta);
@@ -209,6 +225,7 @@ ephi(:,:,:,3)=zeros(lq,lp,lphi);
 
 
 %UNIT VECTORS FOR Q,P,PHI FOR ALL GRID POINTS IN CARTESIAN COMPONENTS
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Calculating dipole unit vectors.');
 denom=Re^2*(1+3*cos(theta).^2);
 dxdq(:,:,:,1)=-3*r.^3.*cos(theta).*sin(theta)./denom.*cos(phispher);
 dxdq(:,:,:,2)=-3*r.^3.*cos(theta).*sin(theta)./denom.*sin(phispher);
@@ -217,39 +234,12 @@ magdxdq=repmat(sqrt(dot(dxdq,dxdq,4)),[1,1,1,3]);
 eq=dxdq./magdxdq;
 ep=cross(ephi,eq,4);
 Imat=acos(dot(er,eq,4));
-if gridflag==0    I=mean(Imat,1);             %avg. inclination for each field line.
+if gridflag==0
+    I=mean(Imat,1);             %avg. inclination for each field line.
 else
     I=mean(Imat(1:floor(lq/2),:,:),1);   %avg. over only half the field line
 end
 I=90-min(I,pi-I)*180/pi;    %ignore parallel vs. anti-parallel
-
-
-%DIAGNOSTIC PLOTS
-if plotflag
-    figure;
-    set(gcf,'PaperPosition',[0 0 8.5 4]);
-    subplot(121);
-    polar(theta(:),r(:),'k.');
-    hold on;
-    %     polar(thetaqi(:),rqi(:),'r.');
-    %     polar(thetapi(:),rpi(:),'g.');
-    for iq=1:lq+1
-        polar(thetaqi(iq,:),rqi(iq,:));
-    end
-    for ip=1:lp+1
-        polar(thetapi(:,ip),rpi(:,ip));
-    end
-    hold off;
-
-    subplot(122);
-    plot(x,z,'.')
-    hold on;
-    % quiver(x,z,er(:,:,1),er(:,:,3));
-    % quiver(x,z,etheta(:,:,1),etheta(:,:,3));
-    %     quiver(x,z,eq(:,:,1),eq(:,:,3));
-    %     quiver(x,z,ep(:,:,1),ep(:,:,3));
-    hold off;
-end
 
 
 %GRAVITATIONAL FIELD COMPONENTS IN DIPOLE SYSTEM
@@ -265,6 +255,7 @@ Bmag=(4*pi*1e-7)*7.94e22/4/pi./(r.^3).*sqrt(3*(cos(theta)).^2+1);
 
 
 %STORE RESULTS IN GRID DATA STRUCTURE
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Creating a grid structure with the results.\n');
 xg.x1=q; xg.x2=p; xg.x3=reshape(phi,[1 1 lphi]);
 xg.x1i=qi; xg.x2i=pii; xg.x3i=reshape(phii,[1 1 lphi+1]);
 lx=[numel(xg.x1),numel(xg.x2),numel(xg.x3)];
@@ -298,7 +289,7 @@ xg.h1x3i=hqphii; xg.h2x3i=hpphii; xg.h3x3i=hphiphii;
 
 xg.e1=eq; xg.e2=ep; xg.e3=ephi;
 
-xg.r=r; xg.theta=theta; xg.phi=phi;
+xg.r=r; xg.theta=theta; xg.phi=phispher;
 xg.rx1i=rqi; xg.thetax1i=thetaqi;
 xg.rx2i=rpi; xg.thetax2i=thetapi;
 
@@ -309,20 +300,100 @@ xg.I=I;
 xg.x=x; xg.z=z; xg.y=y;
 xg.alt=xg.r-Re;
 
-xg.xp=xp; xg.zp=zp;
+%xg.xp=xp; xg.zp=zp;
 
 xg.gx1=gq; xg.gx2=gp; xg.gx3=zeros(lq,lp,lphi);
 
 xg.Bmag=Bmag;
 
 %xg.glat=(pi/2-theta)*180/pi; xg.glon=phi*180/pi*ones(lx(1),lx(2));
-[glats,glons]=geomag2geog(xg.theta,xg.phi);
-xg.glat=glats;
-xg.glon=glons;
+for iphi=1:lphi
+  [glats,glons]=geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
+  xg.glat(:,:,iphi)=glats;
+  xg.glon(:,:,iphi)=glons;
+end
 
 % xg.inull=find(r<Re+30e3); %may give issues in conservative form???  NOPE not the problem
 % xg.nullpts=r<Re+30e3;
 xg.inull=find(r<Re+80e3);
 xg.nullpts=r<Re+80e3;
+
+%NOW ADJUST SIZES SO THAT THEY MATCH WHAT FORTRAN CODE EXPECTS.  IF NOT
+%USING THIS TO GENERATE A GRID FOR THE FORTRAN CODE YOU MAY WANT TO GET RID
+%OF THIS BLOCK
+xgf=xg;    %make a copy to alter for purposes of getting all of the sizes the same as used by fortran
+
+inds1=3:xgf.lx(1)-2;    %indices corresponding to non-ghost cells for 1 dimension
+inds2=3:xgf.lx(2)-2;
+inds3=3:xgf.lx(3)-2;
+
+indsdx1=2:xgf.lx(1);    %any dx variable will not need to first element (backward diff of two ghost cells)
+indsdx2=2:xgf.lx(2);
+indsdx3=2:xgf.lx(3);
+
+indsx1i=3:xgf.lx(1)-1;    %x1-interface variables need only non-ghost cell values (left interface) plus one
+indsx2i=3:xgf.lx(2)-1;
+indsx3i=3:xgf.lx(3)-1;
+
+xgf.lx=xgf.lx-4;    %remove ghost cells, now that indices have been define we can go ahead and make this change
+
+xgf.dx1b=xgf.dx1b(indsdx1);
+xgf.dx2b=xgf.dx2b(indsdx2);
+xgf.dx3b=xgf.dx3b(indsdx3);
+
+xgf.x1i=xgf.x1i(indsx1i);
+xgf.x2i=xgf.x2i(indsx2i);
+xgf.x3i=xgf.x3i(indsx3i);
+
+xgf.dx1h=xgf.dx1h(inds1);
+xgf.dx2h=xgf.dx2h(inds2);
+xgf.dx3h=xgf.dx3h(inds3);
+
+xgf.h1=xgf.h1;    %these need ghost cells for compression divergence term
+xgf.h2=xgf.h2;
+xgf.h3=xgf.h3;
+
+xgf.h1x1i=xgf.h1x1i(indsx1i,inds2,inds3);
+xgf.h2x1i=xgf.h2x1i(indsx1i,inds2,inds3);
+xgf.h3x1i=xgf.h3x1i(indsx1i,inds2,inds3);
+
+xgf.h1x2i=xgf.h1x2i(inds1,indsx2i,inds3);
+xgf.h2x2i=xgf.h2x2i(inds1,indsx2i,inds3);
+xgf.h3x2i=xgf.h3x2i(inds1,indsx2i,inds3);
+
+xgf.h1x3i=xgf.h1x3i(inds1,inds2,indsx3i);
+xgf.h2x3i=xgf.h2x3i(inds1,inds2,indsx3i);
+xgf.h3x3i=xgf.h3x3i(inds1,inds2,indsx3i);
+
+xgf.gx1=xgf.gx1(inds1,inds2,inds3);
+xgf.gx2=xgf.gx2(inds1,inds2,inds3);
+xgf.gx3=xgf.gx3(inds1,inds2,inds3);
+
+xgf.glat=xgf.glat(inds1,inds2,inds3);
+xgf.glon=xgf.glon(inds1,inds2,inds3);
+xgf.alt=xgf.alt(inds1,inds2,inds3);
+
+xgf.Bmag=xgf.Bmag(inds1,inds2,inds3);
+
+xgf.I=xgf.I(1,inds2,inds3);
+
+xgf.nullpts=xgf.nullpts(inds1,inds2,inds3);
+
+%ZZZ - NEED TO ALSO CORRECT OTHER VARIABLE SIZES!!!!
+xgf.e1=xgf.e1(inds1,inds2,inds3,:);
+xgf.e2=xgf.e2(inds1,inds2,inds3,:);
+xgf.e3=xgf.e3(inds1,inds2,inds3,:);
+
+xgf.er=xgf.er(inds1,inds2,inds3,:);
+xgf.etheta=xgf.etheta(inds1,inds2,inds3,:);
+xgf.ephi=xgf.ephi(inds1,inds2,inds3,:);
+
+xgf.r=xgf.r(inds1,inds2,inds3);
+xgf.theta=xgf.theta(inds1,inds2,inds3);
+xgf.phi=xgf.phi(inds1,inds2,inds3);
+
+xgf.x=xgf.x(inds1,inds2,inds3);
+xgf.y=xgf.y(inds1,inds2,inds3);
+xgf.z=xgf.z(inds1,inds2,inds3);
 
 end

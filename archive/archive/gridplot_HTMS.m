@@ -47,7 +47,7 @@ glon=143.4;
 gridflag=1;
 
 %RUN THE GRID GENERATION CODE
-if (~exist('ns'))
+if ~exist('ns', 'var')
     load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/input.mat;
     xg2=ingem.xg;
 %    load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/20110311_21803.mat;

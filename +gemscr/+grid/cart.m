@@ -1,4 +1,8 @@
-function xg=makegrid_cart(xmin,xmax,I,lperp,glat,glon)
+function xg= cart(cfg)
+    %(xmin,xmax,I,lperp,glat,glon)
+arguments
+  cfg (1,1) struct
+end
 
 
 %SETUP NONUNIFORM GRID IN ALTITUDE AND FIELD LINE DISTANCE
@@ -18,14 +22,14 @@ end
 %     alt(ialt)=alt(ialt-1)+dalt;
 % end
 alt=alt(:);
-z=alt*cscd(I);
+z=alt*cscd(cfg.I);
 lz=numel(z);
 lx1=lz;
 
 
 %TRANSVERSE GRID (BASED ON SIZE OF CURRENT REGION SPECIFIED ABOVE)
-x=linspace(xmin,xmax,lperp);
-lx=lperp;
+x=linspace(cfg.xmin, cfg.xmax,cfg.lperp);
+lx=cfg.lperp;
 lx2=lx;
 
 
@@ -46,7 +50,7 @@ G=6.67428e-11;
 Me=5.9722e24;
 r=alt+Re;
 g=G*Me./r.^2;
-gz=repmat(-1*g,1,lperp);
+gz=repmat(-1*g,1,cfg.lperp);
 
 
 %STORE RESULTS IN GRID DATA STRUCTURE
@@ -79,7 +83,7 @@ xg.rx2i=[]; xg.thetax2i=[];
 
 xg.er=[]; xg.etheta=[]; xg.ephi=[];
 
-xg.I=I*ones(1,lx2);
+xg.I=cfg.I*ones(1,lx2);
 
 xg.x=x; xg.z=z;
 xg.alt=xg.r-Re;
@@ -88,7 +92,7 @@ xg.gx1=gz; xg.gx2=zeros(xg.lx);
 
 xg.Bmag=50000e-9;
 
-xg.glat=glat*ones(lx1,lx2); xg.glon=glon*ones(lx1,lx2);
+xg.glat= cfg.glat*ones(lx1,lx2); xg.glon= cfg.glon*ones(lx1,lx2);
 
 xg.xp=x; xg.zp=z;
 

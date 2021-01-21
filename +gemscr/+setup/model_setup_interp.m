@@ -31,7 +31,7 @@ gridflag=1;
 
 %MATLAB GRID GENERATION
 if (~exist('xg'))
-  xg=makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+  xg= gemini3d.grid.tilted_dipole3d(p);
 end
 
 %{
@@ -41,7 +41,7 @@ dmy=[11,3,2011];
 activ=[100,100,10];
 nmf=5e11;
 nme=2e11;
-[ns,Ts,vsx1]=eqICs3D(xg,UT,dmy,activ,nmf,nme);    %note that this actually calls msis_matlab - should be rewritten to include the neutral module form the fortran code!!!
+dat = gemini3d.setup.eqICs3D(cfg, xg);    %note that this actually calls msis_matlab - should be rewritten to include the neutral module form the fortran code!!!
 %}
 %}
 
@@ -277,16 +277,16 @@ flagsource=1;
 
 
 %A MEDIUM RES TOHOKU
-dtheta=7.5;
-dphi=12;
-lp=256;
-lq=580;
-lphi=288;
-altmin=80e3;
-glat=42.45;
-glon=143.4;
-gridflag=1;
-flagsource=1;
+p.dtheta=7.5;
+p.dphi=12;
+p.lp=256;
+p.lq=580;
+p.lphi=288;
+p.altmin=80e3;
+p.glat=42.45;
+p.glon=143.4;
+p.gridflag=1;
+p.flagsource=1;
 
 
 %{
@@ -306,45 +306,38 @@ flagsource=1;
 
 %RUN THE GRID GENERATION CODE
 if ~exist('xg','var')
-%    xg=makegrid_tilteddipole_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%    xg=makegrid_tilteddipole_nonuniform_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%    xg=makegrid_tilteddipole_nonuniform_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-  xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
-%  xg=makegrid_cart_3D(xdist,lxp,ydist,lyp,I,glat,glon);
-%  xg=makegrid_cart_3D_lowresx1(xdist,lxp,ydist,lyp,I,glat,glon);
+%    xg=makegrid_tilteddipole_3D(p);
+%    xg=makegrid_tilteddipole_nonuniform_3D(p);
+%    xg=makegrid_tilteddipole_nonuniform_oneside_3D(p);
+  xg= gemini3d.grid.tilted_dipole3d(p);
+%  xg= gemini3d.grid.cart3d(p);
+%  xg= gemini3d.grid.cart3d_lowresx1(p);
 end
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
 
 
 %IDENTIFICATION FOR THE NEW SIMULATION THAT IS TO BE DONE
-simid='tohoku_medres'
-
 
 %ALTERNATIVELY WE MAY WANT TO READ IN AN EXISTING OUTPUT FILE AND DO SOME INTERPOLATION ONTO A NEW GRID
-fprintf('Reading in source file...\n');
 %ID='~/simulations/3DPCarc_eq/'
 %ID='~/zettergmdata/simulations/isinglass_eq/'
 %ID='~/simulations/nepal2015_eq/'
 %ID='~/zettergmdata/simulations/chile20153D_0.5_eq/'
 %ID='~/zettergmdata/simulations/2Dtest_eq/'
-ID='~/zettergmdata/simulations/tohoku_eq/'
+ID='~/simulations/tohoku_eq/';
 
 
 %READ IN THE SIMULATION INFORMATION
 cfg = gemini3d.read.config(ID);
-xgin= gemini3d.read.grid(ID);
-direc=ID;
+cfg.outdir = '~/simulations/tohoku_medres';
 
+
+xgin= gemini3d.read.grid(ID);
 
 %FIND THE DATE OF THE END FRAEM OF THE SIMULATION (PRESUMABLY THIS WILL BE THE STARTING POITN FOR ANOTEHR)
-filename=datelab(cfg.times(end));
-filename=[filename,'.dat']
-
-%filename='20170303_09000.000000.dat';
-
 
 %LOAD THE FRAME
-dat = gemini3d.read.frame(filename);
+dat = gemini3d.read.frame(ID, "time", cfg.times(end));
 
 
 %DO THE INTERPOLATION
@@ -382,11 +375,12 @@ else
   end
 end
 
+dint = struct("ns", nsi, "Ts", Tsi, "vs1", vs1i, "time", cfg.times(end));
 
 %WRITE OUT THE GRID
-gemini3d.write.grid(xg,simid);    %just put it in pwd for now
-time = datetime([ymdend(1:3), 0, 0, UTsecend]);
-gemini3d.write.state(simid, time,nsi,vs1i,Tsi);
+gemini3d.write.grid(p, xg);    %just put it in pwd for now
+
+gemini3d.write.state(p.outdir, dint);
 
 
 %MAKE A SAMPLE PLOT OF INTERPOLATED DATA

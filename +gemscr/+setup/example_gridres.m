@@ -14,20 +14,20 @@ iscurv=true;
 %}
 
 %% Moore OK
-dtheta=20;
-dphi=27.5;
-lp=256;
-lq=256;
-lphi=210;
-altmin=80e3;
-glat=39;
-glon=262.51;
-gridflag=1;
-flagsource=1;
-iscurv=true;
+p.dtheta=20;
+p.dphi=27.5;
+p.lp=256;
+p.lq=256;
+p.lphi=210;
+p.altmin=80e3;
+p.glat=39;
+p.glon=262.51;
+p.gridflag=1;
+p.flagsource=1;
+p.iscurv=true;
 
 %% Compute the grid
-xg= gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+xg= gemini3d.grid.tilted_dipole3d(p);
 
 
 %% DETERMINE GRID RESOLUTION

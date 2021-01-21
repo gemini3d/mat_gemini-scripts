@@ -35,26 +35,26 @@
 
 %TOHOKU-LIKE GRID
 dang=7.5;
-dtheta=dang;
-dphi=dang+2;    %to make sure we encapsulate the neutral grid long. extent
-lp=400;
-lq=750;
-lphi=25;
-altmin=80e3;
+p.dtheta=dang;
+p.dphi=dang+2;    %to make sure we encapsulate the neutral grid long. extent
+p.lp=400;
+p.lq=750;
+p.lphi=25;
+p.altmin=80e3;
 %glat=43.95;    %WRONG!!!
-glat=42.45;
-glon=143.4;
-gridflag=1;
+p.glat=42.45;
+p.glon=143.4;
+p.gridflag=1;
 
 %RUN THE GRID GENERATION CODE
-if (~exist('ns'))
+if ~exist('ns', 'var')
     load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/input.mat;
     xg2=ingem.xg;
 %    load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/20110311_21803.mat;
     load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/20110311_21553.mat;
     load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/current_21553.mat;
     ne=ns(:,:,7);
-    xg=gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+    xg=gemini3d.grid.tilted_dipole3d(p);
     neI=interp2(xg2.x2,xg2.x1,ne,xg.x2(3:end-2),xg.x1(3:end-2));
     neIspread=repmat(neI,[1,1,lphi]);
     vi=vsx1(:,:,1);

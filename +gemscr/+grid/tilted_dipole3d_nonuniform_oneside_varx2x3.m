@@ -1,4 +1,4 @@
-function xgf=makegrid_tilteddipole_nonuniform_oneside_varx2_3D(dtheta,dphi,lpp,lqp,lphip,altmin,glat,glon,gridflag)
+function xgf= tilted_dipole3d_nonuniform_oneside_varx2x3(cfg)
 
 %NOTE THAT INPUTS DTHETA AND DPHI ARE INTENDED TO REPRESENT THE FULL THETA
 %AND PHI EXTENTS OF
@@ -21,9 +21,9 @@ function xgf=makegrid_tilteddipole_nonuniform_oneside_varx2_3D(dtheta,dphi,lpp,l
 
 
 %PAD GRID WITH GHOST CELLS
-lq=lqp+4;
-lp=lpp+4;
-lphi=lphip+4;
+lq= cfg.lq+4;
+lp= cfg.lp+4;
+lphi= cfg.lphi+4;
 
 
 %DEFINE DIPOLE GRID IN Q,P COORDS.
@@ -31,12 +31,12 @@ Re=6370e3;
 
 
 %TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
-[thetatd,phid]= gemini3d.geog2geomag(glat,glon);
+[thetatd,phid]= gemini3d.geog2geomag(cfg.glat, cfg.glon);
 
-thetax2min=thetatd-dtheta/2*pi/180;
-thetax2max=thetatd+dtheta/2*pi/180;
-pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
-qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
+thetax2min=thetatd- cfg.dtheta/2*pi/180;
+thetax2max=thetatd+ cfg.dtheta/2*pi/180;
+pmax=(Re+ cfg.altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
+qtmp=(Re/(Re+ cfg.altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
 rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 % %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
@@ -52,6 +52,7 @@ ptrans1=1.275;
 ptrans2=1.425;
 sigp=(pmax-pmin)/50;
 dpmax=(pmax-pmin)/100;
+%dpmin=(pmax-pmin)/1280;
 dpmin=(pmax-pmin)/2048;
 p(1)=pmin;
 ip=1;
@@ -65,15 +66,15 @@ lpp=numel(p);
 lp=lpp+4;
 
 
-%DEBUG
-figure;
-plot(p(1:end-1),diff(p))
-hold on;
-plot(p(1:end-1),diff(linspace(pmin,pmax,lpp)));
-hold off;
+% %DEBUG
+% figure;
+% plot(p(1:end-1),diff(p))
+% hold on;
+% plot(p(1:end-1),diff(linspace(pmin,pmax,lpp)));
+% hold off;
 
 
-if gridflag==0
+if  cfg.gridflag==0
     thetamax=thetax2min+pi/180;        %open
 %    thetamax=thetax2min+pi/75;        %open
 %     thetamax=thetamin+pi/50;        %open
@@ -96,17 +97,24 @@ q=sort(q);
 %}
 
 
-%NONUNIFORM TOHOKU GRID
-%sigq=0.075;
-%amp=0.0064;
-%qloc=0.275;
-%mindq=0.005/25;
+% %NONUNIFORM TOHOKU GRID
+% sigq=0.075;
+% amp=0.0064;
+% qloc=0.275;
+% mindq=0.005/25;
 
-%%SOMEWHAT COARSE NONUNIFORM TOHOKU GRID
+% %SOMEWHAT COARSE NONUNIFORM TOHOKU GRID
+% sigq=0.075;
+% amp=0.0064;
+% qloc=0.275;
+% mindq=0.005/10;   %results in ~2km res at the bottom...
+
+%USED FOR 2011 TOHOKU 3D PAPER
 sigq=0.075;
 amp=0.0064;
 qloc=0.275;
-mindq=0.005/10;   %results in ~2km res at the bottom...
+%mindq=0.005/17.5;   %results in ~2km res at the bottom...
+mindq=0.005/25;
 
 if (qmin > qmax)
   tmp=qmin;
@@ -115,7 +123,7 @@ if (qmin > qmax)
 end
 
 iq=1;
-if gridflag==0
+if  cfg.gridflag==0
     q(iq)=qmin;
     while q(iq)<qmax
         iq=iq+1;
@@ -167,10 +175,26 @@ q=[q(1)-2*qstride;q(1)-qstride;q,;q(end)+qstride2;q(end)+2*qstride2];    %add in
 
 
 %NOW THE AZIMUTHAL COORDINATE
-phimin=phid-dphi/2*pi/180;
-phimax=phid+dphi/2*pi/180;
-%phi=linspace(phimin,phimax,lphi);    %note conversion to radians in  dphi calculation above
-phi=linspace(phimin,phimax,lphip);
+phimin=phid- cfg.dphi/2*pi/180;
+phimax=phid+ cfg.dphi/2*pi/180;
+%%phi=linspace(phimin,phimax,lphi);    %note conversion to radians in  dphi calculation above
+%phi=linspace(phimin,phimax,lphip);
+
+phitrans1=phimin+(phimax-phimin)/4;
+phitrans2=phimin+(phimax-phimin)*3/4;
+sigphi=(phimax-phimin)/50;
+dphimax=(phimax-phimin)/100;
+dphimin=(phimax-phimin)/678;
+phi(1)=phimin;
+iphi=1;
+while phi(iphi)<phimax
+  dphi=dphimin+dphimax*(0.5-0.5*tanh((phi(iphi)-phitrans1)/sigphi))+dphimax*(0.5+0.5*tanh((phi(iphi)-phitrans2)/sigphi));
+  phi(iphi+1)=phi(iphi)+dphi;
+  iphi=iphi+1;
+end
+lphip=numel(phi);
+lphi=lphip+4;
+
 phi=phi(:)';
 if (lphip>1)
   phistride=phi(2)-phi(1);     %assume constant stride
@@ -178,6 +202,14 @@ else
   phistride=0.1;   %just make up some junk for a 2D sim
 end
 phi=[phi(1)-2*phistride,phi(1)-phistride,phi,phi(end)+phistride,phi(end)+2*phistride];    %add in the ghost cells
+
+
+%DEBUG FOR VARYING PHI GRID
+figure;
+plot(phi(1:end-1),diff(phi))
+hold on;
+plot(phi(1:end-1),min(diff(linspace(phimin,phimax,lphi)))*ones(1,lphi-1));
+hold off;
 
 
 fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Setting up q,p,phi grid of size %d x %d x %d.',lq-4,lp-4,lphi-4);
@@ -222,7 +254,7 @@ y=r.*sin(theta).*sin(phispher);
 %{
 r1=mean(r(1,:));
 r2=mean(r(lq,:));
-if gridflag==0
+if  cfg.gridflag==0
     if r1<r2
         meanth=mean(theta(1,:));
     else
@@ -352,7 +384,7 @@ magdxdq=repmat(sqrt(dot(dxdq,dxdq,4)),[1,1,1,3]);
 eq=dxdq./magdxdq;
 ep=cross(ephi,eq,4);
 Imat=acos(dot(er,eq,4));
-if gridflag==0
+if  cfg.gridflag==0
     I=mean(Imat,1);             %avg. inclination for each field line.
 else
     I=mean(Imat(1:floor(lq/2),:,:),1);   %avg. over only half the field line

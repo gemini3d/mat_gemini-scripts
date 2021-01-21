@@ -21,21 +21,19 @@ glon=262.51;
 gridflag=1;
 %}
 
-dtheta=16.8;
-dphi=11;
-lp=216;
-lq=128;
-lphi=60;
-altmin=80e3;
-glat=-30.9;
-glon=287;
-gridflag=1;
+p.dtheta=16.8;
+p.dphi=11;
+p.lp=216;
+p.lq=128;
+p.lphi=60;
+p.altmin=80e3;
+p.glat=-30.9;
+p.glon=287;
+p.gridflag=1;
 
-xg=gemscr.setup.gridgen.makegrid_tilteddipole_varx2_oneside_3D(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+xg=gemscr.grid.tilted_dipole3d_varx2_oneside(p);
 cfg=struct.empty;
 cfg(1).sourcemlat=[];
-
-
 
 
 %% Compute the resolutions

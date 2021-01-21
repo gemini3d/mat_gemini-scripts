@@ -1,5 +1,7 @@
-function xgf=makegrid_tilteddipole_3D_HTMS(dtheta,dphi,lpp,lqp,lphip,altmin,glat,glon,gridflag)
-
+function xgf= tilted_dipole3d_nonuniform(cfg)
+arguments
+  cfg (1,1) struct
+end
 %NOTE THAT INPUTS DTHETA AND DPHI ARE INTENDED TO REPRESENT THE FULL THETA
 %AND PHI EXTENTS OF
 
@@ -21,31 +23,32 @@ function xgf=makegrid_tilteddipole_3D_HTMS(dtheta,dphi,lpp,lqp,lphip,altmin,glat
 
 
 %PAD GRID WITH GHOST CELLS
-%lq=lqp+4;
-%lp=lpp+4;
-%lphi=lphip+4;
-lq=lqp;
-lp=lpp;
-lphi=lphip;
+lq= cfg.lq+4;
+lp= cfg.lp+4;
+lphi= cfg.lphi+4;
 
 
 %DEFINE DIPOLE GRID IN Q,P COORDS.
-fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Setting up q,p,phi grid of size %d x %d x %d.',lqp,lpp,lphip);
 Re=6370e3;
 
 
 %TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
-[thetatd,phid]= gemini3d.geog2geomag(glat,glon);
+[thetatd,phid]= gemini3d.geog2geomag(cfg.glat, cfg.glon);
 
-thetax2min=thetatd-dtheta/2*pi/180;
-thetax2max=thetatd+dtheta/2*pi/180;
-pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
-qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
+thetax2min=thetatd- cfg.dtheta/2*pi/180;
+thetax2max=thetatd+ cfg.dtheta/2*pi/180;
+pmax=(Re+ cfg.altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
+qtmp=(Re/(Re+ cfg.altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
 rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
-p=linspace(pmin,pmax,lp);
-if gridflag==0
+%p=linspace(pmin,pmax,lp);
+p=linspace(pmin,pmax,lpp);
+%p=p(:)';    %ensure a row vector
+%pstride=p(2)-p(1);
+%p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
+
+if  cfg.gridflag==0
     thetamax=thetax2min+pi/180;        %open
 %    thetamax=thetax2min+pi/75;        %open
 %     thetamax=thetamin+pi/50;        %open
@@ -54,18 +57,129 @@ if gridflag==0
 else
     thetamax=pi-thetax2min;           %closed
 end
-rmin=p(lp)*Re*sin(thetax2min)^2; %use last field line to get qmin and qmax
-rmax=p(lp)*Re*sin(thetamax)^2;
+rmin=p(end)*Re*sin(thetax2min)^2; %use last field line to get qmin and qmax
+rmax=p(end)*Re*sin(thetamax)^2;
 qmin=cos(thetax2min)*Re^2/rmin^2;
 qmax=cos(thetamax)*Re^2/rmax^2;
-q=linspace(qmin,qmax,lq)';
+%q=linspace(qmin,qmax,lq)';
+
+
+%UNIFORM GRID
+%{
+q=linspace(qmin,qmax,lqp)';
 q=sort(q);
+%}
+
+
+%NONUNIFORM TOHOKU GRID
+sigq=0.075;
+amp=0.0064;
+qloc=0.275;
+%mindq=0.005/25;
+mindq=0.005/65;
+
+%%SOMEWHAT COARSE NONUNIFORM TOHOKU GRID
+%sigq=0.075;
+%amp=0.0064;
+%qloc=0.275;
+%mindq=0.005/10;   %results in ~2km res at the bottom...
+
+if (qmin > qmax)
+  tmp=qmin;
+  qmin=qmax;
+  qmax=tmp;
+end
+
+%iq=1;
+%if  cfg.gridflag==0
+%    q(iq)=qmin;
+%    while q(iq)<qmax
+%        iq=iq+1;
+%        dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-qloc)/sigq));
+%        %    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
+%        q(iq)=q(iq-1)+dq;
+%    end
+%    q=sort(q);
+%else
+%    q(iq)=0;
+%    while q(iq)<=qmax
+%        iq=iq+1;
+%        dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-(qmax-qloc))/sigq));
+%        %    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
+%        q(iq)=q(iq-1)+dq;
+%    end
+%    iq=1;
+%    q2(iq)=q(1)-(q(2)-q(1));
+%    amp=amp/1.3;
+%    while q2(iq)>=-qmax
+%        iq=iq+1;
+%%        dq=mindq+amp*(1/2+1/2*tanh((q2(iq-1)+(qmax-qloc))/sigq));
+%        dq=(q(2)-q(1))-amp*(1/2-1/2*tanh((q2(iq-1)+(qmax-qloc))/sigq));
+%%    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
+%        q2(iq)=q2(iq-1)-dq;
+%    end
+%    q2=fliplr(q2);
+%    q=[q2,q];
+%end
+%q=q(:);
+%lqp=numel(q);
+
+iq=1;
+if  cfg.gridflag==0
+    q(iq)=qmin;
+    while q(iq)<qmax
+        iq=iq+1;
+        dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-qloc)/sigq));
+        %    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
+        q(iq)=q(iq-1)+dq;
+    end
+    q=sort(q);
+else
+    q(iq)=0;
+    while q(iq)<=qmax
+        iq=iq+1;
+        dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-(qmax-qloc))/sigq));
+        %    dq=mindq+amp*exp((q(iq-1)-qloc).^2/2/sigq^2);
+        q(iq)=q(iq-1)+dq;
+    end
+    lq=numel(q);
+    qmirror=-fliplr(q(2:lq));
+    q=[qmirror,q];
+end
+q=q(:);
+lqp=numel(q);
+lq=lqp+4;
+
+
+%plot(q(1:end-1),diff(q))
+
+
+%REORGANIZE P,Q COORDS.
+p=p(:)';    %ensure a row vector
+pstride=p(2)-p(1);
+p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
+
+q=q(:);    %ensure a colume vector
+qstride=q(2)-q(1);
+qstride2=q(end)-q(end-1);
+q=[q(1)-2*qstride;q(1)-qstride;q,;q(end)+qstride2;q(end)+2*qstride2];    %add in ghost cells
 
 
 %NOW THE AZIMUTHAL COORDINATE
-phimin=phid-dphi/2;
-phimax=phid+dphi/2;
-phi=linspace(phimin*pi/180,phimax*pi/180,lphi);    %note conversion to radians
+phimin=phid- cfg.dphi/2*pi/180;
+phimax=phid+ cfg.dphi/2*pi/180;
+%phi=linspace(phimin,phimax,lphi);    %note conversion to radians in  dphi calculation above
+phi=linspace(phimin,phimax, lphi);
+phi=phi(:)';
+if lphi > 1
+  phistride=phi(2)-phi(1);     %assume constant stride
+else
+  phistride=0.1;   %just make up some junk for a 2D sim
+end
+phi=[phi(1)-2*phistride,phi(1)-phistride,phi,phi(end)+phistride,phi(end)+2*phistride];    %add in the ghost cells
+
+
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Setting up q,p,phi grid of size %d x %d x %d.',lq-4,lp-4,lphi-4);
 
 
 %ALLOC/INIT - NOTE THESE DO NOT YET HAVE A PHI DIMENSION...
@@ -107,7 +221,7 @@ y=r.*sin(theta).*sin(phispher);
 %{
 r1=mean(r(1,:));
 r2=mean(r(lq,:));
-if gridflag==0
+if  cfg.gridflag==0
     if r1<r2
         meanth=mean(theta(1,:));
     else
@@ -193,7 +307,7 @@ thetapi=repmat(thetapi,[1 1 lphi]);
 
 
 %METRIC COEFFICIENTS
-fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Calculating metric coeffs. and unit vectors.\n');
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Calculating metric coeffs.');
 denom=sqrt(1+3*cos(theta).^2);
 hq=r.^3/Re^2./denom;
 hp=Re*sin(theta).^3./denom;
@@ -215,6 +329,7 @@ hphipi=rpi.*sin(thetapi);
 
 
 %SPHERICAL UNIT VECTORS IN CARTESIAN COMPONENTS (CELL-CENTERED)
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Calculating spherical unit vectors.');
 er(:,:,:,1)=sin(theta).*cos(phispher);
 er(:,:,:,2)=sin(theta).*sin(phispher);
 er(:,:,:,3)=cos(theta);
@@ -227,6 +342,7 @@ ephi(:,:,:,3)=zeros(lq,lp,lphi);
 
 
 %UNIT VECTORS FOR Q,P,PHI FOR ALL GRID POINTS IN CARTESIAN COMPONENTS
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Calculating dipole unit vectors.');
 denom=Re^2*(1+3*cos(theta).^2);
 dxdq(:,:,:,1)=-3*r.^3.*cos(theta).*sin(theta)./denom.*cos(phispher);
 dxdq(:,:,:,2)=-3*r.^3.*cos(theta).*sin(theta)./denom.*sin(phispher);
@@ -235,7 +351,7 @@ magdxdq=repmat(sqrt(dot(dxdq,dxdq,4)),[1,1,1,3]);
 eq=dxdq./magdxdq;
 ep=cross(ephi,eq,4);
 Imat=acos(dot(er,eq,4));
-if gridflag==0
+if  cfg.gridflag==0
     I=mean(Imat,1);             %avg. inclination for each field line.
 else
     I=mean(Imat(1:floor(lq/2),:,:),1);   %avg. over only half the field line
@@ -256,6 +372,7 @@ Bmag=(4*pi*1e-7)*7.94e22/4/pi./(r.^3).*sqrt(3*(cos(theta)).^2+1);
 
 
 %STORE RESULTS IN GRID DATA STRUCTURE
+fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Creating a grid structure with the results.\n');
 xg.x1=q; xg.x2=p; xg.x3=reshape(phi,[1 1 lphi]);
 xg.x1i=qi; xg.x2i=pii; xg.x3i=reshape(phii,[1 1 lphi+1]);
 lx=[numel(xg.x1),numel(xg.x2),numel(xg.x3)];
@@ -308,7 +425,7 @@ xg.Bmag=Bmag;
 
 %xg.glat=(pi/2-theta)*180/pi; xg.glon=phi*180/pi*ones(lx(1),lx(2));
 for iphi=1:lphi
-  [glats,glons]= gemini3d.geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
+  [glats,glons]=geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
   xg.glat(:,:,iphi)=glats;
   xg.glon(:,:,iphi)=glons;
 end
@@ -335,8 +452,7 @@ indsx1i=3:xgf.lx(1)-1;    %x1-interface variables need only non-ghost cell value
 indsx2i=3:xgf.lx(2)-1;
 indsx3i=3:xgf.lx(3)-1;
 
-%xgf.lx=xgf.lx-4;    %remove ghost cells, now that indices have been define we can go ahead and make this change
-xgf.lx=xgf.lx;    %remove ghost cells, now that indices have been define we can go ahead and make this change
+xgf.lx=xgf.lx-4;    %remove ghost cells, now that indices have been define we can go ahead and make this change
 
 xgf.dx1b=xgf.dx1b(indsdx1);
 xgf.dx2b=xgf.dx2b(indsdx2);
