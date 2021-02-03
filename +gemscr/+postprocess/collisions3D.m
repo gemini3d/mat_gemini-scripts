@@ -2,12 +2,18 @@
 function [nusn,nus,nusj,nuss,Phisj,Psisj]=collisions3D(natm,Ts,ns,vsx1,ms)
 
 narginchk(5,5)
+
 %HOUSEKEEPING INFO
-nO=natm(:,:,:,1);
-nN2=natm(:,:,:,2);
-nO2=natm(:,:,:,3);
-Tn=natm(:,:,:,4);
-nH=natm(:,:,:,7);
+% nO=natm(:,:,:,1);
+% nN2=natm(:,:,:,2);
+% nO2=natm(:,:,:,3);
+% Tn=natm(:,:,:,4);
+% nH=natm(:,:,:,7);
+nO=natm.nO;
+nN2=natm.nN2;
+nO2=natm.nO2;
+Tn=natm.Tn;
+nH=natm.nH;
 
 [lx1,lx2,lx3,lsp]=size(ns);
 ln=4;

@@ -2,21 +2,29 @@
 % individual workers.  
 
 % manually set
-lxs=[165,24,216];
+% lxs=[165,24,216];
+% lxs=lxs-1;
+% lparm=1;
+% lproc=6;
+
+lxs=[98,32,144];
 lxs=lxs-1;
 lparm=1;
-lproc=6;
+lproc=4;
+
 dimcat=2;
 
 % collect info from each worker
 parmall=[];
 for iproc=0:lproc-1
-    filename=['debug_output',num2str(iproc),'.dat'];
+    filename=['~/Projects/GEMINI/build/debug_output',num2str(iproc),'.dat'];
     
+    % read the main data volume
     fid=fopen(filename,'r');
     datparm=fread(fid,prod(lxs)*lparm,'real*8');
     parm=reshape(datparm,[lxs(1:3),lparm]);
     
+    % now read the top edge cells
     parmtop=fread(fid,prod([lxs(1),lxs(3),lparm]),'real*8');
     shp=[lxs(1:dimcat-1),1,lxs(dimcat+1:end),lparm];
     parm=cat(dimcat,parm,reshape(parmtop,shp));
@@ -24,3 +32,8 @@ for iproc=0:lproc-1
     parmall=cat(dimcat,parmall,reshape(parm,[size(parm,1),size(parm,2),size(parm,3),lparm]));
     fclose(fid);
 end %for
+
+% look at a slice and take diffs to emphasize tearing...
+parmplot=squeeze(parmall(10,:,:));
+diffparm=diff(parmplot,1,1);
+figure, imagesc(diffparm)
