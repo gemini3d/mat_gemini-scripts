@@ -1,12 +1,21 @@
-import gemini3d.postprocess.model2magcoords
 %% sim and time of interest
 % Tohoku example
 %direc='~/simulations/tohoku20113D_lowres/'
 %ymd=[2011,03,11];
 %UTsec=20783+900;
-% ESF example
-direc='~/simulations/ESF_noise_highres/'
-time = datetime(2016,03,03) + seconds(13500);
+
+% % ESF example
+% direc='~/simulations/ESF_noise_highres/'
+% time = datetime(2016,03,03) + seconds(13500);
+
+% CI example
+%direc='~/simulations/tohoku20113D_lowres/'
+%direc='~/simulations/tohoku20113D_lowres_3Dneu_CI/'
+direc='~/simulations/tohoku20113D_lowres_olddata/'
+ymd=[2011,03,11];
+%UTsec=35975;
+UTsec=22158;
+time=datetime([ymd,0,0,UTsec]);
 
 
 %% read in data
@@ -15,12 +24,13 @@ if (~exist('dat','var'))
   dat= gemini3d.read.frame(direc, "time", time);
 end %if
 
+
 %% dist loc.
 lat0=44.8;
 lon0=210;
 
-% Works well for Tohokue example
-%{
+% Works well for Tohoku example and CI example
+
 %% slice to interp to (meridional)
 lalt=512;
 llon=512;
@@ -31,10 +41,25 @@ mlatlims=[26,32];
 
 
 %% regrid
-[alti,mloni,mlati,v1imer]=model2magcoords(xg,dat.v1,lalt,1,llat,altlims,[210,210],mlatlims);
-[alti,mloni,mlati,v1izon]=model2magcoords(xg,dat.v1,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
-%}
+[alti,~,mlati,v1imer]=gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,1,llat,altlims,[210,210],mlatlims);
+[alti,mloni,~,v1izon]=gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+[~,~,~,v1ialt]=gemscr.postprocess.model2magcoords(xg,dat.v1,1,llon,llat,[300e3,300e3],mlonlims,mlatlims);
 
+figure;
+subplot(131)
+imagesc(mlati,alti,squeeze(v1imer));
+axis xy;
+
+subplot(132)
+imagesc(mloni,alti,squeeze(v1izon));
+axis xy;
+
+subplot(133)
+imagesc(mloni,mlati,squeeze(v1ialt)');
+axis xy;
+
+
+%{
 %% ESF example
 lalt=1024;
 llon=1024;
@@ -72,3 +97,4 @@ axis xy;
 xlabel('mag. lon. (deg)');
 ylabel('altitude (km)');
 title('Noise-seeded EPBs:  n_e')
+%}
