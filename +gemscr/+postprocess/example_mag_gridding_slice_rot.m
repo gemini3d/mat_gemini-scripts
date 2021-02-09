@@ -14,14 +14,18 @@ direc='~/simulations/tohoku20113D_lowres_3Dneu_CI/'
 %direc='~/simulations/tohoku20113D_lowres_olddata/'
 ymd=[2011,03,11];
 UTsec=35850;
+t0=35100;
 %UTsec=22158;
 time=datetime([ymd,0,0,UTsec]);
 
 
 %% read in data
 if (~exist('dat','var'))
-  xg= gemini3d.read.grid(direc);
-  dat= gemini3d.read.frame(direc, "time", time);
+  xg=gemini3d.read.grid(direc);
+  dat=gemini3d.read.frame(direc, "time", time);
+  vr=dat.v1.*dot(xg.er,xg.e1,4)+dat.v2.*dot(xg.er,xg.e2,4)+dat.v3.*dot(xg.er,xg.e3,4);
+  vtheta=dat.v1.*dot(xg.etheta,xg.e1,4)+dat.v2.*dot(xg.etheta,xg.e2,4)+dat.v3.*dot(xg.etheta,xg.e3,4);
+  vphi=dat.v1.*dot(xg.ephi,xg.e1,4)+dat.v2.*dot(xg.ephi,xg.e2,4)+dat.v3.*dot(xg.ephi,xg.e3,4);
 end %if
 
 
@@ -41,22 +45,30 @@ mlatlims=[26,32];
 
 
 %% regrid
-[alti,~,mlati,v1imer]=gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,1,llat,altlims,[210,210],mlatlims);
-[alti,mloni,~,v1izon]=gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
-[~,~,~,v1ialt]=gemscr.postprocess.model2magcoords(xg,dat.v1,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+[alti,~,mlati,vrimer]=gemscr.postprocess.model2magcoords(xg,vr,lalt,1,llat,altlims,[210,210],mlatlims);
+[alti,mloni,~,vrizon]=gemscr.postprocess.model2magcoords(xg,vr,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+[~,~,~,vrialt]=gemscr.postprocess.model2magcoords(xg,vr,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
 
 figure;
+
 subplot(131)
-imagesc(mlati,alti,squeeze(v1imer));
+imagesc(mlati,alti,squeeze(vrimer));
 axis xy;
+title(num2str(UTsec-t0))
+xlabel("mlat")
+ylabel("alt")
 
 subplot(132)
-imagesc(mloni,alti,squeeze(v1izon));
+imagesc(mloni,alti,squeeze(vrizon));
 axis xy;
+xlabel("mlon")
+ylabel("alt")
 
 subplot(133)
-imagesc(mloni,mlati,squeeze(v1ialt)');
+imagesc(mloni,mlati,squeeze(vrialt)');
 axis xy;
+xlabel("mlon")
+ylabel("mlat")
 
 
 %{
