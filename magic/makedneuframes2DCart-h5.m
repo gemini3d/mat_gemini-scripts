@@ -50,9 +50,9 @@ for it=1:lt
 filename=datelab(ymd,UTsec);
 filename=[outdir,filename,'.h5'];
 % Be sure that setup from mat_gemini was executed prior running this code
-hdf5nc.h5save(filename, '/dn0all', doxsnow, "type",  freal) % O
-hdf5nc.h5save(filename, '/dnN2all', dnit2snow, "type",  freal) % N2
-hdf5nc.h5save(filename, '/dnO2all', dox2snow, "type",  freal) % O2
+hdf5nc.h5save(filename, '/dn0all', doxsnow, "type",  freal) % O perturbations
+hdf5nc.h5save(filename, '/dnN2all', dnit2snow, "type",  freal) % N2 perturbations
+hdf5nc.h5save(filename, '/dnO2all', dox2snow, "type",  freal) % O2 perturbations
 hdf5nc.h5save(filename, '/dvnrhoall', velxnow, "type",  freal) % dvnrhoall - fluid velocity in meridional direction
 hdf5nc.h5save(filename, '/dvnzall', velznow, "type",  freal) % dvnzall - fluid velocity in vertical direction
 hdf5nc.h5save(filename, '/dTnall', tempnow, "type",  freal) % Temperature perturbations
