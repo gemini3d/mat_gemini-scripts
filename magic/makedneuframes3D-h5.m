@@ -3,7 +3,7 @@
 % Location of output data
 outdir='./datap/';
 
-%% Specify initial time and timestep of data
+% Specify initial time and timestep of data
 ymd0=[2011,3,11];
 UTsec0=20700.0;
 dtneu=10; % timestep
