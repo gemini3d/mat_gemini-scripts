@@ -1,4 +1,4 @@
-% This scripts prepares 2D Cartesian neutral inputs
+%  This scripts prepares 2D Cartesian neutral inputs to GEMINI saving them into depreciated raw format files
 
 % Location of output data
 outdir = "datap";
