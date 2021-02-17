@@ -1,5 +1,5 @@
 % This scripts prepares 2D Cartesian neutral inputs to GEMINI saving them into HDF5 format files
-% Same script can be used to prepare Axisymmetric input to GEMINI with dvnrhoall - radial and dvnzall - vertical directions
+% Same script can be used to prepare 2D/3D Axisymmetric input to GEMINI with dvnrhoall - radial and dvnzall - vertical directions
 
 % Location of output data
 outdir = "datap";
