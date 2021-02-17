@@ -1,4 +1,4 @@
-% This script prepares 3D Cartesian GEMINI neutral inputs from 2D axisymmetric neutral data
+% This script prepares 3D Cartesian GEMINI neutral inputs from 2D axisymmetric neutral data and save data in depreciated raw GEMINI input files
 
 % LOCATION OF OUTPUT DATA
 outdir = "datap";
