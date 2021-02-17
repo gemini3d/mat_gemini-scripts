@@ -1,8 +1,5 @@
 % This scripts prepares 3D Cartesian neutral inputs to GEMINI saving them into HDF5 file format
 
-close all
-clc
-
 % Location of output data
 outdir='./datap/';
 
@@ -32,7 +29,9 @@ ymd=ymd0;
 UTsec=UTsec0;
 
 for it=1:lt
-    
+% This assumes that each input variable is saved in a separate file that should be loaded separately (to alleviate memory issue)
+% This script expect that *.mat file inputs are saved as x,y,z (lon,lat,alt)
+% This script expects files names as XXX[timeframe].mat, where XXX - required variable and [timeframe] - sequential number of input starting from 0.
 load(strcat('velx',num2str(it-1),'.mat'),'velxfull');
 load(strcat('vely',num2str(it-1),'.mat'),'velyfull');
 load(strcat('velz',num2str(it-1),'.mat'),'velzfull');
@@ -42,9 +41,9 @@ load(strcat('dnit2s',num2str(it-1),'.mat'),'dnit2s');
 load(strcat('temps',num2str(it-1),'.mat'),'temps');
 
 % GEMINI requires (alt,lon,lat) structure of data
-velxfull=permute(velxfull,[3,2,1]); % zonal direction
-velyfull=permute(velyfull,[3,2,1]); % meridional direction
-velzfull=permute(velzfull,[3,2,1]);
+velxfull=permute(velxfull,[3,2,1]); % zonal fluid velocity
+velyfull=permute(velyfull,[3,2,1]); % meridional fluid velocity
+velzfull=permute(velzfull,[3,2,1]); % vertical fluid velocity
 temps=permute(temps,[3,2,1]);
 dox2s=permute(dox2s,[3,2,1]);
 dnit2s=permute(dnit2s,[3,2,1]);
