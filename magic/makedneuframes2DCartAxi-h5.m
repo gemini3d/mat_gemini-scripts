@@ -54,7 +54,7 @@ filename=[outdir,filename,'.h5'];
 hdf5nc.h5save(filename, '/dn0all', doxsnow, "type",  freal) % O perturbations
 hdf5nc.h5save(filename, '/dnN2all', dnit2snow, "type",  freal) % N2 perturbations
 hdf5nc.h5save(filename, '/dnO2all', dox2snow, "type",  freal) % O2 perturbations
-hdf5nc.h5save(filename, '/dvnrhoall', velxnow, "type",  freal) % dvnrhoall - fluid velocity in meridional direction
+hdf5nc.h5save(filename, '/dvnrhoall', velxnow, "type",  freal) % dvnrhoall - fluid velocity in meridional direction or radial in Axisymmetric simulations
 hdf5nc.h5save(filename, '/dvnzall', velznow, "type",  freal) % dvnzall - fluid velocity in vertical direction
 hdf5nc.h5save(filename, '/dTnall', tempnow, "type",  freal) % Temperature perturbations
 
