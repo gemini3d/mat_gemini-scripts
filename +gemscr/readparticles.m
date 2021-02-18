@@ -1,6 +1,8 @@
 function [mlon,mlat,simdate,Qit,E0it] = readparticles(outdir)
 %% READ IN THE CONFIG FILE FOR A PARTICULAR RUN
-narginchk(1,1)
+arguments
+  outdir (1,1) string
+end
 
 
 %% GRAB THE SIZE AND GRID FOR THE INPUT FILES

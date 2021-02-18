@@ -1,6 +1,12 @@
 function [zUENmag,xUENmag,yUENmag]=UENgeog2geomag(zUENgeo,xUENgeo,yUENgeo,reflon,reflat)
 %% Converts input geographic UEN coordinates into magnetic UEN
-narginchk(5,5)
+arguments
+  zUENgeo {mustBeNumeric}
+  xUENgeo {mustBeNumeric}
+  yUENgeo {mustBeNumeric}
+  reflon {mustBeNumeric}
+  reflat {mustBeNumeric}
+end
 
 %UPWARD DISTANCE
 Re=6370e3;

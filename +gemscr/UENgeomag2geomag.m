@@ -1,6 +1,12 @@
 function [alt,mlon,mlat] = UENgeomag2geomag(zUEN,xUEN,yUEN,reflon,reflat)
+arguments
+  zUEN {mustBeNumeric}
+  xUEN {mustBeNumeric}
+  yUEN {mustBeNumeric}
+  reflon {mustBeNumeric}
+  reflat {mustBeNumeric}
+end
 
-narginchk(5, 5)
 %upward distance
 Re=6370e3;
 alt=zUEN;

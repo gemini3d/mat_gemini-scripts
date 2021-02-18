@@ -1,6 +1,9 @@
 function [q,p,phi] = geog2dipole(alt,glon,glat)
-
-narginchk(3, 3)
+arguments
+  alt {mustBeNumeric}
+  glon {mustBeNumeric}
+  glat {mustBeNumeric}
+end
 
 [theta,phi] = gemini3d.geog2geomag(glat,glon);
 mlat=90-theta*180/pi;

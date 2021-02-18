@@ -1,6 +1,9 @@
 function [zUEN,xUEN,yUEN]=geomag2UENgeomag(alt,mlon,mlat)
-
-narginchk(3, 3)
+arguments
+  alt {mustBeNumeric}
+  mlon {mustBeNumeric}
+  mlat {mustBeNumeric}
+end
 
 Re=6370e3;
 

@@ -1,6 +1,9 @@
 function [zUEN,xUEN,yUEN] = geog2UENgeog(alt,glon,glat)
-
-narginchk(3,3)
+arguments
+  alt {mustBeNumeric}
+  glon {mustBeNumeric}
+  glat {mustBeNumeric}
+end
 
 Re=6370e3;
 

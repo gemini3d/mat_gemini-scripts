@@ -1,6 +1,11 @@
 function [zUEN,xUEN,yUEN] = geog2UENgeomag(alt,glon,glat,mlonctr,mlatctr)
-
-narginchk(5, 5)
+arguments
+  alt {mustBeNumeric}
+  glon {mustBeNumeric}
+  glat {mustBeNumeric}
+  mlonctr (1,1) {mustBeNumeric}
+  mlatctr (1,1) {mustBeNumeric}
+end
 % must also have center of the grid in mlat/mlon...
 
 Re=6370e3;
