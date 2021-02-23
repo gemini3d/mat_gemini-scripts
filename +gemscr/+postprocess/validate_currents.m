@@ -1,6 +1,7 @@
 %% SIMULATIONS LOCAITONS
 flagplot=1;
-simname='isinglass_clayton5/'
+%simname='isinglass_clayton5/'
+simname='arcs_angle_wide_nonuniform_large_highresx1/'
 basedir='~/simulations/'
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
@@ -8,24 +9,25 @@ mkdir(debugdir);
 
 
 %% READ IN DATA - need to add the f10.7
-cfg = gemini3d.readconfig(direc);
+cfg = gemini3d.read.config(direc);
 
 %% TIME OF INTEREST
-time = datetime(2017,03,02) + seconds(28380);
-%UTsec=25440;
-%ymd=[2017,03,02];
+ymd=[2017,3,2];
+UTsec=27185;
+time = datetime([ymd,0,0,UTsec]);
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
 xg = gemini3d.read.grid(direc);
 dat = gemini3d.read.frame(direc, "time", time);
+J2=dat.J2; J3=dat.J3; ne=dat.ne; v2=dat.v2; v3=dat.v3;
 
-mlatsrc= dat.mlatsrc;
-mlonsrc= dat.mlonsrc;
+mlatsrc= cfg.sourcemlat;
+mlonsrc= cfg.sourcemlon;
 [sigP,sigH,sig0,SIGP,SIGH]= gemscr.postprocess.conductivity_reconstruct(time,dat,cfg, xg);
 
 
 %% THIS COMPUTES THE CURRENTS DIRECTLY FROM THE ELECTRIC FIELDS AND CONDUCTIVITES (AS OPPOSED TO DIRECT MODEL OUTPUT)
-[v,E]=Efield(xg, dat.v2, dat.v3);                              %Electric field and drift vectors;
+[v,E]=gemscr.postprocess.Efield(xg, dat.v2, dat.v3);                              %Electric field and drift vectors;
 E2=E(:,:,:,2);
 E3=E(:,:,:,3);
 J2recon=sigP.*E2-sigH.*E3;    %have a sign inconsistency here...
@@ -40,17 +42,17 @@ if (flagplot)
 
     %make plots
     J2lim=max(abs(J2(:)));
-    plotfun(ymd,UTsec,xg,J2(:,:,:),'J_2 (A/m^2)',[-J2lim,J2lim],[mlatsrc,mlonsrc]);
+    plotfun(time,xg,J2(:,:,:),'J_2 (A/m^2)',[-J2lim,J2lim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J2model.png']);
     J2reconlim=max(abs(J2recon(:)));
-    plotfun(ymd,UTsec,xg,J2recon(:,:,:),'J_2 recon. (A/m^2)',[-J2reconlim J2reconlim],[mlatsrc,mlonsrc]);
+    plotfun(time,xg,J2recon(:,:,:),'J_2 recon. (A/m^2)',[-J2reconlim J2reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J2fromsigma.png'],'-r300');
 
     J3lim=max(abs(J3(:)));
-    plotfun(ymd,UTsec,xg,J3(:,:,:),'J_3 (A/m^2)',[-J3lim J3lim],[mlatsrc,mlonsrc]);
+    plotfun(time,xg,J3(:,:,:),'J_3 (A/m^2)',[-J3lim J3lim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J3model.png']);
     J3reconlim=max(abs(J3recon(:)));
-    plotfun(ymd,UTsec,xg,J3recon(:,:,:),'J_3 recon. (A/m^2)',[-J3reconlim J3reconlim],[mlatsrc,mlonsrc]);
+    plotfun(time,xg,J3recon(:,:,:),'J_3 recon. (A/m^2)',[-J3reconlim J3reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J3fromsigma.png'],'-r300');
 end %if
 
@@ -69,15 +71,15 @@ if (flagplot)
 
     %make plots
     %J2lim=max(abs(J2(:)));
-    %plotfun(ymd,UTsec,xg,J2(:,:,:),'J_2 (A/m^2)',[-J2lim,J2lim],[mlatsrc,mlonsrc]);
+    %plotfun(time,xg,J2(:,:,:),'J_2 (A/m^2)',[-J2lim,J2lim],[mlatsrc,mlonsrc]);
     J2reconlim=max(abs(J2recon2(:)));
-    plotfun(ymd,UTsec,xg,J2recon2(:,:,:),'J_2 recon. 2 (A/m^2)',[-J2reconlim J2reconlim],[mlatsrc,mlonsrc]);
+    plotfun(time,xg,J2recon2(:,:,:),'J_2 recon. 2 (A/m^2)',[-J2reconlim J2reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J2fromJPJH.png'],'-r300');
 
     %J3lim=max(abs(J3(:)));
-    %plotfun(ymd,UTsec,xg,J3(:,:,:),'J_3 (A/m^2)',[-J3lim J3lim],[mlatsrc,mlonsrc]);
+    %plotfun(time,xg,J3(:,:,:),'J_3 (A/m^2)',[-J3lim J3lim],[mlatsrc,mlonsrc]);
     J3reconlim=max(abs(J3recon2(:)));
-    plotfun(ymd,UTsec,xg,J3recon2(:,:,:),'J_3 recon. 2 (A/m^2)',[-J3reconlim J3reconlim],[mlatsrc,mlonsrc]);
+    plotfun(time,xg,J3recon2(:,:,:),'J_3 recon. 2 (A/m^2)',[-J3reconlim J3reconlim],[mlatsrc,mlonsrc]);
     print('-dpng',[debugdir,filesep,'J3fromJPJH.png'],'-r300');
 end %if
 

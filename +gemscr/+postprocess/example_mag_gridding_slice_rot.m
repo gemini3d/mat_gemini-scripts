@@ -10,12 +10,14 @@
 
 % CI example
 %direc='~/simulations/tohoku20113D_lowres/'
-direc='~/simulations/tohoku20113D_lowres_3Dneu_CI/'
-%direc='~/simulations/tohoku20113D_lowres_olddata/'
+%direc='~/simulations/tohoku20113D_lowres_3Dneu_CI/'
+direc='~/simulations/tohoku20113D_lowres_MZ2017paper/'
+%direc='~/simulations/tohoku20113D_lowres_2Daxisneu'
 ymd=[2011,03,11];
-UTsec=35850;
-t0=35100;
-%UTsec=22158;
+%UTsec=35850;
+%t0=35100;
+t0=20783;
+UTsec=21533;
 time=datetime([ymd,0,0,UTsec]);
 
 
@@ -49,27 +51,73 @@ mlatlims=[26,32];
 [alti,mloni,~,vrizon]=gemscr.postprocess.model2magcoords(xg,vr,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
 [~,~,~,vrialt]=gemscr.postprocess.model2magcoords(xg,vr,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
 
+[alti,~,mlati,vthetaimer]=gemscr.postprocess.model2magcoords(xg,vtheta,lalt,1,llat,altlims,[210,210],mlatlims);
+[alti,mloni,~,vthetaizon]=gemscr.postprocess.model2magcoords(xg,vtheta,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+[~,~,~,vthetaialt]=gemscr.postprocess.model2magcoords(xg,vtheta,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+
+[alti,~,mlati,vphiimer]=gemscr.postprocess.model2magcoords(xg,vphi,lalt,1,llat,altlims,[210,210],mlatlims);
+[alti,mloni,~,vphiizon]=gemscr.postprocess.model2magcoords(xg,vphi,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+[~,~,~,vphiialt]=gemscr.postprocess.model2magcoords(xg,vphi,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+
+
 figure;
 
-subplot(131)
+subplot(337)
 imagesc(mlati,alti,squeeze(vrimer));
 axis xy;
 title(num2str(UTsec-t0))
 xlabel("mlat")
 ylabel("alt")
 
-subplot(132)
+subplot(338)
 imagesc(mloni,alti,squeeze(vrizon));
 axis xy;
 xlabel("mlon")
 ylabel("alt")
 
-subplot(133)
+subplot(339)
 imagesc(mloni,mlati,squeeze(vrialt)');
 axis xy;
 xlabel("mlon")
 ylabel("mlat")
 
+subplot(334)
+imagesc(mlati,alti,-squeeze(vthetaimer));
+axis xy;
+title(num2str(UTsec-t0))
+xlabel("mlat")
+ylabel("alt")
+
+subplot(335)
+imagesc(mloni,alti,-squeeze(vthetaizon));
+axis xy;
+xlabel("mlon")
+ylabel("alt")
+
+subplot(336)
+imagesc(mloni,mlati,-squeeze(vthetaialt)');
+axis xy;
+xlabel("mlon")
+ylabel("mlat")
+
+subplot(331)
+imagesc(mlati,alti,squeeze(vphiimer));
+axis xy;
+title(num2str(UTsec-t0))
+xlabel("mlat")
+ylabel("alt")
+
+subplot(332)
+imagesc(mloni,alti,squeeze(vphiizon));
+axis xy;
+xlabel("mlon")
+ylabel("alt")
+
+subplot(333)
+imagesc(mloni,mlati,squeeze(vphiialt)');
+axis xy;
+xlabel("mlon")
+ylabel("mlat")
 
 %{
 %% ESF example
