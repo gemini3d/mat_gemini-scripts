@@ -1,5 +1,5 @@
 run("~/Projects/mat_gemini/setup.m");
-run("~/Projects/GEMINI-scripts/setup.m");
+run("~/Projects/mat_gemini-scripts/setup.m");
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -107,9 +107,9 @@ Jz=permute(Jz/1e-6,[3,1,2]);    %so J in uA/m^2
 xg=gemini3d.read.grid(direc);
 datp=gemini3d.read.frame(direc,"time",TOI);
 
-[zUENi,xUENi,yUENi,J1g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J1,256,256,256,[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
-[~,~,~,J2g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J2,256,256,256,[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
-[~,~,~,J3g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J3,256,256,256,[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+[zUENi,xUENi,yUENi,J1g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J1,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+[~,~,~,J2g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J2,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+[~,~,~,J3g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J3,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
