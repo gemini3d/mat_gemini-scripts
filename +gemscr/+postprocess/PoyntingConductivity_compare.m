@@ -16,7 +16,7 @@ TOI=datetime([ymd,0,0,UTsec]);
 % call the Poynting flux utility function
 cfg = gemini3d.read.config(direc);    % config file
 disp("Computing Poynting flux...");
-[Ei,B,S,mlon,mlat,datmag,datplasma,xg]=gemscr.postprocess.Poynting_calc(direc,TOI);    % Poynting flux, electric, and magnetic fields
+[Ei,B,S,mlon,mlat,datmag,datplasma,xg]=gemscr.postprocess.Poynting_calc(direc,TOI,1,128,128);    % Poynting flux, electric, and magnetic fields
 disp("Computing conductivities and conductance...");
 [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=gemscr.postprocess.conductivity_reconstruct(TOI,datplasma,cfg,xg);   % Conductivities on the simulation grid
 
@@ -72,7 +72,8 @@ colorbar;
 title("E_\phi (mV/m)")
 
 subplot(234);
-imagesc(mlon,mlat,squeeze(B(end,:,:,1))*1e9);
+pcolor(mlon,mlat,squeeze(B(end,:,:,1))*1e9);
+shading flat;
 axis xy;
 xlabel("mag. lon. (deg.)");
 ylabel("mag. lat. (deg.)");
@@ -80,7 +81,8 @@ colorbar;
 title("B_r (nT)")
 
 subplot(235);
-imagesc(mlon,mlat,squeeze(B(end,:,:,2))*1e9);
+pcolor(mlon,mlat,squeeze(B(end,:,:,2))*1e9);
+shading flat;
 axis xy;
 xlabel("mag. lon. (deg.)");
 ylabel("mag. lat. (deg.)");
@@ -88,7 +90,8 @@ colorbar;
 title("B_\theta (nT)")
 
 subplot(236);
-imagesc(mlon,mlat,squeeze(B(end,:,:,3))*1e9);
+pcolor(mlon,mlat,squeeze(B(end,:,:,3))*1e9);
+shading flat;
 axis xy;
 xlabel("mag. lon. (deg.)");
 ylabel("mag. lat. (deg.)");
