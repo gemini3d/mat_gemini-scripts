@@ -1,4 +1,4 @@
-function track=virtual_spacecraft(direc,glonsat,glatsat,altsat,tsat)
+function [track,xg]=virtual_spacecraft(direc,glonsat,glatsat,altsat,tsat)
 
 % This utility traces a spacecraft through the model domain.  Inputs:
 %
@@ -14,7 +14,7 @@ function track=virtual_spacecraft(direc,glonsat,glatsat,altsat,tsat)
 disp('Loading config file...')
 cfg = gemini3d.read.config(direc);
 ymd0=cfg.ymd; UTsec0=cfg.UTsec0;
-mloc=[cfg.sourcemlat,cfg.sourcemlon];
+% mloc=[cfg.sourcemlat,cfg.sourcemlon];
 dtout=cfg.dtout; tdur=cfg.tdur;
 
 % CHECK WHETHER WE NEED TO RELOAD THE GRID (WHICH CAN BE TIME CONSUMING)
@@ -27,11 +27,11 @@ x1=double(xg.x1(3:end-2)); x2=double(xg.x2(3:end-2)); x3=double(xg.x3(3:end-2));
 %In case the simulation is cartesian we need to know the center geomgagetic coordinates of the grid
 thetactr=double(mean(xg.theta(:)));
 phictr=double(mean(xg.phi(:)));
-[glatctr,glonctr]= gemini3d.geomag2geog(thetactr,phictr);
+% [glatctr,glonctr]= gemini3d.geomag2geog(thetactr,phictr);
 
 % TIMES WHERE WE HAVE MODEL OUTPUT
-times=UTsec0:dtout:UTsec0+tdur;
-lt=numel(times);
+% times=UTsec0:dtout:UTsec0+tdur;
+% lt=numel(times);
 datemod0=datenum([ymd0,UTsec0/3600,0,0]);
 datemod=datemod0:dtout/86400:datemod0+tdur/86400;
 
@@ -54,6 +54,9 @@ track.J2sat=zeros(lorb,lsat);
 track.J3sat=zeros(lorb,lsat);
 track.v2sat=zeros(lorb,lsat);
 track.v3sat=zeros(lorb,lsat);
+track.x1sat=zeros(lorb,lsat);
+track.x2sat=zeros(lorb,lsat);
+track.x3sat=zeros(lorb,lsat);
 
 firstprev=true;
 firstnext=true;
@@ -66,12 +69,12 @@ for iorb=1:lorb
   %FIND THE TWO FRAMES THAT BRACKET THIS ORBIT TIME
   datemodnext=datemod0;
   datemodprev=datemod0;
-  while(datemodnext<datenow & datemodnext<=datemod(end))
+  while(datemodnext<datenow && datemodnext<=datemod(end))
     datemodprev=datemodnext;
     datemodnext=datemodnext+dtout/86400;    %matlab datenums are in units of days from 0000
   end
 
-  if (datemodnext==datemodprev | datemodnext>datemod(end))    %set everything to zero if outside model *time* domain
+  if (datemodnext==datemodprev || datemodnext>datemod(end))    %set everything to zero if outside model *time* domain
     fprintf('Requested time %s is out of simulation time interval...\n',datestr(datenow));
     zeroarray=zeros(lx1,lx2,lx3);     %infuriatingly MATLAB is was faster this way rather than calling zeros a bunch...
     neprev=zeroarray; nenext=zeroarray;
@@ -158,6 +161,7 @@ for iorb=1:lorb
     nesattmp=zeros(lsat,1); visattmp=zeros(lsat,1); Tisattmp=zeros(lsat,1);
     Tesattmp=zeros(lsat,1); J1sattmp=zeros(lsat,1); J2sattmp=zeros(lsat,1);
     J3sattmp=zeros(lsat,1); v2sattmp=zeros(lsat,1); v3sattmp=zeros(lsat,1);
+    x1sattmp=zeros(lsat,1); x2sattmp=zeros(lsat,1); x3sattmp=zeros(lsat,1);
     for isat=1:lsat
       [x1sat,x2sat,x3sat]=gemini3d.geog2UEN(altsat(iorb,isat),glonsat(iorb,isat),glatsat(iorb,isat),thetactr,phictr);
       %fprintf('Starting interpolations for satellite:  %d\n',isat);
@@ -194,6 +198,9 @@ for iorb=1:lorb
       J3sattmp(isat)=J3satprev+(J3satnext-J3satprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       v2sattmp(isat)=v2satprev+(v2satnext-v2satprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
       v3sattmp(isat)=v3satprev+(v3satnext-v3satprev)/(datemodnext-datemodprev)*(datenow-datemodprev);
+      x1sattmp(isat)=x1sat;
+      x2sattmp(isat)=x2sat;
+      x3sattmp(isat)=x3sat;
     end
     track.nesat(iorb,:)=nesattmp(:)';
     track.visat(iorb,:)=visattmp(:)';
@@ -204,6 +211,9 @@ for iorb=1:lorb
     track.J3sat(iorb,:)=J3sattmp(:)';
     track.v2sat(iorb,:)=v2sattmp(:)';
     track.v3sat(iorb,:)=v3sattmp(:)';
+    track.x1sat(iorb,:)=x1sattmp(:)';
+    track.x2sat(iorb,:)=x2sattmp(:)';
+    track.x3sat(iorb,:)=x3sattmp(:)';
 end
 
 % store input variables in output structure just in case...
