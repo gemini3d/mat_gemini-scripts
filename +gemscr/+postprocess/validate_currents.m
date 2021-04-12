@@ -1,3 +1,5 @@
+run("~/Projects/mat_gemini/setup.m");
+
 %% SIMULATIONS LOCAITONS
 flagplot=1;
 %simname='isinglass_clayton5/'
@@ -5,7 +7,9 @@ simname='arcs_angle_wide_nonuniform_large_highresx1/'
 basedir='~/simulations/'
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
-mkdir(debugdir);
+if (~exist(debugdir,'dir'))
+  mkdir(debugdir);
+end %if
 
 
 %% READ IN DATA - need to add the f10.7
@@ -109,7 +113,8 @@ if(flagplot)
     figure; set(gcf,'Paperposition',[0 0 16 4.5]);
 
     subplot(142);
-    imagesc(x2/1e3,x3/1e3,intdivJ);
+    pcolor(x2/1e3,x3/1e3,intdivJ);
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -118,7 +123,8 @@ if(flagplot)
     colorbar;
 
     subplot(143);
-    imagesc(x2/1e3,x3/1e3,intdivJrecon);
+    pcolor(x2/1e3,x3/1e3,intdivJrecon);
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -127,7 +133,8 @@ if(flagplot)
     colorbar;
 
     subplot(144);
-    imagesc(x2/1e3,x3/1e3,intdivJrecon2);
+    pcolor(x2/1e3,x3/1e3,intdivJrecon2);
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -136,7 +143,8 @@ if(flagplot)
     colorbar;
 
     subplot(141);
-    imagesc(x2/1e3,x3/1e3,squeeze(Jfac(end,:,:,1))');     %transpose again to deal with MATLAB y expectations
+    pcolor(x2/1e3,x3/1e3,squeeze(Jfac(end,:,:,1))');     %transpose again to deal with MATLAB y expectations
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -175,7 +183,8 @@ if(flagplot)
     set(gcf,'PaperPosition',[0 0 11 6]);
 
     subplot(235);
-    imagesc(x2/1e3,x3/1e3,squeeze(Jfac(end,:,:,1))');
+    pcolor(x2/1e3,x3/1e3,squeeze(Jfac(end,:,:,1))');
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -185,7 +194,8 @@ if(flagplot)
     cax=caxis;
 
     subplot(231);
-    imagesc(x2/1e3,x3/1e3,JdivE');
+    pcolor(x2/1e3,x3/1e3,JdivE');
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -195,7 +205,8 @@ if(flagplot)
     colorbar;
 
     subplot(232);
-    imagesc(x2/1e3,x3/1e3,JgradSIGP');
+    pcolor(x2/1e3,x3/1e3,JgradSIGP');
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -205,7 +216,8 @@ if(flagplot)
     colorbar;
 
     subplot(233);
-    imagesc(x2/1e3,x3/1e3,JgradSIGH');
+    pcolor(x2/1e3,x3/1e3,JgradSIGH');
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -215,7 +227,8 @@ if(flagplot)
     colorbar;
 
     subplot(234);
-    imagesc(x2/1e3,x3/1e3,(JdivE+JgradSIGP+JgradSIGH)');
+    pcolor(x2/1e3,x3/1e3,(JdivE+JgradSIGP+JgradSIGH)');
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -245,7 +258,8 @@ if(flagplot)
     figure;
 
     subplot(131);
-    imagesc(x2/1e3,x3/1e3,JgradSIGH');        %transpose again to deal with MATLAB y expectation
+    pcolor(x2/1e3,x3/1e3,JgradSIGH');        %transpose again to deal with MATLAB y expectation
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -254,7 +268,8 @@ if(flagplot)
     colorbar;
 
     subplot(132);
-    imagesc(x2/1e3,x3/1e3,intdivJH);
+    pcolor(x2/1e3,x3/1e3,intdivJH);
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -264,7 +279,8 @@ if(flagplot)
     cax=caxis;
 
     subplot(133);
-    imagesc(x2/1e3,x3/1e3,divperpSIGHE');     %transpose again to deal with MATLAB y expectations
+    pcolor(x2/1e3,x3/1e3,divperpSIGHE');     %transpose again to deal with MATLAB y expectations
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -284,7 +300,8 @@ if(flagplot)
     figure
 
     subplot(121)
-    imagesc(x2,x3,-1*(abs(SIGH).*squeeze(c1(end,:,:)))')
+    pcolor(x2,x3,-1*(abs(SIGH).*squeeze(c1(end,:,:)))')
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
@@ -294,7 +311,8 @@ if(flagplot)
     colorbar;
 
     subplot(122);
-    imagesc(x2/1e3,x3/1e3,JgradSIGH'-(abs(SIGH).*squeeze(c1(end,:,:)))');        %transpose again to deal with MATLAB y expectation
+    pcolor(x2/1e3,x3/1e3,JgradSIGH'-(abs(SIGH).*squeeze(c1(end,:,:)))');        %transpose again to deal with MATLAB y expectation
+    shading flat;
     axis xy;
     axis square;
     xlabel('mag. east dist. (km)');
