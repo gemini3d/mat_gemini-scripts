@@ -21,7 +21,7 @@ p.glon=270;
 p.gridflag=0;
 p.outdir = '~/simulations/ICs';
 
-xg = gemini3d.grid.tilted_dipole3d(p);
+xg = gemini3d.grid.tilted_dipole(p);
 
 
 %GENERATE INITIAL CONDITIONS

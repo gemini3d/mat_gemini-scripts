@@ -27,7 +27,7 @@ p.flagsource=1;
 p.iscurv=true;
 
 %% Compute the grid
-xg= gemini3d.grid.tilted_dipole3d(p);
+xg= gemini3d.grid.tilted_dipole(p);
 
 
 %% DETERMINE GRID RESOLUTION

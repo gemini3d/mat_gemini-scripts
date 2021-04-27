@@ -54,7 +54,7 @@ if ~exist('ns', 'var')
     load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/20110311_21553.mat;
     load /Volumes/SDHCcard/simulations/tohoku_strong_narrow_nonuniform/current_21553.mat;
     ne=ns(:,:,7);
-    xg=gemini3d.grid.tilted_dipole3d(p);
+    xg=gemini3d.grid.tilted_dipole(p);
     neI=interp2(xg2.x2,xg2.x1,ne,xg.x2(3:end-2),xg.x1(3:end-2));
     neIspread=repmat(neI,[1,1,lphi]);
     vi=vsx1(:,:,1);

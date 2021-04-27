@@ -32,7 +32,7 @@
 %
 %
 % %RUN THE GRID GENERATION CODE
-% xg=gemini3d.grid.tilted_dipole3d(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
+% xg=gemini3d.grid.tilted_dipole(dtheta,dphi,lp,lq,lphi,altmin,glat,glon,gridflag);
 
 
 %ADD THE ELECTRON DENSITY INFORMATION (READ OUTPUT DATA, GRID, ETC.)

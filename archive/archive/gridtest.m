@@ -32,7 +32,7 @@ p.gridflag=1;
 
 
 %RUN THE GRID GENERATION CODE
-xg = gemini3d.grid.tilted_dipole3d(p);
+xg = gemini3d.grid.tilted_dipole(p);
 Re=6370e3;
 
 

@@ -31,7 +31,7 @@ gridflag=1;
 
 %MATLAB GRID GENERATION
 if (~exist('xg'))
-  xg= gemini3d.grid.tilted_dipole3d(p);
+  xg= gemini3d.grid.tilted_dipole(p);
 end
 
 %{
@@ -309,8 +309,8 @@ if ~exist('xg','var')
 %    xg=makegrid_tilteddipole_3D(p);
 %    xg=makegrid_tilteddipole_nonuniform_3D(p);
 %    xg=makegrid_tilteddipole_nonuniform_oneside_3D(p);
-  xg= gemini3d.grid.tilted_dipole3d(p);
-%  xg= gemini3d.grid.cart3d(p);
+  xg= gemini3d.grid.tilted_dipole(p);
+%  xg= gemini3d.grid.cartesian(p);
 %  xg= gemini3d.grid.cart3d_lowresx1(p);
 end
 lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);

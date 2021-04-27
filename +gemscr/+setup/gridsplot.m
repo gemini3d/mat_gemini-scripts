@@ -108,10 +108,10 @@ p.gridflag=1;
 
 %RUN THE GRID GENERATION CODE
 if ~exist('xg', 'var')
-    xg= gemini3d.grid.tilted_dipole3d(p);
+    xg= gemini3d.grid.tilted_dipole(p);
 %    xg= gemscr.grid.tilted_dipole3d_nonuniform(p);
 %    xg= gemsrc.grid.tilted_dipole3d_nonuniform_oneside(p);
-%     xg= gemini3d.grid.cart3d(p);
+%     xg= gemini3d.grid.cartesian(p);
 end
 
 
