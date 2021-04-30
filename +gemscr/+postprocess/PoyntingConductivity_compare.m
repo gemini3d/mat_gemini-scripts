@@ -52,15 +52,19 @@ end %if
 
 % Write output if desired
 if (flagfile)
-    Spar=-int_ohmic;    % force this to agree with conservation of energy
-    Jtop=squeeze(datplasma.J1(end,:,:));
+    Spar=-int_ohmic;                         % force this to agree with conservation of energy
+    Jtop=squeeze(datplasma.J1(end,:,:));     % x,y
     mlonp=squeeze(xg.phi(1,:,1)*180/pi);
     mlatp=squeeze(90-xg.theta(1,1,:)*180/pi);
-    [MLON,MLAT]=meshgrid(mlon,mlat);
-    Jpar=interp2(mlatp(:),mlonp(:),Jtop,MLAT(:),MLON(:));
-    Jpar=reshape(Jpar,[llon,llat]);
-    E=Ei;
-    save ~/scen1.mat mlon mlat Spar Jpar E SIGP SIGH sigP sigH mlonp mlatp ohmici int_ohmic;
+    [MLON,MLAT]=meshgrid(mlon,mlat);         % x,y
+    %Jpar=interp2(mlatp(:),mlonp(:),Jtop,MLAT(:),MLON(:));
+    Jpar=interp2(mlonp(:),mlatp(:),Jtop',MLON(:),MLAT(:));
+    Jpar=reshape(Jpar,[llon,llat])';         % x,y
+    % note that Ei has components r,theta,phi (dim 4), spatial dependence
+    % r,theta,phi as well, so reorder components and permute the arrays to
+    % z,x,y
+    E=cat(4,permute(Ei(:,:,:,1),[1,3,2]),permute(Ei(:,:,:,3),[1,3,2]),-1*permute(Ei(:,:,:,2),[1,3,2]));
+    save ~/scen1.mat mlon mlat Spar Jpar E SIGP SIGH sigP sigH mlonp mlatp ohmici int_ohmic E2 E3;
 end %if
 
 % Plot the electric and magnetic fields

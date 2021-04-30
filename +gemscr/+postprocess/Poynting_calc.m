@@ -48,6 +48,7 @@ mlatlims=[min(datmag.mlat),max(datmag.mlat)];
 [~,~,~,Ephii]=model2magcoords(xg,Ephi,lalt,llon,llat,altlims,mlonlims,mlatlims);
 
 % Group electric field components together so built-in fns. can be used
+%  These are permuted x1,x2,x3 -> r,theta,phi
 E=cat(4,permute(Eri,[1,3,2]),permute(Ethetai,[1,3,2]),permute(Ephii,[1,3,2]));
 
 %  In the even the magnetic field points have been nonuniformly spaced,

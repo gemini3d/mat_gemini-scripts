@@ -2,7 +2,7 @@ function GDIgrowth_inertia(direc, namedargs)
 arguments
   direc (1,1) string
   namedargs.drift_velocity (1,1) double = 0.5e3 % [meters / sec]
-  namedargs.magcap (1,1) double = 5 % magnetospheric capacitance
+  namedargs.magcap (1,1) double = 0 % magnetospheric capacitance
 end
 cwd = fileparts(mfilename('fullpath'));
 run(fullfile(cwd, '../../setup.m'))
