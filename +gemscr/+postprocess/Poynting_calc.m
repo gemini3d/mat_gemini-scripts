@@ -36,7 +36,8 @@ Ephi=Emod(:,:,:,1).*dot(xg.e1,xg.ephi,4)+Emod(:,:,:,2).*dot(xg.e2,xg.ephi,4)+ ..
     Emod(:,:,:,3).*dot(xg.e3,xg.ephi,4);
 
 % Grid electric fields uniformly using the extents of the magnetic field
-% computation grid
+% computation grid.  This may not do a great job if the source grid is
+% very nonuniform.
 if ~exist("lalt","var")
     lalt=numel(datmag.r); llon=numel(datmag.mlon); llat=numel(datmag.mlat);
 end %if
