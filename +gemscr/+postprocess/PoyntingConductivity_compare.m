@@ -1,5 +1,9 @@
 % Compute the Poynting flux from a single frame and compare it against
 % dissipation of ionospheric electromagnetic energy.  
+%
+% One potential issue is that the Ohmic dissipation is computed on one grid
+% (model grid), while the Poynting flux is based on resampled electric
+% fields and magnetic fields.  
 
 % flags
 flagplot=true;
@@ -30,16 +34,29 @@ if (~exist("S","var"))
     disp("Computing Ohmic dissipation...");
     [v,E]=gemscr.postprocess.Efield(xg,datplasma.v2,datplasma.v3);   % fields, etc. on the simulation grid
     
+    % simulation mlon,mlat grid
+    mlonp=squeeze(xg.phi(1,:,1)*180/pi);
+    mlatp=squeeze(90-xg.theta(1,1,:)*180/pi);
+    
     % Compute the Joule dissipation
     E2=squeeze(E(:,:,:,2)); E3=squeeze(E(:,:,:,3));
     ohmicdissipation=sigP.*(E2.^2+E3.^2);
     
     % Interpolate the energy dissipation rate onto a magnetic coordinate system
     % for plotting
-    altlims=[80e3,900e3];
-    mlonlims=[min(datmag.mlon),max(datmag.mlon)];
-    mlatlims=[min(datmag.mlat),max(datmag.mlat)];
-    [alti,mloni,mlati,ohmici]=gemscr.postprocess.model2magcoords(xg,ohmicdissipation,256,llon,llat,altlims,mlonlims,mlatlims);
+    if ( all(abs(mlonp-mlon)<0.01) && all(abs(mlatp-mlat)<0.01) )
+        ohmici=ohmicdissipation;
+        alti=xg.alt(:,1,1);
+        mloni=mlonp;
+        mlati=mlatp;
+        llon=size(mloni(:),1);
+        llat=size(mlati(:),1);
+    else
+        altlims=[80e3,900e3];
+        mlonlims=[min(datmag.mlon),max(datmag.mlon)];
+        mlatlims=[min(datmag.mlat),max(datmag.mlat)];
+        [alti,mloni,mlati,ohmici]=gemscr.postprocess.model2magcoords(xg,ohmicdissipation,256,llon,llat,altlims,mlonlims,mlatlims);
+    end %if
     
     % Compute a field-integrated energy dissipation to compare to Poynting flux
     int_ohmic=zeros(llon,llat);
@@ -54,12 +71,13 @@ end %if
 if (flagfile)
     Spar=-int_ohmic;                         % force this to agree with conservation of energy
     Jtop=squeeze(datplasma.J1(end,:,:));     % x,y
-    mlonp=squeeze(xg.phi(1,:,1)*180/pi);
-    mlatp=squeeze(90-xg.theta(1,1,:)*180/pi);
     [MLON,MLAT]=meshgrid(mlon,mlat);         % x,y
-    %Jpar=interp2(mlatp(:),mlonp(:),Jtop,MLAT(:),MLON(:));
-    Jpar=interp2(mlonp(:),mlatp(:),Jtop',MLON(:),MLAT(:));
-    Jpar=reshape(Jpar,[llon,llat])';         % x,y
+    if ( all(abs(mlonp-mlon)<0.01) && all(abs(mlatp-mlat)<0.01) )
+        Jpar=Jtop;
+    else
+        Jpar=interp2(mlonp(:),mlatp(:),Jtop',MLON(:),MLAT(:));
+        Jpar=reshape(Jpar,[llon,llat])';         % x,y
+    end %if
     % note that Ei has components r,theta,phi (dim 4), spatial dependence
     % r,theta,phi as well, so reorder components and permute the arrays to
     % z,x,y
@@ -71,7 +89,8 @@ end %if
 if (flagplot)
     figure;
     subplot(231);
-    imagesc(mlon,mlat,squeeze(Ei(end,:,:,1))*1e3);
+    pcolor(mlon,mlat,squeeze(Ei(end,:,:,1))*1e3);
+    shading flat;
     axis xy;
     xlabel("mag. lon. (deg.)");
     ylabel("mag. lat. (deg.)");
@@ -79,7 +98,8 @@ if (flagplot)
     title("E_r (mV/m)")
     
     subplot(232);
-    imagesc(mlon,mlat,squeeze(Ei(end,:,:,2))*1e3);
+    pcolor(mlon,mlat,squeeze(Ei(end,:,:,2))*1e3);
+    shading flat;
     axis xy;
     xlabel("mag. lon. (deg.)");
     ylabel("mag. lat. (deg.)");
@@ -87,7 +107,8 @@ if (flagplot)
     title("E_\theta (mV/m)")
     
     subplot(233);
-    imagesc(mlon,mlat,squeeze(Ei(end,:,:,3))*1e3);
+    pcolor(mlon,mlat,squeeze(Ei(end,:,:,3))*1e3);
+    shading flat;
     axis xy;
     xlabel("mag. lon. (deg.)");
     ylabel("mag. lat. (deg.)");
@@ -125,7 +146,8 @@ if (flagplot)
     figure;
     
     subplot(121);
-    imagesc(mlon,mlat,squeeze(S(end,:,:,1))*1e3);
+    pcolor(mlon,mlat,squeeze(S(end,:,:,1))*1e3);
+    shading flat;
     axis xy;
     xlabel("mag. lon. (deg.)");
     ylabel("mag. lat. (deg.)");
@@ -150,7 +172,8 @@ if (flagplot)
     
     subplot(122);
     int_ohmic=int_ohmic';
-    imagesc(mloni,mlati,int_ohmic*1e3);
+    pcolor(mloni,mlati,int_ohmic*1e3);
+    shading flat;
     axis xy;
     xlabel("mag. lon. (deg.)");
     ylabel("mag. lat. (deg.)");
