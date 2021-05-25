@@ -12,9 +12,9 @@
 %  2)  Suggested additions above still need to be made eventually...
 
 % Modified by MZ, 20181017 fixed error introduced by above rotations
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified by MZ, 20210525 updated to new GEMINI API
-%
-% 
 % Clone these:  
 %   https://github.com/gemini3d/mat_gemini-scripts.git
 %   https://github.com/gemini3d/mat_gemini.git
