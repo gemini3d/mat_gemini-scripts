@@ -13,11 +13,16 @@ flagfile=true;
 run("~/Projects/mat_gemini/setup.m")
 
 % simulation location, date, and time
-simname='arcs_angle_wide_nonuniform_large_highresx1/';
-basedir='~/simulations/';
+%simname='arcs_angle_wide_nonuniform_large_highresx1/';
+simname='OSSE_2cc_1_pot_4-27/'
+
+basedir='~/simulations/raid/';
 direc=[basedir,simname];
-ymd=[2017,3,2];
-UTsec=27285;
+
+%ymd=[2017,3,2];
+%UTsec=27285;
+ymd=[2015,2,1];
+UTsec=36110;
 TOI=datetime([ymd,0,0,UTsec]);
 
 if (~exist("S","var"))
@@ -25,8 +30,13 @@ if (~exist("S","var"))
     % call the Poynting flux utility function
     lalt=1; llon=128; llat=128;
     cfg = gemini3d.read.config(direc);    % config file
-    disp("Computing Poynting flux...");
+    %xg = gemini3d.read.grid(direc);       % grid
+    
+    %disp("Computing Poynting flux...");
     [Ei,B,S,mlon,mlat,datmag,datplasma,xg]=gemscr.postprocess.Poynting_calc(direc,TOI,lalt,llon,llat);    % Poynting flux, electric, and magnetic fields
+    
+    %datplasma=gemini3d.read.frame(direc,"time",TOI);
+        
     disp("Computing conductivities and conductance...");
     [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=gemscr.postprocess.conductivity_reconstruct(TOI,datplasma,cfg,xg);   % Conductivities on the simulation grid
     
@@ -44,7 +54,7 @@ if (~exist("S","var"))
     
     % Interpolate the energy dissipation rate onto a magnetic coordinate system
     % for plotting
-    if ( all(abs(mlonp-mlon)<0.01) && all(abs(mlatp-mlat)<0.01) )
+    if ( flagplot && all(abs(mlonp-mlon)<0.01) && all(abs(mlatp-mlat)<0.01))
         ohmici=ohmicdissipation;
         alti=xg.alt(:,1,1);
         mloni=mlonp;

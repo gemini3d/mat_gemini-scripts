@@ -11,10 +11,22 @@
 %  flagrot=0;
 %  2)  Suggested additions above still need to be made eventually...
 
-%Modified by MZ, 20181017 fixed error introduced by above rotations
+% Modified by MZ, 20181017 fixed error introduced by above rotations
+% Modified by MZ, 20210525 updated to new GEMINI API
+%
+% 
+% Clone these:  
+%   https://github.com/gemini3d/mat_gemini-scripts.git
+%   https://github.com/gemini3d/mat_gemini.git
+%
+% In main SIGMA program need to do:
+%    run("<mat_gemini directory>/setup.m")
+%    run("<mat_gemini-scripts directory>/setup.m")
+%
+% MZ suggestion - pass in static grid as an argument because it takes a
+% long time to load...
 
-
-function [nei,zctr] = SIGMAinterp_time_MZfunction(plasmatype,tinterp,dcoord,x,y,dt,dz,nz,hmF2)
+function [nei,zctr] = SIGMAinterp_time_MZfunction(plasmatype,tinterp,dcoord,x,y,dt,dz,nz,hmF2)  % add xg
 
 addpath scripts_MZ-modKD/;
 clear numden
@@ -69,8 +81,13 @@ lfileend=(lfile+1)*dtout;
 
 
 %COMPUTE THE UT INFO FOR THE FIRST FRAME OF INTEREST
-[ymd,UTsec]=dateinc(lfilestart,ymd0,UTsec0);
-loadframe_wrapper; % this creates the filename
+[ymd,UTsec]=gemini3d.dateinc(lfilestart,ymd0,UTsec0);
+%loadframe_wrapper; % this creates the filename %% deprecated...
+dateval=datetime([ymd,0,0,UTsec]);
+datplasma=gemini3d.read.frame(direc,"time",dateval);
+xg=gemini3d.read.grid(direc);   % remove if passing grid as arg
+numden=datplasma.ne;
+clear datplasma;
 x1=xg.x1(3:end-2)';
 x2=xg.x2(3:end-2)';
 x3=xg.x3(3:end-2);
