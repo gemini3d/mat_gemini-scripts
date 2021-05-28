@@ -41,25 +41,27 @@ Ephi=Emod(:,:,:,1).*dot(xg.e1,xg.ephi,4)+Emod(:,:,:,2).*dot(xg.e2,xg.ephi,4)+ ..
 % need to be interpolated onto a common grid.
 xgmlon=squeeze(xg.phi(1,:,1))*180/pi;
 xgmlat=90-squeeze(xg.theta(1,1,:))*180/pi;
-if (all(abs(datmag.mlon(:)-xgmlon(:))<0.01) && all(abs(datmag.mlat(:)-xgmlat(:))<0.01) )
-    % we do not need to grid fields and simple must collect them into the
-    % correct types of arrays, viz components r,theta,phi and spatial
-    % dependence
-    disp('Poynting_calc --> E,B on same grid, ignoring size inputs')
-    
-    mloni=xgmlon; mlati=xgmlat;
-    if (size(datmag.Br,1)==1)
-        Ertmp=zeros(1,xg.lx(2),xg.lx(3));
-        Ethtmp=zeros(1,xg.lx(2),xg.lx(3));
-        Ephitmp=zeros(1,xg.lx(2),xg.lx(3));        
-        Ertmp(1,:,:)=Er(end,:,:);
-        Ethtmp(1,:,:)=Etheta(end,:,:);
-        Ephitmp(1,:,:)=Ephi(end,:,:);
-        E=cat(4,permute(Ertmp,[1,3,2]),permute(Ethtmp,[1,3,2]),permute(Ephitmp,[1,3,2]));
-    else
-        E=cat(4,permute(Er,[1,3,2]),permute(Etheta,[1,3,2]),permute(Ephi,[1,3,2]));
+if (numel(datmag.mlon)==numel(xgmlon) && numel(datmag.mlat)==numel(xgmlat))
+    if (all(abs(datmag.mlon(:)-xgmlon(:))<0.01) && all(abs(datmag.mlat(:)-xgmlat(:))<0.01) )
+        % we do not need to grid fields and simple must collect them into the
+        % correct types of arrays, viz components r,theta,phi and spatial
+        % dependence
+        disp('Poynting_calc --> E,B on same grid, ignoring size inputs')
+        
+        mloni=xgmlon; mlati=xgmlat;
+        if (size(datmag.Br,1)==1)
+            Ertmp=zeros(1,xg.lx(2),xg.lx(3));
+            Ethtmp=zeros(1,xg.lx(2),xg.lx(3));
+            Ephitmp=zeros(1,xg.lx(2),xg.lx(3));
+            Ertmp(1,:,:)=Er(end,:,:);
+            Ethtmp(1,:,:)=Etheta(end,:,:);
+            Ephitmp(1,:,:)=Ephi(end,:,:);
+            E=cat(4,permute(Ertmp,[1,3,2]),permute(Ethtmp,[1,3,2]),permute(Ephitmp,[1,3,2]));
+        else
+            E=cat(4,permute(Er,[1,3,2]),permute(Etheta,[1,3,2]),permute(Ephi,[1,3,2]));
+        end %if
+        B=cat(4,datmag.Br,datmag.Btheta,datmag.Bphi);
     end %if
-    B=cat(4,datmag.Br,datmag.Btheta,datmag.Bphi);
 else
     % Grid electric fields uniformly using the extents of the magnetic field
     % computation grid.  This may not do a great job if the source grid is
@@ -95,8 +97,11 @@ else
     else
         [MLONI,ALTI,MLATI]=meshgrid(mloni(:),alti(:),mlati(:));
         Bri=interp3(datmag.r-Re,datmag.mlon,datmag.mlat,datmag.Br,ALTI(:),MLONI(:),MLATI(:));
+        Bri=reshape(Bri,[lalt,llon,llat]);
         Bthetai=interp3(datmag.r-Re,datmag.mlon,datmag.mlat,datmag.Btheta,ALTI(:),MLONI(:),MLATI(:));
+        Bthetai=reshape(Bthetai,[lalt,llon,llat]);
         Bphii=interp3(datmag.r-Re,datmag.mlon,datmag.mlat,datmag.Bphi,ALTI(:),MLONI(:),MLATI(:));
+        Bphii=reshape(Bphii,[lalt,llon,llat]);
     end %if
     B=cat(4,Bri,Bthetai,Bphii);
 end %if

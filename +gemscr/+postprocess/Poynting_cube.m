@@ -65,7 +65,7 @@ colorbar;
 
 % x3 slices
 subplot(337);
-imagesc(mlat,alt,squeeze(S(:,:,end,2)));
+imagesc(mlat,alt,squeeze(S(:,:,end,3)));
 xlabel("mlat");
 ylabel("alt");
 title("end boundary S_3");
@@ -73,7 +73,7 @@ axis xy;
 colorbar;
 
 subplot(338);
-imagesc(mlat,alt,squeeze(S(:,:,1,2)));
+imagesc(mlat,alt,squeeze(S(:,:,1,3)));
 xlabel("mlat");
 ylabel("alt");
 title("beginning boundary S_3");
@@ -81,7 +81,7 @@ axis xy;
 colorbar;
 
 subplot(339);
-imagesc(mlat,alt,squeeze(S(:,:,1,2))-squeeze(S(:,:,end,2)));
+imagesc(mlat,alt,squeeze(S(:,:,1,3))-squeeze(S(:,:,end,3)));
 xlabel("mlat");
 ylabel("alt");
 title("\Delta S_3");
