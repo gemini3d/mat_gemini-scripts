@@ -6,7 +6,7 @@ run(fullfile(cwd, '../../setup.m'))
 %SIMULATION LOCAITONS
 simname='mooreOK3D_hemis_medres_corrected/';
 basedir='~/simulations/';
-direc= gemini3d.fileio.expanduser(fullfile(basedir, simname));
+direc= stdlib.fileio.expanduser(fullfile(basedir, simname));
 %mkdir([direc,'/TECplots']);    %store output plots with the simulation data
 mkdir(fullfile(direc, 'TECplots_eps'));    %store output plots with the simulation data
 

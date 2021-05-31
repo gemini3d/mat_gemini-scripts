@@ -7,7 +7,7 @@ arguments
   indir (1,1) string
 end
 
-gemini3d.fileio.makedir(outdir)
+stdlib.fileio.makedir(outdir)
 
 % Specify date and time of simulation start
 time = datetime(2011,3,11, 0, 0, 35100); % seconds in day

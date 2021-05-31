@@ -5,7 +5,7 @@ arguments
   indir (1,1) string
 end
 
-gemini3d.fileio.makedir(outdir)
+stdlib.fileio.makedir(outdir)
 
 % Specify initial time and timestep of data
 time = datetime(2011,3,11, 0, 0, 20700);

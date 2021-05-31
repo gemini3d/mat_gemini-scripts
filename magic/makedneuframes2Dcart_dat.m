@@ -5,7 +5,7 @@ arguments
   indir (1,1) string % matlab .mat data files
 end
 
-gemini3d.fileio.makedir(outdir)
+stdlib.fileio.makedir(outdir)
 
 % Specify date and time of simulation start
 time = datetime(2011,03,11, 0, 0, 20783); % Second from day start (UT)
