@@ -31,14 +31,14 @@ Re=6370e3;
 
 
 %TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
-[thetatd,phid]=geog2geomag(glat,glon);
+[thetatd,phid]=gemini3d.geog2geomag(glat,glon);
 
 thetax2min=thetatd-dtheta/2*pi/180;
 thetax2max=thetatd+dtheta/2*pi/180;
 pmax=(Re+altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
 qtmp=(Re/(Re+altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
-rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
+rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 % %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
 % %p=linspace(pmin,pmax,lp);
 % p=linspace(pmin,pmax,lpp);
@@ -50,8 +50,8 @@ rtmp=fminbnd(@(x) qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %NONUNIFORM IN X2 GRID - TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN
 %METERS IN THE X2 DIRECTION (DETERMINED EMPIRICALLY)
 %coeffs=[5.1635e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper
-coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
-%coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
+%coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
+coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
 p(1)=pmin;
 ip=1;
@@ -129,7 +129,7 @@ qtol=1e-9;
 fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Converting q,p grid centers to spherical coords.');
 for iq=1:lq
     for ip=1:lp
-        [r(iq,ip),fval(iq,ip)]=fminbnd(@(x) qp2robj(x,q(iq),p(ip)),0,100*Re);
+        [r(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.grid.qp2robj(x,q(iq),p(ip)),0,100*Re);
         if abs(q(iq))<qtol
             theta(iq,ip)=pi/2;
         elseif q(iq)>=0        %northern hemisphere
@@ -203,7 +203,7 @@ rqi=zeros(lq+1,lp);
 thetaqi=zeros(lq+1,lp);
 for iq=1:lq+1
     for ip=1:lp
-        [rqi(iq,ip),fval(iq,ip)]=fminbnd(@(x) qp2robj(x,qi(iq),p(ip)),0,100*Re);
+        [rqi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.grid.qp2robj(x,qi(iq),p(ip)),0,100*Re);
         if abs(qi(iq))<qtol
             thetaqi(iq,ip)=pi/2;
         elseif qi(iq)>=0        %northern hemisphere
@@ -225,7 +225,7 @@ rpi=zeros(lq,lp+1);
 thetapi=zeros(lq,lp+1);
 for iq=1:lq
     for ip=1:lp+1
-        [rpi(iq,ip),fval(iq,ip)]=fminbnd(@(x) qp2robj(x,q(iq),pii(ip)),0,100*Re);
+        [rpi(iq,ip),fval(iq,ip)]=fminbnd(@(x) gemini3d.grid.qp2robj(x,q(iq),pii(ip)),0,100*Re);
         if abs(q(iq))<qtol
             thetapi(iq,ip)=pi/2;
         elseif q(iq)>=0        %northern hemisphere
@@ -361,7 +361,7 @@ xg.Bmag=Bmag;
 
 %xg.glat=(pi/2-theta)*180/pi; xg.glon=phi*180/pi*ones(lx(1),lx(2));
 for iphi=1:lphi
-  [glats,glons]=geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
+  [glats,glons]=gemini3d.geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
   xg.glat(:,:,iphi)=glats;
   xg.glon(:,:,iphi)=glons;
 end
@@ -428,9 +428,9 @@ xgf.alt=xgf.alt(inds1,inds2,inds3);
 
 xgf.Bmag=xgf.Bmag(inds1,inds2,inds3);
 
-xgf.I=xgf.I(1,inds2,inds3);
+xgf.I=squeeze(xgf.I(1,inds2,inds3));
 
-xgf.nullpts=xgf.nullpts(inds1,inds2,inds3);
+xgf.nullpts=real(xgf.nullpts(inds1,inds2,inds3));
 
 %ZZZ - NEED TO ALSO CORRECT OTHER VARIABLE SIZES!!!!
 xgf.e1=xgf.e1(inds1,inds2,inds3,:);
@@ -448,5 +448,8 @@ xgf.phi=xgf.phi(inds1,inds2,inds3);
 xgf.x=xgf.x(inds1,inds2,inds3);
 xgf.y=xgf.y(inds1,inds2,inds3);
 xgf.z=xgf.z(inds1,inds2,inds3);
+
+xgf.glonctr=glon;
+xgf.glatctr=glat;
 
 end
