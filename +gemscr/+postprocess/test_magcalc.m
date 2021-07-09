@@ -5,9 +5,9 @@ run("~/Projects/mat_gemini-scripts/setup.m");
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % data set to test with
 ymd=[2017,3,2];
-UTsec=27285;
+UTsec=27030;
 TOI=datetime([ymd,0,0,UTsec]);
-direc="~/simulations/arcs_angle_wide_nonuniform_large_highresx1/";
+direc="~/simulations/raid/dBtesting_noJpar_magcorner/";
 
 % load the magnetic field perturbations
 dat=gemini3d.read.magframe(direc,"time",TOI);
@@ -113,12 +113,108 @@ datp=gemini3d.read.frame(direc,"time",TOI);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+[lx1,lx2,lx3]=size(J1g);
+%ix1=floor(lx1/2)+10;
+%ix2=floor(lx2/2)+10;
+%ix3=floor(lx3/2)+10;
+ix1=floor(lx1/2);
+ix2=floor(lx2/2);
+ix3=floor(lx3/2);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % make some diagnostic plots
+% current density from GEMINI output
+figure(3);
+subplot(331);
+pcolor(x/1e3,z/1e3,J1g(:,:,ix3));
+shading flat;
+xlabel('x (east)');
+ylabel('z (alt.)');
+title('J_z (up) uA/m^2');
+colorbar;
+cax{1}=caxis;
+
+subplot(332);
+pcolor(x/1e3,z/1e3,J2g(:,:,ix3));
+%axis([-300 300 80 150])
+shading flat;
+xlabel('x (east)');
+ylabel('z (alt.)');
+title('J_x (east) uA/m^2');
+colorbar;
+cax{2}=caxis;
+
+subplot(333);
+pcolor(x/1e3,z/1e3,J3g(:,:,ix3));
+%axis([-300 300 80 150])
+shading flat;
+xlabel('x (east)');
+ylabel('z (alt.)');
+title('J_y (north) uA/m^2');
+colorbar;
+cax{3}=caxis;
+
+subplot(334)
+pcolor(y/1e3,z/1e3,squeeze(J1g(:,ix2,:)));
+shading flat;
+xlabel('y (north)');
+ylabel('z (alt.)');
+title('J_z (up) uA/m^2');
+colorbar;
+cax{4}=caxis;
+
+subplot(335);
+pcolor(y/1e3,z/1e3,squeeze(J2g(:,ix2,:)));
+%axis([-300 300 80 150])
+shading flat;
+xlabel('y (north)');
+ylabel('z (alt.)');
+title('J_x (east) uA/m^2');
+colorbar;
+cax{5}=caxis;
+
+subplot(336);
+pcolor(y/1e3,z/1e3,squeeze(J3g(:,ix2,:)));
+%axis([-300 300 80 150])
+shading flat;
+xlabel('y (north)');
+ylabel('z (alt.)');
+title('J_y (north) uA/m^2');
+colorbar;
+cax{6}=caxis;
+
+subplot(337)
+pcolor(x/1e3,y/1e3,squeeze(J1g(ix1,:,:))');
+shading flat;
+xlabel('x (east)');
+ylabel('y (north)');
+title('J_z (up) uA/m^2');
+colorbar;
+cax{7}=caxis;
+
+subplot(338);
+pcolor(x/1e3,y/1e3,squeeze(J2g(ix1,:,:))');
+shading flat;
+xlabel('x (east)');
+ylabel('y (north)');
+title('J_x (east) uA/m^2');
+colorbar;
+cax{8}=caxis;
+
+subplot(339);
+pcolor(x/1e3,y/1e3,squeeze(J3g(ix1,:,:))');
+shading flat;
+xlabel('x (east)');
+ylabel('y (north)');
+title('J_y (north) uA/m^2');
+colorbar;
+cax{9}=caxis;
 
 % magnetic field
 figure(1);
 subplot(331);
-pcolor(x/1e3,z/1e3,Bz(:,:,end/2));
+pcolor(x/1e3,z/1e3,Bz(:,:,ix3));
 shading flat;
 xlabel('x (east)');
 ylabel('z (alt.)');
@@ -126,7 +222,7 @@ title('B_z (up) nT');
 colorbar;
 
 subplot(332);
-pcolor(x/1e3,z/1e3,Bx(:,:,end/2));
+pcolor(x/1e3,z/1e3,Bx(:,:,ix3));
 shading flat;
 xlabel('x (east)');
 ylabel('z (alt.)');
@@ -134,7 +230,7 @@ title('B_x (east) nT');
 colorbar;
 
 subplot(333);
-pcolor(x/1e3,z/1e3,By(:,:,end/2));
+pcolor(x/1e3,z/1e3,By(:,:,ix3));
 shading flat;
 xlabel('x (east)');
 ylabel('z (alt.)');
@@ -142,7 +238,7 @@ title('B_y (north) nT');
 colorbar;
 
 subplot(334)
-pcolor(y/1e3,z/1e3,squeeze(Bz(:,end/2,:)));
+pcolor(y/1e3,z/1e3,squeeze(Bz(:,ix2,:)));
 shading flat;
 xlabel('y (north)');
 ylabel('z (alt.)');
@@ -150,7 +246,7 @@ title('B_z (up) nT');
 colorbar;
 
 subplot(335);
-pcolor(y/1e3,z/1e3,squeeze(Bx(:,end/2,:)));
+pcolor(y/1e3,z/1e3,squeeze(Bx(:,ix2,:)));
 shading flat;
 xlabel('y (north)');
 ylabel('z (alt.)');
@@ -158,7 +254,7 @@ title('B_x (east) nT');
 colorbar;
 
 subplot(336);
-pcolor(y/1e3,z/1e3,squeeze(By(:,end/2,:)));
+pcolor(y/1e3,z/1e3,squeeze(By(:,ix2,:)));
 shading flat;
 xlabel('y (north)');
 ylabel('z (alt.)');
@@ -166,7 +262,7 @@ title('B_y (north) nT');
 colorbar;
 
 subplot(337)
-pcolor(x/1e3,y/1e3,squeeze(Bz(end/2,:,:))');
+pcolor(x/1e3,y/1e3,squeeze(Bz(ix1,:,:))');
 shading flat;
 xlabel('x (east)');
 ylabel('y (north)');
@@ -174,7 +270,7 @@ title('B_z (up) nT');
 colorbar;
 
 subplot(338);
-pcolor(x/1e3,y/1e3,squeeze(Bx(end/2,:,:))');
+pcolor(x/1e3,y/1e3,squeeze(Bx(ix1,:,:))');
 shading flat;
 xlabel('x (east)');
 ylabel('y (north)');
@@ -182,17 +278,18 @@ title('B_x (east) nT');
 colorbar;
 
 subplot(339);
-pcolor(x/1e3,y/1e3,squeeze(By(end/2,:,:))');
+pcolor(x/1e3,y/1e3,squeeze(By(ix1,:,:))');
 shading flat;
 xlabel('x (east)');
 ylabel('y (north)');
 title('B_y (north) nT');
 colorbar;
+
 
 % current density from curl(H)
 figure(2);
 subplot(331);
-pcolor(x/1e3,z/1e3,Jz(:,:,end/2));
+pcolor(x/1e3,z/1e3,Jz(:,:,ix3));
 shading flat;
 xlabel('x (east)');
 ylabel('z (alt.)');
@@ -200,7 +297,8 @@ title('J_z (up) uA/m^2');
 colorbar;
 
 subplot(332);
-pcolor(x/1e3,z/1e3,Jx(:,:,end/2));
+pcolor(x/1e3,z/1e3,Jx(:,:,ix3));
+%axis([-300 300 80 150])
 shading flat;
 xlabel('x (east)');
 ylabel('z (alt.)');
@@ -208,7 +306,8 @@ title('J_x (east) uA/m^2');
 colorbar;
 
 subplot(333);
-pcolor(x/1e3,z/1e3,Jy(:,:,end/2));
+pcolor(x/1e3,z/1e3,Jy(:,:,ix3));
+%axis([-300 300 80 150])
 shading flat;
 xlabel('x (east)');
 ylabel('z (alt.)');
@@ -216,7 +315,7 @@ title('J_y (north) uA/m^2');
 colorbar;
 
 subplot(334)
-pcolor(y/1e3,z/1e3,squeeze(Jz(:,end/2,:)));
+pcolor(y/1e3,z/1e3,squeeze(Jz(:,ix2,:)));
 shading flat;
 xlabel('y (north)');
 ylabel('z (alt.)');
@@ -224,7 +323,8 @@ title('J_z (up) uA/m^2');
 colorbar;
 
 subplot(335);
-pcolor(y/1e3,z/1e3,squeeze(Jx(:,end/2,:)));
+pcolor(y/1e3,z/1e3,squeeze(Jx(:,ix2,:)));
+%axis([-300 300 80 150])
 shading flat;
 xlabel('y (north)');
 ylabel('z (alt.)');
@@ -232,7 +332,8 @@ title('J_x (east) uA/m^2');
 colorbar;
 
 subplot(336);
-pcolor(y/1e3,z/1e3,squeeze(Jy(:,end/2,:)));
+pcolor(y/1e3,z/1e3,squeeze(Jy(:,ix2,:)));
+%axis([-300 300 80 150])
 shading flat;
 xlabel('y (north)');
 ylabel('z (alt.)');
@@ -240,7 +341,7 @@ title('J_y (north) uA/m^2');
 colorbar;
 
 subplot(337)
-pcolor(x/1e3,y/1e3,squeeze(Jz(end/2,:,:))');
+pcolor(x/1e3,y/1e3,squeeze(Jz(ix1,:,:))');
 shading flat;
 xlabel('x (east)');
 ylabel('y (north)');
@@ -248,7 +349,7 @@ title('J_z (up) uA/m^2');
 colorbar;
 
 subplot(338);
-pcolor(x/1e3,y/1e3,squeeze(Jx(end/2,:,:))');
+pcolor(x/1e3,y/1e3,squeeze(Jx(ix1,:,:))');
 shading flat;
 xlabel('x (east)');
 ylabel('y (north)');
@@ -256,83 +357,15 @@ title('J_x (east) uA/m^2');
 colorbar;
 
 subplot(339);
-pcolor(x/1e3,y/1e3,squeeze(Jy(end/2,:,:))');
+pcolor(x/1e3,y/1e3,squeeze(Jy(ix1,:,:))');
 shading flat;
 xlabel('x (east)');
 ylabel('y (north)');
 title('J_y (north) uA/m^2');
 colorbar;
 
-% curren density from GEMINI output
-figure(3);
-subplot(331);
-pcolor(x/1e3,z/1e3,J1g(:,:,end/2));
-shading flat;
-xlabel('x (east)');
-ylabel('z (alt.)');
-title('J_z (up) uA/m^2');
-colorbar;
-
-subplot(332);
-pcolor(x/1e3,z/1e3,J2g(:,:,end/2));
-shading flat;
-xlabel('x (east)');
-ylabel('z (alt.)');
-title('J_x (east) uA/m^2');
-colorbar;
-
-subplot(333);
-pcolor(x/1e3,z/1e3,J3g(:,:,end/2));
-shading flat;
-xlabel('x (east)');
-ylabel('z (alt.)');
-title('J_y (north) uA/m^2');
-colorbar;
-
-subplot(334)
-pcolor(y/1e3,z/1e3,squeeze(J1g(:,end/2,:)));
-shading flat;
-xlabel('y (north)');
-ylabel('z (alt.)');
-title('J_z (up) uA/m^2');
-colorbar;
-
-subplot(335);
-pcolor(y/1e3,z/1e3,squeeze(J2g(:,end/2,:)));
-shading flat;
-xlabel('y (north)');
-ylabel('z (alt.)');
-title('J_x (east) uA/m^2');
-colorbar;
-
-subplot(336);
-pcolor(y/1e3,z/1e3,squeeze(J3g(:,end/2,:)));
-shading flat;
-xlabel('y (north)');
-ylabel('z (alt.)');
-title('J_y (north) uA/m^2');
-colorbar;
-
-subplot(337)
-pcolor(x/1e3,y/1e3,squeeze(J1g(end/2,:,:))');
-shading flat;
-xlabel('x (east)');
-ylabel('y (north)');
-title('J_z (up) uA/m^2');
-colorbar;
-
-subplot(338);
-pcolor(x/1e3,y/1e3,squeeze(J2g(end/2,:,:))');
-shading flat;
-xlabel('x (east)');
-ylabel('y (north)');
-title('J_x (east) uA/m^2');
-colorbar;
-
-subplot(339);
-pcolor(x/1e3,y/1e3,squeeze(J3g(end/2,:,:))');
-shading flat;
-xlabel('x (east)');
-ylabel('y (north)');
-title('J_y (north) uA/m^2');
-colorbar;
+% harmonize colorbar axes.
+for iax=1:numel(cax)
+    subplot(3,3,iax);
+    caxis(cax{iax});
+end %for
