@@ -13,16 +13,29 @@ flagsource=1;
 iscurv=true;
 %}
 
-%% Moore OK
-p.dtheta=20;
-p.dphi=27.5;
-p.lp=256;
-p.lq=256;
-p.lphi=210;
-p.altmin=80e3;
-p.glat=39;
-p.glon=262.51;
-p.gridflag=1;
+% %% Moore OK
+% p.dtheta=20;
+% p.dphi=27.5;
+% p.lp=256;
+% p.lq=256;
+% p.lphi=210;
+% p.altmin=80e3;
+% p.glat=39;
+% p.glon=262.51;
+% p.gridflag=1;
+% p.flagsource=1;
+% p.iscurv=true;
+
+%% HWM tests
+p.glat = 42.45;
+p.glon = 143.4;
+p.dtheta = 15;
+p.dphi=1;
+p.altmin = 80e3;
+p.lp = 264;
+p.lq = 512;
+p.lphi = 1;
+p.gridflag = 1;
 p.flagsource=1;
 p.iscurv=true;
 
@@ -94,11 +107,12 @@ lx3=xg.lx(3);
 h2=xg.h2(3:end-2,3:end-2,3:end-2);
 x2=xg.x2(3:end-2);
 
-ix1=floor(lx1/2);
-ix3=floor(lx3/2);
+%ix1=max(floor(lx1/2),1);
+ix1=floor(lx1/4);
+ix3=max(floor(lx3/2),1);
 dl2trial=squeeze(dl2(ix1,:,ix3));                % step size for the original grid
 %dl2target=6.75e3;                                % define a desired grid step size in x2
-dl2target=50e3;
+dl2target=7.5e3;
 dx2target=squeeze(dl2target./h2(ix1,:,ix3));     % what dx2 needs to be to hit target grid size
 
 %A polynomial is being fitted to the target dL as a function of L, this
