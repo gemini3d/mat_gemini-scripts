@@ -79,7 +79,7 @@ timevar=datetime([ymd,0,0,UTsec]);
 filename=gemini3d.datelab(timevar);
 filename=strcat(outdir,filename,'.h5');
 % Be sure that setup from mat_gemini was executed prior running this code
-stdlib.hdf5nc.h5save(filename, '/dn0all', doxs, "type",  freal) % O perturbations
+stdlib.hdf5nc.h5save(filename, '/dnOall', doxs, "type",  freal) % O perturbations
 stdlib.hdf5nc.h5save(filename, '/dnN2all', dnit2s, "type",  freal) % N2 perturbations
 stdlib.hdf5nc.h5save(filename, '/dnO2all', dox2s, "type",  freal) % O2 perturbations
 stdlib.hdf5nc.h5save(filename, '/dvnxall', velyfull, "type",  freal) % dvnxall - zonal (note - we store here velyfull)
