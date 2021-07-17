@@ -55,8 +55,8 @@ rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom r
 %coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
 
-%coeffs=[0.364e-3,-0.0851e-3,0.6741e-3];     % HWM global tests...
-coeffs=[0.000575,-0.0001,0.001];
+%coeffs=[0.364e-3,-0.0851e-3,0.6741e-3];     % HWM global tests???
+coeffs=[0.000575,-0.0001,0.001];    % HWM global medres...
 
 p(1)=pmin;
 ip=1;
