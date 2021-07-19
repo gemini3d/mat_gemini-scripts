@@ -75,16 +75,22 @@ x = x + shiftx;
 
 
 %LOAD FRAME  DATA FROM ZETTERGREN ET AL 2015 MODEL
-lfile=floor(tinterp/dtout);   %number of files from beginning
-lfilestart=lfile*dtout;
-lfileend=(lfile+1)*dtout;
+lfile=floor(tinterp/dtout)+1;   %number of files from beginning (index)
+indstart=lfile;    % index of input file preceeding tinterp
+indend=(lfile+1);   % index of input file following tinterp
+%lfilestart=lfile*dtout;  
+%lfileend=(lfile+1)*dtout;
+lfilestart=indstart*dtout;   % time in seconds of input file preceeding tinterp
+lfileend=indend*dtout;   % time in seconds of input file following tinterp
 
 
 %COMPUTE THE UT INFO FOR THE FIRST FRAME OF INTEREST
-[ymd,UTsec]=gemini3d.dateinc(lfilestart,ymd0,UTsec0);
-%loadframe_wrapper; % this creates the filename %% deprecated...
-dateval=datetime([ymd,0,0,UTsec]);
-datplasma=gemini3d.read.frame(direc,"time",dateval);
+% [ymd,UTsec]=gemini3d.dateinc(lfilestart,ymd0,UTsec0);
+% %loadframe_wrapper; % this creates the filename %% deprecated...
+% dateval=datetime([ymd,0,0,UTsec]);
+dateval=cfg.times(indstart);
+% datplasma=gemini3d.read.frame(direc,"time",dateval);
+datplasma=gemini3d.read.frame(direc,"time",dateval,"vars","ne");
 xg=gemini3d.read.grid(direc);   % remove if passing grid as arg
 numden=datplasma.ne;
 clear datplasma;
@@ -176,8 +182,17 @@ neinterp1(:,indsmaxx2,:)=repmat(neinterp1(:,indedgemax,:),[1,numel(indsmaxx2),1]
 
 
 %NOW LOAD THE SECOND FILE
-[ymd,UTsec]=dateinc(lfileend,ymd0,UTsec0);
-loadframe_wrapper;
+% [ymd,UTsec]=dateinc(lfileend,ymd0,UTsec0);
+% loadframe_wrapper;
+dateval=cfg.times(indend);
+datplasma=gemini3d.read.frame(direc,"time",dateval,"vars","ne");
+xg=gemini3d.read.grid(direc);
+numden=datplasma.ne;
+clear datplasma;
+x1=xg.x1(3:end-2)';
+x2=xg.x2(3:end-2)';
+x3=xg.x3(3:end-2)';
+clear xg;
 numden=permute(numden,[3,2,1]);
 
 
