@@ -21,17 +21,34 @@ glon=262.51;
 gridflag=1;
 %}
 
-p.dtheta=16.8;
-p.dphi=11;
-p.lp=216;
-p.lq=128;
-p.lphi=60;
-p.altmin=80e3;
-p.glat=-30.9;
-p.glon=287;
-p.gridflag=1;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% p.dtheta=16.8;
+% p.dphi=11;
+% p.lp=216;
+% p.lq=128;
+% p.lphi=60;
+% p.altmin=80e3;
+% p.glat=-30.9;
+% p.glon=287;
+% p.gridflag=1;
 
-xg=gemscr.grid.tilted_dipole3d_varx2_oneside(p);
+%xg=gemscr.grid.tilted_dipole3d_varx2_oneside(p);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+p.glat = 52;
+p.glon = 143.4;
+p.dtheta = 27;
+p.dphi = 356.2887;
+p.altmin = 80e3;
+p.lp = 264;
+p.lq = 384;
+p.lphi = 24;
+p.gridflag = 1;
+
+xg=gemini3d.grid.tilted_dipole(p)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 cfg=struct.empty;
 cfg(1).sourcemlat=[];
 

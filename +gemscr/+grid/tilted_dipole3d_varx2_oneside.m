@@ -236,9 +236,9 @@ q=[q(1)-2*qstride;q(1)-qstride;q;q(end)+qstride2;q(end)+2*qstride2];    %add in 
 phimin=phid- cfg.dphi/2*pi/180;
 phimax=phid+ cfg.dphi/2*pi/180;
 %phi=linspace(phimin,phimax,lphi);    %note conversion to radians in  dphi calculation above
-phi=linspace(phimin,phimax,lphip);
+phi=linspace(phimin,phimax,cfg.lphi);
 phi=phi(:)';
-if (lphip>1)
+if (cfg.lphi>1)
   phistride=phi(2)-phi(1);     %assume constant stride
 else
   phistride=0.1;   %just make up some junk for a 2D sim

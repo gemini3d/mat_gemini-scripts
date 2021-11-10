@@ -93,18 +93,44 @@
 % gridflag=0;
 % I=90;
 
-%NEW ZEALAND EXAMPLE
-p.dtheta=17.5;
-p.dphi=8.5;
-p.lp=256;
+% %NEW ZEALAND EXAMPLE
+% p.dtheta=17.5;
+% p.dphi=8.5;
+% p.lp=256;
+% p.lq=256;
+% p.lphi=10;
+% p.altmin=80e3;
+% p.glat=-45.85;
+% p.glon=173.077;
+% p.gridflag=1;
+
+% %% Equatorial grid
+% p.dtheta=4.5;
+% p.dphi=24;
+% p.lp=256;
+% p.lq=256;
+% p.lphi=144;
+% p.altmin=80e3;
+% p.glat=8.35;
+% p.glon=360-76.9;     %Jicamarca
+% p.gridflag=1;
+% p.flagsource=0;
+% p.iscurv=true;
+% p.file_format="h5";
+
+%% EQuatorial grid
+%p.dtheta=5.75;
+p.dtheta=7.75;
+p.dphi=30;
+p.lp=128;
 p.lq=256;
-p.lphi=10;
+p.lphi=48;
 p.altmin=80e3;
-p.glat=-45.85;
-p.glon=173.077;
+p.glat=12;
+p.glon=360-76.9;     %Jicamarca
 p.gridflag=1;
-
-
+p.flagsource=0;
+p.iscurv=true;
 
 %RUN THE GRID GENERATION CODE
 if ~exist('xg', 'var')

@@ -26,18 +26,29 @@ iscurv=true;
 % p.flagsource=1;
 % p.iscurv=true;
 
-%% HWM tests
-p.glat = 42.45;
+% %% HWM tests
+% p.glat = 42.45;
+% p.glon = 143.4;
+% p.dtheta = 15;
+% p.dphi=1;
+% p.altmin = 80e3;
+% p.lp = 264;
+% p.lq = 512;
+% p.lphi = 1;
+% p.gridflag = 1;
+% p.flagsource=1;
+% p.iscurv=true;
+
+%% midlat extension to wind tests
+p.glat = 52;
 p.glon = 143.4;
-p.dtheta = 15;
-p.dphi=1;
+p.dtheta = 27;
+p.dphi = 356.2887;
 p.altmin = 80e3;
 p.lp = 264;
-p.lq = 512;
-p.lphi = 1;
+p.lq = 384;
+p.lphi = 24;
 p.gridflag = 1;
-p.flagsource=1;
-p.iscurv=true;
 
 %% Compute the grid
 xg= gemini3d.grid.tilted_dipole(p);
