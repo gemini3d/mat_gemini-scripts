@@ -2,6 +2,8 @@ clear all
 close all
 clc
 
+import stdlib.hdf5nc.h5save
+
 % folder to save GEMINI inputs
 outdir='../acoustic2D_cartesian_neutrals_GEMINI/';
 
@@ -23,8 +25,8 @@ lx2=100; % altitude
 filename=[outdir,'simsize.h5'];
 disp("write " + filename)
 if isfile(filename), delete(filename), end
-hdf5nc.h5save(filename, '/lx1', lx1, "type", "int32")
-hdf5nc.h5save(filename, '/lx2', lx2, "type", "int32")
+h5save(filename, '/lx1', lx1, "type", "int32")
+h5save(filename, '/lx2', lx2, "type", "int32")
 freal = 'float32';
 
 ymd=ymd0;

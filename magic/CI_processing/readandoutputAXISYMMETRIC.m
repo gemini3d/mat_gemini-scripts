@@ -1,9 +1,11 @@
 % Import needed slice or make a slice from imported data
+
+import stdlib.hdf5nc.h5save
 for i=1:1:MaxFrames
 
 indir='../MAGIC_OUTPUT/';
 nameCur = strcat(indir,'/fort.qq',num2str(Frame,'%04i'),'id0000','.h5');
-    
+
 % Read MAGIC grid structure and simulation configuration
 attr = h5readatt(nameCur,'/Pid','Parameters'); % Thread MASTER (0) always outputs its data
 lx = attr(22);
@@ -27,10 +29,10 @@ end
 datafullset = cat(2,datafullset,dataset);
 dataset=[];
 end
-        
+
 fprintf('Full 3D domain is loaded\n');
 
-% Store Frame=0 data 
+% Store Frame=0 data
 if (Frame==0)
 dox0=squeeze(6.022d23.*datafullset(6,:,:,:).*datafullset(1,:,:,:).*1e-3.*(1/16));
 dnit20=squeeze(6.022d23.*(1-datafullset(6,:,:,:)-datafullset(7,:,:,:)).*datafullset(1,:,:,:).*1e-3.*(1/28));
@@ -68,7 +70,7 @@ doxs=permute(doxs,[3,2,1]);
 
 % Permute matrices to have vertical, zonal, and then meridional
 % Then cut half of the domain in meridional direction (46:90) along center
-% of the domain in zonal direciton. Be sure that matrix starts with r=0 
+% of the domain in zonal direciton. Be sure that matrix starts with r=0
 % in 3rd direction
 velxfull=squeeze(velxfull(:,40,46:90));
 velyfull=squeeze(velyfull(:,40,46:90));
@@ -83,12 +85,12 @@ timevar=datetime([ymd,0,0,UTsec]);
 filename=gemini3d.datelab(timevar);
 filename=strcat(outdir,filename,'.h5');
 % Be sure that setup from mat_gemini was executed prior running this code
-hdf5nc.h5save(filename, '/dn0all', doxs, "type",  freal) % O perturbations
-hdf5nc.h5save(filename, '/dnN2all', dnit2s, "type",  freal) % N2 perturbations
-hdf5nc.h5save(filename, '/dnO2all', dox2s, "type",  freal) % O2 perturbations
-hdf5nc.h5save(filename, '/dvnrhoall', velxfull, "type",  freal) % dvnrhoall - radial (note - we store here velxfull)
-hdf5nc.h5save(filename, '/dvnzall', velzfull, "type",  freal) % Vertical velocity
-hdf5nc.h5save(filename, '/dTnall', temps, "type",  freal) % Temperature perturbations
+h5save(filename, '/dn0all', doxs, "type",  freal) % O perturbations
+h5save(filename, '/dnN2all', dnit2s, "type",  freal) % N2 perturbations
+h5save(filename, '/dnO2all', dox2s, "type",  freal) % O2 perturbations
+h5save(filename, '/dvnrhoall', velxfull, "type",  freal) % dvnrhoall - radial (note - we store here velxfull)
+h5save(filename, '/dvnzall', velzfull, "type",  freal) % Vertical velocity
+h5save(filename, '/dTnall', temps, "type",  freal) % Temperature perturbations
 
 pcolor(1:8.3333:375,1:5:500,velzfull)
 shading interp

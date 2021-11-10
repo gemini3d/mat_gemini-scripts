@@ -5,6 +5,8 @@ arguments
   indir (1,1) string
 end
 
+import stdlib.hdf5nc.h5save
+
 stdlib.fileio.makedir(outdir)
 
 % Specify initial time and timestep of data
@@ -22,9 +24,9 @@ filename= fullfile(outdir, 'simsize.h5');
 disp("write " + filename)
 if isfile(filename), delete(filename), end
 
-hdf5nc.h5save(filename, '/lx1', lx1, "type", "int32")
-hdf5nc.h5save(filename, '/lx2', lx2, "type", "int32")
-hdf5nc.h5save(filename, '/lx3', lx3, "type", "int32")
+h5save(filename, '/lx1', lx1, "type", "int32")
+h5save(filename, '/lx2', lx2, "type", "int32")
+h5save(filename, '/lx3', lx3, "type", "int32")
 
 freal = 'float32';
 
@@ -52,13 +54,13 @@ for it=1:lt
 
   filename = fullfile(outdir, gemini3d.datelab(time) + ".h5");
 
-  hdf5nc.h5save(filename, '/dn0all', doxs, "type",  freal) % O perturbations
-  hdf5nc.h5save(filename, '/dnN2all', dnit2s, "type",  freal) % N2 perturbations
-  hdf5nc.h5save(filename, '/dnO2all', dox2s, "type",  freal) % O2 perturbations
-  hdf5nc.h5save(filename, '/dvnxall', velyfull, "type",  freal) % Zonal fluid velocity (positive east)
-  hdf5nc.h5save(filename, '/dvnrhoall', velxfull, "type",  freal) % Meridional fluid velocity (positive north)
-  hdf5nc.h5save(filename, '/dvnzall', velzfull, "type",  freal) % Vertical velocity (positive upward)
-  hdf5nc.h5save(filename, '/dTnall', temps, "type",  freal) % Temperature perturbations
+  h5save(filename, '/dn0all', doxs, "type",  freal) % O perturbations
+  h5save(filename, '/dnN2all', dnit2s, "type",  freal) % N2 perturbations
+  h5save(filename, '/dnO2all', dox2s, "type",  freal) % O2 perturbations
+  h5save(filename, '/dvnxall', velyfull, "type",  freal) % Zonal fluid velocity (positive east)
+  h5save(filename, '/dvnrhoall', velxfull, "type",  freal) % Meridional fluid velocity (positive north)
+  h5save(filename, '/dvnzall', velzfull, "type",  freal) % Vertical velocity (positive upward)
+  h5save(filename, '/dTnall', temps, "type",  freal) % Temperature perturbations
 
   time = time + dtneu;
 
