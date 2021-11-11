@@ -26,9 +26,9 @@ lx3=100; % number of points in vertical direction
 filename=[outdir,'simsize.h5'];
 disp("write " + filename)
 if isfile(filename), delete(filename), end
-stdlib.hdf5nc.h5save(filename, '/lx1', lx1, "type", "int32")
-stdlib.hdf5nc.h5save(filename, '/lx2', lx2, "type", "int32")
-stdlib.hdf5nc.h5save(filename, '/lx3', lx3, "type", "int32")
+h5save(filename, '/lx1', lx1, "type", "int32")
+h5save(filename, '/lx2', lx2, "type", "int32")
+h5save(filename, '/lx3', lx3, "type", "int32")
 freal = 'float32';
 
 ymd=ymd0;

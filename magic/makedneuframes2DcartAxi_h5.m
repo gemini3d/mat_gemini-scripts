@@ -7,8 +7,7 @@ arguments
     indir (1,1) string
 end
 
-import hdf5.*
-import stdlib.fileio.makedir
+import stdlib.hdf5nc.h5save
 
 stdlib.fileio.makedir(outdir)
 
@@ -19,12 +18,12 @@ dtneu = seconds(6);
 % This example wants to load all neutral inputs together with
 % the matrix structure: [time,lat,alt].
 % Should be adjusted accordingly in case of need.
-velx = load(fullfile(indir, 'velx.mat'), "velx");
-velz = load(fullfile(indir, 'velz.mat'), "velz");
-temp = load(fullfile(indir, 'temp.mat'), "temp");
-dox2s = load(fullfile(indir, 'dox2s.mat'), "dox2s");
-dnit2s = load(fullfile(indir, 'dnit2s.mat'), "dnit2s");
-doxs = load(fullfile(indir, 'doxs.mat'), "doxs");
+velx = load(fullfile(indir, 'velx.mat'), "velx").velx;
+velz = load(fullfile(indir, 'velz.mat'), "velz").velz;
+temp = load(fullfile(indir, 'temp.mat'), "temp").temp;
+dox2s = load(fullfile(indir, 'dox2s.mat'), "dox2s").dox2s;
+dnit2s = load(fullfile(indir, 'dnit2s.mat'), "dnit2s").dnit2s;
+doxs = load(fullfile(indir, 'doxs.mat'), "doxs").doxs;
 
 [lt,lx1,lx2]=size(velx);
 
@@ -32,8 +31,8 @@ doxs = load(fullfile(indir, 'doxs.mat'), "doxs");
 filename = fullfile(outdir, 'simsize.h5');
 disp("write " + filename)
 if isfile(filename), delete(filename), end
-hdf5nc.h5save(filename, '/lx1', lx1, "type", "int32") % meridional direction
-hdf5nc.h5save(filename, '/lx2', lx2, "type", "int32") % vertical direction
+h5save(filename, '/lx1', lx1, "type", "int32") % meridional direction
+h5save(filename, '/lx2', lx2, "type", "int32") % vertical direction
 
 for it=1:lt
     % Permute matrices to have vertical and then meridional structure of a matrix
@@ -51,15 +50,15 @@ for it=1:lt
     doxsnow=permute(doxsnow,[2, 1]);
 
     % Write data to file
+    freal="float32";
     filename = fullfile(outdir, gemini3d.datelab(time) + ".h5");
     % Be sure that setup from mat_gemini was executed prior running this code
-    hdf5nc.h5save(filename, '/dn0all', doxsnow, "type",  freal) % O perturbations
-    hdf5nc.h5save(filename, '/dnN2all', dnit2snow, "type",  freal) % N2 perturbations
-    hdf5nc.h5save(filename, '/dnO2all', dox2snow, "type",  freal) % O2 perturbations
-    hdf5nc.h5save(filename, '/dvnrhoall', velxnow, "type",  freal) % dvnrhoall - fluid velocity in meridional direction or radial in Axisymmetric simulations
-    hdf5nc.h5save(filename, '/dvnzall', velznow, "type",  freal) % dvnzall - fluid velocity in vertical direction
-    hdf5nc.h5save(filename, '/dTnall', tempnow, "type",  freal) % Temperature perturbations
-
+    h5save(filename, '/dn0all', doxsnow, "type",  freal) % O perturbations
+    h5save(filename, '/dnN2all', dnit2snow, "type",  freal) % N2 perturbations
+    h5save(filename, '/dnO2all', dox2snow, "type",  freal) % O2 perturbations
+    h5save(filename, '/dvnrhoall', velxnow, "type",  freal) % dvnrhoall - fluid velocity in meridional direction or radial in Axisymmetric simulations
+    h5save(filename, '/dvnzall', velznow, "type",  freal) % dvnzall - fluid velocity in vertical direction
+    h5save(filename, '/dTnall', tempnow, "type",  freal) % Temperature perturbations
     time = time + dtneu;
 end % for it
 end % function

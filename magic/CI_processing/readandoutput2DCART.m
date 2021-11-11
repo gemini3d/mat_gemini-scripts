@@ -1,9 +1,12 @@
 % Import needed slice or make a slice from imported data
+
+import stdlib.hdf5nc.h5save
+
 for i=1:1:MaxFrames
 
 indir='../MAGIC_OUTPUT/';
 nameCur = strcat(indir,'fort.qq',num2str(Frame,'%04i'),'id0000','.h5');
-    
+
 % Read MAGIC grid structure and simulation configuration
 attr = h5readatt(nameCur,'/Pid','Parameters'); % Thread MASTER (0) always outputs its data
 lx = attr(22);
@@ -27,10 +30,10 @@ end
 datafullset = cat(2,datafullset,dataset);
 dataset=[];
 end
-        
+
 fprintf('Full 3D domain is loaded\n');
 
-% Store Frame=0 data 
+% Store Frame=0 data
 if (Frame==0)
 dox0=squeeze(6.022d23.*datafullset(6,:,:,:).*datafullset(1,:,:,:).*1e-3.*(1/16));
 dnit20=squeeze(6.022d23.*(1-datafullset(6,:,:,:)-datafullset(7,:,:,:)).*datafullset(1,:,:,:).*1e-3.*(1/28));
@@ -65,7 +68,7 @@ temps=permute(temps,[3,2,1]);
 dox2s=permute(dox2s,[3,2,1]);
 dnit2s=permute(dnit2s,[3,2,1]);
 doxs=permute(doxs,[3,2,1]);
-     
+
 % Cut a meridional slice along the center of the domain
 velxfull=squeeze(velxfull(:,40,:));
 velzfull=squeeze(velzfull(:,40,:));
@@ -79,16 +82,16 @@ timevar=datetime([ymd,0,0,UTsec]);
 filename=gemini3d.datelab(timevar);
 filename=strcat(outdir,filename,'.h5');
 % Be sure that setup from mat_gemini was executed prior running this code
-hdf5nc.h5save(filename, '/dn0all', doxs, "type",  freal) % O
-hdf5nc.h5save(filename, '/dnN2all', dnit2s, "type",  freal) % N2
-hdf5nc.h5save(filename, '/dnO2all', dox2s, "type",  freal) % O2
-hdf5nc.h5save(filename, '/dvnrhoall', velxfull, "type",  freal) % dvnrhoall - meridional (note - we store here velxfull)
-hdf5nc.h5save(filename, '/dvnzall', velzfull, "type",  freal) % dvnzall - vertical
-hdf5nc.h5save(filename, '/dTnall', temps, "type",  freal) % Temperature perturbations
+h5save(filename, '/dn0all', doxs, "type",  freal) % O
+h5save(filename, '/dnN2all', dnit2s, "type",  freal) % N2
+h5save(filename, '/dnO2all', dox2s, "type",  freal) % O2
+h5save(filename, '/dvnrhoall', velxfull, "type",  freal) % dvnrhoall - meridional (note - we store here velxfull)
+h5save(filename, '/dvnzall', velzfull, "type",  freal) % dvnzall - vertical
+h5save(filename, '/dTnall', temps, "type",  freal) % Temperature perturbations
 
 %Increment time
 [ymd,UTsec]=gemini3d.dateinc(dtneu,ymd,UTsec);
-    
+
 Frame = Frame + 1;
 
 end
