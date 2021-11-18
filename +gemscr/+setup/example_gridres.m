@@ -39,16 +39,30 @@ iscurv=true;
 % p.flagsource=1;
 % p.iscurv=true;
 
-%% midlat extension to wind tests
-p.glat = 52;
-p.glon = 143.4;
-p.dtheta = 27;
-p.dphi = 356.2887;
-p.altmin = 80e3;
-p.lp = 264;
-p.lq = 384;
-p.lphi = 24;
-p.gridflag = 1;
+% %% midlat extension to wind tests
+% p.glat = 52;
+% p.glon = 143.4;
+% p.dtheta = 27;
+% p.dphi = 356.2887;
+% p.altmin = 80e3;
+% p.lp = 264;
+% p.lq = 384;
+% p.lphi = 24;
+% p.gridflag = 1;
+
+%% EQuatorial grid
+%p.dtheta=5.75;
+p.dtheta=7.75;
+p.dphi=35;
+p.lp=128;
+p.lq=256;
+p.lphi=48;
+p.altmin=80e3;
+p.glat=10;
+p.glon=360-76.9;     %Jicamarca
+p.gridflag=1;
+p.flagsource=0;
+p.iscurv=true;
 
 %% Compute the grid
 xg= gemini3d.grid.tilted_dipole(p);

@@ -104,7 +104,7 @@
 % p.glon=173.077;
 % p.gridflag=1;
 
-% %% Equatorial grid
+% %% Equatorial grid, disturbance ESF runs
 % p.dtheta=4.5;
 % p.dphi=24;
 % p.lp=256;
@@ -118,7 +118,7 @@
 % p.iscurv=true;
 % p.file_format="h5";
 
-%% EQuatorial grid
+%% EQuatorial grid, equilibrium runs
 %p.dtheta=5.75;
 p.dtheta=7.75;
 p.dphi=30;
