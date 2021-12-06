@@ -53,11 +53,15 @@ rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom r
 %coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
 
 %coeffs=[0.0010,0.0048,-0.0012];    %eq run for Perkins instability, 20km res.
+%coeffs=[0.001075,0.0048,-0.0012];    %bridge eq run for Perkins instability, 20km res.
 %coeffs=[5.5e-04,0.0024,-5.0317e-04];    %Perkins, 10km resolution with some tweaks...
+%coeffs=[0.00165 0.0084 -0.0024];    % Perkins eq 30km res.
 
 %coeffs=[0.364e-3,-0.0851e-3,0.6741e-3];     % HWM global tests???
 %coeffs=[0.000575,-0.0001,0.001];    % HWM global medres...
 coeffs=[0.369    0.8855    0.2794]*1e-3;    % mid-lat extension to HWM tests...
+%coeffs=[0.000575,-0.0001,0.001];    % HWM global medres...
+%coeffs=[0.0008,-0.0002,0.0013];     % HWM global lowres
 
 p(1)=pmin;
 ip=1;
@@ -84,7 +88,9 @@ if gridflag==0
 %    thetamax=thetax2min+pi/75;        %open
 %     thetamax=thetamin+pi/50;        %open
 %     thetamax=thetamin+pi/30;        %open
-    thetamax=thetax2min+pi/15;        %open
+
+%thetamax=thetax2min+pi/15;        %open
+    thetamax=thetax2min+pi/10;        %open
 else
     thetamax=pi-thetax2min;           %closed
 end

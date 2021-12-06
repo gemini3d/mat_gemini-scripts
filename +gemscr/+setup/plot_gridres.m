@@ -34,21 +34,33 @@ gridflag=1;
 
 %xg=gemscr.grid.tilted_dipole3d_varx2_oneside(p);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-p.glat = 52;
-p.glon = 143.4;
-p.dtheta = 27;
-p.dphi = 356.2887;
-p.altmin = 80e3;
-p.lp = 264;
-p.lq = 384;
-p.lphi = 24;
-p.gridflag = 1;
-
-xg=gemini3d.grid.tilted_dipole(p)
+%
+%p.glat = 52;
+%p.glon = 143.4;
+%p.dtheta = 27;
+%p.dphi = 356.2887;
+%p.altmin = 80e3;
+%p.lp = 264;
+%p.lq = 384;
+%p.lphi = 24;
+%p.gridflag = 1;
+%
+%xg=gemini3d.grid.tilted_dipole(p)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%Perkins
+p.dtheta=25;
+p.dphi=35;
+p.lp=256;
+p.lq=192;
+p.lphi=32;
+p.altmin=80e3;
+p.glat=39;
+p.glon=262.51;
+p.gridflag=0;
+
+xg=gemscr.grid.tilted_dipole3d_varx2_oneside(p);
 cfg=struct.empty;
 cfg(1).sourcemlat=[];
 

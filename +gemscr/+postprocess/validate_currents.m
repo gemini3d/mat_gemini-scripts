@@ -3,7 +3,7 @@ run("~/Projects/mat_gemini/setup.m");
 %% SIMULATIONS LOCAITONS
 flagplot=1;
 %simname='isinglass_clayton5/'
-simname='arcs_angle_wide_nonuniform_large_highresx1/'
+simname='arcs_angle_wide_nonuniform_ide_merge_bugfix/'
 basedir='~/simulations/'
 direc=[basedir,simname];
 debugdir=[direc,filesep,'debugplots'];
@@ -17,7 +17,7 @@ cfg = gemini3d.read.config(direc);
 
 %% TIME OF INTEREST
 ymd=[2017,3,2];
-UTsec=27185;
+UTsec=27070;
 time = datetime([ymd,0,0,UTsec]);
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
@@ -42,7 +42,7 @@ J3recon=sigP.*E3+sigH.*E2;
 plotfun=[];
 if (flagplot)
     %choose an appropriate function handle for plotting
-    plotfun = gemini3d.plot.grid2plotfun(plotfun,xg);
+    plotfun = gemini3d.plot.grid2plotfun(xg);
 
     %make plots
     J2lim=max(abs(J2(:)));
@@ -71,7 +71,7 @@ J3recon2=JP(:,:,:,3)+JH(:,:,:,3);
 plotfun=[];
 if (flagplot)
     %choose an appropriate function handle for plotting
-    plotfun = gemini3d.plot.grid2plotfun(plotfun,xg);
+    plotfun = gemini3d.plot.grid2plotfun(xg);
 
     %make plots
     %J2lim=max(abs(J2(:)));

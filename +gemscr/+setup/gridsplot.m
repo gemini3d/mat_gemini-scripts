@@ -120,24 +120,34 @@
 
 %% EQuatorial grid, equilibrium runs
 %p.dtheta=5.75;
-p.dtheta=7.75;
-p.dphi=30;
-p.lp=128;
+%p.dtheta=7.75;
+%p.dphi=30;
+%p.lp=128;
+%p.lq=256;
+%p.lphi=48;
+%p.altmin=80e3;
+%p.glat=12;
+
+%% ESF tests
+%p.dtheta=3.5;
+p.dtheta=4.5;    % puts boundary farther away
+p.dphi=34;
+%p.lp=522;
+p.lp=256;
 p.lq=256;
-p.lphi=48;
+%p.lphi=580;
+p.lphi=288;
 p.altmin=80e3;
-p.glat=12;
+p.glat=8.35;
 p.glon=360-76.9;     %Jicamarca
 p.gridflag=1;
 p.flagsource=0;
 p.iscurv=true;
+p.file_format="h5";
 
 %RUN THE GRID GENERATION CODE
 if ~exist('xg', 'var')
     xg= gemini3d.grid.tilted_dipole(p);
-%    xg= gemscr.grid.tilted_dipole3d_nonuniform(p);
-%    xg= gemsrc.grid.tilted_dipole3d_nonuniform_oneside(p);
-%     xg= gemini3d.grid.cartesian(p);
 end
 
 
@@ -256,12 +266,15 @@ end
 % sourcelat=glat;
 % sourcelong=glon;
 
-%NEW ZEALAND
-sourcelat = -42.757;
-sourcelong = 173.077;
-zmax=500;
-rhomin=0;
-rhomax=950;
+% %NEW ZEALAND
+% sourcelat = -42.757;
+% sourcelong = 173.077;
+% zmax=500;
+% rhomin=0;
+% rhomax=950;
+
+%% ESF tests
+[sourcelat,sourcelong]=gemini3d.geomag2geog(pi/2,354*pi/180);
 
 [sourcetheta,sourcephi]= gemini3d.geog2geomag(sourcelat,sourcelong);
 sourcemlat=90-sourcetheta*180/pi;
@@ -273,11 +286,12 @@ plot3(sourcemlat,sourcemlon,0,'ro','MarkerSize',16);
 %NOW CREATE A NEUTRAL GRID AND OVERPLOT IT
 zmin=0;
 %%zmax=750;    %most earthquakes
-%zmax=660;    %Moore, OK
-lz=750;
-%rhomin=0;
+zmax=660;    %Moore, OK
+lz=330;
+%lz=750;
+rhomin=0;
 %rhomax=750;    %most earthquakes
-%%rhomax=1800;    %Moore, OK
+rhomax=1800;    %Moore, OK
 lrho=750;
 zn=linspace(zmin,zmax,lz);
 rhon=linspace(rhomin,rhomax,lrho);

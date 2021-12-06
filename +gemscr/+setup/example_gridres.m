@@ -25,6 +25,19 @@ iscurv=true;
 % p.gridflag=1;
 % p.flagsource=1;
 % p.iscurv=true;
+% 
+% %% HWM tests
+% p.glat = 42.45;
+% p.glon = 143.4;
+% p.dtheta = 15;
+% p.dphi=1;
+% p.altmin = 80e3;
+% p.lp = 264;
+% p.lq = 512;
+% p.lphi = 1;
+% p.gridflag = 1;
+% p.flagsource=1;
+% p.iscurv=true;
 
 % %% HWM tests
 % p.glat = 42.45;
@@ -51,17 +64,29 @@ iscurv=true;
 % p.gridflag = 1;
 
 %% EQuatorial grid
-%p.dtheta=5.75;
-p.dtheta=7.75;
+%%p.dtheta=5.75;
+%p.dtheta=7.75;
+%p.dphi=35;
+%p.lp=128;
+%p.lq=256;
+%p.lphi=48;
+%p.altmin=80e3;
+%p.glat=10;
+%p.glon=360-76.9;     %Jicamarca
+%p.gridflag=1;
+%p.flagsource=0;
+
+%Perkins
+p.dtheta=25;
 p.dphi=35;
-p.lp=128;
-p.lq=256;
-p.lphi=48;
+p.lp=256;
+p.lq=192;
+p.lphi=32;
 p.altmin=80e3;
-p.glat=10;
-p.glon=360-76.9;     %Jicamarca
-p.gridflag=1;
-p.flagsource=0;
+p.glat=39;
+p.glon=262.51;
+p.gridflag=0;
+p.flagsource=1;
 p.iscurv=true;
 
 %% Compute the grid
@@ -137,7 +162,8 @@ ix1=floor(lx1/4);
 ix3=max(floor(lx3/2),1);
 dl2trial=squeeze(dl2(ix1,:,ix3));                % step size for the original grid
 %dl2target=6.75e3;                                % define a desired grid step size in x2
-dl2target=7.5e3;
+%dl2target=7.5e3;
+dl2target=30e3;
 dx2target=squeeze(dl2target./h2(ix1,:,ix3));     % what dx2 needs to be to hit target grid size
 
 %A polynomial is being fitted to the target dL as a function of L, this
