@@ -1,7 +1,7 @@
 function xgf=makegrid_tilteddipole_nonuniform_oneside_varx2_varx3_3D(dtheta,dphi,lpp,lqp,lphip,altmin,glat,glon,gridflag)
 
 %NOTE THAT INPUTS DTHETA AND DPHI ARE INTENDED TO REPRESENT THE FULL THETA
-%AND PHI EXTENTS OF 
+%AND PHI EXTENTS OF
 
 %KNOWN ISSUES
 %(1) For low latitude simulations your max L-shell should be large enough
@@ -31,7 +31,7 @@ Re=6370e3;
 
 
 %TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
-[thetatd,phid]=geog2geomag(glat,glon);
+[thetatd,phid]=gemini3d.geog2geomag(glat,glon);
 
 thetax2min=thetatd-dtheta/2*pi/180;
 thetax2max=thetatd+dtheta/2*pi/180;
@@ -73,7 +73,7 @@ lp=lpp+4;
 % plot(p(1:end-1),diff(linspace(pmin,pmax,lpp)));
 % hold off;
 
-    
+
 if gridflag==0
     thetamax=thetax2min+pi/180;        %open
 %    thetamax=thetax2min+pi/75;        %open
@@ -163,7 +163,7 @@ lq=lqp+4;
 % plot(q(1:end-1),diff(q))
 
 
-%REORGANIZE P,Q COORDS.  
+%REORGANIZE P,Q COORDS.
 p=p(:)';    %ensure a row vector
 pstride=p(2)-p(1);
 p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
@@ -406,7 +406,7 @@ Bmag=(4*pi*1e-7)*7.94e22/4/pi./(r.^3).*sqrt(3*(cos(theta)).^2+1);
 
 %STORE RESULTS IN GRID DATA STRUCTURE
 fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Creating a grid structure with the results.\n');
-xg.x1=q; xg.x2=p; xg.x3=reshape(phi,[1 1 lphi]); 
+xg.x1=q; xg.x2=p; xg.x3=reshape(phi,[1 1 lphi]);
 xg.x1i=qi; xg.x2i=pii; xg.x3i=reshape(phii,[1 1 lphi+1]);
 lx=[numel(xg.x1),numel(xg.x2),numel(xg.x3)];
 xg.lx=lx;

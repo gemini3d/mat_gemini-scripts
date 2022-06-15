@@ -14,7 +14,7 @@ load(expanduser(file), 'nesat', 'Tisat', 'Tesat', 'J1sat', 'visat', 'glatsat', '
 istart=50;                         %cuts out interpolation crap at the beginning of the simulation
 isats=1:lsats;                     %choose which satellites to compare
 
-[theta,phi]=geog2geomag(glatsat,glonsat);
+[theta,phi]=gemini3d.geog2geomag(glatsat,glonsat);
 % mlatsat=90-theta*180/pi;
 % mlonsat=phi*180/pi;
 

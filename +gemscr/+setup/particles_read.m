@@ -22,7 +22,7 @@ E0dat=outargs.RESAMP_EO;
 glat=lat;
 glon=lon;
 gloncorrected=glon+360;    %for interpolations which won't understand periodic coordinate
-% [theta,phi]=geog2geomag(glat,glon);
+% [theta,phi]=gemini3d.geog2geomag(glat,glon);
 % mlat=90-theta*180/pi;
 % mlon=phi*180/pi;
 
@@ -32,7 +32,7 @@ theta=zeros(llon,llat);
 phi=zeros(llon,llat);
 for ilat=1:llat
     for ilon=1:llon
-        [thetatmp,phitmp]=geog2geomag(glat(ilat),glon(ilon));
+        [thetatmp,phitmp]=gemini3d.geog2geomag(glat(ilat),glon(ilon));
         theta(ilon,ilat)=thetatmp;
         phi(ilon,ilat)=phitmp;
     end

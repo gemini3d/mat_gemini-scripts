@@ -36,7 +36,7 @@ t=datenum(expdate);
 glat=Ygeo;
 glon=Xgeo;
 gloncorrected=360+glon;
-% [theta,phi]=geog2geomag(glat,glon);
+% [theta,phi]=gemini3d.geog2geomag(glat,glon);
 % mlat=90-theta*180/pi;
 % mlon=phi*180/pi;
 
@@ -47,7 +47,7 @@ theta=zeros(llon,llat);
 phi=zeros(llon,llat);
 for ilat=1:llat
     for ilon=1:llon
-        [thetatmp,phitmp]= gemscr.geog2geomag(glat(ilon,ilat),glon(ilon,ilat));
+        [thetatmp,phitmp]= gemini3d.geog2geomag(glat(ilon,ilat),glon(ilon,ilat));
         theta(ilon,ilat)=thetatmp;
         phi(ilon,ilat)=phitmp;
     end

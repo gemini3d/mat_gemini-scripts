@@ -229,7 +229,7 @@ for it=1:lt
     if (it==1)
       fprintf('...Generating coastline map and map labels...\n');
       load coastlines;
-      [thetacoast,phicoast]=geog2geomag(coastlat,coastlon);
+      [thetacoast,phicoast]=gemini3d.geog2geomag(coastlat,coastlon);
       mlatcoast=90-thetacoast*180/pi;
       mloncoast=phicoast*180/pi;
 

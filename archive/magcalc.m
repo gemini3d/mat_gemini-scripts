@@ -38,7 +38,7 @@ mkdir([direc,'/magplots'])   %store output plots with the simulation data
 %glatsrc=35.3;      %moore OK
 %glonsrc=360-97.7;
 %addpath ../setup;
-%[theta,phi]=geog2geomag(glatsrc,glonsrc);
+%[theta,phi]=gemini3d.geog2geomag(glatsrc,glonsrc);
 %mlatsrc=90-theta*180/pi;
 %mlonsrc=phi*180/pi;
 mlatsrc=mloc(1);
