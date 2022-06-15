@@ -25,17 +25,15 @@ end
 lpp = cfg.lpp;
 lqp = cfg.lqp;
 
-%PAD GRID WITH GHOST CELLS
+%% PAD GRID WITH GHOST CELLS
 lq=lqp+4;
 lp=lpp+4;
 lphi=cfg.lphip+4;
 
-
-%DEFINE DIPOLE GRID IN Q,P COORDS.
+%% DEFINE DIPOLE GRID IN Q,P COORDS.
 Re=6370e3;
 
-
-%TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
+%% TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
 [thetatd,phid] = gemini3d.geog2geomag(cfg.glat,cfg.glon);
 
 thetax2min=thetatd-cfg.dtheta/2*pi/180;
@@ -43,6 +41,9 @@ thetax2max=thetatd+cfg.dtheta/2*pi/180;
 pmax=(Re+cfg.altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
 qtmp=(Re/(Re+cfg.altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
+
+assert(pmax > pmin, "pmax should be greater than pmin")
+
 rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 % %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
 % %p=linspace(pmin,pmax,lp);
@@ -52,8 +53,8 @@ rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom r
 % %p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride];
 
 
-%NONUNIFORM IN X2 GRID - TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN
-%METERS IN THE X2 DIRECTION (DETERMINED EMPIRICALLY)
+%% NONUNIFORM IN X2 GRID
+% TRY TO KEEP AN APPROXIMATELY CONSTANT STRIDE IN METERS IN THE X2 DIRECTION (DETERMINED EMPIRICALLY)
 %coeffs=[5.1635e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper
 %coeffs=[5e-4, 0.0024, -5.7195e-04];   %3D Moore run for Snively's paper, evenly divisible
 %coeffs=[3.8478e-4,0.0013,1.5201e-04];   %3D Moore run interhemispheric
@@ -94,7 +95,6 @@ lp=lpp+4;
 % plot(p(1:end-1),diff(linspace(pmin,pmax,lpp)));
 % hold off;
 
-
 if cfg.gridflag==0
     thetamax=thetax2min+pi/15;        %open
 else
@@ -107,8 +107,7 @@ qmax=cos(thetamax)*Re^2/rmax^2;
 %q=linspace(qmin,qmax,lqp)';
 %q=sort(q);
 
-
-% %SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
+%% SOMEWHAT COARSE NONUNIFORM parallel GRID, MOORE OK EQ and IOWA EQ EXAMPLES
 sigq=0.075;
 amp=0.0064;
 qloc=0.48;
@@ -158,9 +157,7 @@ q=q(:);
 lqp=numel(q);
 lq=lqp+4;
 
-
-
-%REORGANIZE P,Q COORDS., ADDING IN GHOST CELLS IN THE PROCESS
+%% REORGANIZE P,Q COORDS., ADDING IN GHOST CELLS IN THE PROCESS
 p=p(:)';    %ensure a row vector
 pstride=p(2)-p(1);
 pstride2=p(end)-p(end-1);
