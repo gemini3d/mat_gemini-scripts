@@ -385,7 +385,7 @@ if (license('test','Map_Toolbox'))
 %    figure;
 %    thetarange=[pi/2-max(mlat(:))*pi/180,pi/2-min(mlat(:))*pi/180];
 %    phirange=[min(mlon(:))*pi/180,max(mlon(:))*pi/180];
-%    [glatrange,glonrange]=geomag2geog(thetarange,phirange);
+%    [glatrange,glonrange]=gemini3d.geomag2geog(thetarange,phirange);
 %    glatrange=sort(glatrange);
 %    glonrange=sort(glonrange);
 %    glatrange(1)=glatrange(1)-10;

@@ -308,7 +308,7 @@ xg.Bmag=Bmag;
 
 %xg.glat=(pi/2-theta)*180/pi; xg.glon=phi*180/pi*ones(lx(1),lx(2));
 for iphi=1:lphi
-  [glats,glons]=geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
+  [glats,glons]=gemini3d.geomag2geog(xg.theta(:,:,iphi),xg.phi(1,1,iphi)*ones(lq,lp));    %only meant to work for one latitude at at time
   xg.glat(:,:,iphi)=glats;
   xg.glon(:,:,iphi)=glons;
 end

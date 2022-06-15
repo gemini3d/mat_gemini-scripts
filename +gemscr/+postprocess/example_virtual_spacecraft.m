@@ -1,5 +1,5 @@
 %% This is a driver script to show how to use th virtual_spacecraft
-% extraction utility on gemini output.  
+% extraction utility on gemini output.
 
 % imports
 run("setup.m");
@@ -58,7 +58,7 @@ altsat(:,2)=flipud(altsat(:,1));
 glatsat=zeros(lorb,lsat);
 glonsat=zeros(lorb,lsat);
 for isat=1:lsat
-  [glatsattmp,glonsattmp]=geomag2geog(thetasat(:,isat),phisat(:,isat));
+  [glatsattmp,glonsattmp]=gemini3d.geomag2geog(thetasat(:,isat),phisat(:,isat));
   glatsat(:,isat)=glatsattmp(:);
   glonsat(:,isat)=glonsattmp(:);
 end

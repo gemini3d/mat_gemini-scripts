@@ -319,7 +319,7 @@ xg.gx1=gq; xg.gx2=gp; xg.gx3=zeros(cfg.lq,cfg.lp, cfg.lphi);
 xg.Bmag=Bmag;
 
 %xg.glat=(pi/2-theta)*180/pi; xg.glon=phi*180/pi*ones(lx(1),lx(2));
-[glats,glons]=geomag2geog(xg.theta,xg.phi);
+[glats,glons]=gemini3d.geomag2geog(xg.theta,xg.phi);
 xg.glat=glats;
 xg.glon=glons;
 

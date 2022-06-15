@@ -135,7 +135,7 @@ hold on;
 plot3(sourcemlon,sourcemlat,0,'o','MarkerSize',14,'Color',linecolor1);
 plot3(sourcemlon2,sourcemlat2,0,'o','Markersize',14,'Color',linecolor2);
 
-%% NOW CREATE A NEUTRAL GRID 
+%% NOW CREATE A NEUTRAL GRID
 zmin=0;
 zmax=660;    %Moore, OK
 lz=330;
@@ -263,7 +263,7 @@ if (license('test','Map_Toolbox'))
     %    figure;
     %    thetarange=[pi/2-max(mlat(:))*pi/180,pi/2-min(mlat(:))*pi/180];
     %    phirange=[min(mlon(:))*pi/180,max(mlon(:))*pi/180];
-    %    [glatrange,glonrange]=geomag2geog(thetarange,phirange);
+    %    [glatrange,glonrange]=gemini3d.geomag2geog(thetarange,phirange);
     %    glatrange=sort(glatrange);
     %    glonrange=sort(glonrange);
     %    glatrange(1)=glatrange(1)-10;
@@ -273,7 +273,7 @@ if (license('test','Map_Toolbox'))
     %    worldmap(glatrange,glonrange);
     %    load coastlines;
     %    plotm(coastlat,coastlon);
-    
+
     hold on;
     ax=axis;
     load coastlines;
@@ -282,20 +282,20 @@ if (license('test','Map_Toolbox'))
     mloncoast=phicoast*180/pi;
     %  mlatcoast=sort(mlatcoast);
     %  mloncoast=sort(mloncoast);
-    
+
     bufferlon=40;
     bufferlat=50;
-    
+
     if 360-sourcemlon<bufferlon
         inds=find(mloncoast<180);
         mloncoast(inds)=mloncoast(inds)+360;
     end
-    
+
     inds=find(mloncoast>sourcemlon-bufferlon & mloncoast<sourcemlon+bufferlon & ...
         mlatcoast>sourcemlat-bufferlat & mlatcoast<sourcemlat+bufferlat);
     mloncoast=mloncoast(inds);
     mlatcoast=mlatcoast(inds);
-    
+
     plot3(mloncoast,mlatcoast,zeros(size(mlatcoast)),'k.','MarkerSize',0.5);
     %  axis(ax);    %reset axis
 end

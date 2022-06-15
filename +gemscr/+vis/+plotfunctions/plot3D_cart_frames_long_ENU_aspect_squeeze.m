@@ -29,8 +29,8 @@ end
 
 
 % Just bail out if this is potential for now
-if (numel(size(parm))~=3)
-   return; 
+if ndims(parm)~=3
+   return;
 end
 
 
