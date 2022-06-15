@@ -2,9 +2,6 @@ function magcalc(simname)
 
 validateattributes(simname, {'char'}, {'vector'}, mfilename, 'simulation top-level path', 1)
 
-gemini_root = '../../gemini';
-addpath([gemini_root, filesep, 'script_utils'])
-
 %% SIMULATIONS LOCATIONS
 simname='chile20153D/';
 direc=['../../simulations/',simname];

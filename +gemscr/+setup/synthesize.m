@@ -1,6 +1,4 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
 
 %ELECTRIC FIELD DATA
 load ./fields/fields.mat;

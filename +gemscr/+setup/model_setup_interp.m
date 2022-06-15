@@ -384,7 +384,6 @@ gemini3d.write.state(p.outdir, dint);
 
 
 %MAKE A SAMPLE PLOT OF INTERPOLATED DATA
-%addpath ./vis;
 %plotslice3D_curv(UTsec/3600,[3,11,2011],xgin,log10(ns(:,:,:,7)),'log_{10} n_e',[8 13])
 %print -dpng ne.png
 %plotslice3D_curv(UTsec/3600,[3,11,2011],xg,log10(nsi(:,:,:,7)),'log_{10} n_e',[8 13])

@@ -1,7 +1,3 @@
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../GEMINI'];
-addpath([gemini_root, filesep, 'vendor/colormaps']);
-
 %direc='~/Downloads/iowa3D_hemis_medres2/';
 %filename='magfields.insitu.diff.mat';
 direc='~/Downloads/mooreOK3D_hemis_medres/';

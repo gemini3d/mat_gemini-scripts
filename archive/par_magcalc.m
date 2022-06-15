@@ -1,17 +1,14 @@
-function magcalc(simname)
-
-validateattributes(simname, {'char'}, {'vector'}, mfilename, 'simulation top-level path', 1)
-
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
+function par_magcalc(simname)
+arguments
+  simname (1,1) string
+end
 
 %SIMULATIONS LOCATIONS
 %simname='chile20153D_0.5_medres/';
-simname='tohoku20113D_highres_var/';
-basedir=[gemini_root,'/../simulations/'];
-direc=[basedir,simname];
-mkdir([direc,'/magplots'])   %store output plots with the simulation data
+% simname='tohoku20113D_highres_var/';
+basedir= '~/simulations/';
+direc= fullfile(basedir,simname);
+mkdir(fullfile(direc,'magplots'))   %store output plots with the simulation data
 
 
 %PARALLELIZATION

@@ -1,7 +1,3 @@
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
-
 %SIMULATIONS LOCAITONS
 simname='chile20153D/';
 basedir='/Volumes/TravelDisk2/simulations/'

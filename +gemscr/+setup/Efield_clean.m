@@ -248,6 +248,3 @@ parfor it=1:lt
         print('-dpng','-r300',filename);
     end %if
 end %for
-
-
-rmpath ../script_utils;

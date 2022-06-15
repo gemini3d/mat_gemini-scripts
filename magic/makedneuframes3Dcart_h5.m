@@ -2,7 +2,7 @@ function makedneuframes3Dcart_h5(outdir, indir)
 % prepare 3D Cartesian neutral inputs to GEMINI saving them into HDF5 file format
 arguments
   outdir (1,1) string
-  indir (1,1) string
+  indir (1,1) string {mustBeFolder}
 end
 
 import stdlib.hdf5nc.h5save

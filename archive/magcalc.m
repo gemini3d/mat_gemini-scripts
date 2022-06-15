@@ -2,9 +2,6 @@ function magcalc(simname)
 
 validateattributes(simname, {'char'}, {'vector'}, mfilename, 'simulation top-level path', 1)
 
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
 
 %% SIMULATIONS LOCATIONS
 %simname='curvtest_tohoku_highres_weak/';
@@ -37,7 +34,6 @@ mkdir([direc,'/magplots'])   %store output plots with the simulation data
 %glonsrc=360-71.654;
 %glatsrc=35.3;      %moore OK
 %glonsrc=360-97.7;
-%addpath ../setup;
 %[theta,phi]=gemini3d.geog2geomag(glatsrc,glonsrc);
 %mlatsrc=90-theta*180/pi;
 %mlonsrc=phi*180/pi;

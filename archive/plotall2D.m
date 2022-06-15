@@ -35,12 +35,9 @@ plotfun=@plot2D_curv;
 %COMPUTE SOURUCE LOCATIOKN IN MCOORDS
 glat=38.429575d0
 glon=142.734757d0
-addpath ../setup;
 [theta,phi]=gemini3d.geog2geomag(glat,glon);
 mlat=90-theta*180/pi
 mlon=phi*180/pi
-rmpath ../setup;
-
 
 %TIMES OF INTEREST
 %dtout=1800;

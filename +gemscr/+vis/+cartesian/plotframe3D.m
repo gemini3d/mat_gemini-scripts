@@ -81,11 +81,9 @@ print -dpng v1_2D.png
 %COMPUTE SOURUCE LOCATIOKN IN MCOORDS
 glat=38.429575d0
 glon=142.734757d0
-addpath ../setup;
 [theta,phi]= gemini3d.geog2geomag(glat,glon);
 mlat=90-theta*180/pi;
 mlon=phi*180/pi;
-rmpath ../setup;
 
 figure;
 h2=plot2D_curv_north_frames(t,[11,3,2011],xg,v1(:,:,:),'v_1 (m/s)',[-100 100],[mlat,mlon]);

@@ -1,10 +1,7 @@
-cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd,filesep,'../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
 
 %SIMULATIONS LOCAITONS
 simname='chile20153D/';
-basedir=[gemini_root,'/../simulations/gemini3D/'];
+basedir='~/simulations/gemini3D/';
 direc=[basedir,simname];
 mkdir([direc,'/magplots']);    %store output plots with the simulation data
 

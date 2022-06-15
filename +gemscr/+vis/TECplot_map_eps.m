@@ -1,8 +1,5 @@
 addpath ~/matlab_ext/
 
-cwd = fileparts(mfilename('fullpath'));
-run(fullfile(cwd, '../../setup.m'))
-
 %SIMULATION LOCAITONS
 simname='mooreOK3D_hemis_medres_corrected/';
 basedir='~/simulations/';

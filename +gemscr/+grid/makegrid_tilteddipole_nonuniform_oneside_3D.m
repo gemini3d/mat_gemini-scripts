@@ -19,9 +19,6 @@ function xgf=makegrid_tilteddipole_nonuniform_oneside_3D(dtheta,dphi,lpp,lqp,lph
 % if you want a dimension to be size "n" adjust requested grid size so that
 % it is "n+4"
 
-addpath ../../../GEMINI/script_utils;
-addpath ../../../GEMINI/setup/gridgen;
-
 %PAD GRID WITH GHOST CELLS
 lq=lqp+4;
 lp=lpp+4;

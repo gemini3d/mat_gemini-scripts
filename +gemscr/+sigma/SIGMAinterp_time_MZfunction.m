@@ -15,7 +15,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified by MZ, 20210525 updated to new GEMINI API
-% Clone these:  
+% Clone these:
 %   https://github.com/gemini3d/mat_gemini-scripts.git
 %   https://github.com/gemini3d/mat_gemini.git
 %
@@ -78,7 +78,7 @@ x = x + shiftx;
 lfile=floor(tinterp/dtout)+1;   %number of files from beginning (index)
 indstart=lfile;    % index of input file preceeding tinterp
 indend=(lfile+1);   % index of input file following tinterp
-%lfilestart=lfile*dtout;  
+%lfilestart=lfile*dtout;
 %lfileend=(lfile+1)*dtout;
 lfilestart=indstart*dtout;   % time in seconds of input file preceeding tinterp
 lfileend=indend*dtout;   % time in seconds of input file following tinterp
@@ -282,7 +282,6 @@ nei=flip(nei,2);
 %   filename=['./plots/ne',num2str(iit),'_test.png']
 %   print('-dpng',filename);
 
-rmpath ../script_utils
 clearvars -except nei zctr
 
 end

@@ -1,5 +1,4 @@
 clear;
-addpath ~/gemini/numerical;
 simname='chile';
 direc=['~/gemini/output/',simname];
 direc2='~/gemini/output/chile_control';

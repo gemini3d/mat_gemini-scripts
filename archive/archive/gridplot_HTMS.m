@@ -70,13 +70,10 @@ end
 
 
 hold on;
-addpath ./vis;
 %h=plotslice3D_curv_corner(t/3600,xg,log10(neIspread));
 %caxis([9.75 12.5])
 %h=plotslice3D_curv_corner(t/3600,xg,viIspread);
 h=plotslice3D_curv_corner(t/3600,xg,J1Ispread);
-rmpath ./vis;
-
 
 % %ADD THE ELECTRON DENSITY INFORMATION (READ OUTPUT DATA, GRID, ETC.)
 % direc='/Volumes/SDHCcard/simulations/curvtest_closed/'

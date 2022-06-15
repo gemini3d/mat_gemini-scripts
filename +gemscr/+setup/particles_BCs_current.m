@@ -1,6 +1,4 @@
 cwd = fileparts(mfilename('fullpath'));
-gemini_root = [cwd, filesep, '../../../gemini'];
-addpath([gemini_root, filesep, 'script_utils'])
 
 %REFERENCE GRID TO USE
 direcconfig='~/zettergmdata/GEMINI3D/initialize/ARCS/'
@@ -8,7 +6,7 @@ direcgrid='~/zettergmdata/simulations/input/ARCS/'
 
 %CREATE SOME SPACE FOR OUTPUT FILES
 outdir='~/zettergmdata/simulations/ARCS_current_particles/';
-mkdir([outdir]);
+mkdir(outdir);
 delete([outdir,'/*']);
 
 

@@ -69,7 +69,6 @@ end
 figure;
 set(gcf,'PaperPosition',[0 0 8.5 4]);
 hold on;
-addpath ./vis;
 %h=plotslice3D_curv_corner(t/3600,xg,log10(neIspread));
 %caxis([9.75 12.5])
 %h=plotslice3D_curv_corner(t/3600,xg,viIspread);
@@ -77,7 +76,6 @@ addpath ./vis;
 
 %h=plotslice3D_curv_corner_alpha(t/3600,xg,J1Ispread);
 h=plotslice3D_curv_corner_alpha(t/3600,xg,viIspread);
-rmpath ./vis;
 
 
 % %ADD THE ELECTRON DENSITY INFORMATION (READ OUTPUT DATA, GRID, ETC.)
