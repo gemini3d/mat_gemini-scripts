@@ -39,8 +39,6 @@ pmax=(Re+ cfg.altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
 qtmp=(Re/(Re+ cfg.altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
 
-assert(pmax > pmin, "pmax should be greater than pmin")
-
 % rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 % %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
 % %p=linspace(pmin,pmax,lp);
@@ -72,6 +70,8 @@ assert(pmax > pmin, "pmax should be greater than pmin")
 %coeffs=[4.1133e-04, 0.0019, -5.7677e-04];    %dist run iowa3D, 7.5km resolution, vega optimized
 %coeffs=[3.3986e-04, 0.0017, -5.0597e-04];     %iowa3D that doesn't overrun neutral grid
 coeffs=[3.3986e-04, 0.0017, -6.7597e-04];     %iowa3D that doesn't overrun neutral grid, vega, friendly
+
+assert(pmax > pmin, "pmax should be greater than pmin for while loop")
 
 p(1)=pmin;
 ip=1;

@@ -229,7 +229,7 @@ I=90-min(I,pi-I)*180/pi;    %ignore parallel vs. anti-parallel
 
 
 %DIAGNOSTIC PLOTS
-if plotflag
+if cfg.plotflag
     figure;
     set(gcf,'PaperPosition',[0 0 8.5 4]);
     subplot(121);
