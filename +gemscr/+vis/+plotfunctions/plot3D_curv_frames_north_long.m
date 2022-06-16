@@ -18,10 +18,10 @@ end
 
 
 %REORGANIZE INPUT
-dmy(1)=ymd(3);
-dmy(2)=ymd(2);
-dmy(3)=ymd(1);
-t=UTsec/3600;     %convert to UT hours
+% dmy(1)=ymd(3);
+% dmy(2)=ymd(2);
+% dmy(3)=ymd(1);
+% t=UTsec/3600;     %convert to UT hours
 
 
 %SOURCE LOCATION (SHOULD PROBABLY BE AN INPUT)
@@ -48,9 +48,9 @@ altref=175;
 
 %SIZE OF PLOT GRID THAT WE ARE INTERPOLATING ONTO
 ix1s=find(xg.x1(inds1)>=0);    %works for asymmetric grids
-minz=0;
+% minz=0;
 maxz=100;
-[tmp,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
+[~,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
 ix1=ix1s(ix1);
 thetavals=xg.theta(ix1:lx1,:,:);
 meantheta=mean(thetavals(:));
@@ -156,8 +156,8 @@ sourcex=sourcetheta-meantheta;
 xp3=[sourcex-1*pi/180,sourcex,sourcex+1*pi/180];    %place in the plane of the source
 lxp3=numel(xp3);
 zp3=linspace(minz,750,500);
-minzp3=min(zp3);
-maxzp3=max(zp3);
+% minzp3=min(zp3);
+% maxzp3=max(zp3);
 lzp3=numel(zp3);
 [X3,Y3,Z3]=meshgrid(xp3,yp,zp3*1e3);       %lat./lon. meshgrid, need 3D since and altitude slice cuts through all 3 dipole dimensions
 
@@ -193,8 +193,8 @@ parmp3=parmp3(inds,:,:);
 %COMPUTE SOME BOUNDS FOR THE PLOTTING
 minxp=min(xp(:));
 maxxp=max(xp(:));
-minyp=min(yp(:));
-maxyp=max(yp(:));
+% minyp=min(yp(:));
+% maxyp=max(yp(:));
 minzp=min(zp(:));
 maxzp=max(zp(:));
 
@@ -204,7 +204,7 @@ FS=8;
 
 
 %SELECT AXIS LIMITS IF AUTO OPTION ENABLED
-if (isnan(caxlims(1)) | isnan(caxlims(2)))
+if (isnan(caxlims(1)) || isnan(caxlims(2)))
   caxlimsval=max( [max(abs(parmp(:))),max(abs(parmp2(:))),max(abs(parmp3(:)))] );
   caxlims=[-caxlimsval,caxlimsval];
 end
@@ -229,8 +229,8 @@ xlabel(ha,'magnetic latitude (deg.)');
 ylabel(ha,'altitude (km)');
 
 
-t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
-ttxt = {datestr(t,1),[datestr(t,13),' UT']};
+t = datetime(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
+ttxt = string(t) + " UT";
 title(ha,ttxt)
 
 
@@ -268,7 +268,7 @@ ylabel(ha,'altitude (km)');
 
 
 %CONSTRUCT A STRING FOR THE TIME AND DATE
-ha=subplot(1,3,1);
+subplot(1,3,1);
 
 %t = datenum(ymd(1), ymd(2), ymd(3), 0, 0, UTsec);
 %ttxt = [datestr(t,1),' ',[datestr(t,13),' UT']];

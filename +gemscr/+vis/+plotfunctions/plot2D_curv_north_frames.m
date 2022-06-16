@@ -1,4 +1,4 @@
-function h=plot2D_curv_nort_framesh(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc)
+function h=plot2D_curv_north_frames(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc)
 
 %CLEAR AND SET FIGURE HANDLES
 clf;
@@ -37,7 +37,7 @@ ix1s=find(xg.x1(inds1)>=0);    %works for asymmetric grids
 
 minz=0;
 maxz=500;
-[tmp,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
+[~,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
 ix1=ix1s(ix1);
 thetavals=xg.theta(ix1:lx1,:,:);
 meantheta=mean(thetavals(:));
@@ -45,7 +45,7 @@ phivals=xg.phi(ix1:lx1,:,:);
 meanphi=mean(phivals(:));
 x=(thetavals-meantheta);      %this is a mag colat. coordinate and is only used for defining grid in linspaces below and the parametric surfaces in the plots
 y=(phivals-meanphi);          %mag. lon coordinate
-z=xg.alt(ix1:lx1,:,:)/1e3;    %altitude
+%z=xg.alt(ix1:lx1,:,:)/1e3;    %altitude
 lxp=500;
 lyp=500;
 lzp=500;
@@ -117,10 +117,10 @@ parmp2=parmp2(inds,:,:);
 %COMPUTE SOME BOUNDS FOR THE PLOTTING
 minxp=min(xp(:));
 maxxp=max(xp(:));
-minyp=min(yp(:));
-maxyp=max(yp(:));
-minzp=min(zp(:));
-maxzp=max(zp(:));
+% minyp=min(yp(:));
+% maxyp=max(yp(:));
+% minzp=min(zp(:));
+% maxzp=max(zp(:));
 
 
 %NOW THAT WE'VE SORTED, WE NEED TO REGENERATE THE MESHGRID

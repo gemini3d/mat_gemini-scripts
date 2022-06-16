@@ -2,27 +2,27 @@ function h=plot2D_curv_south(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc)
 
 %CLEAR AND SET FIGURE HANDLES
 clf;
-h=gcf;
+% h=gcf;
 %set(h,'PaperPosition',[0 0 11 4.5]);
 
 
 %REORGANIZE INPUT
-dmy(1)=ymd(3);
-dmy(2)=ymd(2);
-dmy(3)=ymd(1);
+% dmy(1)=ymd(3);
+% dmy(2)=ymd(2);
+% dmy(3)=ymd(1);
 t=UTsec;
 
 
 %SOURCE LOCATION (SHOULD PROBABLY BE AN INPUT)
 sourcemlat=sourceloc(1);
-sourcemlon=sourceloc(2);
+% sourcemlon=sourceloc(2);
 
 
 %SIZE OF SIMULATION
-lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
+lx1=xg.lx(1); lx2=xg.lx(2); %lx3=xg.lx(3);
 inds1=3:lx1+2;
 inds2=3:lx2+2;
-inds3=3:lx3+2;
+% inds3=3:lx3+2;
 Re=6370e3;
 
 
@@ -41,7 +41,7 @@ altref=300;
 ix1s=find(xg.x1(inds1)<=0);    %works for asymmetric grids
 minz=0;
 maxz=500;
-[tmp,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
+[~,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
 ix1=ix1s(ix1);
 %thetavals=xg.theta(ix1:lx1,:,:);
 thetavals=xg.theta(1:ix1,:,:);
@@ -52,7 +52,7 @@ meanphi=mean(phivals(:));
 
 x=(thetavals-meantheta);      %this is a mag colat. coordinate and is only used for defining grid in linspaces below and the parametric surfaces in the plots
 y=(phivals-meanphi);          %mag. lon coordinate
-z=xg.alt(ix1:lx1,:,:)/1e3;    %altitude
+% z=xg.alt(ix1:lx1,:,:)/1e3;    %altitude
 
 lxp=500;
 lyp=500;
@@ -144,7 +144,7 @@ parmp=parmp(:,inds);
 %parmp2=parmp2(:,inds,:);
 
 yp=(yp+meanphi)*180/pi;
-[yp,inds]=sort(yp);
+[~,inds]=sort(yp);
 parmp=parmp(inds,:,:);
 %parmp2=parmp2(inds,:,:);
 
@@ -152,10 +152,10 @@ parmp=parmp(inds,:,:);
 %COMPUTE SOME BOUNDS FOR THE PLOTTING
 minxp=min(xp(:));
 maxxp=max(xp(:));
-minyp=min(yp(:));
-maxyp=max(yp(:));
-minzp=min(zp(:));
-maxzp=max(zp(:));
+% minyp=min(yp(:));
+% maxyp=max(yp(:));
+% minzp=min(zp(:));
+% maxzp=max(zp(:));
 
 
 %NOW THAT WE'VE SORTED, WE NEED TO REGENERATE THE MESHGRID
