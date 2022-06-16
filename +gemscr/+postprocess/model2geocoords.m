@@ -1,4 +1,4 @@
-function [alti,gloni,glati,parmi]=model2geocoords(xg,parm,lalt,llon,llat,altlims,glonlims,glatlims)
+function [parmi,alti,gloni,glati]=model2geocoords(xg,parm,lalt,llon,llat,altlims,glonlims,glatlims)
 arguments
   xg (1,1) struct
   parm {mustBeReal}

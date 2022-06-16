@@ -22,15 +22,15 @@ simdat = gemini3d.read.frame(direc, time=time);
 
 
 % interpolate onto a geographic grid
-[alti,gloni,glati,nei]=model2geocoords(xg,simdat.ne);
-[alti,gloni,glati,Tei]=model2geocoords(xg,simdat.Te);
-[alti,gloni,glati,J1i]=model2geocoords(xg,simdat.J1);
-[alti,gloni,glati,J2i]=model2geocoords(xg,simdat.J2);
-[alti,gloni,glati,J3i]=model2geocoords(xg,simdat.J3);
-[alti,gloni,glati,v3i]=model2geocoords(xg,simdat.v3);
-[alti,gloni,glati,v2i]=model2geocoords(xg,simdat.v2);
-[alti,gloni,glati,v1i]=model2geocoords(xg,simdat.v1);
-[alti,gloni,glati,Tii]=model2geocoords(xg,simdat.Ti);
+nei = model2geocoords(xg,simdat.ne);
+Tei = model2geocoords(xg,simdat.Te);
+J1i = model2geocoords(xg,simdat.J1);
+J2i = model2geocoords(xg,simdat.J2);
+J3i = model2geocoords(xg,simdat.J3);
+v3i = model2geocoords(xg,simdat.v3);
+v2i = model2geocoords(xg,simdat.v2);
+v1i = model2geocoords(xg,simdat.v1);
+[Tii,alti,gloni,glati] = model2geocoords(xg,simdat.Ti);
 
 
 % plots
