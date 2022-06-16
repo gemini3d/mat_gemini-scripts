@@ -1,4 +1,4 @@
-function [zUENi,xUENi,yUENi,parmi]=model2magUENcoords(xg,parm,lz,lx,ly,zlims,xlims,ylims)
+function [parmi, zUENi,xUENi,yUENi] = model2magUENcoords(xg,parm,lz,lx,ly,zlims,xlims,ylims)
 
 %Grid the GEMINI output data in parm onto a regular *geomagnetic* coordinates
 %grid.  By default create a linearly spaced output grid based on

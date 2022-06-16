@@ -17,13 +17,13 @@ end
 
 
 % COMPUTE SOURUCE LOCATION IN MCOORDS
-if (~isempty(mloc))
- mlat=mloc(1);
- mlon=mloc(2);
-else
- mlat=[];
- mlon=[];
-end
+% if (~isempty(mloc))
+%  mlat=mloc(1);
+%  mlon=mloc(2);
+% else
+%  mlat=[];
+%  mlon=[];
+% end
 
 
 %% TIMES OF INTEREST
@@ -50,13 +50,13 @@ UTsec=UTsec0;
 simdate=[];
 for it=1:lt
     simdate=cat(1,simdate,[ymd,UTsec/3600,0,0]);
-    [ne,mlatsrc,mlonsrc,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop] = gemini3d.read.frame(direc,UTsec,ymd, nan, mloc,xg);
+    dat = gemini3d.read.frame(direc,UTsec,ymd, nan, mloc,xg);
     disp(filename)
 
-    neprof(:,it) = ne(:,ix2,ix3);
-    Teprof(:,it) = Te(:,ix2,ix3);
-    Tiprof(:,it) = Ti(:,ix2,ix3);
-    viprof(:,it) = v1(:,ix2,ix3);
+    neprof(:,it) = dat.ne(:,ix2,ix3);
+    Teprof(:,it) = dat.Te(:,ix2,ix3);
+    Tiprof(:,it) = dat.Ti(:,ix2,ix3);
+    viprof(:,it) = dat.v1(:,ix2,ix3);
 
     [ymd,UTsec]=dateinc(dtout,ymd,UTsec);
 end % for

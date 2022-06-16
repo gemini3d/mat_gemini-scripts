@@ -31,7 +31,7 @@ By=permute(By(:,:,:),[1,3,2]);
 mu0=4*pi*1e-7;
 % for taking curl permute to x,y,z (from z,x,y)
 Hx=permute(Bx/mu0,[2,3,1]); % permute to east, north, up
-Hy=permute(By/mu0,[2,3,1]); 
+Hy=permute(By/mu0,[2,3,1]);
 Hz=permute(Bz/mu0,[2,3,1]);
 
 % wtf does matlab curl just not work???  I literally cannot get it to take
@@ -96,8 +96,8 @@ Jz=dHydx-dHxdy;
 % fix units for magnetic field and current density
 Bx=Bx/1e-9; By=By/1e-9; Bz=Bz/1e-9;    %so B in nT
 % for plotting permute back to up,east,north
-Jx=permute(Jx/1e-6,[3,1,2]); 
-Jy=permute(Jy/1e-6,[3,1,2]); 
+Jx=permute(Jx/1e-6,[3,1,2]);
+Jy=permute(Jy/1e-6,[3,1,2]);
 Jz=permute(Jz/1e-6,[3,1,2]);    %so J in uA/m^2
 
 
@@ -107,9 +107,9 @@ Jz=permute(Jz/1e-6,[3,1,2]);    %so J in uA/m^2
 xg=gemini3d.read.grid(direc);
 datp=gemini3d.read.frame(direc,"time",TOI);
 
-[zUENi,xUENi,yUENi,J1g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J1,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
-[~,~,~,J2g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J2,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
-[~,~,~,J3g]=gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J3,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+[J1g, zUENi,xUENi,yUENi] = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J1,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+J2g = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J2,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+J3g = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J3,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

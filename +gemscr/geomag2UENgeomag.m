@@ -9,7 +9,7 @@ Re=6370e3;
 
 theta=pi/2-mlat*pi/180;
 phi=mlon*pi/180;
-r=alt+Re;
+% r=alt+Re;
 
 meantheta=mean(theta(:));
 meanphi=mean(phi(:));

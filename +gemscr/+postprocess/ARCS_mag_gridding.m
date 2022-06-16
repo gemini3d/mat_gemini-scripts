@@ -11,16 +11,16 @@ direc='~/SDHCCard/ARCS_angle_decimate/';
 ymd=[2017,03,02];
 UTsec=27300;
 
-[ne,mlatsrc,mlonsrc,xg,v1,Ti,Te,J1,v2,v3,J2,J3,filename,Phitop,ns,vs1,Ts] = gemini3d.read.frame(gemini3d.find.frame(direc,ymd,UTsec));
-[zUENi,xUENi,yUENi,Tei]=model2magUENcoords(xg,Te);
-[zUENi,xUENi,yUENi,J1i]=model2magUENcoords(xg,J1);
-[zUENi,xUENi,yUENi,J3i]=model2magUENcoords(xg,J3);
-[zUENi,xUENi,yUENi,J2i]=model2magUENcoords(xg,J2);
-[zUENi,xUENi,yUENi,nei]=model2magUENcoords(xg,ne);
-[zUENi,xUENi,yUENi,v3i]=model2magUENcoords(xg,v3);
-[zUENi,xUENi,yUENi,v2i]=model2magUENcoords(xg,v2);
-[zUENi,xUENi,yUENi,v1i]=model2magUENcoords(xg,v1);
-[zUENi,xUENi,yUENi,Tii]=model2magUENcoords(xg,Ti);
+dat = gemini3d.read.frame(gemini3d.find.frame(direc,ymd,UTsec));
+Tei = model2magUENcoords(xg, dat.Te);
+J1i = model2magUENcoords(xg, dat.J1);
+J3i = model2magUENcoords(xg, dat.J3);
+J2i = model2magUENcoords(xg, dat.J2);
+nei = model2magUENcoords(xg, dat.ne);
+v3i = model2magUENcoords(xg, dat.v3);
+v2i = model2magUENcoords(xg, dat.v2);
+v1i = model2magUENcoords(xg, dat.v1);
+[Tii, zUENi,xUENi,yUENi] = model2magUENcoords(xg, dat.Ti);
 
 figure;
 subplot(121)

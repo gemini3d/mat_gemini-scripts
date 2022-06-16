@@ -16,9 +16,9 @@ E3=E(:,:,:,3);
 
 %% GRID DATA
 [alti,mloni,mlati,~]=model2magcoords(xg,J1);    %this grid is needed to do interpolation of precipitation inputs
-[zi,xi,yi,J1i]=model2magUENcoords(xg,J1);
-[zi,xi,yi,E2i]=model2magUENcoords(xg,E2);
-[zi,xi,yi,E3i]=model2magUENcoords(xg,E3);
+J1i = model2magUENcoords(xg,J1);
+E2i = model2magUENcoords(xg,E2);
+[E3i, zi,xi,yi] = model2magUENcoords(xg,E3);
 J1i=squeeze(J1i(end,:,:));
 E2i=squeeze(E2i(end,:,:));
 E3i=squeeze(E3i(end,:,:));
