@@ -41,9 +41,9 @@ mlatlims=[26,32];
 
 
 %% regrid
-[alti,~,mlati,v1imer]=gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,1,llat,altlims,[210,210],mlatlims);
-[alti,mloni,~,v1izon]=gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
-[~,~,~,v1ialt]=gemscr.postprocess.model2magcoords(xg,dat.v1,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+[v1imer, ~,~,mlati] = gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,1,llat,altlims,[210,210],mlatlims);
+[v1izon,alti,mloni] = gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+v1ialt = gemscr.postprocess.model2magcoords(xg,dat.v1,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
 
 figure;
 subplot(131)
@@ -68,8 +68,8 @@ altlims=[200e3 600e3];
 mlonlims=[352.564275,355.06425];
 mlatlims=[-15,15];
 
-[alti,mloni,mlati,neimer]=model2magcoords(xg,dat.ne,lalt,1,llat,altlims,[354,354],mlatlims);
-[alti,mloni,mlati,neizon]=model2magcoords(xg,dat.ne,lalt,llon,1,altlims,mlonlims,[0,0]);
+[neimer,alti,mloni,mlati]=model2magcoords(xg,dat.ne,lalt,1,llat,altlims,[354,354],mlatlims);
+[neizon,alti,mloni,mlati] = model2magcoords(xg,dat.ne,lalt,llon,1,altlims,mlonlims,[0,0]);
 
 
 %% plot

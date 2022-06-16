@@ -20,15 +20,15 @@ dat= gemini3d.read.frame(direc, time=time);
 
 
 % regrid as uniform in mlon,mlat, and alt
-[alti,mloni,mlati,Tei]=model2magcoords(xg,dat.Te);
-[alti,mloni,mlati,J1i]=model2magcoords(xg,dat.J1);
-[alti,mloni,mlati,J3i]=model2magcoords(xg,dat.J3);
-[alti,mloni,mlati,J2i]=model2magcoords(xg,dat.J2);
-[alti,mloni,mlati,nei]=model2magcoords(xg,dat.ne);
-[alti,mloni,mlati,v3i]=model2magcoords(xg,dat.v3);
-[alti,mloni,mlati,v2i]=model2magcoords(xg,dat.v2);
-[alti,mloni,mlati,v1i]=model2magcoords(xg,dat.v1);
-[alti,mloni,mlati,Tii]=model2magcoords(xg,dat.Ti);
+Tei = model2magcoords(xg,dat.Te);
+J1i = model2magcoords(xg,dat.J1);
+J3i = model2magcoords(xg,dat.J3);
+J2i = model2magcoords(xg,dat.J2);
+nei = model2magcoords(xg,dat.ne);
+v3i = model2magcoords(xg,dat.v3);
+v2i = model2magcoords(xg,dat.v2);
+v1i = model2magcoords(xg,dat.v1);
+[Tii, alti,mloni,mlati] = model2magcoords(xg,dat.Ti);
 
 
 % plot

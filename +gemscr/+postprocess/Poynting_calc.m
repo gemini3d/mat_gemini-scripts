@@ -74,9 +74,9 @@ else
     altlims=[min(datmag.r),max(datmag.r)]-Re;
     mlonlims=[min(datmag.mlon),max(datmag.mlon)];
     mlatlims=[min(datmag.mlat),max(datmag.mlat)];
-    [alti,mloni,mlati,Eri]=model2magcoords(xg,Er,lalt,llon,llat,altlims,mlonlims,mlatlims);
-    [~,~,~,Ethetai]=model2magcoords(xg,Etheta,lalt,llon,llat,altlims,mlonlims,mlatlims);
-    [~,~,~,Ephii]=model2magcoords(xg,Ephi,lalt,llon,llat,altlims,mlonlims,mlatlims);
+    [Eri, alti,mloni,mlati] = model2magcoords(xg,Er,lalt,llon,llat,altlims,mlonlims,mlatlims);
+    Ethetai = model2magcoords(xg,Etheta,lalt,llon,llat,altlims,mlonlims,mlatlims);
+    Ephii = model2magcoords(xg,Ephi,lalt,llon,llat,altlims,mlonlims,mlatlims);
 
     % Group electric field components together so built-in fns. can be used
     %  These are permuted x1,x2,x3 -> r,theta,phi

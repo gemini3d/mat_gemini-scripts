@@ -65,7 +65,7 @@ if (~exist("S","var"))
         altlims=[80e3,900e3];
         mlonlims=[min(datmag.mlon),max(datmag.mlon)];
         mlatlims=[min(datmag.mlat),max(datmag.mlat)];
-        [alti,mloni,mlati,ohmici]=gemscr.postprocess.model2magcoords(xg,ohmicdissipation,256,llon,llat,altlims,mlonlims,mlatlims);
+        [ohmici,alti,mloni,mlati]=gemscr.postprocess.model2magcoords(xg,ohmicdissipation,256,llon,llat,altlims,mlonlims,mlatlims);
     end %if
 
     % Compute a field-integrated energy dissipation to compare to Poynting flux

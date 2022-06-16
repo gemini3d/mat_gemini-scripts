@@ -1,4 +1,4 @@
-function [alti,mloni,mlati,parmi]=model2magcoords(xg,parm,lalt,llon,llat,altlims,mlonlims,mlatlims)
+function [parmi, alti,mloni,mlati] = model2magcoords(xg,parm,lalt,llon,llat,altlims,mlonlims,mlatlims)
 
 %Grid the scalar GEMINI output data in parm onto a regular *geomagnetic* coordinates
 %grid.  By default create a linearly spaced output grid based on

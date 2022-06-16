@@ -25,25 +25,25 @@ lonlims=[min(xg.phi(:)*180/pi),max(xg.phi(:)*180/pi)];
 latlims=[-60,-30];
 
 
-[alti,mloni,mlati,Tei1]=model2magcoords(xg,dat1.Te,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,J1i1]=model2magcoords(xg,dat1.J1,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,J3i1]=model2magcoords(xg,dat1.J3,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,J2i1]=model2magcoords(xg,dat1.J2,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,nei1]=model2magcoords(xg,dat1.ne,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,v3i1]=model2magcoords(xg,dat1.v3,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,v2i1]=model2magcoords(xg,dat1.v2,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,v1i1]=model2magcoords(xg,dat1.v1,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,Tii1]=model2magcoords(xg,dat1.Ti,lalt,llon,llat,altlims,lonlims,latlims);
+Tei1 = model2magcoords(xg,dat1.Te,lalt,llon,llat,altlims,lonlims,latlims);
+J1i1 = model2magcoords(xg,dat1.J1,lalt,llon,llat,altlims,lonlims,latlims);
+J3i1 = model2magcoords(xg,dat1.J3,lalt,llon,llat,altlims,lonlims,latlims);
+J2i1 = model2magcoords(xg,dat1.J2,lalt,llon,llat,altlims,lonlims,latlims);
+nei1 = model2magcoords(xg,dat1.ne,lalt,llon,llat,altlims,lonlims,latlims);
+v3i1 = model2magcoords(xg,dat1.v3,lalt,llon,llat,altlims,lonlims,latlims);
+v2i1 = model2magcoords(xg,dat1.v2,lalt,llon,llat,altlims,lonlims,latlims);
+v1i1 = model2magcoords(xg,dat1.v1,lalt,llon,llat,altlims,lonlims,latlims);
+Tii1 = model2magcoords(xg,dat1.Ti,lalt,llon,llat,altlims,lonlims,latlims);
 
-[alti,mloni,mlati,Tei2]=model2magcoords(xg,dat2.Te,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,J1i2]=model2magcoords(xg,dat2.J1,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,J3i2]=model2magcoords(xg,dat2.J3,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,J2i2]=model2magcoords(xg,dat2.J2,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,nei2]=model2magcoords(xg,dat2.ne,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,v3i2]=model2magcoords(xg,dat2.v3,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,v2i2]=model2magcoords(xg,dat2.v2,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,v1i2]=model2magcoords(xg,dat2.v1,lalt,llon,llat,altlims,lonlims,latlims);
-[alti,mloni,mlati,Tii2]=model2magcoords(xg,dat2.Ti,lalt,llon,llat,altlims,lonlims,latlims);
+Tei2 = model2magcoords(xg,dat2.Te,lalt,llon,llat,altlims,lonlims,latlims);
+J1i2 = model2magcoords(xg,dat2.J1,lalt,llon,llat,altlims,lonlims,latlims);
+J3i2 = model2magcoords(xg,dat2.J3,lalt,llon,llat,altlims,lonlims,latlims);
+J2i2 = model2magcoords(xg,dat2.J2,lalt,llon,llat,altlims,lonlims,latlims);
+nei2 = model2magcoords(xg,dat2.ne,lalt,llon,llat,altlims,lonlims,latlims);
+v3i2 = model2magcoords(xg,dat2.v3,lalt,llon,llat,altlims,lonlims,latlims);
+v2i2 = model2magcoords(xg,dat2.v2,lalt,llon,llat,altlims,lonlims,latlims);
+v1i2 = model2magcoords(xg,dat2.v1,lalt,llon,llat,altlims,lonlims,latlims);
+[Tii2, alti,mloni,mlati] = model2magcoords(xg,dat2.Ti,lalt,llon,llat,altlims,lonlims,latlims);
 
 ix3=floor(llon/2);
 

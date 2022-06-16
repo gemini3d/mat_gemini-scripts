@@ -75,10 +75,10 @@ while(t<tdur)
 
     %% Sample model data on plotting grid
     disp('interpolating...')
-    [alti,~,mlati,dvirilat]=gemscr.postprocess.model2magcoords(xg,dvir,lalt,1,llat,altlims,[lon2,lon2],mlatlims);
-    [~,mloni,~,dvirilon]=gemscr.postprocess.model2magcoords(xg,dvir,lalt,llon,1,altlims,mlonlims,[lat2,lat2]);
-    [~,~,~,dneilat]=gemscr.postprocess.model2magcoords(xg,dnepct,lalt,1,llat,altlims,[lon2,lon2],mlatlims);
-    [~,~,~,dneilon]=gemscr.postprocess.model2magcoords(xg,dnepct,lalt,llon,1,altlims,mlonlims,[lat2,lat2]);
+    [dvirilat, alti,~,mlati] = gemscr.postprocess.model2magcoords(xg,dvir,lalt,1,llat,altlims,[lon2,lon2],mlatlims);
+    [dvirilon, ~, mloni] = gemscr.postprocess.model2magcoords(xg,dvir,lalt,llon,1,altlims,mlonlims,[lat2,lat2]);
+    dneilat = gemscr.postprocess.model2magcoords(xg,dnepct,lalt,1,llat,altlims,[lon2,lon2],mlatlims);
+    dneilon = gemscr.postprocess.model2magcoords(xg,dnepct,lalt,llon,1,altlims,mlonlims,[lat2,lat2]);
 
 
     %% Figure and resizing
