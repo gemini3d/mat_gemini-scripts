@@ -5,7 +5,7 @@ flagplots=true;
 direc='~/SDHCcard/ARCS/'
 cfg = gemini3d.read.config(direc);
 time = datetime(2017,03,02) + seconds(27300);
-dat = gemini3d.read.frame(direc, "time", time);
+dat = gemini3d.read.frame(direc, time=time);
 
 
 %% FIND THE RESOLUTION OF THE GRID IN EACH OF THE PRINCIPLE DIRECTIONS

@@ -21,7 +21,7 @@ time=datetime([ymd,0,0,UTsec]);
 %% read in data
 if (~exist('dat','var'))
   xg= gemini3d.read.grid(direc);
-  dat= gemini3d.read.frame(direc, "time", time);
+  dat= gemini3d.read.frame(direc, time=time);
 end %if
 
 

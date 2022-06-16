@@ -6,8 +6,8 @@ direc1='~/simulations/ICI2_glow2/';
 time = datetime(2013,2,20) + seconds(18300);
 
 %LOAD TWO FRAMES TO DIFF
-dat1 = gemini3d.read.frame(direc1, "time", time);
-dat2 = gemini3d.read.frame(direc1, "time", time - seconds(2));
+dat1 = gemini3d.read.frame(direc1, time=time);
+dat2 = gemini3d.read.frame(direc1, time=time - seconds(2));
 
 
 %PLOT DIFF

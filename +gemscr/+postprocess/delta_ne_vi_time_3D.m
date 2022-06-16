@@ -58,8 +58,8 @@ while(t<tdur)
     disp('loading data...')
     disp(ymd)
     disp(UTsec)
-    dat=gemini3d.read.frame(direc, "time", cfg.times(it));
-    datBG=gemini3d.read.frame(direc2, "time", cfg.times(it));
+    dat=gemini3d.read.frame(direc, time=cfg.times(it));
+    datBG=gemini3d.read.frame(direc2, time=cfg.times(it));
 
 
     %% Project velocity into geographic coordinates

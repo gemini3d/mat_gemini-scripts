@@ -1,6 +1,6 @@
 % This script shows an example of how to take curvilinear or nonuniformly
 % gridded GEMINI output and reinterpolate these onto a uniform grid in
-% glon,glat, and altitude. 
+% glon,glat, and altitude.
 %
 % You'll need to run the setup.m script for the gemini-scripts repository
 % prior to using this program
@@ -18,7 +18,7 @@ time=cfg.times(5);
 
 % load grid and frame data
 xg = gemini3d.read.grid(direc);
-simdat = gemini3d.read.frame(direc, "time", time);
+simdat = gemini3d.read.frame(direc, time=time);
 
 
 % interpolate onto a geographic grid

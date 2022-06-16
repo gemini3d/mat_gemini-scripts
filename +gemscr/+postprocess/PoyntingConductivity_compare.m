@@ -1,9 +1,9 @@
 % Compute the Poynting flux from a single frame and compare it against
-% dissipation of ionospheric electromagnetic energy.  
+% dissipation of ionospheric electromagnetic energy.
 %
 % One potential issue is that the Ohmic dissipation is computed on one grid
 % (model grid), while the Poynting flux is based on resampled electric
-% fields and magnetic fields.  
+% fields and magnetic fields.
 
 % flags
 flagplot=true;
@@ -31,27 +31,27 @@ if (~exist("S","var"))
     lalt=1; llon=128; llat=128;
     cfg = gemini3d.read.config(direc);    % config file
     %xg = gemini3d.read.grid(direc);       % grid
-    
+
     %disp("Computing Poynting flux...");
     [Ei,B,S,mlon,mlat,datmag,datplasma,xg]=gemscr.postprocess.Poynting_calc(direc,TOI,lalt,llon,llat);    % Poynting flux, electric, and magnetic fields
-    
-    %datplasma=gemini3d.read.frame(direc,"time",TOI);
-        
+
+    %datplasma=gemini3d.read.frame(direc,time=TOI);
+
     disp("Computing conductivities and conductance...");
     [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=gemscr.postprocess.conductivity_reconstruct(TOI,datplasma,cfg,xg);   % Conductivities on the simulation grid
-    
+
     % Get the electric fields
     disp("Computing Ohmic dissipation...");
     [v,E]=gemscr.postprocess.Efield(xg,datplasma.v2,datplasma.v3);   % fields, etc. on the simulation grid
-    
+
     % simulation mlon,mlat grid
     mlonp=squeeze(xg.phi(1,:,1)*180/pi);
     mlatp=squeeze(90-xg.theta(1,1,:)*180/pi);
-    
+
     % Compute the Joule dissipation
     E2=squeeze(E(:,:,:,2)); E3=squeeze(E(:,:,:,3));
     ohmicdissipation=sigP.*(E2.^2+E3.^2);
-    
+
     % Interpolate the energy dissipation rate onto a magnetic coordinate system
     % for plotting
     if ( flagplot && all(abs(mlonp-mlon)<0.01) && all(abs(mlatp-mlat)<0.01))
@@ -67,7 +67,7 @@ if (~exist("S","var"))
         mlatlims=[min(datmag.mlat),max(datmag.mlat)];
         [alti,mloni,mlati,ohmici]=gemscr.postprocess.model2magcoords(xg,ohmicdissipation,256,llon,llat,altlims,mlonlims,mlatlims);
     end %if
-    
+
     % Compute a field-integrated energy dissipation to compare to Poynting flux
     int_ohmic=zeros(llon,llat);
     for ilon=1:llon
@@ -106,7 +106,7 @@ if (flagplot)
     ylabel("mag. lat. (deg.)");
     colorbar;
     title("E_r (mV/m)")
-    
+
     subplot(232);
     pcolor(mlon,mlat,squeeze(Ei(end,:,:,2))*1e3);
     shading flat;
@@ -115,7 +115,7 @@ if (flagplot)
     ylabel("mag. lat. (deg.)");
     colorbar;
     title("E_\theta (mV/m)")
-    
+
     subplot(233);
     pcolor(mlon,mlat,squeeze(Ei(end,:,:,3))*1e3);
     shading flat;
@@ -124,7 +124,7 @@ if (flagplot)
     ylabel("mag. lat. (deg.)");
     colorbar;
     title("E_\phi (mV/m)")
-    
+
     subplot(234);
     pcolor(mlon,mlat,squeeze(B(end,:,:,1))*1e9);
     shading flat;
@@ -133,7 +133,7 @@ if (flagplot)
     ylabel("mag. lat. (deg.)");
     colorbar;
     title("B_r (nT)")
-    
+
     subplot(235);
     pcolor(mlon,mlat,squeeze(B(end,:,:,2))*1e9);
     shading flat;
@@ -142,7 +142,7 @@ if (flagplot)
     ylabel("mag. lat. (deg.)");
     colorbar;
     title("B_\theta (nT)")
-    
+
     subplot(236);
     pcolor(mlon,mlat,squeeze(B(end,:,:,3))*1e9);
     shading flat;
@@ -151,10 +151,10 @@ if (flagplot)
     ylabel("mag. lat. (deg.)");
     colorbar;
     title("B_\phi (nT)")
-    
+
     % Make a comparison plot of Poynting flux vs. Ohmic dissipation
     figure;
-    
+
     subplot(121);
     pcolor(mlon,mlat,squeeze(S(end,:,:,1))*1e3);
     shading flat;
@@ -167,7 +167,7 @@ if (flagplot)
     caxis([-caxval,caxval]);
     ylabel(c,"Poynting Flux (mW/m^2)");
     title("S_1");
-    
+
     % subplot(132);
     % imagesc(mloni,mlati,SIGP');
     % axis xy;
@@ -179,7 +179,7 @@ if (flagplot)
     % caxis([-caxval,caxval]);
     % ylabel(c,"Pedersen Conductance (mhos)");
     % title("\Sigma_P");
-    
+
     subplot(122);
     int_ohmic=int_ohmic';
     pcolor(mloni,mlati,int_ohmic*1e3);

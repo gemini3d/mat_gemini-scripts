@@ -10,7 +10,7 @@ TOI=datetime([ymd,0,0,UTsec]);
 direc="~/simulations/raid/dBtesting_noJpar_magcorner/";
 
 % load the magnetic field perturbations
-dat=gemini3d.read.magframe(direc,"time",TOI);
+dat=gemini3d.read.magframe(direc,time=TOI);
 Bx=dat.Bphi;          % alt,theta,phi; east is phi direction
 By=-1*dat.Btheta;     % theta goes against northward distance
 %Byt=dat.Bthetat;
@@ -105,7 +105,7 @@ Jz=permute(Jz/1e-6,[3,1,2]);    %so J in uA/m^2
 % Now load the currents from the GEMINI output to plot/compare
 
 xg=gemini3d.read.grid(direc);
-datp=gemini3d.read.frame(direc,"time",TOI);
+datp=gemini3d.read.frame(direc,time=TOI);
 
 [J1g, zUENi,xUENi,yUENi] = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J1,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
 J2g = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J2,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);

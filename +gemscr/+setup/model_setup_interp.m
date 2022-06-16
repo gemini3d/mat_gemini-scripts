@@ -337,7 +337,7 @@ xgin= gemini3d.read.grid(ID);
 %FIND THE DATE OF THE END FRAEM OF THE SIMULATION (PRESUMABLY THIS WILL BE THE STARTING POITN FOR ANOTEHR)
 
 %LOAD THE FRAME
-dat = gemini3d.read.frame(ID, "time", cfg.times(end));
+dat = gemini3d.read.frame(ID, time=cfg.times(end));
 
 
 %DO THE INTERPOLATION
@@ -375,7 +375,7 @@ else
   end
 end
 
-dint = struct("ns", nsi, "Ts", Tsi, "vs1", vs1i, "time", cfg.times(end));
+dint = struct("ns", nsi, "Ts", Tsi, "vs1", vs1i, time=cfg.times(end));
 
 %WRITE OUT THE GRID
 gemini3d.write.grid(p, xg);    %just put it in pwd for now

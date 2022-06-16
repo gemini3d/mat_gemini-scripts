@@ -18,7 +18,7 @@ cfg = gemini3d.read.config(direc);
 time = datetime(2014, 12, 1) + seconds(28500);
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
-dat = gemini3d.read.frame(direc, "time", time);
+dat = gemini3d.read.frame(direc, time=time);
 [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP] = gemscr.postprocess.conductivity_reconstruct(xg,time,cfg,dat);
 
 

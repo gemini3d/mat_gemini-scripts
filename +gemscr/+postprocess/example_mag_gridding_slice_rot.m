@@ -24,7 +24,7 @@ time=datetime([ymd,0,0,UTsec]);
 %% read in data
 if (~exist('dat','var'))
   xg=gemini3d.read.grid(direc);
-  dat=gemini3d.read.frame(direc, "time", time);
+  dat=gemini3d.read.frame(direc, time=time);
   vr=dat.v1.*dot(xg.er,xg.e1,4)+dat.v2.*dot(xg.er,xg.e2,4)+dat.v3.*dot(xg.er,xg.e3,4);
   vtheta=dat.v1.*dot(xg.etheta,xg.e1,4)+dat.v2.*dot(xg.etheta,xg.e2,4)+dat.v3.*dot(xg.etheta,xg.e3,4);
   vphi=dat.v1.*dot(xg.ephi,xg.e1,4)+dat.v2.*dot(xg.ephi,xg.e2,4)+dat.v3.*dot(xg.ephi,xg.e3,4);

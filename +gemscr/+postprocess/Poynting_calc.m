@@ -15,15 +15,15 @@ Re=6370e3;
 xg=gemini3d.read.grid(direc);
 
 % read in plasma
-datplasma=gemini3d.read.frame(direc,"time",TOI);
+datplasma=gemini3d.read.frame(direc, time=TOI);
 
 % read in magnetic field, reorganize to use with MATLAB built-in
-datmag=gemini3d.read.magframe(direc,"time",TOI);  % if h5 output then the gridsize is stored with the output data
-%B=cat(4,datmag.Br,datmag.Btheta,datmag.Bphi);     
+datmag=gemini3d.read.magframe(direc, time=TOI);  % if h5 output then the gridsize is stored with the output data
+%B=cat(4,datmag.Br,datmag.Btheta,datmag.Bphi);
 % organized as:  up dependence, lon dep., lat dep., component
 
 % Compute electric fields from velocities
-[v,Emod]=gemscr.postprocess.Efield(xg,datplasma.v2,datplasma.v3);   
+[v,Emod]=gemscr.postprocess.Efield(xg,datplasma.v2,datplasma.v3);
 % Emod components and functional dependence is x1 (up),x2 (east),x3 (north)
 
 % Rotate electric fields into geomagnetic spherical coordinates, note that
@@ -47,7 +47,7 @@ if (numel(datmag.mlon)==numel(xgmlon) && numel(datmag.mlat)==numel(xgmlat))
         % correct types of arrays, viz components r,theta,phi and spatial
         % dependence
         disp('Poynting_calc --> E,B on same grid, ignoring size inputs')
-        
+
         mloni=xgmlon; mlati=xgmlat;
         if (size(datmag.Br,1)==1)
             Ertmp=zeros(1,xg.lx(2),xg.lx(3));
@@ -67,7 +67,7 @@ else
     % computation grid.  This may not do a great job if the source grid is
     % very nonuniform.
     disp('Poynting_calc --> E,B *not* on same grid')
-    
+
     if ~exist("lalt","var")
         lalt=numel(datmag.r); llon=numel(datmag.mlon); llat=numel(datmag.mlat);
     end %if
@@ -77,11 +77,11 @@ else
     [alti,mloni,mlati,Eri]=model2magcoords(xg,Er,lalt,llon,llat,altlims,mlonlims,mlatlims);
     [~,~,~,Ethetai]=model2magcoords(xg,Etheta,lalt,llon,llat,altlims,mlonlims,mlatlims);
     [~,~,~,Ephii]=model2magcoords(xg,Ephi,lalt,llon,llat,altlims,mlonlims,mlatlims);
-    
+
     % Group electric field components together so built-in fns. can be used
     %  These are permuted x1,x2,x3 -> r,theta,phi
     E=cat(4,permute(Eri,[1,3,2]),permute(Ethetai,[1,3,2]),permute(Ephii,[1,3,2]));
-    
+
     %  In the even the magnetic field points have been nonuniformly spaced,
     %  sample it uniformly, as well using the same grid as used for the
     %  electric field.  Two different situations need to be handled here.  2D

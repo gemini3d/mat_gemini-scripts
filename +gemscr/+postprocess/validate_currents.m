@@ -22,7 +22,7 @@ time = datetime([ymd,0,0,UTsec]);
 
 %% LOAD THE SIMULATION DATA CLOSEST TO THE REQUESTED TIME
 xg = gemini3d.read.grid(direc);
-dat = gemini3d.read.frame(direc, "time", time);
+dat = gemini3d.read.frame(direc, time=time);
 J2=dat.J2; J3=dat.J3; ne=dat.ne; v2=dat.v2; v3=dat.v3;
 
 mlatsrc= cfg.sourcemlat;
