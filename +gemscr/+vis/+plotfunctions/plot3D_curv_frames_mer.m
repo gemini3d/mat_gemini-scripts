@@ -45,7 +45,7 @@ altref=300;
 
 
 %SOME FILTERING OUT OF GARBAGE
-inds=find(xg.alt<75e3);
+inds=xg.alt<75e3;
 parm(inds)=0e0;
 
 
@@ -152,8 +152,8 @@ sourcex=sourcetheta-meantheta;
 xp3=[sourcex-1*pi/180,sourcex,sourcex+1*pi/180];    %place in the plane of the source
 lxp3=numel(xp3);
 zp3=linspace(minz,750,500);
-minzp3=min(zp3);
-maxzp3=max(zp3);
+% minzp3=min(zp3);
+% maxzp3=max(zp3);
 lzp3=numel(zp3);
 [X3,Y3,Z3]=meshgrid(xp3,yp,zp3*1e3);       %lat./lon. meshgrid, need 3D since and altitude slice cuts through all 3 dipole dimensions
 
@@ -189,8 +189,8 @@ parmp3=parmp3(inds,:,:);
 %COMPUTE SOME BOUNDS FOR THE PLOTTING
 minxp=min(xp(:));
 maxxp=max(xp(:));
-minyp=min(yp(:));
-maxyp=max(yp(:));
+% minyp=min(yp(:));
+% maxyp=max(yp(:));
 minzp=min(zp(:));
 maxzp=max(zp(:));
 

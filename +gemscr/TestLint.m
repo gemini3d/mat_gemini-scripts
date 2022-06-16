@@ -10,7 +10,7 @@ end
 
 methods (TestClassSetup)
 
-function get_files(tc)
+function get_cfg(tc)
 
 cwd = fileparts(mfilename('fullpath'));
 cfg_file = fullfile(cwd, "MLint.txt");

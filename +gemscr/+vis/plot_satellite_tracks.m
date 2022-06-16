@@ -10,11 +10,11 @@ assert(~verLessThan('matlab', '9.7'), 'Matlab >= R2019b')
 
 load(expanduser(file), 'nesat', 'Tisat', 'Tesat', 'J1sat', 'visat', 'glatsat', 'glonsat')
 
-[lorb,lsats]=size(nesat);
+[~,lsats]=size(nesat);
 istart=50;                         %cuts out interpolation crap at the beginning of the simulation
 isats=1:lsats;                     %choose which satellites to compare
 
-[theta,phi]=gemini3d.geog2geomag(glatsat,glonsat);
+% [theta,phi]=gemini3d.geog2geomag(glatsat,glonsat);
 % mlatsat=90-theta*180/pi;
 % mlonsat=phi*180/pi;
 

@@ -159,10 +159,10 @@ parmp2=parmp2(:,inds,:);
 %COMPUTE SOME BOUNDS FOR THE PLOTTING
 minxp=min(xp(:));
 maxxp=max(xp(:));
-minyp=min(yp(:));
-maxyp=max(yp(:));
-minzp=min(zp(:));
-maxzp=max(zp(:));
+% minyp=min(yp(:));
+% maxyp=max(yp(:));
+% minzp=min(zp(:));
+% maxzp=max(zp(:));
 
 
 %NOW THAT WE'VE SORTED, WE NEED TO REGENERATE THE MESHGRID

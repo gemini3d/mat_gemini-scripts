@@ -45,7 +45,9 @@ end
 
 
 %SIZE OF SIMULATION
-lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
+lx1=xg.lx(1);
+%lx2=xg.lx(2);
+lx3=xg.lx(3);
 inds1=3:lx1+2;
 %inds2=3:lx2+2;
 inds2min=find(xg.x2<-100e3, 1, 'last' );
@@ -56,7 +58,7 @@ Re=6370e3;
 
 
 %JUST PICK AN X3 LOCATION FOR THE MERIDIONAL SLICE PLOT, AND AN ALTITUDE FOR THE LAT./LON. SLICE
-ix3=floor(lx3/2);
+% ix3=floor(lx3/2);
 altref=300;
 
 
@@ -64,32 +66,32 @@ altref=300;
 meantheta=mean(xg.theta(:));
 y=-1*(xg.theta-meantheta);   %this is a mag colat. coordinate and is only used for defining grid in linspaces below, runs backward from north distance, hence the negative sign
 x=xg.x2(inds2)/Re/sin(meantheta);
-z=xg.alt/1e3;
+% z=xg.alt/1e3;
 lxp=1024;
 lyp=1024;
-lzp=500;
+% lzp=500;
 minx=min(x(:));
 maxx=max(x(:));
 miny=min(y(:));
 maxy=max(y(:));
-minz=min(z(:));
-maxz=max(z(:));
+% minz=min(z(:));
+% maxz=max(z(:));
 xp=linspace(minx,maxx,lxp);      %eastward distance (rads.)
 yp=linspace(miny,maxy,lyp);      %should be interpreted as northward distance (in rads.).  Irrespective of ordering of xg.theta, this will be monotonic increasing!!!
-zp=linspace(minz,maxz,lzp)';     %altitude (kilometers)
+% zp=linspace(minz,maxz,lzp)';     %altitude (kilometers)
 
 
 %INTERPOLATE ONTO PLOTTING GRID
-[X,Z]=meshgrid(xp,zp*1e3);    %meridional meshgrid, this defines the grid for plotting
+% [X,Z]=meshgrid(xp,zp*1e3);    %meridional meshgrid, this defines the grid for plotting
 
 
 %% CONVERT TO DISTANCE UP, EAST, NORTH
-x1plot=Z(:);   %upward distance
-x2plot=X(:)*Re*sin(meantheta);     %eastward distance
-
-parmtmp=parm(:,inds2-2,ix3);
-parmp=interp2(xg.x2(inds2),xg.x1(inds1),parmtmp,x2plot,x1plot);
-parmp=reshape(parmp,[lzp,lxp]);    %slice expects the first dim. to be "y" ("z" in the 2D case)
+% x1plot=Z(:);   %upward distance
+% x2plot=X(:)*Re*sin(meantheta);     %eastward distance
+%
+% parmtmp=parm(:,inds2-2,ix3);
+% parmp=interp2(xg.x2(inds2),xg.x1(inds1),parmtmp,x2plot,x1plot);
+% parmp=reshape(parmp,[lzp,lxp]);    %slice expects the first dim. to be "y" ("z" in the 2D case)
 
 
 %% LAT./LONG. SLICE COORDIANTES
@@ -109,35 +111,35 @@ parmp2=reshape(parmp2,[lyp,lxp,lzp2]);    %slice expects the first dim. to be "y
 
 
 %% ALT/LAT SLICE
-[Y3,Z3]=meshgrid(yp,zp*1e3);
+% [Y3,Z3]=meshgrid(yp,zp*1e3);
 
-x1plot=Z3(:);   %upward distance
-x3plot=Y3(:)*Re;     %northward distance;
+% x1plot=Z3(:);   %upward distance
+% x3plot=Y3(:)*Re;     %northward distance;
 
-ix2=floor(lx2/2);
-parmtmp=squeeze(parm(:,ix2,:));     %so north dist, east dist., alt.
-parmp3=interp2(xg.x3(inds3),xg.x1(inds1),parmtmp,x3plot,x1plot);
-parmp3=reshape(parmp3,[lzp,lyp]);    %slice expects the first dim. to be "y"
+% ix2=floor(lx2/2);
+% parmtmp=squeeze(parm(:,ix2,:));     %so north dist, east dist., alt.
+% parmp3=interp2(xg.x3(inds3),xg.x1(inds1),parmtmp,x3plot,x1plot);
+% parmp3=reshape(parmp3,[lzp,lyp]);    %slice expects the first dim. to be "y"
 
 
 %% CONVERT ANGULAR COORDINATES TO MLAT,MLON
 yp=yp*Re/1e3; %(km)
 [yp,inds]=sort(yp);
 parmp2=parmp2(inds,:,:);
-parmp3=parmp3(:,inds);
+% parmp3=parmp3(:,inds);
 
 %xp=(xp+meanphi)*180/pi;
 xp=xp*Re*sin(meantheta)/1e3;    %eastward ground distance (km)
 [xp,inds]=sort(xp);
-parmp=parmp(:,inds,:);
+% parmp=parmp(:,inds,:);
 parmp2=parmp2(:,inds,:);
 
 
 %COMPUTE SOME BOUNDS FOR THE PLOTTING
-minxp=min(xp(:));
-maxxp=max(xp(:));
-minyp=min(yp(:));
-maxyp=max(yp(:));
+% minxp=min(xp(:));
+% maxxp=max(xp(:));
+% minyp=min(yp(:));
+% maxyp=max(yp(:));
 
 
 %NOW THAT WE'VE SORTED, WE NEED TO REGENERATE THE MESHGRID
@@ -183,7 +185,7 @@ xlabel(ha,'x (km)');
 
 %% CONSTRUCT A STRING FOR THE TIME AND DATE
 
-title(ha, datestr(time))
+title(ha, string(time))
 set(ha,'FontSize',FS)
 
 % ha=subplot(1,3,3, 'parent', hf, 'nextplot', 'add', 'FontSize',FS);

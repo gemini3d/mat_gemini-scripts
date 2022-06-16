@@ -2,7 +2,7 @@ function h=plotslice3D_curv_north(t,dmy,xg,parm,parmlbl,caxlims)
 
 %CLEAR AND SET FIGURE HANDLES
 clf;
-h=gcf;
+% h=gcf;
 
 
 %SIZE OF SIMULATION
@@ -19,7 +19,7 @@ ix1s=find(xg.x1(inds1)>=0);
 
 minz=0;
 maxz=500;
-[tmp,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
+[~,ix1]=min(abs(xg.alt(ix1s,1,1)-maxz*1e3));
 ix1=ix1s(ix1);
 thetavals=xg.theta(ix1:lx1,:,:);
 meantheta=mean(thetavals(:));
@@ -130,14 +130,14 @@ FS=16;
 xslice=[];
 yslice=[];
 zslice=[150,300,750];
-h=slice(XP,YP,ZP,parmp,xslice,yslice,zslice);
+slice(XP,YP,ZP,parmp,xslice,yslice,zslice);
 shading flat;
 hold on;
 ix3=floor(lx3/2);
 surfx=90-(x(:,:,ix3)+meantheta)*180/pi;    %create a surface out of a meridional slice
 surfy=(y(:,:,ix3)+meanphi)*180/pi;
 surfz=z(:,:,ix3);
-h=slice(XP,YP,ZP,parmp,surfx,surfy,surfz);
+slice(XP,YP,ZP,parmp,surfx,surfy,surfz);
 shading flat;
 ix2=floor(lx2/2);
 surfx=squeeze(90-(x(:,ix2,:)+meantheta)*180/pi);    %create a another surface out of slice along constant L-shell
