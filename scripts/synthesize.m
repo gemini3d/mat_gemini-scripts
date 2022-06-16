@@ -1,5 +1,3 @@
-cwd = fileparts(mfilename('fullpath'));
-
 %ELECTRIC FIELD DATA
 load ./fields/fields.mat;
 mlatfields=MLAT;
