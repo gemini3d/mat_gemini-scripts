@@ -222,7 +222,7 @@ set(h,'alphadata',~isnan(parmp));
 
 tight_axis(ha)
 colormap(ha,cmap)
-caxis(ha,caxlims);
+clim(ha,caxlims);
 c=colorbar(ha);
 xlabel(c,parmlbl);
 xlabel(ha,'magnetic latitude (deg.)');
@@ -243,7 +243,7 @@ set(h,'alphadata',~isnan(parmp2(:,:,2)'));
 
 tight_axis(ha)
 colormap(ha,cmap)
-caxis(ha,caxlims);
+clim(ha,caxlims);
 c=colorbar(ha);
 xlabel(c,parmlbl);
 xlabel(ha,'magnetic long. (deg.)');
@@ -260,7 +260,7 @@ end
 
 tight_axis(ha)
 colormap(ha,cmap)
-caxis(ha,caxlims);
+clim(ha,caxlims);
 c=colorbar(ha);
 xlabel(c,parmlbl);
 xlabel(ha,'magnetic long. (deg.)');

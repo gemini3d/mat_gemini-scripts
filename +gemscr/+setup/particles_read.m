@@ -125,8 +125,8 @@ end
 %     xlabel('mlon.');
 %     title(['Unsmoothed:  ',datestr(datenum(expdate(it,:)))]);
 %     colorbar;
-%     %cax=caxis;
-%     caxis([0 40]);
+%     %cax=clim;
+%     clim([0 40]);
 %
 %     subplot(122);
 %     imagesc(mlon,mlat,squeeze(Qsmooth(it,:,:))');
@@ -135,8 +135,8 @@ end
 %     xlabel('mlon.');
 %     title(['Smoothed:  ',datestr(datenum(expdate(it,:)))]);
 %     colorbar;
-%     %caxis(cax);
-%     caxis([0 40]);
+%     %clim(cax);
+%     clim([0 40]);
 %
 %     UTsec=expdate(it,4)*3600+expdate(it,5)*60+expdate(it,6);
 %     ymd=expdate(it,1:3);
@@ -184,8 +184,8 @@ end
 %     xlabel('mlon.');
 %     title(['Decimated:  ',datestr(datenum(outputdate(it,:)))]);
 %     colorbar;
-%     cax=caxis;
-%     caxis([0 40]);
+%     cax=clim;
+%     clim([0 40]);
 %
 %     UTsec=outputdate(it,4)*3600+outputdate(it,5)*60+outputdate(it,6);
 %     ymd=outputdate(it,1:3);

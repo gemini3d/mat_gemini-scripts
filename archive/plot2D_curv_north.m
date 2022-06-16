@@ -136,7 +136,7 @@ axis xy;
 %ax=axis;
 %ax(3)=80;
 %axis(ax);
-caxis(caxlims)
+clim(caxlims)
 c=colorbar;
 xlabel(c,parmlbl);
 xlabel('magnetic latitude (deg.)');
@@ -169,7 +169,7 @@ hold off;
 set(gca,'FontSize',FS);
 axis xy;
 axis tight;
-caxis(caxlims)
+clim(caxlims)
 c=colorbar;
 %ax=axis;
 %axis([ax(1:4),0,ax(6)]);

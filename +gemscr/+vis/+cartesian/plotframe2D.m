@@ -70,7 +70,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-caxis(Jlims)
+clim(Jlims)
 c=colorbar;
 xlabel(c,sprintf(Jlab))
 xlabel('horizontal distance (km)');
@@ -84,8 +84,8 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-%caxis(Jlims)
-caxis([-0.5 0.5]);
+%clim(Jlims)
+clim([-0.5 0.5]);
 c=colorbar;
 xlabel(c,sprintf(Jlab2))
 xlabel('horizontal distance (km)');
@@ -102,7 +102,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-caxis(vlims)
+clim(vlims)
 c=colorbar;
 xlabel(c,sprintf(vlab))
 xlabel('horizontal distance (km)');
@@ -116,7 +116,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-caxis(v3lims)
+clim(v3lims)
 c=colorbar;
 xlabel(c,sprintf(vlab2))
 xlabel('horizontal distance (km)');
@@ -130,7 +130,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-caxis(nlims);
+clim(nlims);
 c=colorbar;
 xlabel(c,sprintf('n_e (m^{-3})'))
 xlabel('horizontal distance (km)');
@@ -142,7 +142,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-caxis(plims);
+clim(plims);
 c=colorbar;
 xlabel(c,plab)
 xlabel('horizontal distance (km)');
@@ -154,7 +154,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-caxis(Tlims)
+clim(Tlims)
 c=colorbar;
 xlabel(c,'T_i (K)')
 xlabel('horizontal distance (km)');
@@ -166,7 +166,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis square;
 axis tight;
-caxis(Tlims)
+clim(Tlims)
 c=colorbar;
 xlabel(c,'T_e (K)')
 xlabel('horizontal distance (km)');

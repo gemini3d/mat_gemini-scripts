@@ -74,7 +74,7 @@ for it=1:lt
     %axis tight;
     caxlim=max(abs(param(:)))
     caxlim=max(caxlim,0.001);
-    caxis([-caxlim,caxlim]);
+    clim([-caxlim,caxlim]);
     c=colorbar
     set(c,'FontSize',FS)
     title(['B_r (nT)  ',titlestring])
@@ -98,7 +98,7 @@ for it=1:lt
     %axis tight;
     caxlim=max(abs(param(:)))
     caxlim=max(caxlim,0.001);
-    caxis([-caxlim,caxlim]);
+    clim([-caxlim,caxlim]);
     c=colorbar
     set(c,'FontSize',FS)
     title('B_\theta (nT)')
@@ -122,7 +122,7 @@ for it=1:lt
     %axis tight;
     caxlim=max(abs(param(:)))
     caxlim=max(caxlim,0.001);
-    caxis([-caxlim,caxlim]);
+    clim([-caxlim,caxlim]);
     c=colorbar
     set(c,'FontSize',FS)
     title('B_\phi (nT)')

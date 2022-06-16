@@ -19,7 +19,7 @@ for ifile=1:numel(filelist)
         vnz=h5read(strcat(direc,filename),"/dvnzall");
         imagesc(r,z,vnz);
         colormap("gray")
-        caxis([-50,50])
+        clim([-50,50])
         axis xy;
         xlabel("r (km)");
         ylabel("z (km)");
@@ -28,7 +28,7 @@ for ifile=1:numel(filelist)
         axis equal;
         axis tight;
         t=t+6;
-        
+
         tstr=num2str(t);
         ndigits=floor(log10(t));
         while(ndigits<5)

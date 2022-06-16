@@ -133,7 +133,7 @@ xlabel('x (east)');
 ylabel('z (alt.)');
 title('J_z (up) uA/m^2');
 colorbar;
-cax{1}=caxis;
+cax{1}=clim;
 
 subplot(332);
 pcolor(x/1e3,z/1e3,J2g(:,:,ix3));
@@ -143,7 +143,7 @@ xlabel('x (east)');
 ylabel('z (alt.)');
 title('J_x (east) uA/m^2');
 colorbar;
-cax{2}=caxis;
+cax{2}=clim;
 
 subplot(333);
 pcolor(x/1e3,z/1e3,J3g(:,:,ix3));
@@ -153,7 +153,7 @@ xlabel('x (east)');
 ylabel('z (alt.)');
 title('J_y (north) uA/m^2');
 colorbar;
-cax{3}=caxis;
+cax{3}=clim;
 
 subplot(334)
 pcolor(y/1e3,z/1e3,squeeze(J1g(:,ix2,:)));
@@ -162,7 +162,7 @@ xlabel('y (north)');
 ylabel('z (alt.)');
 title('J_z (up) uA/m^2');
 colorbar;
-cax{4}=caxis;
+cax{4}=clim;
 
 subplot(335);
 pcolor(y/1e3,z/1e3,squeeze(J2g(:,ix2,:)));
@@ -172,7 +172,7 @@ xlabel('y (north)');
 ylabel('z (alt.)');
 title('J_x (east) uA/m^2');
 colorbar;
-cax{5}=caxis;
+cax{5}=clim;
 
 subplot(336);
 pcolor(y/1e3,z/1e3,squeeze(J3g(:,ix2,:)));
@@ -182,7 +182,7 @@ xlabel('y (north)');
 ylabel('z (alt.)');
 title('J_y (north) uA/m^2');
 colorbar;
-cax{6}=caxis;
+cax{6}=clim;
 
 subplot(337)
 pcolor(x/1e3,y/1e3,squeeze(J1g(ix1,:,:))');
@@ -191,7 +191,7 @@ xlabel('x (east)');
 ylabel('y (north)');
 title('J_z (up) uA/m^2');
 colorbar;
-cax{7}=caxis;
+cax{7}=clim;
 
 subplot(338);
 pcolor(x/1e3,y/1e3,squeeze(J2g(ix1,:,:))');
@@ -200,7 +200,7 @@ xlabel('x (east)');
 ylabel('y (north)');
 title('J_x (east) uA/m^2');
 colorbar;
-cax{8}=caxis;
+cax{8}=clim;
 
 subplot(339);
 pcolor(x/1e3,y/1e3,squeeze(J3g(ix1,:,:))');
@@ -209,7 +209,7 @@ xlabel('x (east)');
 ylabel('y (north)');
 title('J_y (north) uA/m^2');
 colorbar;
-cax{9}=caxis;
+cax{9}=clim;
 
 % magnetic field
 figure(1);
@@ -367,5 +367,5 @@ colorbar;
 % harmonize colorbar axes.
 for iax=1:numel(cax)
     subplot(3,3,iax);
-    caxis(cax{iax});
+    clim(cax{iax});
 end %for

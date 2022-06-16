@@ -21,9 +21,9 @@ axis xy;
 xlabel("mag. lon. (deg.)");
 ylabel("mag. lat. (deg.)");
 c=colorbar;
-cax=caxis;
+cax=clim;
 caxval=max(abs(cax));
-caxis([-caxval,caxval]);
+clim([-caxval,caxval]);
 ylabel(c,"Poynting Flux (mW/m^2)");
 title("S_1");
 
@@ -33,7 +33,7 @@ axis xy;
 xlabel("mag. lon. (deg.)");
 ylabel("mag. lat. (deg.)");
 c=colorbar;
-caxis([-caxval,caxval]);
+clim([-caxval,caxval]);
 ylabel(c,"Poynting Flux (mW/m^2)");
 title("S_2");
 
@@ -43,6 +43,6 @@ axis xy;
 xlabel("mag. lon. (deg.)");
 ylabel("mag. lat. (deg.)");
 c=colorbar;
-caxis([-caxval,caxval]);
+clim([-caxval,caxval]);
 ylabel(c,"Poynting Flux (mW/m^2)");
 title("S_3");

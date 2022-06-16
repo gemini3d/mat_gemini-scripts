@@ -100,7 +100,7 @@ while(t<tdur)
 %    axis(ax);
     axis xy;
     colormap(old_parula(256));
-    caxis([-15 15]);
+    clim([-15 15]);
     c=colorbar;
     xlabel(c,'\Delta n_e (pct. diff.)')
     set(c,'Location','SouthOutside');
@@ -121,7 +121,7 @@ while(t<tdur)
 %    axis(ax);
     axis xy;
     colormap(old_parula(256));
-    caxis([-15 15]);
+    clim([-15 15]);
     c=colorbar;
     xlabel(c,'\Delta n_e (pct. diff.)')
     set(c,'Location','SouthOutside');
@@ -139,7 +139,7 @@ while(t<tdur)
 %    axis(ax);
     axis xy;
     colormap(old_parula(256));
-    caxis([-75 75]);
+    clim([-75 75]);
     c=colorbar;
     xlabel(c,'\Delta v_{i,r} (m/s)')
     set(c,'Location','SouthOutside');
@@ -157,7 +157,7 @@ while(t<tdur)
 %    axis(ax);
     axis xy;
     colormap(old_parula(256));
-    caxis([-75 75]);
+    clim([-75 75]);
     c=colorbar;
     xlabel(c,'\Delta v_{i,r} (m/s)')
     set(c,'Location','SouthOutside');

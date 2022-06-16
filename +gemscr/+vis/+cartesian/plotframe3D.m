@@ -31,7 +31,7 @@ end
 % h2=plotslice3D(t/3600,xg,vs1(:,:,:,1));
 % figure;
 % h2=plotslice3D(t/3600,xg,log10(ns(:,:,:,7)));
-% caxis([8 12])
+% clim([8 12])
 
 
 %figure;
@@ -174,4 +174,4 @@ h2=plotslice3D_curv(t/3600,xg,J1);
 %}
 % figure;
 % h2=plotslice3D_curv_corner(t/3600,xg,log10(ns(:,:,:,7)));
-% caxis([8 12])
+% clim([8 12])

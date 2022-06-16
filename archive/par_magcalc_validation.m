@@ -390,7 +390,7 @@ for it=1:lt
       caxlim=max(abs(param(:)))
 %      caxlim=max(caxlim,0.05)
       caxlim=max(caxlim,0.001);
-      caxis([-caxlim,caxlim]);
+      clim([-caxlim,caxlim]);
       c=colorbar
       set(c,'FontSize',FS)
   %    xlabel(c,'B_r (nT)')
@@ -412,7 +412,7 @@ for it=1:lt
       caxlim=max(abs(param(:)))
 %      caxlim=max(caxlim,0.05)
       caxlim=max(caxlim,0.001);
-      caxis([-caxlim,caxlim]);
+      clim([-caxlim,caxlim]);
       c=colorbar
       set(c,'FontSize',FS)
   %    xlabel(c,'B_\theta (nT)')
@@ -434,7 +434,7 @@ for it=1:lt
       caxlim=max(abs(param(:)))
 %      caxlim=max(caxlim,0.05)
       caxlim=max(caxlim,0.001);
-      caxis([-caxlim,caxlim]);
+      clim([-caxlim,caxlim]);
       c=colorbar
       set(c,'FontSize',FS)
   %    xlabel(c,'B_\phi (nT)')
@@ -475,7 +475,7 @@ if (flag2D)
   axis tight;
   caxlim=max(abs(param(:)))
 %  caxlim=max(caxlim,0.05)
-  caxis([-caxlim,caxlim]);
+  clim([-caxlim,caxlim]);
   c=colorbar
   set(c,'FontSize',FS)
   %    xlabel(c,'B_r (nT)')
@@ -497,7 +497,7 @@ if (flag2D)
   axis tight;
   caxlim=max(abs(param(:)))
 %  caxlim=max(caxlim,0.05)
-  caxis([-caxlim,caxlim]);
+  clim([-caxlim,caxlim]);
   c=colorbar
   set(c,'FontSize',FS)
   %    xlabel(c,'B_\theta (nT)')
@@ -519,7 +519,7 @@ if (flag2D)
   axis tight;
   caxlim=max(abs(param(:)))
 %  caxlim=max(caxlim,0.05)
-  caxis([-caxlim,caxlim]);
+  clim([-caxlim,caxlim]);
   c=colorbar
   set(c,'FontSize',FS)
   %    xlabel(c,'B_\phi (nT)')

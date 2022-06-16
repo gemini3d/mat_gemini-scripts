@@ -172,7 +172,7 @@ axis xy;
 ax=axis;
 axis([ax(1:2),0,maxz]);
 colormap(parula(256));
-caxis(caxlims)
+clim(caxlims)
 c=colorbar;
 xlabel(c,parmlbl);
 xlabel('magnetic latitude (deg.)');
@@ -191,7 +191,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis tight;
 colormap(parula(256));
-caxis(caxlims)
+clim(caxlims)
 c=colorbar;
 xlabel(c,parmlbl);
 xlabel('magnetic latitude (deg.)');

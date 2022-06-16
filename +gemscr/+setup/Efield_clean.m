@@ -182,11 +182,11 @@ parfor it=1:lt
         title(sprintf('E_x cleaned: %f',outt(it)));
         xlabel('E');
         ylabel('N');
-        %caxx=caxis;
-        %maxval=max(abs(caxis));
+        %caxx=clim;
+        %maxval=max(abs(clim));
         maxval=0.025;
         caxx=[-maxval,maxval];
-        caxis(caxx);
+        clim(caxx);
 
         subplot(222)
         imagesc(x,y,Eycleannow');
@@ -196,10 +196,10 @@ parfor it=1:lt
         title('E_y cleaned');
         xlabel('E');
         ylabel('N');
-        caxy=caxis;
+        caxy=clim;
         maxval=0.09;
         caxy=[-maxval,maxval];
-        caxis(caxy);
+        clim(caxy);
 
         subplot(223)
         imagesc(x,y,Ex');
@@ -209,7 +209,7 @@ parfor it=1:lt
         title('E_x original');
         xlabel('E');
         ylabel('N');
-        caxis(caxx);
+        clim(caxx);
 
         subplot(224)
         imagesc(x,y,Ey');
@@ -219,7 +219,7 @@ parfor it=1:lt
         title('E_y original');
         xlabel('E');
         ylabel('N');
-        caxis(caxy);
+        clim(caxy);
 
         ymd=[2017,3,2];
         UTsec=outt(it)*3600;

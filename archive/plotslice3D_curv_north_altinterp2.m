@@ -201,7 +201,7 @@ hold off;
 set(gca,'FontSize',FS);
 axis xy;
 axis tight;
-caxis(caxlims)
+clim(caxlims)
 c=colorbar;
 %ax=axis;
 %axis([ax(1:4),0,ax(6)]);

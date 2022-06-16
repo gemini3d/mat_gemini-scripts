@@ -154,7 +154,7 @@ for it=1:lt
 %    tightmap;
     caxlim=max(abs(param(:)))
     caxlim=max(caxlim,0.001);
-    caxis([-caxlim,caxlim]);
+    clim([-caxlim,caxlim]);
     c=colorbar
     set(c,'FontSize',FS)
     title(sprintf(['B_r (nT)  ',titlestring,' \n\n']));
@@ -180,7 +180,7 @@ for it=1:lt
 %    tightmap;
     caxlim=max(abs(param(:)))
     caxlim=max(caxlim,0.001);
-    caxis([-caxlim,caxlim]);
+    clim([-caxlim,caxlim]);
     c=colorbar
     set(c,'FontSize',FS)
     title(sprintf(['B_\\theta (nT)  ',titlestring,' \n\n']));
@@ -207,7 +207,7 @@ for it=1:lt
 %    tightmap;
     caxlim=max(abs(param(:)))
     caxlim=max(caxlim,0.001);
-    caxis([-caxlim,caxlim]);
+    clim([-caxlim,caxlim]);
     c=colorbar
     set(c,'FontSize',FS)
     title(sprintf(['B_\\phi (nT)  ',titlestring,' \n\n']));

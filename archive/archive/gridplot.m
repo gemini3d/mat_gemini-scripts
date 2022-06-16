@@ -47,7 +47,7 @@ set(gcf,'PaperPosition',[0 0 8.5 4]);
 
 hold on;
 h=plotslice3D_curv_corner(t/3600,xg,log10(ns(:,:,:,7)));
-caxis([8 12])
+clim([8 12])
 cd ..;
 
 

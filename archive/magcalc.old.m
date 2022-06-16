@@ -213,7 +213,7 @@ Jrfilt=Bx;
 maxJ=max(1e9*Jrfilt(:));
 minJ=min(1e9*Jrfilt(:));
 Jlim=max(abs(maxJ),abs(minJ));
-caxis([-Jlim,Jlim]);
+clim([-Jlim,Jlim]);
 c=colorbar
 set(c,'Fontsize',FS)
 xlabel(c,'(nT)')
@@ -237,7 +237,7 @@ Jthfilt=By;
 maxJ=max(1e9*Jthfilt(:));
 minJ=min(1e9*Jthfilt(:));
 Jlim=max(abs(maxJ),abs(minJ));
-caxis([-Jlim,Jlim]);
+clim([-Jlim,Jlim]);
 c=colorbar
 set(c,'Fontsize',FS)
 xlabel(c,'(nT)')
@@ -262,7 +262,7 @@ maxJ=max(1e9*Jphifilt(:));
 minJ=min(1e9*Jphifilt(:));
 Jlim=max(abs(maxJ),abs(minJ));
 Jlim=max(Jlim,0.1);
-caxis([-Jlim,Jlim]);
+clim([-Jlim,Jlim]);
 c=colorbar
 set(c,'Fontsize',FS)
 xlabel(c,'(nT)')

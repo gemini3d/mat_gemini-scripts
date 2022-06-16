@@ -162,9 +162,9 @@ if (flagplot)
     xlabel("mag. lon. (deg.)");
     ylabel("mag. lat. (deg.)");
     c=colorbar;
-    cax=caxis;
+    cax=clim;
     caxval=max(abs(cax));
-    caxis([-caxval,caxval]);
+    clim([-caxval,caxval]);
     ylabel(c,"Poynting Flux (mW/m^2)");
     title("S_1");
 
@@ -174,9 +174,9 @@ if (flagplot)
     % xlabel("mag. lon. (deg.)");
     % ylabel("mag. lat. (deg.)");
     % c=colorbar;
-    % cax=caxis;
+    % cax=clim;
     % caxval=max(abs(cax));
-    % caxis([-caxval,caxval]);
+    % clim([-caxval,caxval]);
     % ylabel(c,"Pedersen Conductance (mhos)");
     % title("\Sigma_P");
 
@@ -188,9 +188,9 @@ if (flagplot)
     xlabel("mag. lon. (deg.)");
     ylabel("mag. lat. (deg.)");
     c=colorbar;
-    cax=caxis;
+    cax=clim;
     caxval=max(abs(cax));
-    caxis([-caxval,caxval]);
+    clim([-caxval,caxval]);
     ylabel(c,"Energy Dissipation (mW/m^2)");
     title("\Sigma_P E_\perp^2");
 end %if

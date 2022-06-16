@@ -65,7 +65,7 @@ set(gcf,'PaperPosition',[0 0 8.5 3.5]);
 %     clf;
 %     imagesc(mlonparticles,mlatparticles,squeeze(Qit(:,:,it))');
 %     colorbar;
-%     caxis([0 40])
+%     clim([0 40])
 %     axis xy;
 %     axis square;
 %     ax=axis;
@@ -89,7 +89,7 @@ for it=1:ltpart
     subplot(121);
     imagesc(mlonparticles,mlatparticles,squeeze(Qit(:,:,it))');
     c=colorbar;
-    caxis([0 40]);
+    clim([0 40]);
     ylabel(c,'Q (mW/m^2)');
     axis xy;
     axis square;
@@ -106,7 +106,7 @@ for it=1:ltpart
     subplot(122);
     imagesc(mlonparticles,mlatparticles,squeeze(E0it(:,:,it))');
     c=colorbar;
-    caxis([0 20e3]);
+    clim([0 20e3]);
     ylabel(c,'E_0 (eV)');
     axis xy;
     axis square;

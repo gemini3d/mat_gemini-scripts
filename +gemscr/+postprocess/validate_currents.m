@@ -191,7 +191,7 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from model')
     colorbar;
-    cax=caxis;
+    cax=clim;
 
     subplot(231);
     pcolor(x2/1e3,x3/1e3,JdivE');
@@ -201,7 +201,7 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('J_{||} from \Sigma_P \nabla \cdot E')
-    caxis(cax);
+    clim(cax);
     colorbar;
 
     subplot(232);
@@ -212,7 +212,7 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('J_{||} from \nabla \Sigma_P \cdot E')
-    caxis(cax);
+    clim(cax);
     colorbar;
 
     subplot(233);
@@ -223,7 +223,7 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('J_{||} from \nabla \Sigma_H \cdot (b \times E)')
-    caxis(cax);
+    clim(cax);
     colorbar;
 
     subplot(234);
@@ -234,7 +234,7 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('J_{||} from sum of sources')
-    caxis(cax);
+    clim(cax);
     colorbar;
 
     print('-dpng',[debugdir,filesep,'Jpardecomp.png'],'-r300');
@@ -276,7 +276,7 @@ if(flagplot)
     ylabel('mag. north dist. (km)');
     title('J_{||} from \int \nabla \cdot J_H');
     colorbar;
-    cax=caxis;
+    cax=clim;
 
     subplot(133);
     pcolor(x2/1e3,x3/1e3,divperpSIGHE');     %transpose again to deal with MATLAB y expectations
@@ -307,7 +307,7 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('\Sigma_H (b \cdot \nabla \times E) (FAC from curl E)');
-    caxis(cax);
+    clim(cax);
     colorbar;
 
     subplot(122);
@@ -318,7 +318,7 @@ if(flagplot)
     xlabel('mag. east dist. (km)');
     ylabel('mag. north dist. (km)');
     title('J_{||} from \nabla \Sigma_H \cdot (b \times E) + \Sigma_H (b \cdot \nabla \times E)')
-    caxis(cax)
+    clim(cax)
     colorbar;
 
     print('-dpng',[debugdir,filesep,'curlEcontributions.png'],'-r300');

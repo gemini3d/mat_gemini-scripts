@@ -154,7 +154,7 @@ FS=12;
 %
 % tight_axis(ha)
 % colormap(ha,cmap)
-% caxis(ha,caxlims)
+% clim(ha,caxlims)
 % c=colorbar(ha);
 % xlabel(c,parmlbl);
 % xlabel(ha,'eastward distance (km)');
@@ -175,7 +175,7 @@ set(h,'alphadata',~isnan(rot90(parmp2(2:end-1,2:end-1,2),-1)));
 
 %tight_axis(ha);
 colormap(ha,cmap);
-caxis(ha,caxlims);
+clim(ha,caxlims);
 c=colorbar(ha);
 xlabel(c,parmlbl);
 ylabel(ha,'y (km)');
@@ -196,7 +196,7 @@ set(ha,'FontSize',FS)
 %
 % tight_axis(ha)
 % colormap(ha,cmap)
-% caxis(ha,caxlims)
+% clim(ha,caxlims)
 % c=colorbar(ha);
 % xlabel(c,parmlbl);
 % xlabel(ha,'northward distance (km)')

@@ -62,7 +62,7 @@ pcolor(t-3600,f(ifs),PSD);
 shading flat;
 Pmax=max(PSD(:));
 Pmin=Pmax-3;
-caxis([Pmin,Pmax]);
+clim([Pmin,Pmax]);
 datetick;
 
 

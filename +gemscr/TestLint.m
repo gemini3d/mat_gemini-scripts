@@ -11,7 +11,6 @@ end
 methods (TestClassSetup)
 
 function get_files(tc)
-import matlab.unittest.constraints.IsFile
 
 cwd = fileparts(mfilename('fullpath'));
 cfg_file = fullfile(cwd, "MLint.txt");
@@ -48,7 +47,7 @@ end
 
 
 function filenames = get_files()
-flist = dir(fullfile(fileparts(mfilename('fullpath')), '../**/*.m'));
+flist = dir(fullfile(fileparts(mfilename('fullpath')), '/**/*.m'));
 for i = 1:length(flist)
  filenames{i} = fullfile(flist(i).folder, flist(i).name); %#ok<AGROW>
 end

@@ -182,7 +182,7 @@ set(h,'alphadata',~isnan(parmp));
 set(gca,'FontSize',FS);
 axis xy;
 colormap(parula(256));
-caxis(caxlims)
+clim(caxlims)
 c=colorbar;
 xlabel(c,parmlbl);
 xlabel('magnetic longitude (deg.)');
@@ -202,7 +202,7 @@ set(gca,'FontSize',FS);
 axis xy;
 axis tight;
 colormap(parula(256));
-caxis(caxlims)
+clim(caxlims)
 c=colorbar;
 xlabel(c,parmlbl);
 ylabel('magnetic latitude (deg.)');

@@ -35,7 +35,7 @@ end
 
 fprintf('Full 3D domain is loaded\n');
 
-% Store Frame=0 data 
+% Store Frame=0 data
 if (Frame==0)
 dox0=squeeze(6.022d23.*datafullset(6,:,:,:).*datafullset(1,:,:,:).*1e-3.*(1/16));
 dnit20=squeeze(6.022d23.*(1-datafullset(6,:,:,:)-datafullset(7,:,:,:)).*datafullset(1,:,:,:).*1e-3.*(1/28));
@@ -80,7 +80,7 @@ dnit2s=permute(dnit2s,[3,2,1]).*w;
 doxs=permute(doxs,[3,2,1]).*w;
 
 hFig = figure;
-set(hFig, 'Position', [30 70 2000 1200])    
+set(hFig, 'Position', [30 70 2000 1200])
 hz = suptitle(['T = ',num2str(Frame*5),' sec, Frame = ',num2str(Frame)]);
 set(hz,'FontSize',15,'FontWeight','normal');
 set(gcf,'color','white')
@@ -92,7 +92,7 @@ ylabel('Altitude (km)')
 xlabel('Zonal direction (km)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velyfull(:,:,45)))) max(max(squeeze(velyfull(:,:,45))))])
+clim([-max(max(squeeze(velyfull(:,:,45)))) max(max(squeeze(velyfull(:,:,45))))])
 subplot(3,3,1)
 pcolor(1:8.3333:750,1:5:500,squeeze(velyfull(:,40,:)))
 axis xy
@@ -101,7 +101,7 @@ ylabel('Altitude (km)')
 xlabel('Meridional direction (km)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velyfull(:,40,:)))) max(max(squeeze(velyfull(:,40,:))))])
+clim([-max(max(squeeze(velyfull(:,40,:)))) max(max(squeeze(velyfull(:,40,:))))])
 subplot(3,3,3)
 pcolor(1:9.3750:750,1:8.3333:750,squeeze(velyfull(50,:,:))') % x - zonal, y - meridional
 ylabel('Meridional direction (km)')
@@ -109,7 +109,7 @@ xlabel('Zonal direction (km)')
 title('Horizontal slice at 250 km altitude (zon. vel. m/s)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velyfull(50,:,:)))) max(max(squeeze(velyfull(50,:,:))))])
+clim([-max(max(squeeze(velyfull(50,:,:)))) max(max(squeeze(velyfull(50,:,:))))])
 %-----
 subplot(3,3,5)
 pcolor(1:9.3750:750,1:5:500,squeeze(velxfull(:,:,45)))
@@ -119,7 +119,7 @@ ylabel('Altitude (km)')
 xlabel('Zonal direction (km)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velxfull(:,:,45)))) max(max(squeeze(velxfull(:,:,45))))])
+clim([-max(max(squeeze(velxfull(:,:,45)))) max(max(squeeze(velxfull(:,:,45))))])
 subplot(3,3,4)
 pcolor(1:8.3333:750,1:5:500,squeeze(velxfull(:,40,:)))
 axis xy
@@ -128,7 +128,7 @@ ylabel('Altitude (km)')
 xlabel('Meridional direction (km)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velxfull(:,40,:)))) max(max(squeeze(velxfull(:,40,:))))])
+clim([-max(max(squeeze(velxfull(:,40,:)))) max(max(squeeze(velxfull(:,40,:))))])
 subplot(3,3,6)
 pcolor(1:9.3750:750,1:8.3333:750,squeeze(velxfull(50,:,:))') % x - zonal, y - meridional
 ylabel('Meridional direction (km)')
@@ -136,7 +136,7 @@ xlabel('Zonal direction (km)')
 title('Horizontal slice at 250 km altitude (mer. vel. m/s)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velxfull(50,:,:)))) max(max(squeeze(velxfull(50,:,:))))])
+clim([-max(max(squeeze(velxfull(50,:,:)))) max(max(squeeze(velxfull(50,:,:))))])
 %-----
 subplot(3,3,8)
 pcolor(1:9.3750:750,1:5:500,squeeze(velzfull(:,:,45)))
@@ -146,7 +146,7 @@ ylabel('Altitude (km)')
 xlabel('Zonal direction (km)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velzfull(:,:,45)))) max(max(squeeze(velzfull(:,:,45))))])
+clim([-max(max(squeeze(velzfull(:,:,45)))) max(max(squeeze(velzfull(:,:,45))))])
 subplot(3,3,7)
 pcolor(1:8.3333:750,1:5:500,squeeze(velzfull(:,40,:)))
 axis xy
@@ -155,7 +155,7 @@ ylabel('Altitude (km)')
 xlabel('Meridional direction (km)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velzfull(:,40,:)))) max(max(squeeze(velzfull(:,40,:))))])
+clim([-max(max(squeeze(velzfull(:,40,:)))) max(max(squeeze(velzfull(:,40,:))))])
 subplot(3,3,9)
 pcolor(1:9.3750:750,1:8.3333:750,squeeze(velzfull(50,:,:))') % x - zonal, y - meridional
 ylabel('Meridional direction (km)')
@@ -163,7 +163,7 @@ xlabel('Zonal direction (km)')
 title('Horizontal slice at 250 km altitude (vert. vel. m/s)')
 colorbar
 shading interp
-caxis([-max(max(squeeze(velzfull(50,:,:)))) max(max(squeeze(velzfull(50,:,:))))])    
+clim([-max(max(squeeze(velzfull(50,:,:)))) max(max(squeeze(velzfull(50,:,:))))])
 
 mov(Frame+1) = getframe(gcf);
 
