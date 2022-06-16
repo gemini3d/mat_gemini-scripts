@@ -22,12 +22,9 @@ end
 % if you want a dimension to be size "n" adjust requested grid size so that
 % it is "n+4"
 
-lpp = cfg.lpp;
-lqp = cfg.lqp;
-
 %% PAD GRID WITH GHOST CELLS
-lq=lqp+4;
-lp=lpp+4;
+%lq=lqp+4;
+%lp=lpp+4;
 lphi=cfg.lphip+4;
 
 %% DEFINE DIPOLE GRID IN Q,P COORDS.
@@ -36,15 +33,15 @@ Re=6370e3;
 %% TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
 [thetatd,phid] = gemini3d.geog2geomag(cfg.glat,cfg.glon);
 
-thetax2min=thetatd-cfg.dtheta/2*pi/180;
-thetax2max=thetatd+cfg.dtheta/2*pi/180;
-pmax=(Re+cfg.altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
-qtmp=(Re/(Re+cfg.altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
+thetax2min=thetatd- cfg.dtheta/2*pi/180;
+thetax2max=thetatd+ cfg.dtheta/2*pi/180;
+pmax=(Re+ cfg.altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
+qtmp=(Re/(Re+ cfg.altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
 
 assert(pmax > pmin, "pmax should be greater than pmin")
 
-rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
+% rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 % %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
 % %p=linspace(pmin,pmax,lp);
 % p=linspace(pmin,pmax,lpp);
@@ -78,10 +75,10 @@ coeffs=[3.3986e-04, 0.0017, -6.7597e-04];     %iowa3D that doesn't overrun neutr
 
 p(1)=pmin;
 ip=1;
-while p(ip)<pmax
-  dp=polyval(coeffs,p(ip));
-  p(ip+1)=p(ip)+dp;
-  ip=ip+1;
+while p(ip) < pmax
+  dp = polyval(coeffs,p(ip));
+  p(ip+1) = p(ip)+dp;
+  ip = ip+1;
 end
 p=p(:)';
 lpp=numel(p);

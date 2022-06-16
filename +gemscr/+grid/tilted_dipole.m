@@ -23,7 +23,7 @@ fprintf('\nMAKEGRID_DIPOLE.M --> Setting up q,p grid of size %d x %d.',cfg.lq,cf
 Re=6370e3;
 
 
-%TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
+%% TD SPHERICAL LOCATION OF REQUESTED CENTER POINT
 [thetatd,phid]= gemini3d.geog2geomag(cfg.glat, cfg.glon);
 
 thetax2min=thetatd- cfg.dtheta/2*pi/180;
@@ -31,7 +31,7 @@ thetax2max=thetatd+ cfg.dtheta/2*pi/180;
 pmax=(Re+ cfg.altmin)/Re/sin(thetax2min)^2;	%bottom left grid point p
 qtmp=(Re/(Re+ cfg.altmin))^2*cos(thetax2min);	%bottom left grid q (also bottom right)
 pmin=sqrt(cos(thetax2max)/sin(thetax2max)^4/qtmp); %bottom right grid p
-rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
+%rtmp=fminbnd(@(x) gemini3d.grid.qp2robj(x,qtmp,pmin),0,100*Re);        %bottom right r
 %pmin=(Re+rtmp)/Re/sin(thetax2max)^2;
 p=linspace(pmin,pmax,cfg.lp);
 if  cfg.gridflag==0
@@ -54,7 +54,7 @@ q=sort(q);
 %NOW THE AZIMUTHAL COORDINATE
 phimin=phid- cfg.dphi/2;
 phimax=phid+ cfg.dphi/2;
-phi=linspace(phimin*pi/180,phimax*pi/180, cfg.lphi);    %note conversion to radians
+phi=linspace(phimin*pi/180,phimax*pi/180, cfg.lphi);  %note conversion to radians
 
 
 %ALLOC/INIT - NOTE THESE DO NOT YET HAVE A PHI DIMENSION...
@@ -86,13 +86,13 @@ theta=repmat(theta,[1 1  cfg.lphi]);
 phispher=repmat(reshape(phi(:),[1 1  cfg.lphi]),[cfg.lq,cfg.lp,1]);
 
 
-%TRUE CARTESIAN
+%% TRUE CARTESIAN
 z=r.*cos(theta);
 x=r.*sin(theta).*cos(phispher);
-y=r.*sin(theta).*sin(phispher)
+y=r.*sin(theta).*sin(phispher);
 
 
-%CARTESIAN FOR PLOTTING PURPOSES
+%% CARTESIAN FOR PLOTTING PURPOSES
 %{
 r1=mean(r(1,:));
 r2=mean(r(cfg.lq,:));
@@ -220,9 +220,10 @@ magdxdq=repmat(sqrt(dot(dxdq,dxdq,4)),[1,1,1,3]);
 eq=dxdq./magdxdq;
 ep=cross(ephi,eq,4);
 Imat=acos(dot(er,eq,4));
-if  cfg.gridflag==0    I=mean(Imat,1);             %avg. inclination for each field line.
+if  cfg.gridflag==0
+  I=mean(Imat,1);             %avg. inclination for each field line.
 else
-    I=mean(Imat(1:floor(cfg.lq/2),:,:),1);   %avg. over only half the field line
+  I=mean(Imat(1:floor(cfg.lq/2),:,:),1);   %avg. over only half the field line
 end
 I=90-min(I,pi-I)*180/pi;    %ignore parallel vs. anti-parallel
 
@@ -232,15 +233,15 @@ if plotflag
     figure;
     set(gcf,'PaperPosition',[0 0 8.5 4]);
     subplot(121);
-    polar(theta(:),r(:),'k.');
+    polarplot(theta(:),r(:),'k.');
     hold on;
     %     polar(thetaqi(:),rqi(:),'r.');
     %     polar(thetapi(:),rpi(:),'g.');
     for iq=1:cfg.lq+1
-        polar(thetaqi(iq,:),rqi(iq,:));
+        polarplot(thetaqi(iq,:),rqi(iq,:));
     end
     for ip=1:cfg.lp+1
-        polar(thetapi(:,ip),rpi(:,ip));
+        polarplot(thetapi(:,ip),rpi(:,ip));
     end
     hold off;
 
