@@ -114,7 +114,12 @@ else                 % SH
   rmin=p(end)*Re*sin(thetamax)^2;
   rmax=p(end)*Re*sin(pi-thetamax)^2;
   qmin=cos(thetamax)*Re^2/rmin^2;
-  qmax=cos(pi-thetamax)*Re^2/rmax^2;
+  if (gridflag==0)
+     angqmax=thetax2min; 
+  else
+     angqmax=pi-thetamax;
+  end
+  qmax=cos(angqmax)*Re^2/rmax^2;
 end
 % if gridflag==0
 %     thetamax=thetax2min+pi/15;        %open
@@ -162,13 +167,26 @@ mindq=0.005/2.06;
 
 iq=1;
 if gridflag==0
-    q(iq)=qmin;
-    while q(iq)<qmax
-        iq=iq+1;
-        dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-qloc)/sigq));
-        q(iq)=q(iq-1)+dq;
-    end
-    q=sort(q);
+    if (thetatd<pi/2)     % NH
+        q(iq)=qmin;
+        while q(iq)<qmax
+            iq=iq+1;
+            dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-qloc)/sigq));
+            q(iq)=q(iq-1)+dq;
+        end
+        q=sort(q);
+    else
+        if (qloc>0)
+           qloc=-qloc;    % in SH this must be negative... 
+        end
+        q(iq)=qmin;
+        while q(iq)<qmax
+            iq=iq+1;
+            dq=mindq+amp*(1/2+1/2*tanh((q(iq-1)+(qmax-qloc))/sigq));
+            q(iq)=q(iq-1)+dq;
+        end
+        q=sort(q);
+    end %if
 else
     if (thetatd<pi/2)    % NH needs to be high-res.
         q(iq)=0;
@@ -216,7 +234,7 @@ lq=lqp+4;
 p=p(:)';    %ensure a row vector
 pstride=p(2)-p(1);
 pstride2=p(end)-p(end-1);  
-p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride,p(end)+2*pstride2];
+p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride2,p(end)+2*pstride2];
 q=q(:);      %ensure a colume vector
 qstride=q(2)-q(1);
 qstride2=q(end)-q(end-1);
