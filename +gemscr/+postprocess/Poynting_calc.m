@@ -18,7 +18,7 @@ xg=gemini3d.read.grid(direc);
 datplasma=gemini3d.read.frame(direc, time=TOI);
 
 % read in magnetic field, reorganize to use with MATLAB built-in
-datmag=gemini3d.read.magframe(direc, time=TOI);  % if h5 output then the gridsize is stored with the output data
+datmag=gemini3d.read.magframe(direc, TOI);  % if h5 output then the gridsize is stored with the output data
 %B=cat(4,datmag.Br,datmag.Btheta,datmag.Bphi);
 % organized as:  up dependence, lon dep., lat dep., component
 

@@ -10,7 +10,7 @@ TOI=datetime([ymd,0,0,UTsec]);
 direc="~/simulations/raid/dBtesting_noJpar_magcorner/";
 
 % load the magnetic field perturbations
-dat=gemini3d.read.magframe(direc,time=TOI);
+dat=gemini3d.read.magframe(direc, TOI);
 Bx=dat.Bphi;          % alt,theta,phi; east is phi direction
 By=-1*dat.Btheta;     % theta goes against northward distance
 %Byt=dat.Bthetat;
