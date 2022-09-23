@@ -116,7 +116,6 @@
 % p.gridflag=1;
 % p.flagsource=0;
 % p.iscurv=true;
-% p.file_format="h5";
 
 %% EQuatorial grid, equilibrium runs
 %p.dtheta=5.75;
@@ -143,7 +142,6 @@ p.glon=360-76.9;     %Jicamarca
 p.gridflag=1;
 p.flagsource=0;
 p.iscurv=true;
-p.file_format="h5";
 
 %RUN THE GRID GENERATION CODE
 if ~exist('xg', 'var')
