@@ -1,5 +1,4 @@
-import gemini3d.postprocess.model2magcoords
-import gemini3d.postprocess.model2magUENcoords
+import gemini3d.grid.model2magUENcoords
 %% DATA LOCATIONS (THE OUTPUT OF GEMINI SIMULATION)
 direc='~/Downloads/ARCS_angle_decimate/';
 time = datetime(2017,3,2) + seconds(27300);
@@ -15,7 +14,7 @@ E3=E(:,:,:,3);
 
 
 %% GRID DATA
-[~,alti,mloni,mlati]=model2magcoords(xg,J1);    %this grid is needed to do interpolation of precipitation inputs
+[~,alti,mloni,mlati] = gemini3d.grid.model2magcoords(xg,J1);    %this grid is needed to do interpolation of precipitation inputs
 J1i = model2magUENcoords(xg,J1);
 E2i = model2magUENcoords(xg,E2);
 [E3i, zi,xi,yi] = model2magUENcoords(xg,E3);

@@ -1,4 +1,4 @@
-import gemini3d.postprocess.model2magcoords
+import gemini3d.grid.model2magcoords
 
 direc1 = '~/simulations/mooreOK3D_hemis_medres/';
 direc2 = '~/simulations/mooreOK3D_hemis_medres_VEGA/';

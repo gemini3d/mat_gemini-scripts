@@ -5,7 +5,7 @@ function [E,B,S,mloni,mlati,datmag,datplasma,xg]=Poynting_calc(direc,TOI,lalt,ll
 % magnetic, and poynting flux fields on the grid used by magcalc.
 
 % imports
-import gemscr.postprocess.*;
+import gemini3d.grid.model2magcoords
 
 % physical constants
 mu0=4*pi*1e-7;

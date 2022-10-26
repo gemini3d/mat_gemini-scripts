@@ -11,7 +11,7 @@ direc="~/simulations/arcs_angle_wide_nonuniform_large_highresx1/";
 load ~/Documents/proposals/ARCS/scraper/orbits.mat;
 
 % call the tracker
-track=gemscr.postprocess.virtual_spacecraft(direc,glonsat,glatsat,altsat,tsat);
+track=gemini3d.synthetic_data.virtual_spacecraft(direc,glonsat,glatsat,altsat,tsat);
 
 % plot something
 figure(1);

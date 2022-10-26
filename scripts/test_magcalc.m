@@ -18,7 +18,7 @@ Bz=dat.Br;            % r same direction as up
 
 % convert the coordinates into something we can differentiate as Cartesian
 % x=east, y=north, z=altitude
-[z,x,y]=gemscr.geomag2UENgeomag(dat.r-6370e3,dat.mlon,dat.mlat);
+[z,x,y]= gemini3d.grid.geomag2UENgeomag(dat.r-6370e3,dat.mlon,dat.mlat);
 [X,Y,Z]=meshgrid(x(:),y(:),z(:));
 
 % permute magnetic field data to righthanded wrt to UEN coords.
@@ -107,9 +107,9 @@ Jz=permute(Jz/1e-6,[3,1,2]);    %so J in uA/m^2
 xg=gemini3d.read.grid(direc);
 datp=gemini3d.read.frame(direc,time=TOI);
 
-[J1g, zUENi,xUENi,yUENi] = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J1,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
-J2g = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J2,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
-J3g = gemscr.postprocess.model2magUENcoords(xg, 1e6*datp.J3,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+[J1g, zUENi,xUENi,yUENi] = gemini3d.grid.model2magUENcoords(xg, 1e6*datp.J1,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+J2g = gemini3d.grid.model2magUENcoords(xg, 1e6*datp.J2,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
+J3g = gemini3d.grid.model2magUENcoords(xg, 1e6*datp.J3,numel(z),numel(x),numel(y),[min(z),max(z)],[min(x),max(x)],[min(y),max(y)]);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

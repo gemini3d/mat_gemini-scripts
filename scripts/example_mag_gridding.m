@@ -5,7 +5,7 @@
 % You'll need to run the setup.m script for the gemini-scripts repository
 % prior to using this program
 
-import gemscr.postprocess.model2magcoords
+import gemini3d.grid.model2magcoords
 
 % sim and time of interest
 %direc='~/simulations/tohoku20113D_lowres/'

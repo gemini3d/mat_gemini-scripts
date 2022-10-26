@@ -6,7 +6,7 @@
 % prior to using this program
 
 
-import gemscr.postprocess.model2magUENcoords
+import gemini3d.grid.model2magUENcoords
 
 
 % simulation and date/time of interest

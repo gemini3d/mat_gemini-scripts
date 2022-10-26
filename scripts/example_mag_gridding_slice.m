@@ -41,9 +41,9 @@ mlatlims=[26,32];
 
 
 %% regrid
-[v1imer, ~,~,mlati] = gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,1,llat,altlims,[210,210],mlatlims);
-[v1izon,alti,mloni] = gemscr.postprocess.model2magcoords(xg,dat.v1,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
-v1ialt = gemscr.postprocess.model2magcoords(xg,dat.v1,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+[v1imer, ~,~,mlati] = gemini3d.grid.model2magcoords(xg,dat.v1,lalt,1,llat,altlims,[210,210],mlatlims);
+[v1izon,alti,mloni] = gemini3d.grid.model2magcoords(xg,dat.v1,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+v1ialt = gemini3d.grid.model2magcoords(xg,dat.v1,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
 
 figure;
 subplot(131)

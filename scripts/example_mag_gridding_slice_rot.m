@@ -1,3 +1,4 @@
+import gemini3d.grid.model2magcoords
 %% sim and time of interest
 % Tohoku example
 %direc='~/simulations/tohoku20113D_lowres/'
@@ -47,17 +48,17 @@ mlatlims=[26,32];
 
 
 %% regrid
-[vrimer, alti,~,mlati] = gemscr.postprocess.model2magcoords(xg,vr,lalt,1,llat,altlims,[210,210],mlatlims);
-[vrizon, alti,mloni] = gemscr.postprocess.model2magcoords(xg,vr,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
-vrialt = gemscr.postprocess.model2magcoords(xg,vr,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+[vrimer, alti,~,mlati] = model2magcoords(xg,vr,lalt,1,llat,altlims,[210,210],mlatlims);
+[vrizon, alti,mloni] = model2magcoords(xg,vr,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+vrialt = model2magcoords(xg,vr,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
 
-[vthetaimer, alti,~,mlati] = gemscr.postprocess.model2magcoords(xg,vtheta,lalt,1,llat,altlims,[210,210],mlatlims);
-[vthetaizon, alti,mloni] = gemscr.postprocess.model2magcoords(xg,vtheta,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
-vthetaialt = gemscr.postprocess.model2magcoords(xg,vtheta,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+[vthetaimer, alti,~,mlati] = model2magcoords(xg,vtheta,lalt,1,llat,altlims,[210,210],mlatlims);
+[vthetaizon, alti,mloni] = model2magcoords(xg,vtheta,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+vthetaialt = model2magcoords(xg,vtheta,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
 
-[vphiimer, alti,~,mlati] = gemscr.postprocess.model2magcoords(xg,vphi,lalt,1,llat,altlims,[210,210],mlatlims);
-[vphiizon,alti,mloni] = gemscr.postprocess.model2magcoords(xg,vphi,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
-vphiialt = gemscr.postprocess.model2magcoords(xg,vphi,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
+[vphiimer, alti,~,mlati] = model2magcoords(xg,vphi,lalt,1,llat,altlims,[210,210],mlatlims);
+[vphiizon,alti,mloni] = model2magcoords(xg,vphi,lalt,llon,1,altlims,mlonlims,[29.1,29.1]);
+vphiialt = model2magcoords(xg,vphi,1,llon,llat,[250e3,250e3],mlonlims,mlatlims);
 
 
 figure;

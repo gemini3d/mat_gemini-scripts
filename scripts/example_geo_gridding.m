@@ -5,7 +5,7 @@
 % You'll need to run the setup.m script for the gemini-scripts repository
 % prior to using this program
 
-import gemscr.postprocess.model2geocoords
+import gemini3d.grid.model2geocoords
 
 
 % simulation name, date and time of interest

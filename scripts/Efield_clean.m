@@ -34,7 +34,7 @@ parfor it=1:lt
     alt=zeros(lx,ly);
 
     % Clean the data of any residual curl
-    [zUEN,xUEN,yUEN]= gemscr.geomag2UENgeomag(alt,mlon,mlat);
+    [zUEN,xUEN,yUEN]= gemini3d.grid.geomag2UENgeomag(alt,mlon,mlat);
     x=xUEN(:,1);
     y=yUEN(1,:);
     [X,Y]=meshgrid(x(:)',y(:));

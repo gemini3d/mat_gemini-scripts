@@ -1,6 +1,6 @@
 %REQUIRES:  https://github.com/joe-of-all-trades/vtkwrite
 
-import gemscr.postprocess.model2magUENcoords
+import gemini3d.grid.model2magUENcoords
 
 cwd = fileparts(mfilename('fullpath'));
 
