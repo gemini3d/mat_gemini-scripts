@@ -2,6 +2,7 @@ function xgf= tilted_dipole3d_nonuniform(cfg)
 arguments
   cfg (1,1) struct
 end
+
 %NOTE THAT INPUTS DTHETA AND DPHI ARE INTENDED TO REPRESENT THE FULL THETA
 %AND PHI EXTENTS OF
 
@@ -373,8 +374,8 @@ Bmag=(4*pi*1e-7)*7.94e22/4/pi./(r.^3).*sqrt(3*(cos(theta)).^2+1);
 
 %STORE RESULTS IN GRID DATA STRUCTURE
 fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Creating a grid structure with the results.\n');
-xg.x1=q; xg.x2=p; xg.x3=reshape(phi,[1 1 lphi]);
-xg.x1i=qi; xg.x2i=pii; xg.x3i=reshape(phii,[1 1 lphi+1]);
+xg.x1=q; xg.x2=p; xg.x3=phi;
+xg.x1i=qi; xg.x2i=pii; xg.x3i=phii;
 lx=[numel(xg.x1),numel(xg.x2),numel(xg.x3)];
 xg.lx=lx;
 
@@ -390,14 +391,11 @@ xg.dx2f=[xg.x2(2:lx(2))-xg.x2(1:lx(2)-1), dxn];         %FWD DIFF
 xg.dx2b=[dx1, xg.x2(2:lx(2))-xg.x2(1:lx(2)-1)];         %BACK DIFF
 xg.dx2h=xg.x2i(2:lx(2)+1)-xg.x2i(1:lx(2));              %MIDPOINT DIFFS
 
-xg.dx3f=zeros(1,1,lphi);
-xg.dx3b=xg.dx3f;
-xg.dx3h=xg.dx3f;
 dx1=xg.x3(2)-xg.x3(1);
 dxn=xg.x3(lx(3))-xg.x3(lx(3)-1);
-xg.dx3f=cat(3,xg.x3(1,1,2:lx(3))-xg.x3(1,1,1:lx(3)-1), dxn);         %FWD DIFF
-xg.dx3b=cat(3,dx1, xg.x3(1,1,2:lx(3))-xg.x3(1,1,1:lx(3)-1));         %BACK DIFF
-xg.dx3h=xg.x3i(1,1,2:lx(3)+1)-xg.x3i(1,1,1:lx(3));              %MIDPOINT DIFFS
+xg.dx3f=[xg.x3(2:lx(3))-xg.x3(1:lx(3)-1), dxn];         %FWD DIFF
+xg.dx3b=[dx1, xg.x3(2:lx(3))-xg.x3(1:lx(3)-1)];         %BACK DIFF
+xg.dx3h=xg.x3i(2:lx(3)+1)-xg.x3i(1:lx(3));              %MIDPOINT DIFFS
 
 xg.h1=hq; xg.h2=hp; xg.h3=hphi;
 xg.h1x1i=hqqi; xg.h2x1i=hpqi; xg.h3x1i=hphiqi;

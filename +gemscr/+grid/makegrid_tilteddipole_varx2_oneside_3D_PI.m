@@ -1,7 +1,16 @@
-function xgf=makegrid_tilteddipole_varx2_oneside_3D_PI(dtheta,dphi,lpp,lqp,lphip,altmin,glat,glon,gridflag)
+function xgf=makegrid_tilteddipole_varx2_oneside_3D_PI(dtheta,dphi,lphip,altmin,glat,glon,gridflag)
+arguments
+  dtheta (1,1) {mustBePositive,mustBeReal}
+  dphi (1,1) {mustBePositive,mustBeReal}
+  lphip (1,1) {mustBePositive,mustBeInteger}
+  altmin (1,1) {mustBePositive,mustBeReal}
+  glat (1,1) {mustBeReal}
+  glon (1,1) {mustBeReal}
+  gridflag (1,1) {mustBeInteger}
+end
 
 %NOTE THAT INPUTS DTHETA AND DPHI ARE INTENDED TO REPRESENT THE FULL THETA
-%AND PHI EXTENTS OF 
+%AND PHI EXTENTS OF
 
 %KNOWN ISSUES
 %(1) For low latitude simulations your max L-shell should be large enough
@@ -21,8 +30,6 @@ function xgf=makegrid_tilteddipole_varx2_oneside_3D_PI(dtheta,dphi,lpp,lqp,lphip
 
 
 %PAD GRID WITH GHOST CELLS
-lq=lqp+4;
-lp=lpp+4;
 lphi=lphip+4;
 
 
@@ -83,7 +90,7 @@ p(1)=pmin;
 ip=1;
 while p(ip)<pmax
   dp=polyval(coeffs,p(ip));
-  p(ip+1)=p(ip)+dp;
+  p(ip+1)=p(ip)+dp; %#ok<AGROW>
   ip=ip+1;
 end
 p=p(:)';
@@ -109,13 +116,13 @@ if thetatd < pi/2    % NH
   rmin=p(end)*Re*sin(thetamax)^2;     % r cooresponding to qmin
   rmax=p(end)*Re*sin(thetax2min)^2;   % r corresponding to qmax, likely same as rmin
   qmin=cos(thetamax)*Re^2/rmin^2;
-  qmax=cos(thetax2min)*Re^2/rmax^2;   
+  qmax=cos(thetax2min)*Re^2/rmax^2;
 else                 % SH
   rmin=p(end)*Re*sin(thetamax)^2;
   rmax=p(end)*Re*sin(pi-thetamax)^2;
   qmin=cos(thetamax)*Re^2/rmin^2;
   if (gridflag==0)
-     angqmax=thetax2min; 
+     angqmax=thetax2min;
   else
      angqmax=pi-thetamax;
   end
@@ -177,7 +184,7 @@ if gridflag==0
         q=sort(q);
     else
         if (qloc>0)
-           qloc=-qloc;    % in SH this must be negative... 
+           qloc=-qloc;    % in SH this must be negative...
         end
         q(iq)=qmin;
         while q(iq)<qmax
@@ -233,7 +240,7 @@ lq=lqp+4;
 %REORGANIZE P,Q COORDS., ADDING IN GHOST CELLS IN THE PROCESS
 p=p(:)';    %ensure a row vector
 pstride=p(2)-p(1);
-pstride2=p(end)-p(end-1);  
+pstride2=p(end)-p(end-1);
 p=[p(1)-2*pstride,p(1)-pstride,p,p(end)+pstride2,p(end)+2*pstride2];
 q=q(:);      %ensure a colume vector
 qstride=q(2)-q(1);
@@ -449,8 +456,8 @@ Bmag=(4*pi*1e-7)*7.94e22/4/pi./(r.^3).*sqrt(3*(cos(theta)).^2+1);
 
 %STORE RESULTS IN GRID DATA STRUCTURE
 fprintf('\nMAKEGRID_TILTEDDIPOLE_3D.M --> Creating a grid structure with the results.\n');
-xg.x1=q; xg.x2=p; xg.x3=reshape(phi,[1 1 lphi]); 
-xg.x1i=qi; xg.x2i=pii; xg.x3i=reshape(phii,[1 1 lphi+1]);
+xg.x1=q; xg.x2=p; xg.x3=phi;
+xg.x1i=qi; xg.x2i=pii; xg.x3i=phii;
 lx=[numel(xg.x1),numel(xg.x2),numel(xg.x3)];
 xg.lx=lx;
 
@@ -466,14 +473,11 @@ xg.dx2f=[xg.x2(2:lx(2))-xg.x2(1:lx(2)-1), dxn];         %FWD DIFF
 xg.dx2b=[dx1, xg.x2(2:lx(2))-xg.x2(1:lx(2)-1)];         %BACK DIFF
 xg.dx2h=xg.x2i(2:lx(2)+1)-xg.x2i(1:lx(2));              %MIDPOINT DIFFS
 
-xg.dx3f=zeros(1,1,lphi);
-xg.dx3b=xg.dx3f;
-xg.dx3h=xg.dx3f;
 dx1=xg.x3(2)-xg.x3(1);
 dxn=xg.x3(lx(3))-xg.x3(lx(3)-1);
-xg.dx3f=cat(3,xg.x3(1,1,2:lx(3))-xg.x3(1,1,1:lx(3)-1), dxn);         %FWD DIFF
-xg.dx3b=cat(3,dx1, xg.x3(1,1,2:lx(3))-xg.x3(1,1,1:lx(3)-1));         %BACK DIFF
-xg.dx3h=xg.x3i(1,1,2:lx(3)+1)-xg.x3i(1,1,1:lx(3));              %MIDPOINT DIFFS
+xg.dx3f=[xg.x3(2:lx(3))-xg.x3(1:lx(3)-1), dxn];         %FWD DIFF
+xg.dx3b=[dx1, xg.x3(2:lx(3))-xg.x3(1:lx(3)-1)];         %BACK DIFF
+xg.dx3h=xg.x3i(2:lx(3)+1)-xg.x3i(1:lx(3));              %MIDPOINT DIFFS
 
 xg.h1=hq; xg.h2=hp; xg.h3=hphi;
 xg.h1x1i=hqqi; xg.h2x1i=hpqi; xg.h3x1i=hphiqi;
