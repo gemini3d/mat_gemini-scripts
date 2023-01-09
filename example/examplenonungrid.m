@@ -28,8 +28,8 @@ p.iscurv=true;
 %phin = deg2rad(360-7.2613e+01);
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-load('./kumamoto/eq/xg.mat') % load EQ grid xgin
-load('./kumamoto/eq/dat.mat') % load IC which I want to interpolate
+load('~/Downloads/nonuniformgrid/kumamoto/eq/xg.mat') % load EQ grid xgin
+load('~/Downloads/nonuniformgrid/kumamoto/eq/dat.mat') % load IC which I want to interpolate
 
 %% 2. Kumamoto PERTURB
 p.dtheta=5.4; % slightly decreased than EQ

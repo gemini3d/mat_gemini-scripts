@@ -95,6 +95,7 @@ else
         dq=mindq+amp*(1/2-1/2*tanh((q(iq-1)-(qmax-qloc))/sigq));
         q(iq)=q(iq-1)+dq;
     end
+
     iq=1;
     q2(iq)=q(1)-(q(2)-q(1));
     %amp=amp/1.3;                      %non-source hemisphere doesn't need to be sampled as densely
@@ -113,6 +114,7 @@ else
     % provide a mindq that doesn't result in an "odd" grid starting at a
     % high altitude in one hemisphere.  
     q2=q2(2:end);
+    q=q(1:end-1);
 
     q=[q2,q];
 end
