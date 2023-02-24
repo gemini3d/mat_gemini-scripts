@@ -10,7 +10,7 @@ direc=[basedir,simname];
 
 % Time of interest
 cfg = gemini3d.read.config(direc);    % config file
-TOI=cfg.times(floor(end/2));
+TOI=cfg.times(6);
 xg = gemini3d.read.grid(direc);    % grid structure
 
 % Read in simulation data
@@ -74,137 +74,183 @@ bodyforce(:,:,:,1)=rhon.*nun.*(dat.vs1(:,:,:,end));    % approximate aggregate d
 bodyforce(:,:,:,2)=rhon.*nun.*(dat.v2(:,:,:,end));    % approximate aggregate drift from electron motion
 bodyforce(:,:,:,3)=rhon.*nun.*(dat.v3(:,:,:,end));    % approximate aggregate drift from electron motion
 
-
-%% Make some plots to check things
 z=squeeze(xg.x1(3:end-2));
 x=squeeze(xg.x2(3:end-2));
 y=squeeze(xg.x3(3:end-2)); 
 bfmag=sqrt(bodyforce(:,:,:,1).^2 + bodyforce(:,:,:,2).^2 + bodyforce(:,:,:,3).^2);
 
-figure(1);
+
+%% Make some plots to check things
+% figure(1);
+% subplot(131);
+% pcolor(x,z,jouleheating(:,:,end/2));
+% colorbar;
+% shading flat;
+% subplot(132);
+% pcolor(y,z,squeeze(jouleheating(:,end/2,:)));
+% colorbar;
+% shading flat;
+% subplot(133);
+% pcolor(x,y,squeeze(jouleheating(floor(end/2),:,:))');
+% colorbar;
+% shading flat;
+% 
+% figure(2);
+% subplot(431);
+% pcolor(x,z,bfmag(:,:,end/2));
+% colorbar;
+% shading flat;
+% subplot(432);
+% pcolor(y,z,squeeze(bfmag(:,end/2,:)));
+% colorbar;
+% shading flat;
+% subplot(433);
+% pcolor(x,y,squeeze(bfmag(floor(end/2),:,:))');
+% colorbar;
+% shading flat;
+% 
+% subplot(434);
+% pcolor(x,z,bodyforce(:,:,end/2,1));
+% colorbar;
+% shading flat;
+% subplot(435);
+% pcolor(y,z,squeeze(bodyforce(:,end/2,:,1)));
+% colorbar;
+% shading flat;
+% subplot(436);
+% pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,1))');
+% colorbar;
+% shading flat;
+% 
+% subplot(437);
+% pcolor(x,z,bodyforce(:,:,end/2,2));
+% colorbar;
+% shading flat;
+% subplot(438);
+% pcolor(y,z,squeeze(bodyforce(:,end/2,:,2)));
+% colorbar;
+% shading flat;
+% subplot(439);
+% pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,2))');
+% colorbar;
+% shading flat;
+% 
+% subplot(4,3,10);
+% pcolor(x,z,bodyforce(:,:,end/2,3));
+% colorbar;
+% shading flat;
+% subplot(4,3,11);
+% pcolor(y,z,squeeze(bodyforce(:,end/2,:,3)));
+% colorbar;
+% shading flat;
+% subplot(4,3,12);
+% pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,3))');
+% colorbar;
+% shading flat;
+
+
+%% Make a separate plot of specific energy and acceleration of neutral gas
+specen=jouleheating./rhon;
+
+figure("Name","Energy dissipation [J/kg-s]");
 subplot(131);
-pcolor(x,z,jouleheating(:,:,end/2));
+pcolor(x,z,specen(:,:,end/2));
+xlabel("east");
+ylabel("alt.");
 colorbar;
 shading flat;
 subplot(132);
-pcolor(y,z,squeeze(jouleheating(:,end/2,:)));
+pcolor(y,z,squeeze(specen(:,end/2,:)));
+xlabel("north")
+ylabel("alt.")
 colorbar;
 shading flat;
 subplot(133);
-pcolor(x,y,squeeze(jouleheating(floor(end/2),:,:))');
+pcolor(x,y,squeeze(specen(floor(end/2),:,:))');
+xlabel("east")
+ylabel("north")
 colorbar;
 shading flat;
 
-figure(2);
-subplot(431);
-pcolor(x,z,bfmag(:,:,end/2));
-colorbar;
-shading flat;
-subplot(432);
-pcolor(y,z,squeeze(bfmag(:,end/2,:)));
-colorbar;
-shading flat;
-subplot(433);
-pcolor(x,y,squeeze(bfmag(floor(end/2),:,:))');
-colorbar;
-shading flat;
-
-subplot(434);
-pcolor(x,z,bodyforce(:,:,end/2,1));
-colorbar;
-shading flat;
-subplot(435);
-pcolor(y,z,squeeze(bodyforce(:,end/2,:,1)));
-colorbar;
-shading flat;
-subplot(436);
-pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,1))');
-colorbar;
-shading flat;
-
-subplot(437);
-pcolor(x,z,bodyforce(:,:,end/2,2));
-colorbar;
-shading flat;
-subplot(438);
-pcolor(y,z,squeeze(bodyforce(:,end/2,:,2)));
-colorbar;
-shading flat;
-subplot(439);
-pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,2))');
-colorbar;
-shading flat;
-
-subplot(4,3,10);
-pcolor(x,z,bodyforce(:,:,end/2,3));
-colorbar;
-shading flat;
-subplot(4,3,11);
-pcolor(y,z,squeeze(bodyforce(:,end/2,:,3)));
-colorbar;
-shading flat;
-subplot(4,3,12);
-pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,3))');
-colorbar;
-shading flat;
-
-
-%% Make a separate plot of acceleration of neutral gas
 acc=zeros(lx1,lx2,lx3,3);
 for idim=1:3
   acc(:,:,:,idim)=bodyforce(:,:,:,idim)./rhon(:,:,:);
 end %for
 accmag=sqrt(acc(:,:,:,1).^2 + acc(:,:,:,2).^2 + acc(:,:,:,3).^2);
 
-figure(3);
+figure("Name","Acceleration [m/s^2]");
 subplot(431);
 pcolor(x,z,accmag(:,:,end/2));
+xlabel("east");
+ylabel("alt.");
 colorbar;
 shading flat;
 subplot(432);
 pcolor(y,z,squeeze(accmag(:,end/2,:)));
+xlabel("north")
+ylabel("alt.")
 colorbar;
 shading flat;
 subplot(433);
 pcolor(x,y,squeeze(accmag(floor(end/2),:,:))');
+xlabel("east")
+ylabel("north")
 colorbar;
 shading flat;
 
 subplot(434);
 pcolor(x,z,acc(:,:,end/2,1));
+xlabel("east");
+ylabel("alt.");
 colorbar;
 shading flat;
 subplot(435);
 pcolor(y,z,squeeze(acc(:,end/2,:,1)));
+xlabel("north")
+ylabel("alt.")
 colorbar;
 shading flat;
 subplot(436);
 pcolor(x,y,squeeze(acc(floor(end/2),:,:,1))');
+xlabel("east")
+ylabel("north")
 colorbar;
 shading flat;
 
 subplot(437);
 pcolor(x,z,acc(:,:,end/2,2));
+xlabel("east");
+ylabel("alt.");
 colorbar;
 shading flat;
 subplot(438);
 pcolor(y,z,squeeze(acc(:,end/2,:,2)));
+xlabel("north")
+ylabel("alt.")
 colorbar;
 shading flat;
 subplot(439);
 pcolor(x,y,squeeze(acc(floor(end/2),:,:,2))');
+xlabel("east")
+ylabel("north")
 colorbar;
 shading flat;
 
 subplot(4,3,10);
 pcolor(x,z,acc(:,:,end/2,3));
+xlabel("east");
+ylabel("alt.");
 colorbar;
 shading flat;
 subplot(4,3,11);
 pcolor(y,z,squeeze(acc(:,end/2,:,3)));
+xlabel("north")
+ylabel("alt.")
 colorbar;
 shading flat;
 subplot(4,3,12);
 pcolor(x,y,squeeze(acc(floor(end/2),:,:,3))');
+xlabel("east")
+ylabel("north")
 colorbar;
 shading flat;
