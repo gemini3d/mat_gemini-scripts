@@ -11,7 +11,7 @@ yf=sqrt(yff).*exp(2*pi*1i*rand(size(yff)));   % randomize the signal phase
 y=ifft(yf);
 
 % recompute the spectrum from our noise-like signal to check
-yfcheck=fftshift(fft(y));
+yfcheck=fft(y);
 yffcheck=yfcheck.*conj(yfcheck);
 
 % plot the signal and its recomputed spectrum to check
@@ -26,4 +26,4 @@ hold off;
 subplot(4,1,3);
 plot(t,y);
 subplot(4,1,4);
-plot(f,yff)
+plot(f,yffcheck)
