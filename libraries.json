@@ -1,6 +1,0 @@
-{
-  "mat_gemini": {
-    "git": "https://github.com/gemini3d/mat_gemini.git",
-    "tag": "v5.3.1"
-  }
-}
