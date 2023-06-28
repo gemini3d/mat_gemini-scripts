@@ -1,12 +1,8 @@
 function plot_satellite_tracks(file, plot_format)
-
-narginchk(1,2)
-
-if nargin < 2
-  plot_format = {};
+arguments
+  file (1,1) string
+  plot_format (1,:) string = []
 end
-
-assert(~verLessThan('matlab', '9.7'), 'Matlab >= R2019b')
 
 load(expanduser(file), 'nesat', 'Tisat', 'Tesat', 'J1sat', 'visat', 'glatsat', 'glonsat')
 
