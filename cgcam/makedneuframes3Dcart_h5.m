@@ -10,7 +10,7 @@ import stdlib.hdf5nc.h5save
 stdlib.fileio.makedir(outdir)
 
 % Specify initial time and timestep of data
-time = datetime(2011,3,11, 0, 0, 20783);
+time = datetime(2014,6,21, 0, 0, 20783);
 dtneu = seconds(600); % timestep
 
 % Specify input data
