@@ -24,9 +24,13 @@ filename= fullfile(outdir, 'simsize.h5');
 disp("write " + filename)
 if isfile(filename), delete(filename), end
 
+% zero pad the vertical direction
+lowalts=zeros(80,lx2,lx1);
+lx3g=lx3+80;
+
 h5save(filename, '/lx1', lx1, "type", "int32")
 h5save(filename, '/lx2', lx2, "type", "int32")
-h5save(filename, '/lx3', lx3, "type", "int32")
+h5save(filename, '/lx3', lx3g, "type", "int32")
 
 freal = 'float32';
 
@@ -71,6 +75,31 @@ for it=1:lt
   dox2s=permute(dox2s,[3,2,1]);
   dnit2s=permute(dnit2s,[3,2,1]);
   doxs=permute(doxs,[3,2,1]);
+
+  % Pad the lower altitudes
+  velxfull=cat(1,lowalts,velxfull);
+  velyfull=cat(1,lowalts,velyfull);
+  velzfull=cat(1,lowalts,velzfull);
+  temps=cat(1,lowalts,temps);
+  dox2s=cat(1,lowalts,dox2s);
+  dnit2s=cat(1,lowalts,dnit2s);
+  doxs=cat(1,lowalts,doxs);
+
+  % Make some plots so we can see how things are supposed to appear
+  figure(1);
+  subplot(131);
+  imagesc(velzfull(:,:,250));
+  axis xy;
+
+  subplot(132);
+  imagesc(squeeze(velzfull(200,:,:)));
+  axis xy;
+
+  subplot(133);
+  imagesc(squeeze(velzfull(:,250,:)));
+  axis xy;
+  print('-dpng',strcat(fullfile(outdir),'/plots/',num2str(it),'.png'))
+  close(1);
 
   filename = fullfile(outdir, gemini3d.datelab(time) + ".h5");
 
