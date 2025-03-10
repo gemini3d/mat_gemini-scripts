@@ -5,9 +5,6 @@ arguments
   namedargs.gradient_scale (1,1) double = 10e3 % meters
 end
 
-cwd = fileparts(mfilename('fullpath'));
-run(fullfile(cwd, "../../setup.m"))
-
 %% Load a GDI simulation
 xg = gemini3d.read.grid(direc);
 cfg = gemini3d.read.config(direc);

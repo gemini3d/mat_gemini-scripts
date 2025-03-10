@@ -1,21 +1,27 @@
 function plan = buildfile
 plan = buildplan(localfunctions);
-plan.DefaultTasks = "test";
-plan("test").Dependencies = ["check", "setup"];
+plan.DefaultTasks = "setup";
+
+if ~isMATLABReleaseOlderThan("R2024a")
+  plan("check") = matlab.buildtool.tasks.CodeIssuesTask(plan.RootFolder, IncludeSubfolders=true, ...
+      WarningThreshold=0, Results="CodeIssues.sarif");
 end
 
-function checkTask(~)
-% Identify code issues (recursively all Matlab .m files)
-issues = codeIssues;
-assert(isempty(issues.Issues),formattedDisplayText(issues.Issues))
 end
 
-function setupTask(~)
-setup()
+
+function setupTask(context)
+
+addpath(context.Plan.RootFolder)
+
+mat_gemini = fullfile(context.Plan.RootFolder, "mat_gemini");
+matbf = fullfile(mat_gemini, "buildfile.m");
+
+if ~isfile(matbf)
+  ok = system("git -C " + context.Plan.RootFolder + " submodule update --init --recursive");
+  assert(ok == 0, "Failed to update MatGemini Git submodule");
 end
 
-function testTask(~)
-r = runtests;
-assert(~isempty(r), "No tests found")
-assertSuccess(r)
+buildtool("-buildFile", mat_gemini, "setup")
+
 end

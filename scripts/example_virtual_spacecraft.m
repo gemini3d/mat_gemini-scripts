@@ -1,8 +1,8 @@
 %% This is a driver script to show how to use th virtual_spacecraft
 % extraction utility on gemini output.
 
-% imports
-run("setup.m");
+% from mat_gemini-script directory run
+%    buildtool setup
 
 % input data
 direc="~/simulations/arcs_angle_wide_nonuniform_large_highresx1/";

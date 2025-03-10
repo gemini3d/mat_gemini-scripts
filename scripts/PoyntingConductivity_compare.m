@@ -9,8 +9,8 @@
 flagplot=true;
 flagfile=true;
 
-% load mat_gemini
-run("~/Projects/mat_gemini/setup.m")
+% from mat_gemini-script directory run
+%    buildtool setup
 
 % simulation location, date, and time
 %simname='arcs_angle_wide_nonuniform_large_highresx1/';

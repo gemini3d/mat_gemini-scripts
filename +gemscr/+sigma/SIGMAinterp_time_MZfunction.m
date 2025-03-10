@@ -15,13 +15,11 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Modified by MZ, 20210525 updated to new GEMINI API
-% Clone these:
-%   https://github.com/gemini3d/mat_gemini-scripts.git
-%   https://github.com/gemini3d/mat_gemini.git
 %
-% In main SIGMA program need to do:
-%    run("<mat_gemini directory>/setup.m")
-%    run("<mat_gemini-scripts directory>/setup.m")
+%    git clone https://github.com/gemini3d/mat_gemini-scriptst
+%
+% In main SIGMA program need to do from the mat_gemini-scripts directory:
+%    buildtool setup
 %
 % MZ suggestion - pass in static grid as an argument because it takes a
 % long time to load...

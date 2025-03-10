@@ -18,15 +18,15 @@ Simply `git clone https://github.com/gemini3d/mat_gemini-scripts`
 
 ### Requirements
 
-Matlab &ge; R2019b  (Matlab &ge; R2020a recommended for better plots)
+Matlab &ge; R2022b
 
 ## Usage
 
 The intention is eventually for these scripts to "just work" without fiddling for a particular computer.
-From Matlab, run the setup.m to configure all the needed paths for this Matlab session.
+From Matlab, configure all the needed paths for this Matlab session:
 
 ```matlab
-setup
+buildtool setup
 ```
 
 ### Top-level scripts

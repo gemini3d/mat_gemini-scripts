@@ -1,6 +1,8 @@
 % Compute the Poynting flux from a single frame and compare it against
 % dissipation
-run("~/Projects/mat_gemini/setup.m")
+%
+% from mat_gemini-script directory run
+%    buildtool setup
 
 % simulation location, date, and time
 simname='arcs_angle_wide_nonuniform_large_highresx1/';

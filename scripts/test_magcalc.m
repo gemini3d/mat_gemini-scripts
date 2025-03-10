@@ -1,5 +1,5 @@
-run("~/Projects/mat_gemini/setup.m");
-run("~/Projects/mat_gemini-scripts/setup.m");
+% from mat_gemini-script directory run
+%    buildtool setup
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

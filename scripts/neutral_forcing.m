@@ -1,7 +1,7 @@
 %% Read and organize simulation data
-% load mat_gemini
-run("~/Projects/mat_gemini/setup.m")
-run("~/Projects/mat_gemini-scripts/setup.m")
+
+% from mat_gemini-script directory run
+%    buildtool setup
 
 % simulation location
 simname='/arcs_highres/';
@@ -29,7 +29,7 @@ disp("Computing Ohmic dissipation...");
 % Compute the Joule dissipation and do a quick sanity check.  Cf. appendix
 % B of St. Maurice and Schunk, 1981; here we assume that the neutrals ar
 % not drifting so the electric field in the Earth-fixed frame is the same
-% as the field in the neutral frame (E' in their paper).  
+% as the field in the neutral frame (E' in their paper).
 E2=squeeze(E(:,:,:,2)); E3=squeeze(E(:,:,:,3));
 %ohmicdissipation=sigP.*(E2.^2+E3.^2);
 jouleheating=dat.J2.*E2 + dat.J3.*E3;
@@ -38,7 +38,7 @@ jouleheating=dat.J2.*E2 + dat.J3.*E3;
 
 %% Calculate momentum source terms for the neutral gas
 % Also from the same paper eq. A4 shows the momentum source term, which may
-% be computed from collision frequencies etc.  
+% be computed from collision frequencies etc.
 disp("Recompute neutrals...");
 params=cfg;
 params.msis_infile="/tmp/msis_input.h5";
@@ -60,7 +60,7 @@ disp("Recompute collision frequencies...");
 % neutral collision frequencies (cf. Schunk and Nagy 2010).  The
 % calculation here is a bit superfluous but I wanted to illustrate how all
 % of the different collision terms appearing in the various equations are
-% related.  
+% related.
 disp("Computing body force...");
 [lx1,lx2,lx3,lsp]=size(dat.ns);
 rhos=zeros(lx1,lx2,lx3);    % aggregate plasma mass density
@@ -76,7 +76,7 @@ bodyforce(:,:,:,3)=rhon.*nun.*(dat.v3(:,:,:,end));    % approximate aggregate dr
 
 z=squeeze(xg.x1(3:end-2));
 x=squeeze(xg.x2(3:end-2));
-y=squeeze(xg.x3(3:end-2)); 
+y=squeeze(xg.x3(3:end-2));
 bfmag=sqrt(bodyforce(:,:,:,1).^2 + bodyforce(:,:,:,2).^2 + bodyforce(:,:,:,3).^2);
 
 
@@ -94,7 +94,7 @@ bfmag=sqrt(bodyforce(:,:,:,1).^2 + bodyforce(:,:,:,2).^2 + bodyforce(:,:,:,3).^2
 % pcolor(x,y,squeeze(jouleheating(floor(end/2),:,:))');
 % colorbar;
 % shading flat;
-% 
+%
 % figure(2);
 % subplot(431);
 % pcolor(x,z,bfmag(:,:,end/2));
@@ -108,7 +108,7 @@ bfmag=sqrt(bodyforce(:,:,:,1).^2 + bodyforce(:,:,:,2).^2 + bodyforce(:,:,:,3).^2
 % pcolor(x,y,squeeze(bfmag(floor(end/2),:,:))');
 % colorbar;
 % shading flat;
-% 
+%
 % subplot(434);
 % pcolor(x,z,bodyforce(:,:,end/2,1));
 % colorbar;
@@ -121,7 +121,7 @@ bfmag=sqrt(bodyforce(:,:,:,1).^2 + bodyforce(:,:,:,2).^2 + bodyforce(:,:,:,3).^2
 % pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,1))');
 % colorbar;
 % shading flat;
-% 
+%
 % subplot(437);
 % pcolor(x,z,bodyforce(:,:,end/2,2));
 % colorbar;
@@ -134,7 +134,7 @@ bfmag=sqrt(bodyforce(:,:,:,1).^2 + bodyforce(:,:,:,2).^2 + bodyforce(:,:,:,3).^2
 % pcolor(x,y,squeeze(bodyforce(floor(end/2),:,:,2))');
 % colorbar;
 % shading flat;
-% 
+%
 % subplot(4,3,10);
 % pcolor(x,z,bodyforce(:,:,end/2,3));
 % colorbar;

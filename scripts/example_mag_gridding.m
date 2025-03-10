@@ -2,8 +2,8 @@
 % gridded GEMINI output and reinterpolate these onto a uniform grid in
 % mlon,mlat, and altitude.
 %
-% You'll need to run the setup.m script for the gemini-scripts repository
-% prior to using this program
+% from mat_gemini-script directory run
+%    buildtool setup
 
 import gemini3d.grid.model2magcoords
 

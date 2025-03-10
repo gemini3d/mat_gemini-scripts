@@ -1,4 +1,5 @@
-run("~/Projects/mat_gemini/setup.m");
+% from mat_gemini-script directory run
+%    buildtool setup
 
 %% SIMULATIONS LOCAITONS
 flagplot=1;

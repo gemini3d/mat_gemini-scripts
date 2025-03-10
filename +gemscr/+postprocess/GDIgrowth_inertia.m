@@ -4,8 +4,6 @@ arguments
   namedargs.drift_velocity (1,1) double = 0.5e3 % [meters / sec]
   namedargs.magcap (1,1) double = 0 % magnetospheric capacitance
 end
-cwd = fileparts(mfilename('fullpath'));
-run(fullfile(cwd, '../../setup.m'))
 
 xg = gemini3d.read.grid(direc);
 cfg = gemini3d.read.config(direc);

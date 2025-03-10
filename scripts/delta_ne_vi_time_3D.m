@@ -3,9 +3,9 @@
 addpath ~/matlab_ext/;
 %addpath ~/zettergmdata/Projects/GEMINI-scripts/postprocess/;
 %addpath ~/zettergmdata/Projects/GEMINI-scripts/script_utils/;
-% also need to run setup.m from matlab-gemini main directory
-run('~/Projects/mat_gemini/setup.m');
-run('~/Projects/GEMINI-scripts/setup.m');
+% from mat_gemini-script directory run
+%    buildtool setup
+
 
 
 %% Simulation disturbance and control
