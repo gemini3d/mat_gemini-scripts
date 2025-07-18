@@ -10,8 +10,16 @@ import stdlib.hdf5nc.h5save
 stdlib.fileio.makedir(outdir)
 
 % Specify initial time and timestep of data
-time = datetime(2011,3,11, 0, 0, 20700);
+time = datetime(2014, 6, 21, 0, 0, 20783); % Second from day start (UT)
 dtneu = seconds(10);         % timestep
+
+% Detail of CGCAM input data
+Nx=502;
+Ny=502;
+Nz=321;
+nparm=5;
+zdist=400e3-80e3;
+
 
 % Specify input data
 lt=1440;    % number of time steps

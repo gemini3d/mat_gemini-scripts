@@ -8,7 +8,7 @@ end
 stdlib.fileio.makedir(outdir)
 
 % Specify date and time of simulation start
-time = datetime(2011, 3, 11, 0, 0, 20783); % Second from day start (UT)
+time = datetime(2014, 6, 21, 0, 0, 20783); % Second from day start (UT)
 dtneu = seconds(4); % Sampling of time steps (in seconds)
 
 lt=630; % Total number of time steps
