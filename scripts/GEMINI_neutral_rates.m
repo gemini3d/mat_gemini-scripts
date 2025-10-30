@@ -1,5 +1,7 @@
 direc='~/simulations/sdcard/isinglass_timedep/'
 filename='20170302_27300.000000.h5'
+%direc='~/simulations/sdcard/misty_NM_256/'
+%filename='20240508_61800.000000.h5'
 
 % import
 run ~/Projects/mat_gemini/setup.m
