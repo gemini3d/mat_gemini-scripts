@@ -1,14 +1,18 @@
-function [v,E]=Efield(xg,v2,v3)
-
+function [v,E] = Efield(xg,v2,v3)
+arguments
+  xg (1,1) struct
+  v2 (:,:,:)
+  v3 (:,:,:)
+end
 % This is a standard interface to be used for conversion of plasma drifts
 % into electric fields.  Because the drifts include the backgroudn drifts
-% the computed fields will include the background value.  
+% the computed fields will include the background value.
 %
 % The output vectors (drift v, and field E) are stored as 4D arrays with
-% dimensions:  
+% dimensions:
 % x1,x2,x3,component (field-aligned, field perp 1, field perp 2)
 
-narginchk(3, 3)
+
 if (~isfield(xg,'Bmag'))
     error('The field xg.Bmag must be defined for the 1st argument.')
 end %if

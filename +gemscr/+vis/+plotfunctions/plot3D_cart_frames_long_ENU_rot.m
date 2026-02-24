@@ -1,41 +1,27 @@
 function plot3D_cart_frames_long_ENU_rot(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
+arguments
+  ymd (1,3) {mustBeInteger}
+  UTsec (1,1) {mustBeNumeric}
+  xg (1,1) struct
+  parm (:,:,:)
+  parmlbl (1,1) string = ""
+  caxlims (1,2) {mustBeNumeric} = [nan, nan]
+  sourceloc (1,2) {mustBeNumeric} = [nan, nan]
+  hf (1,1) matlab.ui.Figure = figure()
+  cmap (:,3) {mustBeNumeric} = parula(256)
+end
 
-narginchk(4,9)
-validateattr(ymd, {'numeric'}, {'vector', 'numel', 3}, mfilename, 'year month day', 1)
-validateattr(UTsec, {'numeric'}, {'scalar'}, mfilename, 'UTC second', 2)
 %plotparams.ymd = ymd; plotparams.utsec = UTsec;
 
-validateattr(xg, {'struct'}, {'scalar'}, mfilename, 'grid structure', 3)
-validateattr(parm, {'numeric'}, {'real'}, mfilename, 'parameter to plot',4)
-
-if nargin<5, parmlbl=''; end
-validateattr(parmlbl, {'char'}, {'vector'}, mfilename, 'parameter label', 5)
 %plotparams.parmlbl = parmlbl;
-
-if nargin<6
-  caxlims=[];
-else
-  validateattr(caxlims, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'plot intensity (min, max)', 6)
-end
 %plotparams.caxlims = caxlims;
 
-if nargin<7 || isempty(sourceloc) % leave || for validate
-  sourceloc = [];
-else
-  validateattr(sourceloc, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'source magnetic coordinates', 7)
-end
-if nargin<8 || isempty(hf)
-  hf = figure();
-end
-if nargin<9 || isempty(cmap)
-  cmap = parula(256);
-end
 
 %plotparams.cmap = cmap;
 %plotparams.sourceloc = sourceloc;
 
 %SOURCE LOCATION (SHOULD PROBABLY BE AN INPUT)
-if (~isempty(sourceloc))
+if (~isnan(sourceloc))
 %  plotparams.sourcemlat=sourceloc(1);
 %  plotparams.sourcemlon=sourceloc(2);
   sourcemlat=sourceloc(1);

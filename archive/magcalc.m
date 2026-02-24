@@ -1,7 +1,7 @@
 function magcalc(simname)
-
-validateattributes(simname, {'char'}, {'vector'}, mfilename, 'simulation top-level path', 1)
-
+arguments
+  simname (1,1) string
+end
 
 %% SIMULATIONS LOCATIONS
 %simname='curvtest_tohoku_highres_weak/';
@@ -9,8 +9,8 @@ validateattributes(simname, {'char'}, {'vector'}, mfilename, 'simulation top-lev
 %simname='chile20153D/';
 %simname='mooreOK/';
 %direc=['~/simulations/',simname];
-direc=[gemini_root, filesep,'simulations/',simname];
-mkdir([direc,'/magplots'])   %store output plots with the simulation data
+direc= gemini_root + "/simulations/" + simname;
+mkdir(direc + "/magplots")   %store output plots with the simulation data
 
 
 %% DEFINE A PREAMBLE FILE STRING BASED ON THE DATE OF THE SIMULATION DATE AND FILE STRINGS
@@ -24,7 +24,7 @@ mkdir([direc,'/magplots'])   %store output plots with the simulation data
 
 
 %SIMULATION META-DATA
-[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=gemini3d.read.config([direc,'/inputs/config.ini']);
+[ymd0,UTsec0,tdur,dtout,flagoutput,mloc]=gemini3d.read.config(direc + "/inputs/config.ini");
 
 
 %TABULATE THE SOURCE LOCATION
@@ -50,7 +50,7 @@ dang=5;
 %WE ALSO NEED TO LOAD THE GRID FILE
 if (~exist('xg','var'))
   fprintf('Reading grid...\n');
-  xg=gemini3d.read.grid([direc,'/']);
+  xg=gemini3d.read.grid(direc + "/");
   lx1=xg.lx(1); lx2=xg.lx(2); lx3=xg.lx(3);
   lh=lx1;   %possibly obviated in this version - need to check
   if (lx3==1)
@@ -463,7 +463,7 @@ for it=1:lt
       hold off;
 
 
-      print('-dpng',[direc,'/magplots/',filename,'.png'],'-r300');
+      print('-dpng', direc + "/magplots/" + filename + ".png",'-r300');
       close all;
     end
 end
@@ -548,12 +548,12 @@ if (flag2D)
   hold off;
 
 
-  print('-dpng',[direc,'/magplots/mag_timeseries.png'],'-r300');
+  print('-dpng',direc + "/magplots/mag_timeseries.png",'-r300');
 end
 
 
 %SAVE THE DATA TO A .MAT FILE IN CASE WE3 NEED IT LATER
 t=datenum(simdate_series);
-save([direc,'/magfields.mat'],'mlat','mlon','t','simdate_series','Brt','Bthetat','Bphit','-v7');
+save(direc + "/magfields.mat",'mlat','mlon','t','simdate_series','Brt','Bthetat','Bphit','-v7');
 
 end % function

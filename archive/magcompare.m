@@ -1,11 +1,10 @@
 function magcompare(direc)
-
-if nargin <1, direc='.'; end
-
-validateattributes(direc, {'char'}, {'vector'}, mfilename, 'directory to compare data', 1)
+arguments
+  direc (1,1) string
+end
 
 %% LOAD THE DATA
-load([direc,filesep,'magfields.mat']);
+load( direc + "/magfields.mat");
 
 [X,Y,Z]=ndgrid(x,y,z);
 mu0=4*pi*1e-7;

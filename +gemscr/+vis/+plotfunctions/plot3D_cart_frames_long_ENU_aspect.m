@@ -1,39 +1,23 @@
 function plot3D_cart_frames_long_ENU_aspect(ymd,UTsec,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
-
-narginchk(4,9)
-validateattributes(ymd, {'numeric'}, {'vector', 'numel', 3}, mfilename, 'year month day', 1)
-validateattributes(UTsec, {'numeric'}, {'scalar'}, mfilename, 'UTC second', 2)
+arguments
+    ymd (1,3) {mustBeInteger}
+    UTsec (1,1)
+    xg (1,1) struct
+    parm (:,:,:)
+    parmlbl (1,1) string = ""
+    caxlims (1,2) = [nan, nan]
+    sourceloc (1,2) = [nan, nan]
+    hf (1,1) matlab.ui.Figure = figure()
+    cmap (:,3) = parula(256)
+end
 %plotparams.ymd = ymd; plotparams.utsec = UTsec;
 
-validateattributes(xg, {'struct'}, {'scalar'}, mfilename, 'grid structure', 3)
-validateattributes(parm, {'numeric'}, {'real'}, mfilename, 'parameter to plot',4)
-
-if nargin<5, parmlbl=''; end
-validateattributes(parmlbl, {'char'}, {'vector'}, mfilename, 'parameter label', 5)
 %plotparams.parmlbl = parmlbl;
-
-if nargin<6
-  caxlims=[];
-else
-  validateattributes(caxlims, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'plot intensity (min, max)', 6)
-end
 %plotparams.caxlims = caxlims;
-
-if nargin<7 || isempty(sourceloc) % leave || for validate
-  sourceloc = [];
-else
-  validateattributes(sourceloc, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'source magnetic coordinates', 7)
-end
-if nargin<8 || isempty(hf)
-  hf = figure();
-end
-if nargin<9 || isempty(cmap)
-  cmap = parula(256);
-end
 
 
 %SOURCE LOCATION (SHOULD PROBABLY BE AN INPUT)
-if (~isempty(sourceloc))
+if (~isnan(sourceloc))
   sourcemlat=sourceloc(1);
   sourcemlon=sourceloc(2);
 else

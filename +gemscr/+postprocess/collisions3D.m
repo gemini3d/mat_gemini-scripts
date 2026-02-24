@@ -1,7 +1,12 @@
 
-function [nusn,nus,nusj,nuss,Phisj,Psisj]=collisions3D(natm,Ts,ns,vsx1,ms)
-
-narginchk(5,5)
+function [nusn,nus,nusj,nuss,Phisj,Psisj] = collisions3D(natm, Ts, ns, vsx1, ms)
+arguments
+  natm (1,1) struct
+  Ts (:,:,:,7)
+  ns (:,:,:,7)
+  vsx1 (:,:,:,7)
+  ms (1,7)
+end
 
 %HOUSEKEEPING INFO
 % nO=natm(:,:,:,1);

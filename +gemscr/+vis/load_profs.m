@@ -1,8 +1,7 @@
 function [xg,neprof,Teprof,Tiprof,viprof,simdate] = load_profs(direc,xg)
-
-validateattributes(direc, {'char'}, {'vector'}, mfilename, 'simulation top-level path', 1)
-if nargin > 1
-  validateattributes(xy, {'struct'}, {'scalar'}, mfilename, 'grid parameters', 2)
+arguments
+  direc (1,1) string
+  xg (1,1) struct = []
 end
 
 
@@ -11,8 +10,8 @@ end
 
 
 %CHECK WHETHER WE NEED TO RELOAD THE GRID (WHICH CAN BE TIME CONSUMING)
-if nargin < 2
-  xg = gemini3d.read.grid([direc,filesep,'inputs',filesep]);
+if isempty(xg)
+  xg = gemini3d.read.grid(direc + "/inputs/");
 end
 
 

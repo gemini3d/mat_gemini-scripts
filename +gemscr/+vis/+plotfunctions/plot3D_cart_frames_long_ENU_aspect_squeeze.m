@@ -1,41 +1,17 @@
 function plot3D_cart_frames_long_ENU_aspect_squeeze(time,xg,parm,parmlbl,caxlims,sourceloc,hf,cmap)
-
-narginchk(4,8)
-
-validateattributes(time, {'datetime'}, {'scalar'}, 1)
-validateattributes(xg, {'struct'}, {'scalar'}, mfilename, 'grid structure', 2)
-validateattributes(parm, {'numeric'}, {'real'}, mfilename, 'parameter to plot',3)
-
-if nargin<4, parmlbl=''; end
-validateattributes(parmlbl, {'char'}, {'vector'}, mfilename, 'parameter label', 4)
-
-if nargin<5
-  caxlims=[];
-else
-  validateattributes(caxlims, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'plot intensity (min, max)', 5)
+arguments
+    time (1,1) datetime
+    xg (1,1) struct
+    parm (:,:,:)
+    parmlbl (1,1) string = ""
+    caxlims (1,2) double = [nan, nan]
+    sourceloc (1,2) double = [nan, nan]
+    hf (1,1) matlab.ui.Figure = figure()
+    cmap (:,3) double = parula(256)
 end
-
-if nargin<6 || isempty(sourceloc) % leave || for validate
-  sourceloc = [];
-else
-  validateattributes(sourceloc, {'numeric'}, {'vector', 'numel', 2}, mfilename, 'source magnetic coordinates', 6)
-end
-if nargin<7 || isempty(hf)
-  hf = figure();
-end
-if nargin<8 || isempty(cmap)
-  cmap = parula(256);
-end
-
-
-% Just bail out if this is potential for now
-if ndims(parm)~=3
-   return;
-end
-
 
 %SOURCE LOCATION (SHOULD PROBABLY BE AN INPUT)
-if (~isempty(sourceloc))
+if (~isnan(sourceloc))
   sourcemlat=sourceloc(1);
   sourcemlon=sourceloc(2);
 else

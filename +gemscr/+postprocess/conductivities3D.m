@@ -1,6 +1,12 @@
-function [muP,muH,mu0,sigP,sigH,sig0,incap]=conductivities3D(nus,nusj,ns,ms,qs,B)
-
-narginchk(6,6)
+function [muP,muH,mu0,sigP,sigH,sig0,incap] = conductivities3D(nus,nusj,ns,ms,qs,B)
+arguments
+    nus (:,:,:,:)
+    nusj (:,:,:,:,:)
+    ns (:,:,:,:)
+    ms (1,:)
+    qs (1,:)
+    B (1,1)
+end
 
 [lx1,lx2,lx3,lsp]=size(nus);
 mu0=zeros(lx1,lx2,lx3,lsp);

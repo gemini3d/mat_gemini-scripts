@@ -1,14 +1,13 @@
-function [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP]=conductivity_reconstruct(time,dat,cfg, xg)
-
+function [sigP,sigH,sig0,SIGP,SIGH,incap,INCAP] = conductivity_reconstruct(time,dat,cfg, xg)
+arguments
+  time (1,1) datetime
+  dat (1,1) struct
+  cfg (1,1) struct
+  xg (1,1) struct
+end
 % Compute conductivity and conductance from output simluation data.
 % Requires a call to MSIS and some assumes about ion composition which do
 % not tend to affect computed values overmuch.
-
-narginchk(4,4)
-validateattributes(time, {'datetime'}, {'scalar'}, 1)
-validateattributes(dat, {'struct'}, {'scalar'}, 2)
-validateattributes(cfg, {'struct'}, {'scalar'}, 3)
-validateattributes(xg, {'struct'}, {'scalar'}, 4)
 
 %% GET THE NEUTRAL ATMOSPHERE NEEDED FOR COLLISIONS, ETC.
 %params.activ = cfg.activ;
