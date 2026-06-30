@@ -14,7 +14,7 @@ ymd=ymd0;
 UTsec=UTsec0;
 freal = 'single';
 
-%%
+%% Create data files
 for ii=0:1:96 % save for a day
 
     currenttimeDT = initialtimeDT + ii*seconds(dtneu);

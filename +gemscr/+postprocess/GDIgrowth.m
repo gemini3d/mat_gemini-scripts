@@ -1,8 +1,9 @@
 function GDIgrowth(direc, namedargs)
 arguments
   direc (1,1) string
-  namedargs.drift_velocity (1,1) double = 0.5e3 % [meters / sec]
-  namedargs.gradient_scale (1,1) double = 10e3 % meters
+  namedargs.drift_velocity (1,1) double = 0.5e3    % [meters / sec]
+  namedargs.gradient_scale (1,1) double = 10e3     % meters
+  namedargs.xref (1,1) double = -85e3              % meters
 end
 
 %% Load a GDI simulation
@@ -12,15 +13,17 @@ cfg = gemini3d.read.config(direc);
 x2=xg.x2(3:end-2);
 x3=xg.x3(3:end-2);
 ix1=find(xg.x1>300e3, 1);    %F-region location in terms of grid index
-x2ref=-85e3;
+%x2ref=-85e3;
+x2ref=namedargs.xref;
 %% Loop over data and pull in the density for main part of gradient
 Nt = numel(cfg.times);
 neline = nan(Nt, numel(x3));
 
+t_elapsed=zeros(1,Nt);
 for i = 1:Nt
   data = gemini3d.read.frame(direc, time=cfg.times(i), vars="ne");
-  t_elapsed = seconds(cfg.times(i) - cfg.times(1));
-  x2now = x2ref + t_elapsed * namedargs.drift_velocity;    %moving at 0.5 kms/
+  t_elapsed(i) = seconds(cfg.times(i) - cfg.times(1));
+  x2now = x2ref + t_elapsed(i) * namedargs.drift_velocity;    %moving at 0.5 kms/
   ix2 = find(x2 > x2now, 1);
 
   neline(i,:) = data.ne(ix1,ix2,:);
@@ -51,7 +54,8 @@ fig1 = make_figure1(cfg.times, itmin, gamma, growthtime, nerelpwr);
 
 fig2 = make_figure2(xg, x3, dneline);
 
-fig3 = make_figure3(cfg.times, itmin, nepwr, gamma, growthtime);
+% Plots junk
+%fig3 = make_figure3(cfg.times, itmin, nepwr, gamma, growthtime);
 
 % exportgraphics(fig3, fullfile(direc, 'plots/growth_compare.eps'))
 
@@ -65,15 +69,24 @@ lineargrowthtime = 1/gamma;
 linear_nerelpwr = ne_rel_pwr(it_min) * exp(gamma*seconds(times - times(it_min)));
 %% Do some basic plot containing this info (avg'd over space)
 fig = figure;
-ax = axes(fig, 'nextplot', 'add');
 
-plot(ax, times, 100*ne_rel_pwr);    % growth from simulation
-plot(ax, times, 100*linear_nerelpwr);    %pure linear growth
+%ax = axes(fig, 'nextplot', 'add');
+%plot(ax, times, 100*ne_rel_pwr);    % growth from simulation
+%plot(ax, times, 100*linear_nerelpwr);    %pure linear growth
 
-legend(ax, {'simulation','linear growth'})
-xlabel(ax, 'UT');
-ylabel(ax, '% variation from background (avg.)');
-title(ax, sprintf('Theoretical \\tau:  %d; model \\tau:  %d',lineargrowthtime,growth_time));
+semilogy(times, 100*ne_rel_pwr);    % growth from simulation
+hold on;
+semilogy(times, 100*linear_nerelpwr);    %pure linear growth
+
+% legend(ax, {'simulation','linear growth'})
+% xlabel(ax, 'UT');
+% ylabel(ax, '% variation from background (avg.)');
+% title(ax, sprintf('Theoretical \\tau:  %d; model \\tau:  %d',lineargrowthtime,growth_time));
+
+legend({'simulation','linear growth'})
+xlabel('UT');
+ylabel('% variation from background (avg.)');
+title(sprintf('Theoretical \\tau:  %d; model \\tau:  %d',lineargrowthtime,growth_time));
 
 end % function
 

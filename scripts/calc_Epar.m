@@ -1,13 +1,14 @@
 % Set the GEMINI_ROOT path
 setenv('GEMINI_ROOT', '~/Projects/gemini3d/');
 run ~/Projects/mat_gemini/setup
+addpath ../
 
 % Read simulation data
-iframe = 6;
-direc = '~/simulations/sdcard/Laminar_run_test_2ndord/';
+iframe = 30;
+direc = '~/simulations/ssd_ext/sims_ALFs/ALF_altenergy_large_lowQ2/';
 cfg = gemini3d.read.config(direc);
 xg = gemini3d.read.grid(direc);
-dat = gemini3d.read.frame(direc,"time",cfg.times(iframe));  % Use frame 16
+dat = gemini3d.read.frame(direc,"time",cfg.times(iframe));  % Use frame iframe
 y = xg.x3(3:end-2);
 z = xg.x1(3:end-2);
 
@@ -32,6 +33,9 @@ E3  = ( sigP .* dat.J3 + sigH .* dat.J2) ./ dnm;   % N–S electric field
 %% plot E, sigma, and J (both perp and par)
 figure('Units', 'Inches', 'Position', [0, 0, 16, 16], 'PaperPositionMode', 'auto');
 
+minx=-30;
+maxx=30;
+
 %electric fields
 subplot(431)
 Ezplot = reshape(Ez, [length(z), length(y)]);
@@ -40,7 +44,7 @@ shading interp;
 % xlabel('northward dist. [km]');
 ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$E_\parallel$ [V/m]', 'Interpreter', 'latex');
 % grid on;
@@ -58,7 +62,7 @@ shading interp;
 % xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$E_\perp$ (E-W) [V/m]', 'Interpreter', 'latex');
 % grid on;
@@ -76,7 +80,7 @@ shading interp;
 % xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$E_\perp$ (N-S) [V/m]', 'Interpreter', 'latex');
 % grid on;
@@ -95,7 +99,7 @@ shading interp;
 % xlabel('northward dist. [km]');
 ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$J_\parallel$ [A/m$^2$]', 'Interpreter', 'latex');
 ax = gca;
@@ -112,7 +116,7 @@ shading interp;
 % xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$J_\perp$ (E-W) [A/m$^2$]', 'Interpreter', 'latex');
 ax = gca;
@@ -129,7 +133,7 @@ shading interp;
 % xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$J_\perp$ (N-S) [A/m$^2$]', 'Interpreter', 'latex');
 ax = gca;
@@ -142,12 +146,12 @@ ax.FontSize = 14;
 %conductivities
 subplot(437)
 sig0plot = reshape(sig0, [length(z), length(y)]);
-pcolor(y./1e3, z./1e3, sig0plot);
+pcolor(y./1e3, z./1e3, log10(sig0plot));
 shading interp;
 % xlabel('northward dist. [km]');
 ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$Sig0_\parallel$ [S/m]', 'Interpreter', 'latex');
 % grid on;
@@ -160,12 +164,12 @@ ax.FontSize = 14;
 
 subplot(438)
 sigHplot = reshape(sigH, [length(z), length(y)]);
-pcolor(y./1e3, z./1e3, sigHplot);
+pcolor(y./1e3, z./1e3, log10(abs(sigHplot)));
 shading interp;
 % xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$SigH_\perp$ [S/m]', 'Interpreter', 'latex');
 % grid on;
@@ -178,12 +182,12 @@ ax.FontSize = 14;
 
 subplot(439)
 sigPplot = reshape(sigP, [length(z), length(y)]);
-pcolor(y./1e3, z./1e3, sigPplot);
+pcolor(y./1e3, z./1e3, log10(sigPplot));
 shading interp;
 % xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$SigP_\perp$ [S/m]', 'Interpreter', 'latex');
 % grid on;
@@ -202,7 +206,7 @@ shading interp;
 xlabel('northward dist. [km]');
 ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$v_\parallel$ [m/s]', 'Interpreter', 'latex');
 % grid on;
@@ -219,7 +223,7 @@ shading interp;
 xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$v_\perp$ (E-W) [m/s]', 'Interpreter', 'latex');
 % grid on;
@@ -236,7 +240,7 @@ shading interp;
 xlabel('northward dist. [km]');
 % ylabel('altitude [km]');
 ylim([80, 500]);
-xlim([-7, 5]);
+xlim([minx, maxx]);
 colorbar;
 title('$v_\perp$ (N-S) [m/s]', 'Interpreter', 'latex');
 % grid on;
@@ -249,3 +253,22 @@ ax.FontSize = 14;
 p0 = 'E_J_V_sigma.png';
 fullpath = fullfile(direc,p0);
 saveas(gcf, fullpath);
+
+figure;
+subplot(121)
+pcolor(y/1e3,z/1e3,log10(squeeze(dat.ne)));
+shading flat;
+xlabel('northward dist. [km]');
+ylim([80, 500]);
+xlim([minx, maxx]);
+colorbar;
+title("log plasma density")
+
+subplot(122)
+pcolor(y/1e3,z/1e3,log10(squeeze(dat.Te)));
+shading flat;
+xlabel('northward dist. [km]');
+ylim([80, 500]);
+xlim([minx, maxx]);
+colorbar;
+title("log electron temperature")
